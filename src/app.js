@@ -428,15 +428,6 @@
   ) {
     return `<div class="story-art ${book ? "book-art" : ""}"><div class="art-orbit" aria-hidden="true"></div>${nextCover ? `<a class="next-glimpse" href="${href(nextHref)}" aria-label="Next story">${photo(nextCover, "")}<span>Up next ↗</span></a>` : ""}<a class="story-image" href="${href(openHref || nextHref)}" aria-label="${esc(title)}">${photo(cover, title, "", position)}</a></div>`;
   }
-  function chapterNav(current) {
-    return `<nav class="chapter-nav" aria-label="Sides of Swamiji’s life">${experienceLinks()
-      .map(
-        (c) =>
-          `<a href="${href(c.href)}" ${c.href.endsWith("/" + current) ? 'aria-current="page"' : ""}>${esc(c.title)}</a>`,
-      )
-      .join("")}</nav>`;
-  }
-
   function explore(selected) {
     const cats = site.categories.filter(
       (c) => c.published !== false && c.cover,
@@ -502,7 +493,7 @@
                 `${v} ${v === 1 ? { photos: "photograph", films: "film", recordings: "recording", documents: "document" }[k] || k : k}`,
             )
             .join(" · ")
-    }</span></div>${sceneArt(event.cover, event.title, events.length > 1 ? after.cover : "", next, event.coverPosition || "50% 35%", false, target)}</div>${sceneControls(prev, next, `${String(index + 1).padStart(2, "0")} / ${String(events.length).padStart(2, "0")}`, "Choose an occasion")}${chapterNav(id)}${choiceDialog(
+    }</span></div>${sceneArt(event.cover, event.title, "", next, event.coverPosition || "50% 35%", false, target)}</div>${sceneControls(prev, next, `${String(index + 1).padStart(2, "0")} / ${String(events.length).padStart(2, "0")}`, "Choose an occasion")}${choiceDialog(
       c.title,
       events.map((e) => ({ title: e.title, href: base + e.id })),
     )}</section>`;
@@ -543,11 +534,6 @@
       event.backHref || "#/category/" + event.category + "/moments/" + id;
     const prev = `/event/${id}/${type}/${Math.max(0, index - 1)}`,
       next = `/event/${id}/${type}/${Math.min(media.length - 1, index + 1)}`;
-    const related = site.events.filter(
-      (e) => e.category === event.category && !e.id.startsWith("message-"),
-    );
-    const relatedIndex = related.findIndex((e) => e.id === id),
-      after = related[(relatedIndex + 1) % related.length];
     const frame = !item
       ? "<p>No media is published for this moment.</p>"
       : type === "photo"
@@ -559,7 +545,7 @@
             : type === "document"
               ? `<a class="document-preview" href="${href(item.src)}" target="_blank" rel="noopener" aria-label="Open full document">${item.poster ? photo(item.poster, item.title || event.title) : '<span class="document-label">Read the original document</span>'}<span class="button">Open full document ↗</span></a>`
               : `<div class="listen-stage">${photo(item.poster || event.cover, event.title)}<a class="button" href="${href(item.url || item.src)}" target="_blank" rel="noopener">Watch this recording on YouTube ↗</a></div>`;
-    const caption = `<span class="eyebrow">${type === "photo" ? "A MOMENT TO REMEMBER" : type === "audio" ? "VOICES OF THE OCCASION" : "FROM THE OCCASION"} · ${index + 1} / ${media.length}</span><h2>${esc(item?.title || event.title)}</h2><p>${esc(short(item?.caption || event.description, 320))}</p><details><summary>About this occasion</summary><p>${esc(event.description)}</p><p>${esc(event.credit)} ${esc(event.note)}</p></details><a class="text-link" href="${href(item?.src || item?.url || parent)}" target="_blank" rel="noopener">${type === "photo" ? "View full photograph" : type === "document" ? "Read original document" : "Open recording"} ↗</a>${after && after.id !== id ? `<a class="onward-story" href="#/category/${esc(event.category)}/moments/${esc(after.id)}"><small>ANOTHER MOMENT</small>${esc(after.title)} <span>→</span></a>` : `<a class="onward-story" href="#/learn"><small>STAY A LITTLE LONGER</small>Learn Swamiji’s teachings →</a>`}`;
+    const caption = `<span class="eyebrow">${type === "photo" ? "A MOMENT TO REMEMBER" : type === "audio" ? "VOICES OF THE OCCASION" : "FROM THE OCCASION"} · ${index + 1} / ${media.length}</span><h2>${esc(item?.title || event.title)}</h2><p>${esc(short(item?.caption || event.description, 320))}</p><details><summary>About this occasion</summary><p>${esc(event.description)}</p><p>${esc(event.credit)} ${esc(event.note)}</p></details><a class="text-link" href="${href(item?.src || item?.url || parent)}" target="_blank" rel="noopener">${type === "photo" ? "View full photograph" : type === "document" ? "Read original document" : "Open recording"} ↗</a>`;
     const ribbon = media
       .map(
         (m, i) =>

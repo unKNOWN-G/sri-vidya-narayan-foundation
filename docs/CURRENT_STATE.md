@@ -1,6 +1,7 @@
 # Current design and navigation decisions
 
 - Keep the earlier light, context-sensitive palettes. The full forest-green redesign was rejected and is not part of the published design.
+- Inside a selected section, show only its current story: no overlapping next-story photograph, cross-section strip, or onward teaser. Keep Back/Home and navigation through the current section’s own items.
 - Introductory scenes show one perspective or occasion at a time. Do not replace them with an archive or folder grid.
 - Use the same next/previous, touch and parent-return conventions across scenes. Books retain their opening reader; messages retain their folded-card reader.
 - A gallery keeps its shell and native player when changing photos or recordings. Media changes replace the current URL/history entry so browser Back leaves the occasion.
