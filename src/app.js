@@ -417,7 +417,7 @@
     const resolve = (value) => (typeof value === "function" ? value() : value);
     const ignored = (e) =>
       e.target.closest?.(
-        "input,select,textarea,video,audio,iframe,dialog,.scene-navigation,[contenteditable=true]",
+        "input,select,textarea,video,audio,iframe,dialog,.scene-navigation,.satsang-tools,[contenteditable=true]",
       );
     const key = (e) => {
       if (ignored(e) || e.altKey || e.ctrlKey || e.metaKey) return;
@@ -832,6 +832,10 @@
     const all = entries.slice();
     if (name === "readings")
       all.sort((a, b) => String(b.date).localeCompare(String(a.date)));
+    if (name === "readings") {
+      satsangView(all, selected);
+      return;
+    }
     const list = all.filter(
       (e) =>
         (!state.search ||
@@ -893,6 +897,96 @@
       else location.hash = "/library/" + name;
     });
     bindSequence(previous, next, "#/learn");
+  }
+
+  function satsangView(all, selected) {
+    const matches = all.filter((entry) =>
+      (!state.search || JSON.stringify(entry).toLowerCase().includes(state.search.toLowerCase())) &&
+      (!state.month || entry.date.startsWith(state.month)) &&
+      (!state.topic || (entry.topics || entry.tags || []).includes(state.topic)),
+    );
+    const index = Math.max(0, Math.min(selected ? matches.findIndex((e) => e.id === selected) : state.page, matches.length - 1));
+    state.page = index;
+    const item = matches[index],
+      route = (entry) => "#/library/readings/" + entry.id,
+      previous = index > 0 ? route(matches[index - 1]) : null,
+      next = index + 1 < matches.length ? route(matches[index + 1]) : null,
+      byDate = new Map(all.map((entry) => [entry.date, entry])),
+      months = [...new Set(all.map((entry) => entry.date.slice(0, 7)))].sort(),
+      monthLabel = (month) => new Date(month + "-15T12:00:00").toLocaleDateString("en-IN", { month: "long", year: "numeric" }),
+      calendarIcon = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M7 2v6m10-6v6M3 11h18"/></svg>',
+      filters = [state.month ? monthLabel(state.month) : "", state.search ? "Matching: " + state.search : "", state.topic].filter(Boolean);
+    let calendarMonth = state.month || item?.date.slice(0, 7) || months[months.length - 1];
+    app.innerHTML = `<section class="view satsang-view"><div class="satsang-top">${heading("Satsangs", '<a href="#/learn">Learn Swamiji’s Teachings</a>')}<div class="satsang-tools"><form class="satsang-search" role="search"><input type="search" name="thought" aria-label="Search Satsangs" placeholder="Find a thought…" value="${esc(state.search)}"><button type="submit" aria-label="Search messages">↗</button></form><details class="satsang-calendar"><summary>${calendarIcon}<span>Calendar</span>${state.month ? '<i aria-hidden="true"></i>' : ""}</summary><div class="satsang-calendar-panel"><div class="satsang-calendar-head"><button type="button" data-calendar-step="-1" aria-label="Previous month">←</button><h2 id="satsang-calendar-month"></h2><button type="button" data-calendar-step="1" aria-label="Next month">→</button></div><div class="calendar-weekdays" aria-hidden="true">${["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map((d) => `<span>${d}</span>`).join("")}</div><div class="satsang-calendar-days" aria-labelledby="satsang-calendar-month"></div><p class="calendar-hint">Choose a highlighted date to open its Satsang.</p><div class="calendar-actions"><button type="button" data-calendar-month>Read this month</button><button type="button" data-satsang-clear>All dates</button></div><label class="calendar-topic">A theme to reflect on<select aria-label="Filter Satsangs by theme"><option value="">Every theme</option>${[...new Set(all.flatMap((e) => e.topics || e.tags || []))].sort().map((topic) => `<option value="${esc(topic)}" ${state.topic === topic ? "selected" : ""}>${esc(topic)}</option>`).join("")}</select></label></div></details></div></div><div class="satsang-filter-note">${filters.length ? `<span>${esc(filters.join(" · "))}</span><button type="button" data-satsang-clear>Show all Satsangs ×</button>` : '<span>A quiet moment. A little clarity.</span>'}</div><div class="satsang-stage"><article class="satsang-message-card ${item ? "" : "satsang-empty"}"><figure class="satsang-photo">${photo(getCategory("teachings").cover, "His Holiness Sri Vidyanarayana Thirtha Swamiji by the water")}</figure><div class="satsang-copy"><div class="satsang-meta"><p class="satsang-kicker">WORDS FOR EVERYDAY LIFE</p>${item ? `<time datetime="${esc(item.date)}">${dateLabel(item.date)}</time>` : '<span class="satsang-no-date">A moment to begin again</span>'}</div>${item ? `<h2><a href="#/read/readings/${esc(item.id)}">${esc(item.title)}</a></h2><p class="satsang-lead">${esc(item.lead || item.essence || "")}</p><div class="satsang-read"><a class="button" href="#/read/readings/${esc(item.id)}">Read this Satsang <span aria-hidden="true">↗</span></a><span>Edited Satsang reflection</span></div>` : '<h2>No Satsangs match this selection.</h2><p class="satsang-lead">Try another word, choose a highlighted calendar date, or return to all messages.</p><button class="button" type="button" data-satsang-clear>Show all Satsangs ↗</button>'}</div></article></div><nav class="satsang-navigation" aria-label="Browse Satsangs">${previous ? `<a href="${previous}" aria-label="Previous Satsang">← <span>Previous</span></a>` : '<button type="button" disabled aria-label="Previous Satsang">← <span>Previous</span></button>'}<div><strong>${item ? dateLabel(item.date) : "No matching message"}</strong><span>${item ? `${index + 1} of ${matches.length} Satsangs` : "Choose another date or clear your filters"}</span></div>${next ? `<a href="${next}" aria-label="Next Satsang"><span>Next</span> →</a>` : '<button type="button" disabled aria-label="Next Satsang"><span>Next</span> →</button>'}</nav></section>`;
+    const calendar = app.querySelector(".satsang-calendar"),
+      calendarPanel = app.querySelector(".satsang-calendar-panel"),
+      grid = app.querySelector(".satsang-calendar-days");
+    function paintCalendar() {
+      const [year, month] = calendarMonth.split("-").map(Number),
+        offset = (new Date(Date.UTC(year, month - 1, 1)).getUTCDay() + 6) % 7,
+        days = new Date(Date.UTC(year, month, 0)).getUTCDate(),
+        monthIndex = months.indexOf(calendarMonth);
+      app.querySelector("#satsang-calendar-month").textContent = monthLabel(calendarMonth);
+      calendarPanel.querySelector('[data-calendar-step="-1"]').disabled = monthIndex === 0;
+      calendarPanel.querySelector('[data-calendar-step="1"]').disabled = monthIndex === months.length - 1;
+      grid.innerHTML = '<span aria-hidden="true"></span>'.repeat(offset) + Array.from({ length: days }, (_, i) => {
+        const date = `${calendarMonth}-${String(i + 1).padStart(2, "0")}`, entry = byDate.get(date);
+        return `<button type="button" data-satsang-date="${date}" aria-label="${esc(dateLabel(date) + (entry ? "" : " — no Satsang available"))}" ${entry ? `class="available" title="${esc(entry.title)}"` : "disabled"} aria-pressed="${item?.date === date}">${i + 1}</button>`;
+      }).join("");
+    }
+    function refresh() {
+      state.page = 0;
+      if (location.hash === "#/library/readings") render();
+      else location.hash = "/library/readings";
+    }
+    const section = app.querySelector(".satsang-view");
+    section.addEventListener("click", (event) => {
+      const button = event.target.closest("button");
+      if (!button) return;
+      if (button.hasAttribute("data-calendar-step")) {
+        const i = months.indexOf(calendarMonth) + Number(button.dataset.calendarStep);
+        if (months[i]) { calendarMonth = months[i]; paintCalendar(); }
+      } else if (button.dataset.satsangDate) {
+        const entry = byDate.get(button.dataset.satsangDate);
+        if (!entry) return;
+        state.month = entry.date.slice(0, 7); state.search = ""; state.topic = ""; state.page = 0;
+        if (location.hash === route(entry)) render(); else location.hash = route(entry);
+      } else if (button.hasAttribute("data-calendar-month")) {
+        state.month = calendarMonth; state.search = ""; refresh();
+      } else if (button.hasAttribute("data-satsang-clear")) {
+        state.month = ""; state.search = ""; state.topic = ""; refresh();
+      }
+    });
+    app.querySelector(".satsang-search").addEventListener("submit", (event) => {
+      event.preventDefault(); state.search = new FormData(event.currentTarget).get("thought").trim(); refresh();
+    });
+    app.querySelector(".calendar-topic select").addEventListener("change", (event) => {
+      state.topic = event.target.value; refresh();
+    });
+    calendar.addEventListener("toggle", () => { if (calendar.open) paintCalendar(); });
+    grid.addEventListener("keydown", (event) => {
+      const directions = { ArrowRight: 1, ArrowLeft: -1, ArrowDown: 7, ArrowUp: -7 };
+      if (!(event.key in directions)) return;
+      const buttons = [...grid.querySelectorAll("button")], index = buttons.indexOf(document.activeElement),
+        direction = directions[event.key];
+      let target = index + direction;
+      while (buttons[target]?.disabled) target += Math.sign(direction);
+      if (buttons[target]) buttons[target].focus();
+      event.preventDefault(); event.stopPropagation();
+    });
+    const outside = (event) => { if (calendar.open && !calendar.contains(event.target)) calendar.open = false; },
+      escape = (event) => {
+        if (calendar.open && event.key === "Escape") {
+          calendar.open = false; calendar.querySelector("summary").focus();
+          event.preventDefault(); event.stopImmediatePropagation();
+        }
+      };
+    document.addEventListener("pointerdown", outside);
+    document.addEventListener("keydown", escape, true);
+    paintCalendar();
+    bindSequence(previous || location.hash, next || location.hash, "#/learn");
+    const release = cleanup;
+    cleanup = () => { release(); document.removeEventListener("pointerdown", outside); document.removeEventListener("keydown", escape, true); };
   }
 
   function bookShelf(books, selected) {
@@ -1064,18 +1158,22 @@
       else if (parts[0] === "about") about();
       else throw Error("This part of the collection could not be found.");
       if (token === routeToken && !reduced.matches) {
+        const calm = parts[0] === "library" && parts[1] === "readings";
         const foreground =
-          app.querySelector(".scene-navigation") ? app.querySelector(".story-scene,.book-scene") : parts[0] === "library" && parts[2]
+          calm ? app.querySelector(".satsang-copy") : app.querySelector(".scene-navigation") ? app.querySelector(".story-scene,.book-scene") : parts[0] === "library" && parts[2]
             ? app.querySelector(".thought-paper,.physical-book")
             : parts[0] === "category" && parts[3]
               ? app.querySelector(".story-scene")
               : app.firstElementChild;
         foreground?.animate(
-          [
+          calm ? [
+            { opacity: .4, transform: "translateY(8px)" },
+            { opacity: 1, transform: "translateY(0)" },
+          ] : [
             { opacity: 0, transform: "translateX(16px) rotateY(-5deg)" },
             { opacity: 1, transform: "translateX(0) rotateY(0)" },
           ],
-          { duration: 600, easing: "cubic-bezier(.2,.65,.2,1)" },
+          { duration: calm ? 320 : 600, easing: "cubic-bezier(.2,.65,.2,1)" },
         );
       }
       if (token === routeToken)

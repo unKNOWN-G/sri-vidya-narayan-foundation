@@ -23,6 +23,7 @@ Interface: `src/app.js`, `src/experience.css`, `src/index.html`.
 Institutions: `content/events/` and `content/categories/education.json`.
 Giving: `content/collections/contributions.json` and `content/collections/service-links.json`.
 Readers: `src/reading-room.html`, `src/message-cards.html`, canonical `content/collections/cards.json`.
+Satsang discovery: `satsangView()` in `src/app.js` and scoped `src/satsang.css`. One full-colour portrait paired with one readable reflection; no faded paper stack or archive grid. Top calendar supports date/month selection and the existing theme filter; keyword search remains available. Only supplied reading dates are enabled (July–November 2026; 29 July remains unavailable). Previous/next respects the selected filter and stops at boundaries. Preserve the edited-reflection label and full reader. Visual references: Poem-a-Day (`https://poets.org/poem-a-day`) and Plum Village (`https://plumvillage.org/mindfulness/mindfulness-practice`); no borrowed imagery or text.
 
 Run source validation, the independent route check, the tests and the build. GitHub Pages uses the manual `Publish website` workflow in `.github/workflows/pages.yml` after a reviewed push to main.
 
