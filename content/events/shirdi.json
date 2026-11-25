@@ -5,9 +5,9 @@
   "location": "",
   "date": null,
   "year": null,
-  "description": "Moments shared by the foundation from Swamiji’s life and service.",
-  "cover": "assets/media/annadanam/shirdi/shirdi-sai-baba.webp",
-  "credit": "Original media shared by the foundation.",
+  "description": "Contributions to the Shirdi Annadan Fund support the tradition of offering food to devotees. The photograph shows the dining hall at Shri Sai Prasadalaya; acknowledgements are available as supporting attachments.",
+  "cover": "assets/media/annadanam/shirdi/prasadalaya-dining-hall.jpg",
+  "credit": "Prasadalaya photograph · Shri Saibaba Sansthan Trust. Acknowledgements shared by the foundation.",
   "note": "",
   "counts": {
     "photos": 4
@@ -56,6 +56,9 @@
     "shirdi-oct22",
     "shirdi-oct29"
   ],
-  "coverAlt": "Sharing nourishment at Shirdi · the place of service",
-  "coverContext": "A supplied view of the place; the original acknowledgement is available within this service story."
+  "coverAlt": "Dining hall at Shri Sai Prasadalaya, Shirdi",
+  "coverContext": "Photograph of the recipient’s place of service, sourced from its official website. Not a photograph of Swamiji’s visit or a donation ceremony.",
+  "photoSource": "https://sai.org.in/mr/content/shri-saibaba-prasadalaya",
+  "photoCredit": "Prasadalaya photograph · Shri Saibaba Sansthan Trust",
+  "coverSubject": "place"
 }

@@ -329,6 +329,8 @@ def check(root=ROOT, require_experiences=False):
     for identifier, event in public_events.items():
         if event.get("presentation") != "service-story":
             continue
+        if not event.get("cover") or "/his-holiness/" in event["cover"]:
+            fail(f"Service story {identifier}: use a recipient or place photograph, not an unrelated portrait")
         for record_id in event.get("supportRecordIds", []):
             record = support_by_id.get(str(record_id))
             if not record:

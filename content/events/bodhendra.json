@@ -5,9 +5,9 @@
   "location": "",
   "date": null,
   "year": null,
-  "description": "Moments shared by the foundation from Swamiji’s life and service.",
-  "cover": "assets/media/his-holiness/portrait-and-journey/foundation-5.webp",
-  "credit": "Original media shared by the foundation.",
+  "description": "Annadanam support through Sri Bodhendra Saraswathi Swamigal Trust, Govindapuram. The trust’s acknowledgement records the contribution for Annadanam.",
+  "cover": "assets/media/annadanam/bodhendra/adhishtanam.png",
+  "credit": "Place photograph · Sri Bodhendral Mutt. Acknowledgements shared by the foundation.",
   "note": "",
   "counts": {
     "photos": 1
@@ -27,6 +27,9 @@
   "supportRecordIds": [
     "bodhendra-2025-annadanam"
   ],
-  "coverAlt": "Sri Swamiji",
-  "coverContext": "Portrait of Sri Swamiji; supporting acknowledgements are available within this service story."
+  "coverAlt": "Interior of Sri Bodhendra Saraswathi Swamigal Adhishtanam, Govindapuram",
+  "coverContext": "Photograph of the recipient’s place of service, sourced from its official website. Not a photograph of Swamiji’s visit or a donation ceremony.",
+  "photoSource": "https://sribodhendralmutt.org/about-mutt",
+  "photoCredit": "Place photograph · Sri Bodhendral Mutt",
+  "coverSubject": "place"
 }

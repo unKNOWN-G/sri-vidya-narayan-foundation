@@ -63,6 +63,12 @@ class ContentRoutesTest(unittest.TestCase):
         self.write("content/categories/education.json", {"id": "education", "cover": "assets/photo.webp", "eventIds": []})
         self.assertIn("not discoverable", self.errors())
 
+    def test_service_story_rejects_an_unrelated_portrait(self):
+        event = json.loads((self.root / "content/events/school.json").read_text())
+        event.update(presentation="service-story", cover="assets/media/his-holiness/portrait.webp")
+        self.write("content/events/school.json", event)
+        self.assertIn("use a recipient or place photograph", self.errors())
+
     def test_missing_book_reader_is_detected(self):
         self.write("content/collections/books.json", [{"id": "book", "cover": "assets/photo.webp", "reader": "unavailable"}])
         self.assertIn("missing/empty reading collection unavailable", self.errors())

@@ -27,3 +27,5 @@ Readers: `src/reading-room.html`, `src/message-cards.html`, canonical `content/c
 Run source validation, the independent route check, the tests and the build. GitHub Pages uses the manual `Publish website` workflow in `.github/workflows/pages.yml` after a reviewed push to main.
 
 - Hebbal and Viman Nagar institution scenes use actual campus photographs rather than an unrelated Swamiji portrait. Credit/source links are in `education-profiles.json`; source details are in `docs/SCHOOL_PHOTO_SOURCES.json`. These are campus context images, not photographs of a donation or Swamiji visit.
+
+- Donation scenes must use the actual recipient, place or relevant activity; never fall back to an unrelated Swamiji portrait or another school. Govindapuram uses the official Adhishtanam photograph; Shirdi Medical uses the official Sansthan hospital; Shirdi Annadanam uses the official Prasadalaya dining hall. Sources: `docs/DONATION_PHOTO_SOURCES.json`. Education record images resolve through their school profile and event before any shared acknowledgement event. Receipts remain attachments.

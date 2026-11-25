@@ -492,7 +492,7 @@
         event.presentation === "service-story" && event.supportRecordIds?.length
           ? "#/record/" + event.supportRecordIds[0]
           : "#/event/" + event.id;
-    app.innerHTML = `<section class="view story-view">${heading(c.title, '<a href="#/explore/' + id + '">His life in action</a>')}<div class="story-scene"><div class="scene-backdrop" style="background-image:url('${href(event.cover)}')"></div><div class="story-copy"><p class="eyebrow">${esc([event.location, event.date ? dateLabel(event.date) : event.year].filter(Boolean).join(" · ") || c.eyebrow)}</p><h2>${esc(event.title)}</h2><p class="story-description">${esc(short(event.description || c.caption))}</p><a class="button" href="${target}">${id === "his-holiness" && event.id === "swamiji-stuti" ? "Read the Stuti" : event.presentation === "service-story" ? "Discover this service" : "Step into this moment"} <span aria-hidden="true">↗</span></a><span class="scene-kicker">${
+    app.innerHTML = `<section class="view story-view">${heading(c.title, '<a href="#/explore/' + id + '">His life in action</a>')}<div class="story-scene"><div class="scene-backdrop" style="background-image:url('${href(event.cover)}')"></div><div class="story-copy"><p class="eyebrow">${esc([event.location, event.date ? dateLabel(event.date) : event.year].filter(Boolean).join(" · ") || c.eyebrow)}</p><h2>${esc(event.title)}</h2><p class="story-description">${esc(short(event.description || c.caption))}</p><a class="button" href="${target}">${id === "his-holiness" && event.id === "swamiji-stuti" ? "Read the Stuti" : event.presentation === "service-story" ? "Discover this service" : "Step into this moment"} <span aria-hidden="true">↗</span></a>${event.photoSource ? `<a class="school-photo-credit" href="${esc(event.photoSource)}" target="_blank" rel="noopener">${esc(event.photoCredit)} ↗</a>` : ""}<span class="scene-kicker">${
       event.presentation === "service-story"
         ? "A story of support"
         : Object.entries(event.counts || {})
@@ -501,7 +501,7 @@
                 `${v} ${v === 1 ? { photos: "photograph", films: "film", recordings: "recording", documents: "document" }[k] || k : k}`,
             )
             .join(" · ")
-    }</span></div>${sceneArt(event.cover, event.title, "", next, event.coverPosition || "50% 35%", false, target)}</div>${sceneControls(prev, next, `${String(index + 1).padStart(2, "0")} / ${String(events.length).padStart(2, "0")}`, "Choose an occasion")}${choiceDialog(
+    }</span></div>${sceneArt(event.cover, event.coverAlt || event.title, "", next, event.coverPosition || "50% 35%", false, target)}</div>${sceneControls(prev, next, `${String(index + 1).padStart(2, "0")} / ${String(events.length).padStart(2, "0")}`, "Choose an occasion")}${choiceDialog(
       c.title,
       events.map((e) => ({ title: e.title, href: base + e.id })),
     )}</section>`;
@@ -923,18 +923,18 @@
     const records = allRecords.filter((r) => r.category === record?.category),
       index = records.indexOf(record);
     if (!record) throw Error("This supporting note is not available.");
-    const event = getEvent(links.records?.[id]?.eventIds?.[0]),
+    const schoolProfile = profiles.find((p) => p.recordIds.includes(record.id)),
+      event = getEvent(schoolProfile?.eventId || links.records?.[id]?.eventIds?.[0]),
       c =
         getCategory(
           links.categoryAliases?.[record.category] || record.category,
         ) || getCategory("foundation");
-    const schoolProfile = profiles.find((p) => p.recordIds.includes(record.id)),
-      supportCover = schoolProfile?.cover || event?.cover || c.cover;
+    const supportCover = schoolProfile?.cover || event?.cover;
     theme(c);
     const previous =
         "#/record/" + records[(index - 1 + records.length) % records.length].id,
       next = "#/record/" + records[(index + 1) % records.length].id;
-    app.innerHTML = `<section class="view story-view" data-back="#/category/${esc(c.id)}">${heading(c.title + " · support", '<a href="#/category/' + c.id + '">' + esc(c.title) + "</a>")}<div class="story-scene"><div class="scene-backdrop" style="background-image:url('${href(supportCover)}')"></div><div class="story-copy"><p class="eyebrow">${esc(record.evidenceLabel || record.evidenceStatus)}</p><h2>${esc(record.recipient)}</h2><p class="story-description">${esc(record.summary || "Support for " + record.recipient + ", recorded in the accompanying acknowledgement.")}</p><span class="record-context">${record.approximate ? "Approximately " : ""}${formatMoney(record.amount)}${record.donor ? " · Named donor: " + esc(record.donor) : ""}</span>${event && event.presentation !== "service-story" ? `<a class="button" href="#/event/${esc(event.id)}">Meet the story behind the support ↗</a>` : `<a class="button" href="#/foundation/connect">Carry this care forward ↗</a>`}<details class="evidence-note"><summary>Read the supporting acknowledgement</summary><p>${esc(record.evidenceLabel)}</p>${record.src ? `<a class="text-link" href="${href(record.src)}" target="_blank" rel="noopener">View the published original ↗</a>` : ""}${
+    app.innerHTML = `<section class="view story-view support-record-view" data-back="#/category/${esc(c.id)}">${heading(c.title + " · support", '<a href="#/category/' + c.id + '">' + esc(c.title) + "</a>")}<div class="story-scene"><div class="scene-backdrop" style="${supportCover ? `background-image:url('${href(supportCover)}')` : ""}"></div><div class="story-copy"><p class="eyebrow">${esc(record.evidenceLabel || record.evidenceStatus)}</p><h2>${esc(record.recipient)}</h2><p class="story-description">${esc(record.summary || "Support for " + record.recipient + ", recorded in the accompanying acknowledgement.")}</p><span class="record-context">${record.approximate ? "Approximately " : ""}${formatMoney(record.amount)}${record.donor ? " · Named donor: " + esc(record.donor) : ""}</span>${event && event.presentation !== "service-story" ? `<a class="button" href="#/event/${esc(event.id)}">Meet the story behind the support ↗</a>` : `<a class="button" href="#/foundation/connect">Carry this care forward ↗</a>`}<details class="evidence-note"><summary>Read the supporting acknowledgement</summary><div class="evidence-content"><p>${esc(record.evidenceLabel)}</p>${record.src ? `<a class="text-link" href="${href(record.src)}" target="_blank" rel="noopener">View the published original ↗</a>` : ""}${
       record.src && event?.media?.length
         ? `<div class="evidence-links">${event.media
             .filter((m) => m.src !== record.src && m.id.includes(record.id))
@@ -944,7 +944,7 @@
             )
             .join("")}</div>`
         : ""
-    }</details></div><div class="foundation-image">${photo(supportCover, schoolProfile?.title || event?.title || c.title)}</div></div>${sceneControls(previous, next, `${index + 1} / ${records.length}`, "More " + c.title.toLowerCase() + " support")}${choiceDialog(
+    }</div></details>${event?.photoSource ? `<a class="school-photo-credit" href="${esc(event.photoSource)}" target="_blank" rel="noopener">${esc(event.photoCredit)} ↗</a>` : ""}</div><div class="foundation-image recipient-image">${supportCover ? photo(supportCover, schoolProfile?.title || event?.coverAlt || event?.title || c.title) : ""}</div></div>${sceneControls(previous, next, `${index + 1} / ${records.length}`, "More " + c.title.toLowerCase() + " support")}${choiceDialog(
       c.title + " support",
       records.map((r) => ({ title: r.recipient, href: "#/record/" + r.id })),
     )}<nav class="service-causes" aria-label="Choose a type of support">${[...new Set(allRecords.map((r) => r.category))].map((kind) => `<a href="#/foundation/support/${kind}" ${kind === record.category ? 'aria-current="page"' : ""}>${esc({ education: "Education", annadanam: "Annadanam", medical: "Medical care", temple: "Temple support" }[kind] || kind)}</a>`).join("")}</nav></section>`;

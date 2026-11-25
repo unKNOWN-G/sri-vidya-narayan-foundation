@@ -5,9 +5,9 @@
   "location": "",
   "date": null,
   "year": null,
-  "description": "Moments shared by the foundation from Swamiji’s life and service.",
-  "cover": "assets/media/his-holiness/portrait-and-journey/foundation-5.webp",
-  "credit": "Original media shared by the foundation.",
+  "description": "A contribution to the Shirdi Medical Fund, documented separately from Annadanam. The photograph shows Shri Saibaba Hospital, part of the Sansthan’s medical services.",
+  "cover": "assets/media/healthcare/shirdi-medical/shri-saibaba-hospital.png",
+  "credit": "Hospital photograph · Shri Saibaba Sansthan Trust. Acknowledgements shared by the foundation.",
   "note": "",
   "counts": {
     "photos": 1
@@ -27,6 +27,9 @@
   "supportRecordIds": [
     "shirdi-2024-medical"
   ],
-  "coverAlt": "Sri Swamiji",
-  "coverContext": "Portrait of Sri Swamiji; supporting acknowledgements are available within this service story."
+  "coverAlt": "Shri Saibaba Hospital, operated by Shri Saibaba Sansthan Trust, Shirdi",
+  "coverContext": "Photograph of the recipient’s place of service, sourced from its official website. Not a photograph of Swamiji’s visit or a donation ceremony.",
+  "photoSource": "https://www.sai.org.in/en/content/shri-saibaba-hospital",
+  "photoCredit": "Hospital photograph · Shri Saibaba Sansthan Trust",
+  "coverSubject": "place"
 }

@@ -1,0 +1,33 @@
+{
+  "retrieved": "2026-11-26",
+  "purpose": "Recipient/place context only. Financial claims remain supported by the separate reviewed acknowledgements.",
+  "places": {
+    "bodhendra": {
+      "file": "bodhendra-mutt-2.png",
+      "cover": "assets/media/annadanam/bodhendra/adhishtanam.png",
+      "coverAlt": "Interior of Sri Bodhendra Saraswathi Swamigal Adhishtanam, Govindapuram",
+      "photoSource": "https://sribodhendralmutt.org/about-mutt",
+      "photoCredit": "Place photograph · Sri Bodhendral Mutt",
+      "imageUrl": "https://img1.wsimg.com/isteam/ip/46e68d20-8636-4800-9e1b-1ae6058d9556/Mutt%202.png",
+      "description": "Annadanam support through Sri Bodhendra Saraswathi Swamigal Trust, Govindapuram. The trust’s acknowledgement records the contribution for Annadanam."
+    },
+    "shirdi-medical": {
+      "file": "shirdi-hospital.png",
+      "cover": "assets/media/healthcare/shirdi-medical/shri-saibaba-hospital.png",
+      "coverAlt": "Shri Saibaba Hospital, operated by Shri Saibaba Sansthan Trust, Shirdi",
+      "photoSource": "https://www.sai.org.in/en/content/shri-saibaba-hospital",
+      "photoCredit": "Hospital photograph · Shri Saibaba Sansthan Trust",
+      "imageUrl": "https://sai.org.in/sites/all/themes/sai/img/download/sbh.png",
+      "description": "A contribution to the Shirdi Medical Fund, documented separately from Annadanam. The photograph shows Shri Saibaba Hospital, part of the Sansthan’s medical services."
+    },
+    "shirdi": {
+      "file": "shirdi-dining-hall.jpg",
+      "cover": "assets/media/annadanam/shirdi/prasadalaya-dining-hall.jpg",
+      "coverAlt": "Dining hall at Shri Sai Prasadalaya, Shirdi",
+      "photoSource": "https://sai.org.in/mr/content/shri-saibaba-prasadalaya",
+      "photoCredit": "Prasadalaya photograph · Shri Saibaba Sansthan Trust",
+      "imageUrl": "https://sai.org.in/sites/all/themes/sai/img/download/inside%20seating.jpg",
+      "description": "Contributions to the Shirdi Annadan Fund support the tradition of offering food to devotees. The photograph shows the dining hall at Shri Sai Prasadalaya; acknowledgements are available as supporting attachments."
+    }
+  }
+}
