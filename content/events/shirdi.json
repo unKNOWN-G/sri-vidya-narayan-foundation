@@ -10,7 +10,8 @@
   "credit": "Prasadalaya photograph · Shri Saibaba Sansthan Trust. Acknowledgements shared by the foundation.",
   "note": "",
   "counts": {
-    "photos": 4
+    "photos": 1,
+    "documents": 3
   },
   "media": [
     {
@@ -24,30 +25,48 @@
     },
     {
       "id": "annadanam-shirdi-annadan-2024-excerpt",
-      "type": "photo",
-      "title": "Annadan 2024 Excerpt",
-      "caption": "Shirdi. Published source material.",
-      "alt": "Annadan 2024 Excerpt",
-      "src": "assets/media/annadanam/shirdi/annadan-2024-excerpt.webp",
-      "thumb": "assets/media/annadanam/shirdi/annadan-2024-excerpt.thumb.webp"
+      "type": "document",
+      "title": "Shirdi Annadan Fund · full-page acknowledgement",
+      "caption": "Full supplied page. Private details are masked in place; the document is not cropped.",
+      "alt": "Full supplied document page, with its original frame and proportions retained",
+      "src": "assets/documents/contributions/shirdi-2024-food-full-page.pdf",
+      "thumb": "assets/documents/contributions/shirdi-2024-food-page-1.png",
+      "poster": "assets/documents/contributions/shirdi-2024-food-page-1.png",
+      "pages": [
+        "assets/documents/contributions/shirdi-2024-food-page-1.png"
+      ],
+      "pageCount": 1,
+      "fullFrame": true
     },
     {
       "id": "annadanam-shirdi-annadan-2026-10-22-excerpt",
-      "type": "photo",
-      "title": "Annadan 2026 10 22 Excerpt",
-      "caption": "Shirdi. Published source material.",
-      "alt": "Annadan 2026 10 22 Excerpt",
-      "src": "assets/media/annadanam/shirdi/annadan-2026-10-22-excerpt.webp",
-      "thumb": "assets/media/annadanam/shirdi/annadan-2026-10-22-excerpt.thumb.webp"
+      "type": "document",
+      "title": "Shirdi Annadan Fund · full-page acknowledgement",
+      "caption": "Full supplied page. Private details are masked in place; the document is not cropped.",
+      "alt": "Full supplied document page, with its original frame and proportions retained",
+      "src": "assets/documents/contributions/shirdi-oct22-full-page.pdf",
+      "thumb": "assets/documents/contributions/shirdi-oct22-page-1.png",
+      "poster": "assets/documents/contributions/shirdi-oct22-page-1.png",
+      "pages": [
+        "assets/documents/contributions/shirdi-oct22-page-1.png"
+      ],
+      "pageCount": 1,
+      "fullFrame": true
     },
     {
       "id": "annadanam-shirdi-annadan-2026-10-29-excerpt",
-      "type": "photo",
-      "title": "Annadan 2026 10 29 Excerpt",
-      "caption": "Shirdi. Published source material.",
-      "alt": "Annadan 2026 10 29 Excerpt",
-      "src": "assets/media/annadanam/shirdi/annadan-2026-10-29-excerpt.webp",
-      "thumb": "assets/media/annadanam/shirdi/annadan-2026-10-29-excerpt.thumb.webp"
+      "type": "document",
+      "title": "Shirdi Annadan Fund · full-page acknowledgement",
+      "caption": "Full supplied page. Private details are masked in place; the document is not cropped.",
+      "alt": "Full supplied document page, with its original frame and proportions retained",
+      "src": "assets/documents/contributions/shirdi-oct29-full-page.pdf",
+      "thumb": "assets/documents/contributions/shirdi-oct29-page-1.png",
+      "poster": "assets/documents/contributions/shirdi-oct29-page-1.png",
+      "pages": [
+        "assets/documents/contributions/shirdi-oct29-page-1.png"
+      ],
+      "pageCount": 1,
+      "fullFrame": true
     }
   ],
   "presentation": "service-story",

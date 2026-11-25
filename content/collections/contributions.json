@@ -20,8 +20,17 @@
       "currency": "INR",
       "evidenceLabel": "School letter, 26 July 2024",
       "evidenceStatus": "documented",
-      "src": "assets/media/foundation/school-awards/hebbal-excerpt.webp",
-      "attributionNote": "School-reported corpus in Swamiji’s educational service. Annual interest and awards are not added again to principal."
+      "src": "assets/documents/contributions/hebbal-full-page.pdf",
+      "attributionNote": "School-reported corpus in Swamiji’s educational service. Annual interest and awards are not added again to principal.",
+      "document": {
+        "poster": "assets/documents/contributions/hebbal-page-1.png",
+        "pages": [
+          "assets/documents/contributions/hebbal-page-1.png"
+        ],
+        "pageCount": 1,
+        "fullFrame": true,
+        "privacyNote": "Private details masked in place; full supplied page dimensions retained."
+      }
     },
     {
       "id": "viman-nagar",
@@ -32,8 +41,17 @@
       "currency": "INR",
       "evidenceLabel": "School letter, 8 September 2020",
       "evidenceStatus": "documented",
-      "src": "assets/media/foundation/school-awards/viman-nagar-excerpt.webp",
-      "attributionNote": "School-reported corpus in Swamiji’s educational service. Annual interest and awards are not added again to principal."
+      "src": "assets/documents/contributions/viman-nagar-full-page.pdf",
+      "attributionNote": "School-reported corpus in Swamiji’s educational service. Annual interest and awards are not added again to principal.",
+      "document": {
+        "poster": "assets/documents/contributions/viman-nagar-page-1.png",
+        "pages": [
+          "assets/documents/contributions/viman-nagar-page-1.png"
+        ],
+        "pageCount": 1,
+        "fullFrame": true,
+        "privacyNote": "Private details masked in place; full supplied page dimensions retained."
+      }
     },
     {
       "id": "yelahanka-swamiji",
@@ -45,8 +63,18 @@
       "currency": "INR",
       "evidenceLabel": "School acknowledgement, October 2023",
       "evidenceStatus": "documented",
-      "src": "assets/media/foundation/school-awards/yelahanka-swamiji-excerpt.webp",
-      "attributionNote": "Separate from the trust’s ₹2 lakh gift to the same school."
+      "src": "assets/documents/contributions/yelahanka-swamiji-full-page.pdf",
+      "attributionNote": "Separate from the trust’s ₹2 lakh gift to the same school.",
+      "document": {
+        "poster": "assets/documents/contributions/yelahanka-swamiji-page-1.png",
+        "pages": [
+          "assets/documents/contributions/yelahanka-swamiji-page-1.png",
+          "assets/documents/contributions/yelahanka-swamiji-page-2.png"
+        ],
+        "pageCount": 2,
+        "fullFrame": true,
+        "privacyNote": "Private details masked in place; full supplied page dimensions retained."
+      }
     },
     {
       "id": "yelahanka-trust",
@@ -58,8 +86,18 @@
       "currency": "INR",
       "evidenceLabel": "Separate school acknowledgement, October 2023",
       "evidenceStatus": "documented",
-      "src": "assets/media/foundation/school-awards/yelahanka-trust-excerpt.webp",
-      "attributionNote": "Separate donor and separate gift at the same school. Included within Swamiji’s service, not described as a gift by Sri Vidya Narayan Foundation."
+      "src": "assets/documents/contributions/yelahanka-trust-full-page.pdf",
+      "attributionNote": "Separate donor and separate gift at the same school. Included within Swamiji’s service, not described as a gift by Sri Vidya Narayan Foundation.",
+      "document": {
+        "poster": "assets/documents/contributions/yelahanka-trust-page-1.png",
+        "pages": [
+          "assets/documents/contributions/yelahanka-trust-page-1.png",
+          "assets/documents/contributions/yelahanka-trust-page-2.png"
+        ],
+        "pageCount": 2,
+        "fullFrame": true,
+        "privacyNote": "Private details masked in place; full supplied page dimensions retained."
+      }
     },
     {
       "id": "navajeevan",
@@ -88,8 +126,17 @@
       "currency": "INR",
       "evidenceLabel": "TTD acknowledgement dated 21 January 2025; the owner confirms the contribution was accepted and received.",
       "evidenceStatus": "documented-acknowledgement-with-owner-confirmation",
-      "src": "assets/media/annadanam/tirumala/tirumala-2025-acknowledgement-excerpt.webp",
-      "donor": "Sri Vidya Narayan Foundation"
+      "src": "assets/documents/contributions/tirumala-full-page.pdf",
+      "donor": "Sri Vidya Narayan Foundation",
+      "document": {
+        "poster": "assets/documents/contributions/tirumala-page-1.png",
+        "pages": [
+          "assets/documents/contributions/tirumala-page-1.png"
+        ],
+        "pageCount": 1,
+        "fullFrame": true,
+        "privacyNote": "Private details masked in place; full supplied page dimensions retained."
+      }
     },
     {
       "id": "shirdi-2024-food",
@@ -100,7 +147,16 @@
       "currency": "INR",
       "evidenceLabel": "Receipt, 14 December 2024",
       "evidenceStatus": "documented",
-      "src": "assets/media/annadanam/shirdi/annadan-2024-excerpt.webp"
+      "src": "assets/documents/contributions/shirdi-2024-food-full-page.pdf",
+      "document": {
+        "poster": "assets/documents/contributions/shirdi-2024-food-page-1.png",
+        "pages": [
+          "assets/documents/contributions/shirdi-2024-food-page-1.png"
+        ],
+        "pageCount": 1,
+        "fullFrame": true,
+        "privacyNote": "Private details masked in place; full supplied page dimensions retained."
+      }
     },
     {
       "id": "shirdi-oct22",
@@ -111,7 +167,16 @@
       "currency": "INR",
       "evidenceLabel": "Receipt, 22 October 2026",
       "evidenceStatus": "documented",
-      "src": "assets/media/annadanam/shirdi/annadan-2026-10-22-excerpt.webp"
+      "src": "assets/documents/contributions/shirdi-oct22-full-page.pdf",
+      "document": {
+        "poster": "assets/documents/contributions/shirdi-oct22-page-1.png",
+        "pages": [
+          "assets/documents/contributions/shirdi-oct22-page-1.png"
+        ],
+        "pageCount": 1,
+        "fullFrame": true,
+        "privacyNote": "Private details masked in place; full supplied page dimensions retained."
+      }
     },
     {
       "id": "shirdi-oct29",
@@ -122,7 +187,16 @@
       "currency": "INR",
       "evidenceLabel": "Temple receipt and payment slip dated 29 October 2026",
       "evidenceStatus": "documented",
-      "src": "assets/media/annadanam/shirdi/annadan-2026-10-29-excerpt.webp"
+      "src": "assets/documents/contributions/shirdi-oct29-full-page.pdf",
+      "document": {
+        "poster": "assets/documents/contributions/shirdi-oct29-page-1.png",
+        "pages": [
+          "assets/documents/contributions/shirdi-oct29-page-1.png"
+        ],
+        "pageCount": 1,
+        "fullFrame": true,
+        "privacyNote": "Private details masked in place; full supplied page dimensions retained."
+      }
     },
     {
       "id": "shirdi-2024-medical",
@@ -133,7 +207,16 @@
       "currency": "INR",
       "evidenceLabel": "Separate receipt, 14 December 2024",
       "evidenceStatus": "documented",
-      "src": "assets/media/healthcare/shirdi-medical/medical-2024-excerpt.webp"
+      "src": "assets/documents/contributions/shirdi-2024-medical-full-page.pdf",
+      "document": {
+        "poster": "assets/documents/contributions/shirdi-2024-medical-page-1.png",
+        "pages": [
+          "assets/documents/contributions/shirdi-2024-medical-page-1.png"
+        ],
+        "pageCount": 1,
+        "fullFrame": true,
+        "privacyNote": "Private details masked in place; full supplied page dimensions retained."
+      }
     },
     {
       "id": "ayodhya-2021",
@@ -146,7 +229,16 @@
       "currency": "INR",
       "evidenceLabel": "Supplied receipt dated 18 January 2021; amount written as THIRTEEN THOUSAND ONLY",
       "evidenceStatus": "documented",
-      "src": "assets/media/foundation/ayodhya/ayodhya-2021-receipt-excerpt.webp"
+      "src": "assets/documents/contributions/ayodhya-2021-full-page.pdf",
+      "document": {
+        "poster": "assets/documents/contributions/ayodhya-2021-page-1.png",
+        "pages": [
+          "assets/documents/contributions/ayodhya-2021-page-1.png"
+        ],
+        "pageCount": 1,
+        "fullFrame": true,
+        "privacyNote": "Private details masked in place; full supplied page dimensions retained."
+      }
     },
     {
       "id": "bodhendra-2025-annadanam",
@@ -159,8 +251,17 @@
       "currency": "INR",
       "evidenceLabel": "Trust receipt dated 26 November 2025, purpose ANNADHANAM",
       "evidenceStatus": "documented",
-      "src": "assets/media/annadanam/bodhendra/annadanam-2025-11-26-excerpt.webp",
-      "attributionNote": "One ₹5,000 contribution. Receipt and matching postal envelope are not two donations."
+      "src": "assets/documents/contributions/bodhendra-2025-annadanam-full-page.pdf",
+      "attributionNote": "One ₹5,000 contribution. Receipt and matching postal envelope are not two donations.",
+      "document": {
+        "poster": "assets/documents/contributions/bodhendra-2025-annadanam-page-1.png",
+        "pages": [
+          "assets/documents/contributions/bodhendra-2025-annadanam-page-1.png"
+        ],
+        "pageCount": 1,
+        "fullFrame": true,
+        "privacyNote": "Private details masked in place; full supplied page dimensions retained."
+      }
     }
   ],
   "countingNotes": [
@@ -172,5 +273,5 @@
     "Amounts describe recorded or owner-reported historical service, not current balances, a fundraising target, or audited foundation-wide impact.",
     "Preserve the actual donor names printed in records. Swamiji’s service includes devotees and separately named trusts; do not collapse every gift into Sri Vidya Narayan Foundation."
   ],
-  "editorialNote": "Only previously published flattened, redacted excerpts are linked. Original unredacted documents, cheques, bank details and student tables are excluded."
+  "editorialNote": "Full supplied receipt and acknowledgement pages are published with private fields masked in place. Original page frames and proportions are retained. No cropped or rearranged receipt excerpts are used."
 }

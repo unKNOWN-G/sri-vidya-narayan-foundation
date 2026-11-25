@@ -1,0 +1,139 @@
+{
+  "policy": "Preserve full source page dimensions and proportions. Private fields masked in place; no cropping, stitched excerpts or reconstructed text.",
+  "documents": [
+    {
+      "id": "hebbal",
+      "src": "assets/documents/contributions/hebbal-full-page.pdf",
+      "poster": "assets/documents/contributions/hebbal-page-1.png",
+      "pages": [
+        "assets/documents/contributions/hebbal-page-1.png"
+      ],
+      "pageCount": 1,
+      "fullFrame": true,
+      "privacyNote": "Private details masked in place; full supplied page dimensions retained."
+    },
+    {
+      "id": "viman-nagar",
+      "src": "assets/documents/contributions/viman-nagar-full-page.pdf",
+      "poster": "assets/documents/contributions/viman-nagar-page-1.png",
+      "pages": [
+        "assets/documents/contributions/viman-nagar-page-1.png"
+      ],
+      "pageCount": 1,
+      "fullFrame": true,
+      "privacyNote": "Private details masked in place; full supplied page dimensions retained."
+    },
+    {
+      "id": "yelahanka-swamiji",
+      "src": "assets/documents/contributions/yelahanka-swamiji-full-page.pdf",
+      "poster": "assets/documents/contributions/yelahanka-swamiji-page-1.png",
+      "pages": [
+        "assets/documents/contributions/yelahanka-swamiji-page-1.png",
+        "assets/documents/contributions/yelahanka-swamiji-page-2.png"
+      ],
+      "pageCount": 2,
+      "fullFrame": true,
+      "privacyNote": "Private details masked in place; full supplied page dimensions retained."
+    },
+    {
+      "id": "yelahanka-trust",
+      "src": "assets/documents/contributions/yelahanka-trust-full-page.pdf",
+      "poster": "assets/documents/contributions/yelahanka-trust-page-1.png",
+      "pages": [
+        "assets/documents/contributions/yelahanka-trust-page-1.png",
+        "assets/documents/contributions/yelahanka-trust-page-2.png"
+      ],
+      "pageCount": 2,
+      "fullFrame": true,
+      "privacyNote": "Private details masked in place; full supplied page dimensions retained."
+    },
+    {
+      "id": "hebbal-2018",
+      "src": "assets/documents/contributions/hebbal-2018-full-page.pdf",
+      "poster": "assets/documents/contributions/hebbal-2018-page-1.png",
+      "pages": [
+        "assets/documents/contributions/hebbal-2018-page-1.png"
+      ],
+      "pageCount": 1,
+      "fullFrame": true,
+      "privacyNote": "Private details masked in place; full supplied page dimensions retained."
+    },
+    {
+      "id": "shirdi-2024-food",
+      "src": "assets/documents/contributions/shirdi-2024-food-full-page.pdf",
+      "poster": "assets/documents/contributions/shirdi-2024-food-page-1.png",
+      "pages": [
+        "assets/documents/contributions/shirdi-2024-food-page-1.png"
+      ],
+      "pageCount": 1,
+      "fullFrame": true,
+      "privacyNote": "Private details masked in place; full supplied page dimensions retained."
+    },
+    {
+      "id": "shirdi-2024-medical",
+      "src": "assets/documents/contributions/shirdi-2024-medical-full-page.pdf",
+      "poster": "assets/documents/contributions/shirdi-2024-medical-page-1.png",
+      "pages": [
+        "assets/documents/contributions/shirdi-2024-medical-page-1.png"
+      ],
+      "pageCount": 1,
+      "fullFrame": true,
+      "privacyNote": "Private details masked in place; full supplied page dimensions retained."
+    },
+    {
+      "id": "shirdi-oct22",
+      "src": "assets/documents/contributions/shirdi-oct22-full-page.pdf",
+      "poster": "assets/documents/contributions/shirdi-oct22-page-1.png",
+      "pages": [
+        "assets/documents/contributions/shirdi-oct22-page-1.png"
+      ],
+      "pageCount": 1,
+      "fullFrame": true,
+      "privacyNote": "Private details masked in place; full supplied page dimensions retained."
+    },
+    {
+      "id": "shirdi-oct29",
+      "src": "assets/documents/contributions/shirdi-oct29-full-page.pdf",
+      "poster": "assets/documents/contributions/shirdi-oct29-page-1.png",
+      "pages": [
+        "assets/documents/contributions/shirdi-oct29-page-1.png"
+      ],
+      "pageCount": 1,
+      "fullFrame": true,
+      "privacyNote": "Private details masked in place; full supplied page dimensions retained."
+    },
+    {
+      "id": "bodhendra-2025-annadanam",
+      "src": "assets/documents/contributions/bodhendra-2025-annadanam-full-page.pdf",
+      "poster": "assets/documents/contributions/bodhendra-2025-annadanam-page-1.png",
+      "pages": [
+        "assets/documents/contributions/bodhendra-2025-annadanam-page-1.png"
+      ],
+      "pageCount": 1,
+      "fullFrame": true,
+      "privacyNote": "Private details masked in place; full supplied page dimensions retained."
+    },
+    {
+      "id": "ayodhya-2021",
+      "src": "assets/documents/contributions/ayodhya-2021-full-page.pdf",
+      "poster": "assets/documents/contributions/ayodhya-2021-page-1.png",
+      "pages": [
+        "assets/documents/contributions/ayodhya-2021-page-1.png"
+      ],
+      "pageCount": 1,
+      "fullFrame": true,
+      "privacyNote": "Private details masked in place; full supplied page dimensions retained."
+    },
+    {
+      "id": "tirumala",
+      "src": "assets/documents/contributions/tirumala-full-page.pdf",
+      "poster": "assets/documents/contributions/tirumala-page-1.png",
+      "pages": [
+        "assets/documents/contributions/tirumala-page-1.png"
+      ],
+      "pageCount": 1,
+      "fullFrame": true,
+      "privacyNote": "Private details masked in place; full supplied page dimensions retained."
+    }
+  ]
+}

@@ -10,53 +10,85 @@
   "credit": "School acknowledgements shared by the foundation. Campus photograph: Air Force School Hebbal nursery and primary wing, via Yellow Slate.",
   "note": "",
   "counts": {
-    "photos": 5
+    "documents": 5
   },
   "media": [
     {
       "id": "foundation-school-awards-hebbal-2018-letter-excerpt",
-      "type": "photo",
-      "title": "Hebbal 2018 Letter Excerpt",
-      "caption": "School Awards. Published source material.",
-      "alt": "Hebbal 2018 Letter Excerpt",
-      "src": "assets/media/foundation/school-awards/hebbal-2018-letter-excerpt.webp",
-      "thumb": "assets/media/foundation/school-awards/hebbal-2018-letter-excerpt.thumb.webp"
+      "type": "document",
+      "title": "Air Force School, Hebbal · donor letter, 29 July 2018",
+      "caption": "Full supplied page. Private details are masked in place; the document is not cropped.",
+      "alt": "Full supplied document page, with its original frame and proportions retained",
+      "src": "assets/documents/contributions/hebbal-2018-full-page.pdf",
+      "thumb": "assets/documents/contributions/hebbal-2018-page-1.png",
+      "poster": "assets/documents/contributions/hebbal-2018-page-1.png",
+      "pages": [
+        "assets/documents/contributions/hebbal-2018-page-1.png"
+      ],
+      "pageCount": 1,
+      "fullFrame": true
     },
     {
       "id": "foundation-school-awards-hebbal-excerpt",
-      "type": "photo",
-      "title": "Hebbal Excerpt",
-      "caption": "School Awards. Published source material.",
-      "alt": "Hebbal Excerpt",
-      "src": "assets/media/foundation/school-awards/hebbal-excerpt.webp",
-      "thumb": "assets/media/foundation/school-awards/hebbal-excerpt.thumb.webp"
+      "type": "document",
+      "title": "Air Force School, Hebbal · full-page acknowledgement",
+      "caption": "Full supplied page. Private details are masked in place; the document is not cropped.",
+      "alt": "Full supplied document page, with its original frame and proportions retained",
+      "src": "assets/documents/contributions/hebbal-full-page.pdf",
+      "thumb": "assets/documents/contributions/hebbal-page-1.png",
+      "poster": "assets/documents/contributions/hebbal-page-1.png",
+      "pages": [
+        "assets/documents/contributions/hebbal-page-1.png"
+      ],
+      "pageCount": 1,
+      "fullFrame": true
     },
     {
       "id": "foundation-school-awards-viman-nagar-excerpt",
-      "type": "photo",
-      "title": "Viman Nagar Excerpt",
-      "caption": "School Awards. Published source material.",
-      "alt": "Viman Nagar Excerpt",
-      "src": "assets/media/foundation/school-awards/viman-nagar-excerpt.webp",
-      "thumb": "assets/media/foundation/school-awards/viman-nagar-excerpt.thumb.webp"
+      "type": "document",
+      "title": "Air Force School, Viman Nagar · full-page acknowledgement",
+      "caption": "Full supplied page. Private details are masked in place; the document is not cropped.",
+      "alt": "Full supplied document page, with its original frame and proportions retained",
+      "src": "assets/documents/contributions/viman-nagar-full-page.pdf",
+      "thumb": "assets/documents/contributions/viman-nagar-page-1.png",
+      "poster": "assets/documents/contributions/viman-nagar-page-1.png",
+      "pages": [
+        "assets/documents/contributions/viman-nagar-page-1.png"
+      ],
+      "pageCount": 1,
+      "fullFrame": true
     },
     {
       "id": "foundation-school-awards-yelahanka-swamiji-excerpt",
-      "type": "photo",
-      "title": "Yelahanka Swamiji Excerpt",
-      "caption": "School Awards. Published source material.",
-      "alt": "Yelahanka Swamiji Excerpt",
-      "src": "assets/media/foundation/school-awards/yelahanka-swamiji-excerpt.webp",
-      "thumb": "assets/media/foundation/school-awards/yelahanka-swamiji-excerpt.thumb.webp"
+      "type": "document",
+      "title": "Air Force School, Yelahanka · letter and receipt",
+      "caption": "Full supplied pages. Private details are masked in place; the document is not cropped.",
+      "alt": "Full supplied document page, with its original frame and proportions retained",
+      "src": "assets/documents/contributions/yelahanka-swamiji-full-page.pdf",
+      "thumb": "assets/documents/contributions/yelahanka-swamiji-page-1.png",
+      "poster": "assets/documents/contributions/yelahanka-swamiji-page-1.png",
+      "pages": [
+        "assets/documents/contributions/yelahanka-swamiji-page-1.png",
+        "assets/documents/contributions/yelahanka-swamiji-page-2.png"
+      ],
+      "pageCount": 2,
+      "fullFrame": true
     },
     {
       "id": "foundation-school-awards-yelahanka-trust-excerpt",
-      "type": "photo",
-      "title": "Yelahanka Trust Excerpt",
-      "caption": "School Awards. Published source material.",
-      "alt": "Yelahanka Trust Excerpt",
-      "src": "assets/media/foundation/school-awards/yelahanka-trust-excerpt.webp",
-      "thumb": "assets/media/foundation/school-awards/yelahanka-trust-excerpt.thumb.webp"
+      "type": "document",
+      "title": "Air Force School, Yelahanka · letter and receipt",
+      "caption": "Full supplied pages. Private details are masked in place; the document is not cropped.",
+      "alt": "Full supplied document page, with its original frame and proportions retained",
+      "src": "assets/documents/contributions/yelahanka-trust-full-page.pdf",
+      "thumb": "assets/documents/contributions/yelahanka-trust-page-1.png",
+      "poster": "assets/documents/contributions/yelahanka-trust-page-1.png",
+      "pages": [
+        "assets/documents/contributions/yelahanka-trust-page-1.png",
+        "assets/documents/contributions/yelahanka-trust-page-2.png"
+      ],
+      "pageCount": 2,
+      "fullFrame": true
     }
   ],
   "presentation": "service-story",

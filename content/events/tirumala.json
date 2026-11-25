@@ -10,17 +10,24 @@
   "credit": "Original media shared by the foundation.",
   "note": "",
   "counts": {
-    "photos": 2
+    "documents": 1,
+    "photos": 1
   },
   "media": [
     {
       "id": "annadanam-tirumala-tirumala-2025-acknowledgement-excerpt",
-      "type": "photo",
-      "title": "Tirumala — tirumala 2025 acknowledgement excerpt",
-      "caption": "Tirumala. Photograph supplied by the foundation.",
-      "alt": "Tirumala — tirumala 2025 acknowledgement excerpt",
-      "src": "assets/media/annadanam/tirumala/tirumala-2025-acknowledgement-excerpt.webp",
-      "thumb": "assets/media/annadanam/tirumala/tirumala-2025-acknowledgement-excerpt.thumb.webp"
+      "type": "document",
+      "title": "Tirumala · full-page acknowledgement",
+      "caption": "Full supplied page. Private details are masked in place; the document is not cropped.",
+      "alt": "Full supplied document page, with its original frame and proportions retained",
+      "src": "assets/documents/contributions/tirumala-full-page.pdf",
+      "thumb": "assets/documents/contributions/tirumala-page-1.png",
+      "poster": "assets/documents/contributions/tirumala-page-1.png",
+      "pages": [
+        "assets/documents/contributions/tirumala-page-1.png"
+      ],
+      "pageCount": 1,
+      "fullFrame": true
     },
     {
       "id": "annadanam-tirumala-tirumala-temple",

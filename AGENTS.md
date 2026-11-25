@@ -16,7 +16,7 @@ Use real supplied photographs for subject cards whenever suitable media exists. 
 
 Keep school establishment, visits, funding, and current operation distinct. A photograph of an institution does not establish a donation amount. The foundation's start date is distinct from Swamiji's earlier service. Paraphrased teachings must not be presented as direct quotations.
 
-Never publish source documents containing bank account details, private addresses, personal contact details, signatures, private health information, or identifiable student records. Reuse only reviewed public excerpts. Keep source filenames and paths in the local catalog, not in public content JSON.
+Never publish source documents containing bank account details, private addresses, personal contact details, signatures, private health information, or identifiable student records. Use complete supplied receipt and acknowledgement pages with private fields masked in place. Do not crop document edges, stitch excerpts together, or label a cropped excerpt as an original. Keep source filenames and paths in the local catalog, not in public content JSON.
 
 ## Experience
 

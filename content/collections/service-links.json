@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "note": "Editorial crosslinks only. Shared excerpts establish related occasions; they do not change attribution, amount, evidence status, or the record’s original category.",
+  "note": "Editorial links to full-page supporting documents. Private fields are masked in place; source page frames are retained.",
   "categoryAliases": {
     "medical": "healthcare",
     "temple": "foundation"
@@ -11,7 +11,7 @@
         "school-awards"
       ],
       "evidence": "shared-public-source",
-      "source": "assets/media/foundation/school-awards/hebbal-excerpt.webp",
+      "source": "assets/documents/contributions/hebbal-full-page.pdf",
       "categoryFallback": "education"
     },
     "viman-nagar": {
@@ -19,7 +19,7 @@
         "school-awards"
       ],
       "evidence": "shared-public-source",
-      "source": "assets/media/foundation/school-awards/viman-nagar-excerpt.webp",
+      "source": "assets/documents/contributions/viman-nagar-full-page.pdf",
       "categoryFallback": "education"
     },
     "yelahanka-swamiji": {
@@ -27,7 +27,7 @@
         "school-awards"
       ],
       "evidence": "shared-public-source",
-      "source": "assets/media/foundation/school-awards/yelahanka-swamiji-excerpt.webp",
+      "source": "assets/documents/contributions/yelahanka-swamiji-full-page.pdf",
       "categoryFallback": "education"
     },
     "yelahanka-trust": {
@@ -35,7 +35,7 @@
         "school-awards"
       ],
       "evidence": "shared-public-source",
-      "source": "assets/media/foundation/school-awards/yelahanka-trust-excerpt.webp",
+      "source": "assets/documents/contributions/yelahanka-trust-full-page.pdf",
       "categoryFallback": "education"
     },
     "navajeevan": {
@@ -50,7 +50,7 @@
         "tirumala"
       ],
       "evidence": "shared-public-source",
-      "source": "assets/media/annadanam/tirumala/tirumala-2025-acknowledgement-excerpt.webp",
+      "source": "assets/documents/contributions/tirumala-full-page.pdf",
       "categoryFallback": "annadanam"
     },
     "shirdi-2024-food": {
@@ -58,7 +58,7 @@
         "shirdi"
       ],
       "evidence": "shared-public-source",
-      "source": "assets/media/annadanam/shirdi/annadan-2024-excerpt.webp",
+      "source": "assets/documents/contributions/shirdi-2024-food-full-page.pdf",
       "categoryFallback": "annadanam"
     },
     "shirdi-oct22": {
@@ -66,7 +66,7 @@
         "shirdi"
       ],
       "evidence": "shared-public-source",
-      "source": "assets/media/annadanam/shirdi/annadan-2026-10-22-excerpt.webp",
+      "source": "assets/documents/contributions/shirdi-oct22-full-page.pdf",
       "categoryFallback": "annadanam"
     },
     "shirdi-oct29": {
@@ -74,7 +74,7 @@
         "shirdi"
       ],
       "evidence": "shared-public-source",
-      "source": "assets/media/annadanam/shirdi/annadan-2026-10-29-excerpt.webp",
+      "source": "assets/documents/contributions/shirdi-oct29-full-page.pdf",
       "categoryFallback": "annadanam"
     },
     "shirdi-2024-medical": {
@@ -82,7 +82,7 @@
         "shirdi-medical"
       ],
       "evidence": "shared-public-source",
-      "source": "assets/media/healthcare/shirdi-medical/medical-2024-excerpt.webp",
+      "source": "assets/documents/contributions/shirdi-2024-medical-full-page.pdf",
       "categoryFallback": "healthcare"
     },
     "ayodhya-2021": {
@@ -90,7 +90,7 @@
         "ayodhya"
       ],
       "evidence": "shared-public-source",
-      "source": "assets/media/foundation/ayodhya/ayodhya-2021-receipt-excerpt.webp",
+      "source": "assets/documents/contributions/ayodhya-2021-full-page.pdf",
       "categoryFallback": "foundation"
     },
     "bodhendra-2025-annadanam": {
@@ -98,7 +98,7 @@
         "bodhendra"
       ],
       "evidence": "shared-public-source",
-      "source": "assets/media/annadanam/bodhendra/annadanam-2025-11-26-excerpt.webp",
+      "source": "assets/documents/contributions/bodhendra-2025-annadanam-full-page.pdf",
       "categoryFallback": "annadanam"
     }
   }

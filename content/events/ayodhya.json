@@ -10,17 +10,24 @@
   "credit": "Original media shared by the foundation.",
   "note": "",
   "counts": {
-    "photos": 2
+    "documents": 1,
+    "photos": 1
   },
   "media": [
     {
       "id": "foundation-ayodhya-ayodhya-2021-receipt-excerpt",
-      "type": "photo",
-      "title": "Ayodhya — ayodhya 2021 receipt excerpt",
-      "caption": "Ayodhya. Photograph supplied by the foundation.",
-      "alt": "Ayodhya — ayodhya 2021 receipt excerpt",
-      "src": "assets/media/foundation/ayodhya/ayodhya-2021-receipt-excerpt.webp",
-      "thumb": "assets/media/foundation/ayodhya/ayodhya-2021-receipt-excerpt.thumb.webp"
+      "type": "document",
+      "title": "Shri Ram Janmbhoomi Teerth Kshetra, Ayodhya · full-page acknowledgement",
+      "caption": "Full supplied page. Private details are masked in place; the document is not cropped.",
+      "alt": "Full supplied document page, with its original frame and proportions retained",
+      "src": "assets/documents/contributions/ayodhya-2021-full-page.pdf",
+      "thumb": "assets/documents/contributions/ayodhya-2021-page-1.png",
+      "poster": "assets/documents/contributions/ayodhya-2021-page-1.png",
+      "pages": [
+        "assets/documents/contributions/ayodhya-2021-page-1.png"
+      ],
+      "pageCount": 1,
+      "fullFrame": true
     },
     {
       "id": "foundation-ayodhya-ayodhya-ram-mandir",

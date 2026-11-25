@@ -10,17 +10,23 @@
   "credit": "Hospital photograph · Shri Saibaba Sansthan Trust. Acknowledgements shared by the foundation.",
   "note": "",
   "counts": {
-    "photos": 1
+    "documents": 1
   },
   "media": [
     {
       "id": "healthcare-shirdi-medical-medical-2024-excerpt",
-      "type": "photo",
-      "title": "Medical 2024 Excerpt",
-      "caption": "Shirdi Medical. Published source material.",
-      "alt": "Medical 2024 Excerpt",
-      "src": "assets/media/healthcare/shirdi-medical/medical-2024-excerpt.webp",
-      "thumb": "assets/media/healthcare/shirdi-medical/medical-2024-excerpt.thumb.webp"
+      "type": "document",
+      "title": "Shirdi Medical Fund · full-page acknowledgement",
+      "caption": "Full supplied page. Private details are masked in place; the document is not cropped.",
+      "alt": "Full supplied document page, with its original frame and proportions retained",
+      "src": "assets/documents/contributions/shirdi-2024-medical-full-page.pdf",
+      "thumb": "assets/documents/contributions/shirdi-2024-medical-page-1.png",
+      "poster": "assets/documents/contributions/shirdi-2024-medical-page-1.png",
+      "pages": [
+        "assets/documents/contributions/shirdi-2024-medical-page-1.png"
+      ],
+      "pageCount": 1,
+      "fullFrame": true
     }
   ],
   "presentation": "service-story",

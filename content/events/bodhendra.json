@@ -10,17 +10,23 @@
   "credit": "Place photograph · Sri Bodhendral Mutt. Acknowledgements shared by the foundation.",
   "note": "",
   "counts": {
-    "photos": 1
+    "documents": 1
   },
   "media": [
     {
       "id": "annadanam-bodhendra-annadanam-2025-11-26-excerpt",
-      "type": "photo",
-      "title": "Annadanam 2025 11 26 Excerpt",
-      "caption": "Bodhendra. Published source material.",
-      "alt": "Annadanam 2025 11 26 Excerpt",
-      "src": "assets/media/annadanam/bodhendra/annadanam-2025-11-26-excerpt.webp",
-      "thumb": "assets/media/annadanam/bodhendra/annadanam-2025-11-26-excerpt.thumb.webp"
+      "type": "document",
+      "title": "Sri Bodhendra Saraswathi Swamigal Trust, Govindapuram · full-page acknowledgement",
+      "caption": "Full supplied page. Private details are masked in place; the document is not cropped.",
+      "alt": "Full supplied document page, with its original frame and proportions retained",
+      "src": "assets/documents/contributions/bodhendra-2025-annadanam-full-page.pdf",
+      "thumb": "assets/documents/contributions/bodhendra-2025-annadanam-page-1.png",
+      "poster": "assets/documents/contributions/bodhendra-2025-annadanam-page-1.png",
+      "pages": [
+        "assets/documents/contributions/bodhendra-2025-annadanam-page-1.png"
+      ],
+      "pageCount": 1,
+      "fullFrame": true
     }
   ],
   "presentation": "service-story",

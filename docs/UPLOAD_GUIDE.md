@@ -75,7 +75,7 @@ Use concise stable names such as `photo-01.webp`, `photo-01.thumb.webp`, `video-
 - **Photographs:** correct display orientation, create a web-size image and a smaller preview, and retain enough resolution for the viewer. Do not redraw or fabricate documentary content. Avoid embedding location metadata in public derivatives.
 - **Video:** retain the original locally. Publish an appropriate web version and a genuine poster image, or use a supplied external video URL. Review large files before adding them to the source repository.
 - **Audio:** preserve the source and publish an appropriate web version with an accurate title and occasion. Do not attach a speaker's name based only on a filename.
-- **Documents:** publish only material suitable for public reading. Use reviewed excerpts where the original contains unrelated private information. Document photos can be displayed as supplied rather than guessed transcriptions.
+- **Documents:** publish only material suitable for public reading. Preserve the entire supplied page or photograph. Mask private fields in place; do not crop or rearrange a receipt to hide them. Document photos can be displayed as supplied rather than guessed transcriptions.
 - **Book covers and message artwork:** preserve their aspect ratio and supplied identity. Do not treat a promotional design as documentary evidence of an event.
 
 The existing media inventory records public `src` and optional `thumb` paths. Keep the same pattern for new records. Public paths start with `assets/` and remain relative so GitHub Pages project paths work.
