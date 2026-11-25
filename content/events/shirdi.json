@@ -1,7 +1,7 @@
 {
   "id": "shirdi",
   "category": "annadanam",
-  "title": "Sharing nourishment at Shirdi",
+  "title": "Shirdi Annadanam",
   "location": "",
   "date": null,
   "year": null,
@@ -79,5 +79,6 @@
   "coverContext": "Photograph of the recipient’s place of service, sourced from its official website. Not a photograph of Swamiji’s visit or a donation ceremony.",
   "photoSource": "https://sai.org.in/mr/content/shri-saibaba-prasadalaya",
   "photoCredit": "Prasadalaya photograph · Shri Saibaba Sansthan Trust",
-  "coverSubject": "place"
+  "coverSubject": "place",
+  "supportGroupId": "shirdi-annadanam"
 }

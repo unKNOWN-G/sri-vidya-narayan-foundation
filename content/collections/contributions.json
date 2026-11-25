@@ -162,7 +162,8 @@
         "pageCount": 1,
         "fullFrame": true,
         "privacyNote": "Private details masked in place; full supplied page dimensions retained."
-      }
+      },
+      "date": "2024-12-14"
     },
     {
       "id": "shirdi-oct22",
@@ -182,7 +183,8 @@
         "pageCount": 1,
         "fullFrame": true,
         "privacyNote": "Private details masked in place; full supplied page dimensions retained."
-      }
+      },
+      "date": "2026-10-22"
     },
     {
       "id": "shirdi-oct29",
@@ -202,7 +204,8 @@
         "pageCount": 1,
         "fullFrame": true,
         "privacyNote": "Private details masked in place; full supplied page dimensions retained."
-      }
+      },
+      "date": "2026-10-29"
     },
     {
       "id": "shirdi-2024-medical",
@@ -279,5 +282,20 @@
     "Amounts describe recorded or owner-reported historical service, not current balances, a fundraising target, or audited foundation-wide impact.",
     "Preserve the actual donor names printed in records. Swamiji’s service includes devotees and separately named trusts; do not collapse every gift into Sri Vidya Narayan Foundation."
   ],
-  "editorialNote": "Full supplied receipt and acknowledgement pages are published with private fields masked in place. Original page frames and proportions are retained. No cropped or rearranged receipt excerpts are used."
+  "editorialNote": "Full supplied receipt and acknowledgement pages are published with private fields masked in place. Original page frames and proportions are retained. No cropped or rearranged receipt excerpts are used.",
+  "displayGroups": [
+    {
+      "id": "shirdi-annadanam",
+      "category": "annadanam",
+      "title": "Shirdi Annadanam",
+      "summary": "Supporting the offering of meals at Shirdi through the Annadan Fund. The individual receipts are available below.",
+      "amountLabel": "Contributed towards Annadanam",
+      "recordIds": [
+        "shirdi-2024-food",
+        "shirdi-oct22",
+        "shirdi-oct29"
+      ],
+      "evidenceLabel": "ANNADANAM · SHIRDI"
+    }
+  ]
 }

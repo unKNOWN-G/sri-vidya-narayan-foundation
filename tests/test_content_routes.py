@@ -69,6 +69,14 @@ class ContentRoutesTest(unittest.TestCase):
         self.write("content/events/school.json", event)
         self.assertIn("use a recipient or place photograph", self.errors())
 
+    def test_group_cannot_mix_medical_receipts_into_annadanam(self):
+        self.write("content/collections/contributions.json", {"records": [{"id": "support", "category": "medical", "src": "assets/photo.webp"}], "displayGroups": [{"id": "food", "category": "annadanam", "recordIds": ["support"]}]})
+        self.assertIn("belongs to a different cause", self.errors())
+
+    def test_group_cannot_count_the_same_receipt_twice(self):
+        self.write("content/collections/contributions.json", {"records": [{"id": "support", "category": "annadanam", "src": "assets/photo.webp"}], "displayGroups": [{"id": "food", "category": "annadanam", "recordIds": ["support", "support"]}]})
+        self.assertIn("included more than once", self.errors())
+
     def test_missing_book_reader_is_detected(self):
         self.write("content/collections/books.json", [{"id": "book", "cover": "assets/photo.webp", "reader": "unavailable"}])
         self.assertIn("missing/empty reading collection unavailable", self.errors())

@@ -326,11 +326,33 @@ def check(root=ROOT, require_experiences=False):
     # A service story must not mix education, food, medical, and temple records.
     support_by_id = {str(r.get("id")): r for r in contribution_data.get("records", [])}
     cause_aliases = {"medical": "healthcare", "temple": "foundation"}
+    display_groups = identified(contribution_data.get("displayGroups", []), "contribution display groups")
+    grouped_records = set()
+    for group_id, group in display_groups.items():
+        node = "#/record/" + quote(group_id)
+        routes.add(node)
+        link(giving, node)
+        if group_id in support_by_id:
+            fail(f"Contribution group {group_id}: ID collides with a contribution record")
+        if not group.get("recordIds"):
+            fail(f"Contribution group {group_id}: no supporting receipt records")
+        for record_id in group.get("recordIds", []):
+            record = support_by_id.get(record_id)
+            if not record or record.get("category") != group.get("category"):
+                fail(f"Contribution group {group_id}: receipt {record_id} is missing or belongs to a different cause")
+            if record_id in grouped_records:
+                fail(f"Contribution group {group_id}: receipt {record_id} is included more than once")
+            grouped_records.add(record_id)
+            link("#/record/" + quote(record_id), node)
     for identifier, event in public_events.items():
         if event.get("presentation") != "service-story":
             continue
         if not event.get("cover") or "/his-holiness/" in event["cover"]:
             fail(f"Service story {identifier}: use a recipient or place photograph, not an unrelated portrait")
+        if event.get("supportGroupId"):
+            group = display_groups.get(event["supportGroupId"])
+            if not group or cause_aliases.get(group.get("category"), group.get("category")) != event.get("category"):
+                fail(f"Service story {identifier}: missing or incorrectly categorized contribution group")
         for record_id in event.get("supportRecordIds", []):
             record = support_by_id.get(str(record_id))
             if not record:

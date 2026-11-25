@@ -530,7 +530,7 @@
       next = base + after.id,
       target =
         event.presentation === "service-story" && event.supportRecordIds?.length
-          ? "#/record/" + event.supportRecordIds[0]
+          ? "#/record/" + (event.supportGroupId || event.supportRecordIds[0])
           : "#/event/" + event.id;
     app.innerHTML = `<section class="view story-view">${heading(c.title, '<a href="#/explore/' + id + '">His life in action</a>')}<div class="story-scene"><div class="scene-backdrop" style="background-image:url('${href(event.cover)}')"></div><div class="story-copy"><p class="eyebrow">${esc([event.location, event.date ? dateLabel(event.date) : event.year].filter(Boolean).join(" · ") || c.eyebrow)}</p><h2>${esc(event.title)}</h2><p class="story-description">${esc(short(event.description || c.caption))}</p><a class="button" href="${target}">${id === "his-holiness" && event.id === "swamiji-stuti" ? "Read the Stuti" : event.presentation === "service-story" ? "Discover this service" : "Step into this moment"} <span aria-hidden="true">↗</span></a>${event.photoSource ? `<a class="school-photo-credit" href="${esc(event.photoSource)}" target="_blank" rel="noopener">${esc(event.photoCredit)} ↗</a>` : ""}<span class="scene-kicker">${
       event.presentation === "service-story"
@@ -941,6 +941,30 @@
   async function messageView(id) {
     location.replace("message-cards.html?open=" + encodeURIComponent(id));
   }
+  function contributionScenes(data, category) {
+    const all = data.records || [], byId = new Map(all.map((r) => [r.id, r])),
+      groups = data.displayGroups || [], seen = new Set(), scenes = [];
+    for (const raw of all.filter((r) => r.category === category)) {
+      const group = groups.find((g) => g.category === category && g.recordIds.includes(raw.id));
+      if (!group) {
+        scenes.push({ ...raw, receipts: [raw] });
+        continue;
+      }
+      if (seen.has(group.id)) continue;
+      seen.add(group.id);
+      const receipts = group.recordIds.map((id) => byId.get(id));
+      if (receipts.some((r) => !r || r.category !== category))
+        throw Error("The supporting receipts could not be matched to this contribution.");
+      scenes.push({ ...raw, id: group.id, recipient: group.title,
+        summary: group.summary, amountLabel: group.amountLabel,
+        evidenceLabel: group.evidenceLabel || group.title, navigationTitle: group.title, receipts,
+        amount: receipts.reduce((total, r) => total + r.amount, 0),
+        approximate: receipts.some((r) => r.approximate || r.reported),
+        donor: undefined, displayDonor: undefined, src: undefined, document: undefined,
+      });
+    }
+    return scenes;
+  }
   async function recordView(id) {
     const token = routeToken;
     const [data, links, profiles] = await Promise.all([
@@ -950,12 +974,16 @@
     ]);
     if (token !== routeToken) return;
     const allRecords = data.records || [];
-    const record = allRecords.find((r) => String(r.id) === String(id));
-    const records = allRecords.filter((r) => r.category === record?.category),
+    const group = (data.displayGroups || []).find((g) => g.id === id || g.recordIds.includes(id)),
+      source = allRecords.find((r) => r.id === id || r.id === group?.recordIds[0]);
+    if (!source) throw Error("This supporting note is not available.");
+    const records = contributionScenes(data, source.category),
+      record = records.find((r) => r.id === id || r.receipts.some((receipt) => receipt.id === id)),
       index = records.indexOf(record);
     if (!record) throw Error("This supporting note is not available.");
-    const schoolProfile = profiles.find((p) => p.recordIds.includes(record.id)),
-      event = getEvent(schoolProfile?.eventId || links.records?.[id]?.eventIds?.[0]),
+    const primaryId = record.receipts[0].id,
+      schoolProfile = profiles.find((p) => p.recordIds.includes(primaryId)),
+      event = getEvent(schoolProfile?.eventId || links.records?.[primaryId]?.eventIds?.[0]),
       c =
         getCategory(
           links.categoryAliases?.[record.category] || record.category,
@@ -965,7 +993,7 @@
     const previous =
         "#/record/" + records[(index - 1 + records.length) % records.length].id,
       next = "#/record/" + records[(index + 1) % records.length].id;
-    app.innerHTML = `<section class="view story-view support-record-view" data-back="#/category/${esc(c.id)}">${heading(c.title + " · support", '<a href="#/category/' + c.id + '">' + esc(c.title) + "</a>")}<div class="story-scene"><div class="scene-backdrop" style="${supportCover ? `background-image:url('${href(supportCover)}')` : ""}"></div><div class="story-copy"><p class="eyebrow">${esc(record.evidenceLabel || record.evidenceStatus)}</p><h2>${esc(record.recipient)}</h2><p class="story-description">${esc(record.summary || "Support for " + record.recipient + ", recorded in the accompanying acknowledgement.")}</p><span class="record-context">${record.approximate ? "Approximately " : ""}${formatMoney(record.amount)}${record.displayDonor ? " · " + esc(record.displayDonor) : record.donor ? " · Named donor: " + esc(record.donor) : ""}</span>${event && event.presentation !== "service-story" ? `<a class="button" href="#/event/${esc(event.id)}">Meet the story behind the support ↗</a>` : `<a class="button" href="#/foundation/connect">Carry this care forward ↗</a>`}<details class="evidence-note"><summary>Read the supporting acknowledgement</summary><div class="evidence-content"><p>${esc(record.evidenceLabel)}</p>${record.document ? `<p>${record.document.pageCount} full ${record.document.pageCount === 1 ? "page" : "pages"} · Private details masked.</p>` : ""}${record.src ? `<a class="text-link" href="${href(record.src)}" target="_blank" rel="noopener">View full-page document ↗</a>` : ""}${
+    app.innerHTML = `<section class="view story-view support-record-view" data-back="#/category/${esc(c.id)}">${heading(c.title + " · support", '<a href="#/category/' + c.id + '">' + esc(c.title) + "</a>")}<div class="story-scene"><div class="scene-backdrop" style="${supportCover ? `background-image:url('${href(supportCover)}')` : ""}"></div><div class="story-copy"><p class="eyebrow">${esc(record.evidenceLabel || record.evidenceStatus)}</p><h2>${esc(record.recipient)}</h2><p class="story-description">${esc(record.summary || "Support for " + record.recipient + ", recorded in the accompanying acknowledgement.")}</p><div class="record-context"><small>${esc(record.amountLabel || "Recorded support")}</small><strong class="record-amount">${record.approximate ? "≈ " : ""}${formatMoney(record.amount)}</strong>${record.displayDonor || record.donor ? `<span class="record-donor">${esc(record.displayDonor || record.donor)}</span>` : ""}</div>${event && event.presentation !== "service-story" ? `<a class="button" href="#/event/${esc(event.id)}">Meet the story behind the support ↗</a>` : `<a class="button" href="#/foundation/connect">Carry this care forward ↗</a>`}<details class="evidence-note ${record.receipts.length > 1 ? "grouped-receipts" : ""}"><summary>${record.receipts.length > 1 ? `Receipts (${record.receipts.length}) ↗` : "Read the supporting acknowledgement"}</summary><div class="evidence-content">${record.receipts.length > 1 ? `<div class="contribution-receipts">${record.receipts.map((receipt) => `<a href="${href(receipt.src)}" target="_blank" rel="noopener"><strong>${formatMoney(receipt.amount)}</strong><span>${esc(receipt.date ? dateLabel(receipt.date) : receipt.evidenceLabel)}</span><small>Full-page receipt ↗</small></a>`).join("")}</div>` : `<p>${esc(record.evidenceLabel)}</p>${record.document ? `<p>${record.document.pageCount} full ${record.document.pageCount === 1 ? "page" : "pages"} · Private details masked.</p>` : ""}${record.src ? `<a class="text-link" href="${href(record.src)}" target="_blank" rel="noopener">View full-page document ↗</a>` : ""}${
       record.src && event?.media?.length
         ? `<div class="evidence-links">${event.media
             .filter((m) => m.src !== record.src && m.id.includes(record.id))
@@ -975,7 +1003,7 @@
             )
             .join("")}</div>`
         : ""
-    }</div></details>${event?.photoSource ? `<a class="school-photo-credit" href="${esc(event.photoSource)}" target="_blank" rel="noopener">${esc(event.photoCredit)} ↗</a>` : ""}</div><div class="foundation-image recipient-image">${supportCover ? photo(supportCover, schoolProfile?.title || event?.coverAlt || event?.title || c.title) : ""}</div></div>${sceneNavigation(c.title + " support", records.map((r) => ({ title: r.navigationTitle || r.recipient, href: "#/record/" + r.id })), index, previous, next)}<nav class="service-causes" aria-label="Choose a type of support">${[...new Set(allRecords.map((r) => r.category))].map((kind) => `<a href="#/foundation/support/${kind}" ${kind === record.category ? 'aria-current="page"' : ""}>${esc({ education: "Education", annadanam: "Annadanam", medical: "Medical care", temple: "Temple support" }[kind] || kind)}</a>`).join("")}</nav></section>`;
+    }`}</div></details>${event?.photoSource ? `<a class="school-photo-credit" href="${esc(event.photoSource)}" target="_blank" rel="noopener">${esc(event.photoCredit)} ↗</a>` : ""}</div><div class="foundation-image recipient-image">${supportCover ? photo(supportCover, schoolProfile?.title || event?.coverAlt || event?.title || c.title) : ""}</div></div>${sceneNavigation(c.title + " support", records.map((r) => ({ title: r.navigationTitle || r.recipient, href: "#/record/" + r.id })), index, previous, next)}<nav class="service-causes" aria-label="Choose a type of support">${[...new Set(allRecords.map((r) => r.category))].map((kind) => `<a href="#/foundation/support/${kind}" ${kind === record.category ? 'aria-current="page"' : ""}>${esc({ education: "Education", annadanam: "Annadanam", medical: "Medical care", temple: "Temple support" }[kind] || kind)}</a>`).join("")}</nav></section>`;
     bindSequence(previous, next, "#/category/" + c.id);
   }
   function about() {
@@ -1023,7 +1051,7 @@
           getEvent(parts[1])?.presentation === "service-story" &&
           !parts[2]
         )
-          await recordView(getEvent(parts[1]).supportRecordIds[0]);
+          await recordView(getEvent(parts[1]).supportGroupId || getEvent(parts[1]).supportRecordIds[0]);
         else eventView(parts[1], parts[2], parts[3]);
       } else if (parts[0] === "learn") teachingGateway();
       else if (parts[0] === "foundation") {
