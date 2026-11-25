@@ -137,7 +137,7 @@
     const url = site.collections[name];
     if (!url) throw Error("This collection is not available.");
     if (!cache.has(name)) {
-      const request = fetch(url)
+      const request = fetch(url, {cache: "no-cache"})
         .then((r) => {
           if (!r.ok) throw Error("This collection could not be loaded.");
           return r.json();
@@ -1094,7 +1094,7 @@
   matchMedia("(max-width: 750px)").addEventListener("change", () => {
     if (site && ["explore", "library"].includes(routeParts()[0])) render();
   });
-  fetch("content/site.json")
+  fetch("content/site.json", {cache: "no-cache"})
     .then((r) => {
       if (!r.ok) throw Error("The collection could not be loaded.");
       return r.json();
