@@ -17,7 +17,8 @@
   const zoomButton = document.querySelector('#event-reader-zoom');
   let enlarged = false;
   let selected = 0, step = 0, busy = false, returnFocus = null, hovered = false;
-  let rotating = !reduced.matches, timer = null, turnTimer = null;
+  let storedRotation = true; try { storedRotation = sessionStorage.getItem('svnf-message-rotation') !== 'paused'; } catch (_) {}
+  let rotating = storedRotation && !reduced.matches, timer = null, turnTimer = null;
   function el(tag, text, className) {
     const n = document.createElement(tag); if (text) n.textContent = text;
     if (className) n.className = className; return n;
@@ -85,10 +86,11 @@
   const spotlightLayout = new ResizeObserver(fitSpotlight);
   spotlightLayout.observe(stage);spotlightLayout.observe(stage.querySelector('.spotlight-caption'));
   function setRotation(enabled) {
-    rotating = enabled && !reduced.matches; clearInterval(timer); timer = null;
+    rotating = enabled && !reduced.matches; if (rotating) hovered = false; clearInterval(timer); timer = null;
+    try { sessionStorage.setItem('svnf-message-rotation', rotating ? 'playing' : 'paused'); } catch (_) {}
     rotation.setAttribute('aria-pressed', String(rotating));
     rotation.textContent = rotating ? 'Pause rotation  Ⅱ' : 'Rotate collection  ↻';
-    if (rotating) timer = setInterval(() => {if (!hovered && !dialog.open && !document.hidden) select(selected+1);}, 6000);
+    if (rotating) timer = setInterval(() => {if (!hovered && !dialog.open && !document.hidden) select(selected+1);}, 10000);
   }
   chooser.addEventListener('wheel',event=>{if(!event.ctrlKey&&Math.abs(event.deltaY)>Math.abs(event.deltaX)&&chooser.scrollWidth>chooser.clientWidth){event.preventDefault();chooser.scrollLeft+=event.deltaY*(event.deltaMode===1?18:1);}},{passive:false});
   chooser.addEventListener('keydown',event=>{if(!['ArrowLeft','ArrowRight','Home','End'].includes(event.key))return;const index=[...chooser.children].indexOf(document.activeElement),target=event.key==='Home'?0:event.key==='End'?samples.length-1:Math.max(0,Math.min(samples.length-1,index+(event.key==='ArrowRight'?1:-1)));event.preventDefault();const choice=chooser.children[target];choice.focus({preventScroll:true});chooser.scrollTo({left:choice.offsetLeft-(chooser.clientWidth-choice.offsetWidth)/2,behavior:reduced.matches?'instant':'smooth'});});
@@ -98,8 +100,12 @@
   rotation.addEventListener('click',()=>setRotation(!rotating));
   collection.addEventListener('pointerenter',()=>{hovered=true;});
   collection.addEventListener('pointerleave',()=>{hovered=false;});
-  collection.addEventListener('focusin',e=>{if(e.target.matches(':focus-visible'))hovered=true;});
+  collection.addEventListener('focusin',()=>{hovered=true;});
   collection.addEventListener('focusout',()=>{hovered=false;});
+  const scene = document.querySelector('#message-spotlight');
+  scene.addEventListener('focusin',()=>{hovered=true;});
+  scene.addEventListener('focusout',event=>{hovered=scene.contains(event.relatedTarget);});
+  document.querySelector('#message-spotlight').addEventListener('pointerdown',event=>{if(!event.target.closest('#spotlight-rotation'))setRotation(false);});
   reduced.addEventListener('change',()=>{if(reduced.matches)setRotation(false);});
   function lastStep() {return samples[selected].type==='folded'?2:samples[selected].pages.length-1;}
   function controls() {
@@ -179,7 +185,7 @@
   paper.addEventListener('click',e=>{if(!enlarged&&e.target.closest('.greeting-paper'))turn(1);});
   coverChooser.addEventListener('change',()=>{const card=samples[selected],index=Number(coverChooser.value),choice=card.coverOptions[index];if(!choice)return;clearTimeout(turnTimer);busy=false;card.coverIndex=index;card.sheets=choice.sheets;card.cover=choice.cover;const preview=collection.children[selected].querySelector('.gallery-original-cover');if(preview)preview.src=choice.cover;step=0;render();});
   zoomButton.addEventListener('click',()=>{enlarged=!enlarged;viewport.classList.toggle('is-enlarged',enlarged);zoomButton.setAttribute('aria-pressed',String(enlarged));zoomButton.textContent=enlarged?'Fit card ⊖':'Enlarge card ⊕';controls();});
-  dialog.addEventListener('close',()=>{clearTimeout(turnTimer);busy=false;document.body.classList.remove('event-reader-open');returnFocus?.focus({preventScroll:true});hovered=collection.matches(':hover')||!!collection.querySelector(':focus-visible');setRotation(!reduced.matches);});
+  dialog.addEventListener('close',()=>{clearTimeout(turnTimer);busy=false;document.body.classList.remove('event-reader-open');returnFocus?.focus({preventScroll:true});hovered=collection.matches(':hover')||!!collection.querySelector(':focus-visible');setRotation(rotating);});
   dialog.addEventListener('click',e=>{if(e.target===dialog)closeReader();});
   dialog.addEventListener('keydown',e=>{
     if(['ArrowRight','ArrowLeft','PageDown','PageUp',' '].includes(e.key)){
@@ -200,6 +206,7 @@
     if(enlarged||!touch)return;const dx=e.changedTouches[0].clientX-touch.x,dy=e.changedTouches[0].clientY-touch.y;
     if(Math.max(Math.abs(dx),Math.abs(dy))>45)turn(Math.abs(dx)>Math.abs(dy)?(dx<0?1:-1):(dy<0?1:-1));touch=null;
   },{passive:true});
+  setRotation(rotating);
   const requested = new URLSearchParams(location.search).get('open');
   const initial=samples.findIndex(card=>card.id===requested || '#'+card.id===location.hash);
   select(initial>=0?initial:0);setRotation(rotating);

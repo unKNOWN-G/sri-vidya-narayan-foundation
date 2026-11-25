@@ -30,7 +30,8 @@
         "pageCount": 1,
         "fullFrame": true,
         "privacyNote": "Private details masked in place; full supplied page dimensions retained."
-      }
+      },
+      "summary": "A corpus supporting education at Air Force School, Hebbal."
     },
     {
       "id": "viman-nagar",
@@ -51,7 +52,8 @@
         "pageCount": 1,
         "fullFrame": true,
         "privacyNote": "Private details masked in place; full supplied page dimensions retained."
-      }
+      },
+      "summary": "A corpus supporting education at Air Force School, Viman Nagar."
     },
     {
       "id": "yelahanka-swamiji",
@@ -118,7 +120,9 @@
       "evidenceLabel": "Owner-reported contribution; no documentary amount supplied here.",
       "evidenceStatus": "owner-reported-approximate",
       "src": "",
-      "attributionNote": "Approximate combined support through Swamiji and devotees. Not an exact audited receipt or solely Swamiji’s individual contribution."
+      "attributionNote": "Approximate combined support through Swamiji and devotees. Not an exact audited receipt or solely Swamiji’s individual contribution.",
+      "summary": "Support from Swamiji and devotees for the students of Navajeevan Blind High School.",
+      "publicEvidenceLabel": "Approximate support shared by the foundation."
     },
     {
       "id": "tirumala",
@@ -142,7 +146,9 @@
         "pageCount": 1,
         "fullFrame": true,
         "privacyNote": "Private details masked in place; full supplied page dimensions retained."
-      }
+      },
+      "summary": "Support for Annadanam at Tirumala, where food is offered to devotees.",
+      "publicEvidenceLabel": "TTD acknowledgement · 21 January 2025"
     },
     {
       "id": "shirdi-2024-food",
@@ -225,7 +231,8 @@
         "pageCount": 1,
         "fullFrame": true,
         "privacyNote": "Private details masked in place; full supplied page dimensions retained."
-      }
+      },
+      "summary": "A contribution towards the Shirdi Medical Fund and its work in medical care."
     },
     {
       "id": "ayodhya-2021",
@@ -247,7 +254,8 @@
         "pageCount": 1,
         "fullFrame": true,
         "privacyNote": "Private details masked in place; full supplied page dimensions retained."
-      }
+      },
+      "summary": "An offering to Shri Ram Janmbhoomi Teerth Kshetra, Ayodhya."
     },
     {
       "id": "bodhendra-2025-annadanam",
@@ -270,7 +278,8 @@
         "pageCount": 1,
         "fullFrame": true,
         "privacyNote": "Private details masked in place; full supplied page dimensions retained."
-      }
+      },
+      "summary": "Support for Annadanam through Sri Bodhendra Saraswathi Swamigal Trust, Govindapuram."
     }
   ],
   "countingNotes": [

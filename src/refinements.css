@@ -1,0 +1,248 @@
+/* Shared interaction and type system. Loaded last so every scene follows one set of rules. */
+:root { --tap: 44px; }
+.masthead nav a { font-size: 13px; min-height: 44px; display: inline-flex; align-items: center; }
+.masthead nav a[aria-current="page"] { color: var(--accent); box-shadow: inset 0 -2px var(--accent); }
+.wayfinding { gap: 12px; }
+.wayfinding button:not(.mobile-menu), .wayfinding .start-link, .wayfinding .mobile-menu { min-height: 44px; font-size: 12px; padding: 8px 4px; }
+.site-footer { font-size: 10px; }
+.site-footer a { display: flex; align-items: center; min-height: 30px; }
+.breadcrumb, .eyebrow, .scene-kicker, .school-photo-credit, .school-contribution > small, .record-context > small { font-size: 11px; }
+.breadcrumb a { padding-block: 6px; }
+.button, .text-link, .quiet-link { font-size: 13px; min-height: 44px; }
+.button { border-radius: 25px; transition: transform .2s, box-shadow .2s, background .2s; }
+.button:hover { transform: translateY(-2px); box-shadow: 0 7px 18px #3038511c; filter: none; }
+.button:active { transform: translateY(1px); box-shadow: none; }
+.button span { transition: transform .2s; }
+.button:hover span { transform: translateX(3px); }
+.story-copy .button { border-radius: 25px; }
+.story-description, .education-view .story-description, .support-record-view .story-description { font-size: 14px; line-height: 1.75; }
+.story-copy h2 { font-size: clamp(35px, 4vw, 58px); }
+.art-orbit { opacity: .2; }
+.scene-backdrop { opacity: .035; }
+.story-image img { border-radius: 20px; filter: drop-shadow(0 12px 18px #35250f17); }
+.story-image { display: flex; align-items: center; justify-content: center; }
+.story-art { flex-direction: column; padding: 24px; }
+.photo-context { font: 12px/1.5 var(--sans); color: var(--muted); text-align: center; max-width: 450px; margin: 10px 0 0; }
+.story-description { -webkit-line-clamp: unset; }
+.story-copy { max-height: 100%; overflow-y: auto; scrollbar-width: thin; }
+.school-contribution { margin-top: 14px; }
+.scene-kicker { margin-top: 12px; }
+.school-attachments, .evidence-note, .school-attachment-list .text-link, .school-photo-credit { font-size: 12px; }
+.school-attachments summary, .evidence-note summary { min-height: 44px; padding-block: 10px; cursor: pointer; }
+.school-attachment-list, .evidence-content { position: static; width: 100%; max-height: none; background: #ffffff88; box-shadow: none; border-radius: 14px; }
+.occasion-title, .occasion-number { font-size: 12px; }
+.occasion-stop { min-height: 44px; }
+.strip-arrows { gap: 4px; }
+.strip-arrows a, .sequence > a, .cinema-arrows a { width: 44px; height: 44px; min-width: 44px; }
+.strip-count { font-size: 11px; }
+.home-intro .eyebrow { font-size: 12px; letter-spacing: .08em; }
+.home-intro h1 { margin-top: 6px; }
+.home-instruction { font-size: 12px; color: var(--muted); }
+.home-note > p { font-size: 14px; }
+.home-actions { gap: 18px; }
+.carousel-controls { width: 100%; min-height: 58px; gap: 8px; }
+.carousel-controls > button { min-width: 44px; min-height: 44px; }
+.dots { display: flex; flex: 0 1 auto; max-width: 950px; min-width: 0; gap: 4px; overflow-x: auto; padding: 3px; scrollbar-width: thin; }
+.dots button, .dots button[aria-pressed="true"] { flex: 0 0 auto; width: auto; height: 44px; min-width: 44px; padding: 0 12px; border-radius: 23px; background: transparent; color: var(--muted); font: 12px var(--sans); white-space: nowrap; }
+.dots button[aria-pressed="true"] { background: var(--accent); color: #fff; }
+.portrait > span { height: 88px; padding: 10px 12px; gap: 3px; }
+.portrait > img { height: calc(100% - 88px); bottom: 88px; }
+.portrait small { font-size: 9px; margin: 0; }
+.portrait strong { font-size: 19px; }
+.portrait .portrait-milestone { font: 600 12px/1.35 var(--sans); color: var(--card-accent); margin-top: 3px; }
+.portrait:not(.active) { cursor: pointer; }
+.home-note { padding-inline: 16px; }
+.reader-position { font: 12px var(--sans); color: var(--accent); margin-bottom: 16px; }
+.reader-scroll { scroll-behavior: smooth; scrollbar-width: thin; scrollbar-color: var(--accent) transparent; }
+.reader-scroll .lead { font-size: 18px; line-height: 1.75; }
+.reader-scroll { font-size: var(--reader-size); line-height: 1.8; }
+.reader-controls, .reader-aside .tag { font-size: 12px; }
+.reader-controls button { width: 44px; height: 44px; }
+.reader-next a { min-height: 44px; display: inline-flex; align-items: center; font-size: 13px; }
+.learning-door .eyebrow, .learning-door > p { font-size: 12px; }
+.learning-door img { border-radius: 16px; }
+.book-shelf a { min-width: 50px; padding: 4px; }
+.book-shelf a[aria-current] { border-bottom: 2px solid var(--accent); }
+.scene-collection-note, .gesture-note { font-size: 12px; }
+.satsang-kicker, .satsang-filter-note { font-size: 11px; }
+.satsang-tools { flex-wrap: wrap; }
+.satsang-topic { display: flex; align-items: center; gap: 8px; font: 12px var(--sans); color: var(--muted); }
+.satsang-topic select { border: 0; background: #ffffffae; color: var(--ink); padding: 10px; border-radius: 24px; font: 12px var(--sans); min-height: 44px; max-width: 155px; }
+.satsang-topic { font-size: 0; }
+.satsang-search input, .satsang-calendar > summary { font-size: 12px; }
+.satsang-meta time, .satsang-read > span { font-size: 11px; }
+.satsang-navigation strong, .satsang-navigation > div > span { font-size: 11px; }
+.satsang-navigation > a, .satsang-navigation > button { font-size: 12px; }
+.satsang-calendar-panel { max-height: min(510px, calc(100svh - 215px)); }
+.satsang-calendar-days button { height: 40px; font-size: 12px; }
+.calendar-hint, .calendar-actions button, .calendar-weekdays { font-size: 11px; }
+.calendar-actions button { min-height: 44px; }
+/* A gallery belongs to the selected section, and keeps the same light palette. */
+.cinema-view { background: transparent; color: var(--ink); }
+.cinema-heading, .cinema-caption, .cinema-caption h2, .cinema-caption p, .cinema-caption a, .cinema-caption summary, .cinema-view .media-tabs button { color: var(--ink); }
+.cinema-caption .eyebrow, .cinema-heading > p, .cinema-heading .back-story { color: var(--muted); font-size: 12px; }
+.cinema-caption p { font-size: 14px; line-height: 1.75; }
+.cinema-caption h2 { font-size: 27px; }
+.cinema-stage { background: color-mix(in srgb, var(--accent) 6%, transparent); border-radius: 20px; }
+.cinema-backdrop { opacity: .035; }
+.cinema-arrows a { background: var(--paper); color: var(--ink); border-color: var(--line); }
+.media-tabs button { min-height: 44px; font-size: 13px; }
+.media-tabs small { font-size: 11px; }
+.moment-ribbon a { min-width: 50px; min-height: 44px; }
+.moment-ribbon a span { color: var(--ink); font-size: 12px; }
+.foundation-bottom { font-size: 12px; overflow-x: auto; scrollbar-width: thin; min-height: 48px; }
+.foundation-bottom a { display: inline-flex; min-height: 44px; align-items: center; }
+.contact-dialog { color: var(--ink); background: var(--paper); border: 0; border-radius: 24px; }
+.contact-dialog::backdrop { background: #25294066; backdrop-filter: blur(4px); }
+.contact-link { font-size: 17px; min-height: 44px; }
+@media(min-width:751px) and (max-width:1120px) {
+ .masthead nav { gap: 14px; } .masthead nav a { font-size: 12px; }
+ .brand { font-size: 21px; } .masthead { padding-inline: 24px; }
+ .home .dots button { font-size: 11px; padding-inline: 10px; }
+ .satsang-top { align-items: flex-start; } .satsang-search { width: 160px; }
+}
+@media(max-width:750px) {
+ .masthead { height: 66px; flex-basis: 66px; padding-inline: 16px; gap: 6px; }
+ .brand { font-size: 19px; } .brand small { font-size: 8px; letter-spacing: 3px; }
+ .wayfinding { gap: 5px; }
+ .wayfinding button:not(.mobile-menu) { max-width: 105px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+ .wayfinding button:not(.mobile-menu), .wayfinding .start-link, .wayfinding .mobile-menu { font-size: 11px; }
+ .masthead nav { top: 66px; } .masthead nav a { font-size: 15px; min-height: 48px; }
+ .site-footer { font-size: 9px; gap: 8px; padding-inline: 16px; flex-basis: 30px; }
+ .site-footer > span { max-width: 72%; line-height: 1.4; }
+ .site-footer a { font-size: 9px; white-space: nowrap; }
+ .view { padding: 12px 18px 6px; }
+ .breadcrumb, .eyebrow { font-size: 10px; }
+ .view-heading h1, .story-view .view-heading h1 { font-size: 22px; }
+ .view-heading { margin-bottom: 8px; }
+ .story-view .story-scene { flex-direction: column; overflow-y: auto; overflow-x: hidden; justify-content: flex-start; scrollbar-width: thin; }
+ .story-view .story-art, .education-view .story-art { order: -1; flex: 0 0 clamp(150px, 27svh, 245px); min-height: 150px; max-height: none; padding: 8px 6px; }
+ .story-view .story-image { padding: 0; height: 100%; width: 100%; min-height: 0; }
+ .story-view .story-image img { max-height: 100%; width: 100%; object-fit: contain; border-radius: 16px; }
+ .story-view .story-copy { padding: 10px 3px 12px; flex: 0 0 auto; max-height: none; overflow: visible; }
+ .story-view .story-copy h2, .education-view .story-copy h2, .support-record-view .story-copy h2 { font-size: 30px; line-height: 1.1; max-width: 100%; }
+ .story-view .story-copy .eyebrow { font-size: 10px; margin-bottom: 8px; letter-spacing: .06em; }
+ .story-description, .education-view .story-description, .support-record-view .story-description { display: block; font-size: 13px; line-height: 1.65; margin: 12px 0 15px; overflow: visible; }
+ .story-copy .button { padding: 12px 17px; font-size: 12px; }
+ .school-contribution { margin-top: 10px; }
+ .school-contribution > small { font-size: 11px; }
+ .school-contribution > .contribution-kind { font-size: 23px; }
+ .scene-kicker, .school-photo-credit, .school-attachments { font-size: 11px; }
+ .story-actions { flex-wrap: wrap; gap: 8px 14px; }
+ .photo-context { font-size: 11px; margin-top: 5px; }
+ .story-art:has(.photo-context) { flex-basis: clamp(180px, 30svh, 265px); }
+ .story-art:has(.photo-context) .story-image { min-height: 0; flex: 1; }
+ .scene-navigation { flex: 0 0 68px; min-height: 68px; gap: 6px; }
+ .occasion-track { padding-block: 7px; }
+ .occasion-stop, .occasion-stop:not([aria-current="page"]) { max-width: 215px; padding: 10px 13px; min-height: 44px; }
+ .occasion-stop .occasion-title, .occasion-stop:not([aria-current="page"]) .occasion-title { display: block; font-size: 12px; }
+ .occasion-number { font-size: 11px; }
+ .strip-arrows { gap: 0; } .strip-count { font-size: 10px; }
+ .strip-arrows a { width: 44px; min-width: 44px; height: 44px; }
+ .home-intro { padding-top: 12px; }
+ .home-intro .eyebrow { font-size: 11px; line-height: 1.5; padding-inline: 24px; letter-spacing: .04em; }
+ .home-intro h1 { font-size: clamp(27px,7vw,35px); padding-inline: 16px; }
+ .home-note { flex-basis: auto; padding-block: 8px 4px; }
+ .home-note > p { font-size: 13px; line-height: 1.6; margin-bottom: 10px; }
+ .home-actions { flex-wrap: wrap; gap: 5px; }
+ .home-instruction { font-size: 11px; }
+ .carousel-controls { flex: 0 0 58px; gap: 1px; padding: 0 7px; }
+ .dots { flex: 1; } .dots button, .dots button[aria-pressed="true"] { font-size: 12px; padding-inline: 12px; }
+ .portrait strong { font-size: 18px !important; }
+ .portrait small { font-size: 8px; } .portrait .portrait-milestone { font-size: 12px; }
+ .reader-layout { min-height: 0; }
+ .reader-scroll .lead { font-size: 17px; line-height: 1.7; }
+ .reader-scroll h1 { font-size: 29px; }
+ .reader-scroll h2 { font-size: 24px; }
+ .reader-scroll .reader-position { font-size: 11px; }
+ .reader-aside .tag { display: none; }
+ .reader-controls { font-size: 12px; }
+ .reader-next { flex-wrap: wrap; }
+ .learning-door p { font-size: 13px; }
+ .satsang-topic { width: 100%; }
+ .satsang-topic select { width: 100%; max-width: none; font-size: 12px; min-height: 40px; }
+ .satsang-topic { font-size: 11px; }
+ .satsang-tools { gap: 6px; }
+ .satsang-calendar-panel { max-height: calc(100svh - 230px); }
+ .satsang-copy h2 { font-size: 28px; }
+ .satsang-lead { font-size: 13px; }
+ .satsang-meta time { font-size: 11px; }
+ .satsang-kicker, .satsang-read > span { font-size: 10px; }
+ .satsang-read .button { font-size: 12px; }
+ .satsang-navigation > div > span { font-size: 10px; }
+ .cinema-heading .back-story { min-height: 36px; display: inline-flex; align-items: center; }
+ .cinema-caption h2 { font-size: 23px; }
+ .cinema-caption p { font-size: 13px; }
+ .cinema-caption .eyebrow { font-size: 10px; }
+ .media-tabs button { font-size: 12px; padding-inline: 9px; }
+ .story-view .foundation-image, .support-record-view .recipient-image { order: -1; flex: 0 0 clamp(160px,28svh,245px); min-height: 160px; max-height: none; padding: 8px 6px; }
+ .foundation-image img { object-fit: contain; border-radius: 16px; }
+ .foundation-bottom { font-size: 12px; gap: 18px; }
+}
+@media(max-width:360px) {
+ .brand { font-size: 16px; } .brand small { font-size: 7px; }
+ .wayfinding button:not(.mobile-menu) { max-width: 68px; }
+ .view { padding-inline: 14px; }
+ .home-intro h1 { font-size: 27px; }
+ .home-intro .eyebrow { font-size: 10px; }
+ .home-note > p { font-size: 12px; }
+ .home-instruction { display: none; }
+ .story-view .story-copy h2, .education-view .story-copy h2 { font-size: 27px; }
+ .satsang-photo { width: 62px; height: 83px; }
+ .satsang-meta { min-height: 83px; padding-left: 76px; }
+ .satsang-copy h2 { font-size: 25px; }
+ .satsang-lead { font-size: 12px; line-height: 1.6; }
+}
+@media(max-height:690px) and (max-width:750px) {
+ .home-intro { padding-top: 5px; } .home-intro h1 { margin-block: 3px; font-size: 26px; }
+ .home-note > p { margin-bottom: 5px; } .home-instruction { display: none; }
+ .story-view .story-art, .education-view .story-art { flex-basis: 155px; min-height: 155px; }
+ .satsang-copy h2 { font-size: 23px; margin-block: 12px 8px; }
+ .satsang-message-card { max-height: none; } .satsang-stage { overflow-y: auto; align-items: flex-start; }
+ .satsang-lead { -webkit-line-clamp: 2; margin-bottom: 12px; }
+ .satsang-read > span { display: none; }
+}
+@media(prefers-reduced-motion:reduce) {
+ *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}
+.site-footer #share-view { min-width: 44px; min-height: 36px; padding: 6px; border: 0; color: var(--accent); background: none; font: 12px var(--sans); cursor: pointer; }
+.site-footer > span { margin-right: auto; }
+.site-footer { gap: 16px; }
+@media(max-width:750px) {
+ .site-footer { gap: 8px; min-height: 38px; flex-basis: 38px; }
+ .site-footer > span { max-width: 65%; }
+ .site-footer #share-view { min-height: 38px; font-size: 11px; }
+ .portrait > img { bottom: 88px; }
+}
+@media(max-height:690px) and (max-width:750px) {
+ .view-heading { padding-bottom: 6px; } .view-heading h1, .story-view .view-heading h1 { font-size: 20px; }
+ .story-view .story-art, .education-view .story-art { flex-basis: 140px; min-height: 140px; }
+ .education-view .story-copy .eyebrow { display: none; }
+ .education-view .story-copy h2 { font-size: 25px; }
+ .school-contribution { margin-top: 8px; }
+ .school-contribution > small { font-size: 10px; }
+ .school-contribution > strong { font-size: 29px; }
+ .school-contribution > .contribution-kind { font-size: 21px; }
+ .education-view .story-description { font-size: 12px; line-height: 1.55; margin-block: 8px 10px; }
+ .education-view .story-copy { padding-top: 5px; }
+}
+.view-heading h1:focus, .cinema-heading h1:focus, .home-intro h1:focus { outline: none; }
+.cinema-view { --ink: inherit; --muted: inherit; --accent: inherit; --line: inherit; }
+.cinema-view .media-tabs button[aria-pressed="true"] { color: var(--accent); border-color: var(--accent); }
+.cinema-view .cinema-arrows a { opacity: 1; }
+.cinema-caption .text-link { color: var(--accent); font-size: 12px; }
+.cinema-caption details { font-size: 12px; }
+@media(max-width:750px) { .cinema-heading > p { position: static; font-size: 11px; } }
+.learning-shortcuts { display: none; }
+@media(max-width:750px) {
+ .learning-shortcuts { display: flex; gap: 5px; padding: 0 0 8px; }
+ .learning-shortcuts a { min-height: 44px; display: flex; align-items: center; justify-content: center; padding: 0 12px; background: #ffffff88; color: var(--accent); border-radius: 24px; font: 12px var(--sans); }
+ .learning-gateway .door-art { max-height: 33svh; }
+ .learning-door .door-action { font-size: 12px; min-height: 44px; display: inline-flex; align-items: center; }
+ .gateway-pearl { font-size: 12px; min-height: 44px; display: flex; align-items: center; justify-content: center; }
+}
+.portrait[data-category] strong { font-size: 18px; line-height: 1.1; }
+.portrait > span { height: 96px; }
+.portrait > img { height: calc(100% - 96px); bottom: 96px; }
+.portrait-contribution { bottom: 108px; }
+.portrait-contribution small { font-size: 9px; letter-spacing: 0; }

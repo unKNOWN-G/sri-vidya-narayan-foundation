@@ -1,0 +1,59 @@
+/* The original book/card mechanics, with the same quiet ink-and-ivory framing as the tribute. */
+:root { --sans: Manrope, Arial, sans-serif; --serif: "DM Serif", Georgia, serif; }
+body:not([data-theme="night"]) { --white: #303851; --ink: #303851; --muted: #505a70; --gold: #536498; --line: #c8cfe3; background: radial-gradient(ellipse at 80% 40%, #d9dff0, #f5f4ef 75%); color: #303851; }
+body:not([data-theme="night"]) .experience-header, body:not([data-theme="night"]) .reader-header { background: #f5f4ef99; border-color: #c8cfe3; color: #303851; }
+body:not([data-theme="night"]) :is(.experience-brand,.experience-back,.experience-home,.reader-brand,.reader-home,.back-books,.spotlight-intro h1,.spotlight-caption h2,.reading-top h1,.welcome-copy h1) { color: #303851; }
+body:not([data-theme="night"]) :is(.spotlight-eyebrow,.spotlight-lead,.spotlight-demo-note,.spotlight-caption p,.spotlight-open-hint,.edition-label,.welcome-copy p,.welcome-note,.reading-help,.reading-bottom,.edition-note,.spotlight-rotation) { color: #505a70; }
+body:not([data-theme="night"]) :is(.reader-tools > button,.reader-settings > summary,.turn-arrow,.quiet-button,.spotlight-nav-button) { color: #445784; border-color: #aeb9d4; background: #ffffff80; }
+body:not([data-theme="night"]) .message-occasion-stop { color: #44516d; background: #ffffff60; }
+body:not([data-theme="night"]) .message-occasion-number { color: #536498; }
+body:not([data-theme="night"]) .message-occasion-stop[aria-pressed="true"] { color: #fff; background: #536498; }
+body:not([data-theme="night"]) .message-spotlight-section { background: transparent; }
+body:not([data-theme="night"]) .spotlight-floor { opacity: .12; }
+.experience-back, .experience-home, .back-books, .reader-home { font-size: 13px; min-height: 44px; display: inline-flex !important; align-items: center; }
+.experience-header, .reader-header { min-height: 72px; }
+.experience-brand, .reader-brand { font-size: 24px; }
+.experience-brand span, .reader-brand small { font-size: 9px; }
+.spotlight-lead, .page-messages .spotlight-lead { font-size: 14px; }
+.spotlight-eyebrow, .page-messages .spotlight-eyebrow, .page-messages .spotlight-caption > span:first-child { font-size: 11px; }
+.page-messages .spotlight-caption p { font-size: 13px; }
+.page-messages .spotlight-open-hint, .page-messages .spotlight-demo-note { font-size: 12px; }
+.spotlight-rotation, .page-messages .spotlight-rotation { font-size: 12px; min-height: 44px; }
+.page-messages .spotlight-nav-button { width: 44px; height: 44px; min-width: 44px; }
+.message-occasion-stop { font-size: 12px; min-height: 44px; }
+.message-occasion-stop:not([aria-pressed="true"]) .message-occasion-title { display: block; }
+.message-occasion-stop { max-width: 230px; }
+.reader-tools > button, .reader-settings > summary, .reading-room .turn-arrow { min-height: 44px; min-width: 44px; }
+.reading-room .quiet-button { min-height: 36px; font-size: 12px; }
+.reading-bottom, .reading-help, .edition-note { font-size: 12px; }
+.reading-bottom button, .reading-room .reading-bottom button { font-size: 12px; min-height: 44px; }
+.reading-room .paper-running, .reading-room .paper-footer { font-size: 10px; }
+.reading-room .pearl-body h2 { font-size: 11px; }
+button, a, summary { transition: background .2s, box-shadow .2s, transform .2s; }
+button:active, a:active { transform: translateY(1px); }
+button:focus-visible, a:focus-visible, summary:focus-visible, input:focus-visible { outline: 3px solid #536498; outline-offset: 4px; }
+@media(max-width:700px) {
+ .experience-header, .reader-header { min-height: 66px; height: 66px; padding-inline: 14px; gap: 7px; }
+ .experience-brand, .reader-brand { font-size: 18px; }
+ .experience-back, .experience-home, .back-books, .reader-home, .experience-header .experience-back, .experience-header .always-home { font-size: 11px; }
+ .experience-brand span, .reader-brand small { font-size: 8px; }
+ .page-messages .spotlight-lead { font-size: 12px; }
+ .page-messages .message-spotlight-section { padding-inline: 16px; }
+ .page-messages .spotlight-intro h1 { font-size: 28px; }
+ .page-messages .spotlight-caption h2 { font-size: 23px; }
+ .page-messages .spotlight-caption p { font-size: 12px; }
+ .page-messages .spotlight-open-hint { font-size: 11px; }
+ .message-occasion-stop { min-width: 80px; max-width: 190px; }
+ .reading-room .reading-top { flex-basis: 90px; flex-wrap: wrap; }
+ .reading-room .reader-tools > button, .reading-room .reader-settings > summary { min-height: 44px; font-size: 12px; }
+ .reading-room .reading-bottom { font-size: 11px; flex-basis: 48px; }
+ .reading-room .reading-bottom button { font-size: 11px; }
+ .reading-room .paper-running, .reading-room .paper-footer { font-size: 9px; }
+ .reading-room .pearl-body h2 { font-size: 10px; }
+ .reading-room .pearl-signature { font-size: 12px; }
+}
+@media(prefers-reduced-motion:reduce) { *, *::before, *::after { transition: none !important; animation: none !important; scroll-behavior: auto !important; } }
+body:not([data-theme="night"]) :is(#share-pearl,.reading-top h1 span,.experience-brand span,.reader-brand small,.quiet-button) { color: #505a70; }
+.reading-top h1 span { font-size: 12px; }
+.quiet-button { background: none !important; border-radius: 22px; }
+body:not([data-theme="night"]) #share-pearl { color: #445784; }

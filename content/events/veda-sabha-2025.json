@@ -54,7 +54,7 @@
       "alt": "Veda Parayanam · 26 October 2025",
       "src": "assets/media/vedic-learning/veda-sabha-2025/audio-01.mp3",
       "thumb": "",
-      "durationSeconds": 2649.936
+      "durationSeconds": 2650
     },
     {
       "id": "vedic-learning-veda-sabha-2025-audio-02",
@@ -64,7 +64,7 @@
       "alt": "Veda Parayanam · 27 October 2025",
       "src": "assets/media/vedic-learning/veda-sabha-2025/audio-02.m4a",
       "thumb": "",
-      "durationSeconds": 3191.058
+      "durationSeconds": 3191
     },
     {
       "id": "vedic-learning-veda-sabha-2025-audio-03",
@@ -74,7 +74,7 @@
       "alt": "Veda Parayanam · Recording 3",
       "src": "assets/media/vedic-learning/veda-sabha-2025/audio-03.mp3",
       "thumb": "",
-      "durationSeconds": 140.112
+      "durationSeconds": 140
     },
     {
       "id": "vedic-learning-veda-sabha-2025-audio-04",
@@ -84,7 +84,7 @@
       "alt": "Veda Parayanam · Recording 4",
       "src": "assets/media/vedic-learning/veda-sabha-2025/audio-04.mp3",
       "thumb": "",
-      "durationSeconds": 194.928
+      "durationSeconds": 195
     },
     {
       "id": "spiritual-life-annavaram-siva-ghanapati-undated-audio-05",
@@ -94,7 +94,7 @@
       "alt": "Veda Parayanam · Recording 5",
       "src": "assets/media/spiritual-life/annavaram-siva-ghanapati-undated/audio-05.mp3",
       "thumb": "",
-      "durationSeconds": 249.888
+      "durationSeconds": 250
     },
     {
       "id": "vedic-learning-veda-sabha-2025-photo-01",
@@ -260,5 +260,6 @@
     }
   ],
   "sourceTitle": "Sri Swamiji Veda Sabha",
-  "sourceCollection": "veda-sabha"
+  "sourceCollection": "veda-sabha",
+  "intro": "Two days of Veda Parayanam with 51 Vedic priests during the 51st Chaturmasyam."
 }

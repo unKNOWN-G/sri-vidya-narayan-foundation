@@ -10,7 +10,7 @@ The website is a static project: HTML, CSS, browser JavaScript, JSON content, an
 
 Start with [the navigation skeleton](docs/EXPERIENCE_BLUEPRINT.md). Its interactive planning view is `blueprint.html` in a local build.
 
-The visitor sees composed story scenes and actual media, with a single teaching gateway at `#/learn`. Satsangh and practical teachings use one staged paper reflection; Books uses real covers; `reading-room.html` preserves the opening/page-turning Pearls experience; `message-cards.html` preserves the rotating/folded-card experience. Supporting acknowledgements sit behind service stories.
+The visitor sees composed story scenes and actual media, with a single teaching gateway at `#/learn`. Satsangs use a photo-led reading card with calendar and theme filters; practical teachings show one reflection at a time; Books uses real covers; `reading-room.html` preserves the opening/page-turning Pearls experience; `message-cards.html` preserves the rotating/folded-card experience. Supporting acknowledgements sit behind service stories.
 
 ## Start locally
 
@@ -34,7 +34,7 @@ python3 scripts/serve.py --port 8876 --no-build
 | --- | --- | --- |
 | `src/` | The interface, styles, and browser behaviour | Yes |
 | `content/` | Site index, individual category/event records, and reading collections | Yes |
-| `assets/` | Web-ready photographs, covers, audio/video, fonts, and approved document excerpts | Yes |
+| `assets/` | Web-ready photographs, covers, audio/video, fonts, and complete reviewed document pages | Yes |
 | `media/` | Unchanged originals, organized by category, event, and media type; local catalog with provenance | No; ignored by Git |
 | `incoming/` | New material awaiting classification and review | No; ignored by Git |
 | `docs/` | Content model, design plan, upload guide, and repository map | No |

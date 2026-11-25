@@ -3,6 +3,7 @@
   const app = document.querySelector("#app"),
     announce = document.querySelector("#announcement");
   const reduced = matchMedia("(prefers-reduced-motion: reduce)");
+  const sessionValue = key => { try { return sessionStorage.getItem(key); } catch (_) { return null; } };
   const cache = new Map();
   let site,
     routeToken = 0,
@@ -22,7 +23,9 @@
   const state = { ...defaultState },
     viewStates = new Map();
   let activeScope = "",
-    homeCategory = "",
+    homeCategory = sessionValue("svnf-home-category") || "",
+    homePlaying = sessionValue("svnf-home-rotation") !== "paused" && !reduced.matches,
+    transitionDirection = 1,
     swipeDeadline = 0;
   const collectionEntries = (data) =>
     Array.isArray(data)
@@ -88,10 +91,11 @@
     /^(https?:\/\/|mailto:|tel:|assets\/|#\/)/.test(String(value))
       ? esc(value)
       : "#";
-  const photo = (src, alt = "", cls = "", position = "") =>
-    src
-      ? `<img src="${href(src)}" alt="${esc(alt)}" class="${cls}" ${position ? `style="object-position:${esc(position)}"` : ""} decoding="async">`
-      : "";
+  const photo = (src, alt = "", cls = "", position = "") => {
+    if (!src) return "";
+    const image = site?.imageVariants?.[src], priority = cls.includes("priority");
+    return `<img src="${href(src)}" alt="${esc(alt)}" class="${cls}" ${position ? `style="object-position:${esc(position)}"` : ""} ${image ? `width="${image.width}" height="${image.height}" srcset="${image.sources.map(v => href(v.src) + ' ' + v.width + 'w').join(', ')}" sizes="(max-width: 750px) 90vw, 46vw"` : ""} loading="${priority ? "eager" : "lazy"}" ${priority ? 'fetchpriority="high"' : ""} decoding="async">`;
+  };
   const getCategory = (id) => site.categories.find((c) => c.id === id);
   const featuredCategories = () =>
     site.homeCards
@@ -170,10 +174,12 @@
       ),
       elapsed = 0,
       last = performance.now(),
-      playing = !reduced.matches,
+      playing = homePlaying && !reduced.matches,
+      hoverPaused = false,
+      idleUntil = 0,
       pointer = null,
       suppress = false;
-    app.innerHTML = `<section class="home"><div class="home-intro"><p class="eyebrow">HIS HOLINESS SRI VIDYANARAYANA THIRTHA SWAMIJI</p><h1>A life of wisdom. <em>A world of care.</em></h1></div><div class="portrait-carousel" aria-label="The many sides of Swamiji" aria-roledescription="carousel">${cats.map((c, i) => `<button class="portrait" data-category="${esc(c.id)}" data-index="${i}" aria-label="${esc(c.title + (c.homeContributionTotal ? ` · ${c.homeContributionTotal.approximate ? "approximately " : ""}${formatMoney(c.homeContributionTotal.amount)} recorded support` : ""))}" aria-pressed="${i === 0}" style="--card-accent:${c.theme.accent};--card-paper:${c.theme.surface || "#fffaf1"};--position:${esc(c.position || "50% 35%")}">${photo(c.cover, c.coverAlt || c.title)}${c.homeContributionTotal ? `<b class="portrait-contribution">${c.homeContributionTotal.approximate ? "≈ " : ""}${formatMoney(c.homeContributionTotal.amount)}<small>recorded support</small></b>` : ""}<span><small>${esc(c.eyebrow)}</small><strong>${esc(c.title)}</strong></span></button>`).join("")}</div><div class="home-note"><p id="home-caption"></p><div class="home-actions"><a class="button" id="chapter-link" href="#/">Explore this side <span aria-hidden="true">↗</span></a><a class="text-link" href="#/explore">Discover his life <span aria-hidden="true">↗</span></a></div></div><div class="carousel-controls"><button data-home="previous" aria-label="Previous portrait">←</button><nav class="dots" aria-label="Choose a portrait">${cats.map((c, i) => `<button data-home-index="${i}" aria-label="Show ${esc(c.title)}" aria-pressed="${i === 0}"></button>`).join("")}</nav><button data-home="next" aria-label="Next portrait">→</button><button class="play" aria-label="Pause automatic rotation" data-home="play">Ⅱ</button></div></section>`;
+    app.innerHTML = `<section class="home"><div class="home-intro"><p class="eyebrow">HIS HOLINESS SRI VIDYANARAYANA THIRTHA SWAMIJI</p><h1>A life of wisdom. <em>A world of care.</em></h1></div><div class="portrait-carousel" aria-label="The many sides of Swamiji" aria-roledescription="carousel">${cats.map((c, i) => `<button class="portrait" data-category="${esc(c.id)}" data-index="${i}" aria-label="${esc(c.title + (c.homeContributionTotal ? ` · ${c.homeContributionTotal.approximate ? "approximately " : ""}${formatMoney(c.homeContributionTotal.amount)} recorded support` : ""))}" aria-pressed="${i === 0}" style="--card-accent:${c.theme.accent};--card-paper:${c.theme.surface || "#fffaf1"};--position:${esc(c.position || "50% 35%")}">${photo(c.cover, c.coverAlt || c.title, i === current ? "priority" : "")}${c.homeContributionTotal ? `<b class="portrait-contribution">${c.homeContributionTotal.approximate ? "≈ " : ""}${formatMoney(c.homeContributionTotal.amount)}<small>recorded support</small></b>` : ""}<span><small>${esc(c.eyebrow)}</small><strong>${esc(c.title)}</strong>${c.homeMilestone ? `<b class="portrait-milestone">${esc(c.homeMilestone)}</b>` : ""}</span></button>`).join("")}</div><div class="home-note"><p id="home-caption"></p><div class="home-actions"><a class="button" id="chapter-link" href="#/">Explore this side <span aria-hidden="true">↗</span></a><span class="home-instruction">Swipe a portrait or choose a side below</span></div></div><div class="carousel-controls"><button data-home="previous" aria-label="Previous portrait">←</button><nav class="dots" aria-label="Choose a side of Swamiji’s life">${cats.map((c, i) => `<button data-home-index="${i}" aria-label="Show ${esc(c.title)}" aria-pressed="${i === 0}"><span>${esc(c.shortTitle || c.title)}</span></button>`).join("")}</nav><button data-home="next" aria-label="Next portrait">→</button><button class="play" aria-label="Pause automatic rotation" data-home="play">Ⅱ</button></div></section>`;
     const stage = app.querySelector(".portrait-carousel"),
       cards = [...app.querySelectorAll(".portrait")],
       dots = [...app.querySelectorAll(".dots button")],
@@ -241,11 +247,16 @@
       elapsed = 0;
       const c = cats[current];
       homeCategory = c.id;
+      try { sessionStorage.setItem("svnf-home-category", c.id); } catch (_) {}
+      if (manual) idleUntil = performance.now() + 15000;
       theme(c);
       app.querySelector("#home-caption").textContent = c.caption;
+      app.querySelector("#chapter-link").innerHTML = `${esc(c.id === "his-holiness" ? "Meet Swamiji" : c.id === "teachings" ? "Learn from Swamiji" : "Explore " + (c.shortTitle || c.title))} <span aria-hidden="true">→</span>`;
       app.querySelector("#chapter-link").href =
         c.id === "teachings" ? "#/learn" : "#/category/" + c.id;
       position();
+      const activeChoice = dots[current], nav = activeChoice.parentElement;
+      if (activeChoice.offsetLeft < nav.scrollLeft || activeChoice.offsetLeft + activeChoice.offsetWidth > nav.scrollLeft + nav.clientWidth) nav.scrollTo({left:activeChoice.offsetLeft - (nav.clientWidth - activeChoice.offsetWidth)/2, behavior: reduced.matches ? "instant" : "smooth"});
       if (manual) announce.textContent = c.title + ". " + c.caption;
     }
     cards.forEach((card, i) =>
@@ -269,6 +280,9 @@
       select(current + 1, true);
     play.onclick = () => {
       playing = !playing;
+      homePlaying = playing;
+      if (playing) { hoverPaused = false; idleUntil = 0; }
+      try { sessionStorage.setItem("svnf-home-rotation", playing ? "playing" : "paused"); } catch (_) {}
       elapsed = 0;
       label();
     };
@@ -304,6 +318,11 @@
         e.preventDefault();
       }
     });
+    const interaction = app.querySelector(".home");
+    interaction.addEventListener("pointerenter", () => { hoverPaused = true; });
+    interaction.addEventListener("pointerleave", () => { hoverPaused = false; idleUntil = performance.now() + 4000; });
+    interaction.addEventListener("focusin", () => { hoverPaused = true; });
+    interaction.addEventListener("focusout", (e) => { hoverPaused = interaction.contains(e.relatedTarget); idleUntil = performance.now() + 4000; });
     const observer = new ResizeObserver(resize);
     observer.observe(stage);
     select(current);
@@ -315,7 +334,7 @@
     function tick(now) {
       const delta = Math.min(100, now - last);
       last = now;
-      if (playing && !document.hidden) {
+      if (playing && !reduced.matches && !hoverPaused && performance.now() > idleUntil && !document.hidden) {
         elapsed += delta;
         if (elapsed >= 8000) select(current + 1);
       }
@@ -329,7 +348,10 @@
     };
   }
 
-  const deckMemory = new Map();
+  const deckMemory = {
+    get: key => sessionValue("svnf-choice-" + key),
+    set: (key, value) => { try { sessionStorage.setItem("svnf-choice-" + key, value); } catch (_) {} },
+  };
   const short = (text, n = 210) =>
     String(text || "").length > n
       ? String(text)
@@ -398,9 +420,10 @@
       const e = getEvent(parts[1]);
       return e ? "#/category/" + e.category + "/moments/" + e.id : "#/explore";
     }
-    if (parts[0] === "read") return "#/library/" + parts[1];
+    if (parts[0] === "read") return "#/library/" + parts[1] + (parts[1] === "readings" ? "/" + parts[2] : "");
     if (parts[0] === "library") return "#/learn";
-    if (parts[0] === "category") return "#/explore/" + parts[1];
+    if (parts[0] === "explore") return "#/";
+    if (parts[0] === "category") return "#/";
     if (
       parts[0] === "record" ||
       (parts[0] === "foundation" && parts[1] === "support")
@@ -423,11 +446,11 @@
       if (ignored(e) || e.altKey || e.ctrlKey || e.metaKey) return;
       if (e.key === "ArrowRight") {
         e.preventDefault();
-        goTo(resolve(next));
+        transitionDirection = 1; goTo(resolve(next));
       }
       if (e.key === "ArrowLeft") {
         e.preventDefault();
-        goTo(resolve(previous));
+        transitionDirection = -1; goTo(resolve(previous));
       }
       if (e.key === "Escape" && back && !document.querySelector("dialog[open]"))
         location.hash = back;
@@ -445,7 +468,7 @@
         dy = e.clientY - startY;
       if (Math.abs(dx) > 55 && Math.abs(dx) > Math.abs(dy) * 1.3) {
         swipeDeadline = performance.now() + 350;
-        goTo(resolve(dx < 0 ? next : previous));
+        transitionDirection = dx < 0 ? 1 : -1; goTo(resolve(dx < 0 ? next : previous));
       }
     };
     document.addEventListener("keydown", key);
@@ -467,8 +490,9 @@
     position = "50% 38%",
     book = false,
     openHref,
+    caption = "",
   ) {
-    return `<div class="story-art ${book ? "book-art" : ""}"><div class="art-orbit" aria-hidden="true"></div>${nextCover ? `<a class="next-glimpse" href="${href(nextHref)}" aria-label="Next story">${photo(nextCover, "")}<span>Up next ↗</span></a>` : ""}<a class="story-image" href="${href(openHref || nextHref)}" aria-label="${esc(title)}">${photo(cover, title, "", position)}</a></div>`;
+    return `<div class="story-art ${book ? "book-art" : ""}"><div class="art-orbit" aria-hidden="true"></div>${nextCover ? `<a class="next-glimpse" href="${href(nextHref)}" aria-label="Next story">${photo(nextCover, "")}<span>Up next ↗</span></a>` : ""}<a class="story-image" href="${href(openHref || nextHref)}" aria-label="${esc(title)}">${photo(cover, title, "priority", position)}</a>${caption ? `<p class="photo-context">${esc(caption)}</p>` : ""}</div>`;
   }
   function explore(selected) {
     const cats = featuredCategories();
@@ -484,7 +508,7 @@
         "#/explore/" + cats[(index - 1 + cats.length) % cats.length].id,
       next = "#/explore/" + after.id,
       target = c.id === "teachings" ? "#/learn" : "#/category/" + c.id;
-    app.innerHTML = `<section class="view story-view">${heading("His life, in action.", '<a href="#/">Meet Swamiji</a>')}<div class="story-scene"><div class="scene-backdrop" style="background-image:url('${href(c.cover)}')"></div><div class="story-copy"><p class="eyebrow">${esc(c.eyebrow)}</p><h2>${esc(c.headline || c.title)}</h2><p class="story-description">${esc(c.caption)}</p><a class="button" href="${target}">${c.id === "teachings" ? "Learn from Swamiji" : "Meet this side"} <span aria-hidden="true">↗</span></a><span class="scene-kicker">${esc(c.title)}</span></div>${sceneArt(c.cover, c.title, after.cover, next, c.position || "50% 35%", false, target)}</div>${sceneNavigation("A life. Many expressions.", experienceLinks(), index, prev, next)}</section>`;
+    app.innerHTML = `<section class="view story-view">${heading("His life, in action.", '<a href="#/">Meet Swamiji</a>')}<div class="story-scene"><div class="scene-backdrop" style="background-image:url('${href(c.cover)}')"></div><div class="story-copy"><p class="eyebrow">${esc(c.eyebrow)}</p><h2>${esc(c.headline || c.title)}</h2><p class="story-description">${esc(c.caption)}</p><a class="button" href="${target}">${c.id === "teachings" ? "Learn from Swamiji" : "Meet this side"} <span aria-hidden="true">↗</span></a><span class="scene-kicker">${esc(c.title)}</span></div>${sceneArt(c.cover, c.title, "", next, c.position || "50% 35%", false, target)}</div>${sceneNavigation("A life. Many expressions.", experienceLinks(), index, prev, next)}</section>`;
     bindSequence(prev, next, "#/");
   }
   async function category(id, selectedTab, selectedId) {
@@ -524,6 +548,11 @@
     );
     const event = events[index],
       after = events[(index + 1) % events.length];
+    if (event.presentation === "service-story" && event.supportRecordIds?.length) {
+      deckMemory.set(id, event.id);
+      await recordView(event.supportGroupId || event.supportRecordIds[0]);
+      return;
+    }
     deckMemory.set(id, event.id);
     const base = "#/category/" + id + "/moments/",
       prev = base + events[(index - 1 + events.length) % events.length].id,
@@ -532,13 +561,13 @@
         event.presentation === "service-story" && event.supportRecordIds?.length
           ? "#/record/" + (event.supportGroupId || event.supportRecordIds[0])
           : "#/event/" + event.id;
-    app.innerHTML = `<section class="view story-view">${heading(c.title, '<a href="#/explore/' + id + '">His life in action</a>')}<div class="story-scene"><div class="scene-backdrop" style="background-image:url('${href(event.cover)}')"></div><div class="story-copy"><p class="eyebrow">${esc([event.location, event.date ? dateLabel(event.date) : event.year].filter(Boolean).join(" · ") || c.eyebrow)}</p><h2>${esc(event.title)}</h2><p class="story-description">${esc(short(event.description || c.caption))}</p><a class="button" href="${target}">${id === "his-holiness" && event.id === "swamiji-stuti" ? "Read the Stuti" : event.presentation === "service-story" ? "Discover this service" : "Step into this moment"} <span aria-hidden="true">↗</span></a>${event.photoSource ? `<a class="school-photo-credit" href="${esc(event.photoSource)}" target="_blank" rel="noopener">${esc(event.photoCredit)} ↗</a>` : ""}<span class="scene-kicker">${
+    app.innerHTML = `<section class="view story-view">${heading(c.title)}<div class="story-scene"><div class="scene-backdrop" style="background-image:url('${href(event.cover)}')"></div><div class="story-copy"><p class="eyebrow">${esc([event.location, event.date ? dateLabel(event.date) : event.year].filter(Boolean).join(" · ") || c.eyebrow)}</p><h2>${esc(event.title)}</h2><p class="story-description">${esc(event.intro || short(event.description || c.caption))}</p><a class="button" href="${target}">${id === "his-holiness" && event.id === "swamiji-stuti" ? "Read the Stuti" : event.presentation === "service-story" ? "View contribution" : event.counts?.photos ? "View photographs" : event.counts?.recordings ? "Listen to the recordings" : "Explore this occasion"} <span aria-hidden="true">↗</span></a>${event.photoSource ? `<a class="school-photo-credit" href="${esc(event.photoSource)}" target="_blank" rel="noopener">${esc(event.photoCredit)} ↗</a>` : ""}<span class="scene-kicker">${
       event.presentation === "service-story"
         ? "A story of support"
         : Object.entries(event.counts || {})
             .map(
               ([k, v]) =>
-                `${v} ${v === 1 ? { photos: "photograph", films: "film", recordings: "recording", documents: "document" }[k] || k : k}`,
+                `${v} ${v === 1 ? { photos: "photograph", films: "film", recordings: "recording", documents: "document", youtube: "video" }[k] || k : { youtube: "videos" }[k] || k}`,
             )
             .join(" · ")
     }</span></div>${sceneArt(event.cover, event.coverAlt || event.title, "", next, event.coverPosition || "50% 35%", false, target)}</div>${sceneNavigation(c.title, events.map((e) => ({ title: e.title, href: base + e.id })), index, prev, next)}</section>`;
@@ -579,14 +608,14 @@
       target = photographs
         ? "#/event/" + event.id
         : "#/record/" + profile.recordIds[0];
-    app.innerHTML = `<section class="view story-view education-view">${heading(c.title, '<a href="#/explore/education">His life in action</a>')}<div class="story-scene"><div class="scene-backdrop" style="background-image:url('${href(schoolCover)}')"></div><div class="story-copy"><p class="eyebrow">${esc(event.location || "DEFENCE SCHOOLS · EDUCATIONAL SUPPORT")}</p><h2>${esc(profile.title)}</h2><div class="school-contribution"><small>${esc(profile.amountLabel)}</small><strong class="${records.length ? "cash-amount" : "contribution-kind"}">${esc(amountText)}</strong></div><p class="story-description">${esc(profile.description)}</p><div class="story-actions"><a class="button" href="${target}">${photographs ? "See the school moments" : "View the contribution record"} ↗</a>${records.some((r) => r.src) ? `<details class="school-attachments"><summary>Supporting acknowledgements ↗</summary><div class="school-attachment-list">${records.filter((r) => r.src).map((r) => `<a class="text-link" href="${href(r.src)}" target="_blank" rel="noopener"><strong class="receipt-contribution">${formatMoney(r.amount)}</strong><span>${esc(r.displayDonor || r.donor || r.evidenceLabel)} ↗</span></a>`).join("")}</div></details>` : ""}</div>${profile.photoSource ? `<a class="school-photo-credit" href="${esc(profile.photoSource)}" target="_blank" rel="noopener">${esc(profile.photoCredit)} ↗</a>` : ""}</div>${sceneArt(schoolCover, profile.title, "", next, event.coverPosition || "50% 30%", false, target)}</div>${sceneNavigation("Schools and colleges", profiles.map((p) => ({ title: p.title, href: base + p.id })), index, previous, next)}</section>`;
+    app.innerHTML = `<section class="view story-view education-view">${heading(c.title)}<div class="story-scene"><div class="scene-backdrop" style="background-image:url('${href(schoolCover)}')"></div><div class="story-copy"><p class="eyebrow">${esc(event.location || "DEFENCE SCHOOLS · EDUCATIONAL SUPPORT")}</p><h2>${esc(profile.title)}</h2><div class="school-contribution"><small>${esc(profile.amountLabel)}</small><strong class="${records.length ? "cash-amount" : "contribution-kind"}">${esc(amountText)}</strong></div><p class="story-description">${esc(profile.intro || profile.description)}</p><div class="story-actions"><a class="button" href="${target}">${photographs ? "View school photographs" : "View contribution details"} ↗</a>${records.some((r) => r.src) ? `<details class="school-attachments"><summary>Receipts and acknowledgements</summary><div class="school-attachment-list">${records.filter((r) => r.src).map((r) => `<a class="text-link" href="${href(r.src)}" target="_blank" rel="noopener"><strong class="receipt-contribution">${formatMoney(r.amount)}</strong><span>${esc(r.displayDonor || r.donor || r.evidenceLabel)} ↗</span></a>`).join("")}</div></details>` : ""}</div>${profile.photoSource ? `<a class="school-photo-credit" href="${esc(profile.photoSource)}" target="_blank" rel="noopener">${esc(profile.photoCredit)} ↗</a>` : ""}</div>${sceneArt(schoolCover, profile.title, "", next, event.coverPosition || "50% 30%", false, target, profile.photoCaption)}</div>${sceneNavigation("Schools and colleges", profiles.map((p) => ({ title: p.title, href: base + p.id })), index, previous, next)}</section>`;
     bindSequence(previous, next, "#/explore/education");
   }
 
   function foundationView(connect = false) {
     const c = getCategory("foundation");
     theme(c);
-    app.innerHTML = `<section class="view story-view">${heading("Inspired by his example.", "The foundation")}<div class="story-scene"><div class="scene-backdrop" style="background-image:url('${href(c.cover)}')"></div><div class="story-copy"><p class="eyebrow">VIDYA · VAIDYA · VASATHI</p><h2>Kindness.<br><em>Carried forward.</em></h2><p class="story-description">${esc(site.foundation.description)}</p><div class="story-actions"><a class="button" href="#/foundation/connect">Be part of the work ↗</a><a class="text-link" href="#/category/foundation/moments">Moments of service ↗</a></div><a class="quiet-link" href="#/foundation/support">A clear account of historical support ↗</a></div><div class="foundation-image">${photo(c.cover, "Service inspired by Swamiji’s example")}</div></div>${connect ? `<dialog class="scene-index contact-dialog" id="contact-dialog" open><div class="index-head"><p class="eyebrow">A CONVERSATION IS A BEGINNING</p><a href="#/foundation" aria-label="Close contact details">×</a></div><h2>Let’s serve together.</h2><p>For current needs, volunteering and contribution guidance, speak with the foundation team.</p><a class="contact-link" href="mailto:${esc(site.foundation.email)}">${esc(site.foundation.email)}</a><a class="contact-link" href="tel:${esc(site.foundation.phone.replace(/[^+\d]/g, ""))}">${esc(site.foundation.phone)}</a><p>${esc(site.foundation.office)}</p></dialog>` : ""}<div class="foundation-bottom"><a href="#/category/education">Encourage learning ↗</a><a href="#/category/healthcare">Care for wellbeing ↗</a><a href="#/category/annadanam">Share nourishment ↗</a><a href="#/category/compassion">Care for all life ↗</a></div></section>`;
+    app.innerHTML = `<section class="view story-view">${heading("Inspired by his example.", "The foundation")}<div class="story-scene"><div class="scene-backdrop" style="background-image:url('${href(c.cover)}')"></div><div class="story-copy"><p class="eyebrow">VIDYA · VAIDYA · VASATHI</p><h2>Kindness.<br><em>Carried forward.</em></h2><p class="story-description">${esc(site.foundation.description)}</p><div class="story-actions"><a class="button" href="#/foundation/connect">Contact the foundation →</a><a class="text-link" href="#/category/foundation/moments">Moments of service ↗</a></div><a class="quiet-link" href="#/foundation/support">A clear account of historical support ↗</a></div><div class="foundation-image">${photo(c.cover, "Service inspired by Swamiji’s example")}</div></div>${connect ? `<dialog class="scene-index contact-dialog" id="contact-dialog" open><div class="index-head"><p class="eyebrow">A CONVERSATION IS A BEGINNING</p><a href="#/foundation" aria-label="Close contact details">×</a></div><h2>Let’s serve together.</h2><p>For current needs, volunteering and contribution guidance, speak with the foundation team.</p><a class="contact-link" href="mailto:${esc(site.foundation.email)}">${esc(site.foundation.email)}</a><a class="contact-link" href="tel:${esc(site.foundation.phone.replace(/[^+\d]/g, ""))}">${esc(site.foundation.phone)}</a><p>${esc(site.foundation.office)}</p></dialog>` : ""}<div class="foundation-bottom"><a href="#/category/education">Encourage learning ↗</a><a href="#/category/healthcare">Care for wellbeing ↗</a><a href="#/category/annadanam">Share nourishment ↗</a><a href="#/category/compassion">Care for all life ↗</a></div></section>`;
   }
   async function supportView(category) {
     const token = routeToken;
@@ -629,11 +658,12 @@
             : type === "document"
               ? `<a class="document-preview" href="${href(item.src)}" target="_blank" rel="noopener" aria-label="Open full document">${item.poster ? photo(item.poster, item.title || event.title) : '<span class="document-label">Read the original document</span>'}<span class="button">Open full document ↗</span></a>`
               : `<div class="listen-stage">${photo(item.poster || event.cover, event.title)}<a class="button" href="${href(item.url || item.src)}" target="_blank" rel="noopener">Watch this recording on YouTube ↗</a></div>`;
-    const caption = `<span class="eyebrow">${type === "photo" ? "A MOMENT TO REMEMBER" : type === "audio" ? "VOICES OF THE OCCASION" : "FROM THE OCCASION"} · ${index + 1} / ${media.length}</span><h2>${esc(item?.title || event.title)}</h2><p>${esc(short(item?.caption || event.description, 320))}</p><details><summary>About this occasion</summary><p>${esc(event.description)}</p><p>${esc(event.credit)} ${esc(event.note)}</p></details><a class="text-link" href="${href(item?.src || item?.url || parent)}" target="_blank" rel="noopener">${type === "photo" ? "View full photograph" : type === "document" ? "Read original document" : "Open recording"} ↗</a>`;
+    const duration = item?.durationSeconds ? `${Math.floor(item.durationSeconds / 60)}:${String(item.durationSeconds % 60).padStart(2, "0")}` : "";
+    const caption = `<span class="eyebrow">${type === "photo" ? "A MOMENT TO REMEMBER" : type === "audio" ? "VOICES OF THE OCCASION" : "FROM THE OCCASION"} · ${index + 1} / ${media.length}${duration ? " · " + duration : ""}</span><h2>${esc(item?.title || event.title)}</h2><p>${esc(short(item?.caption || event.description, 320))}</p><details><summary>About this occasion</summary><p>${esc(event.description)}</p><p>${esc(event.credit)} ${esc(event.note)}</p></details><a class="text-link" href="${href(item?.src || item?.url || parent)}" target="_blank" rel="noopener">${type === "photo" ? "View full photograph" : type === "document" ? "Read original document" : "Open recording"} ↗</a>`;
     const ribbon = media
       .map(
         (m, i) =>
-          `<a href="#/event/${esc(id)}/${type}/${i}" ${i === index ? 'aria-current="true"' : ""} aria-label="${esc(m.title || "Moment " + (i + 1))}">${m.type === "photo" ? photo(m.thumb || m.src, "") : m.poster ? photo(m.poster, "") : `<span>${type === "audio" ? "Listen" : type === "video" ? "Film" : "Read"} ${i + 1}</span>`}</a>`,
+          `<a href="#/event/${esc(id)}/${type}/${i}" ${i === index ? 'aria-current="true"' : ""} aria-label="${esc((m.title || "Moment " + (i + 1)) + (m.durationSeconds ? " · " + Math.floor(m.durationSeconds / 60) + ":" + String(m.durationSeconds % 60).padStart(2, "0") : ""))}">${m.type === "photo" ? photo(m.thumb || m.src, "") : m.poster ? photo(m.poster, "") : `<span>${type === "audio" ? "Listen" : type === "video" || type === "youtube" ? "Watch" : "Read"} ${i + 1}</span>`}</a>`,
       )
       .join("");
     const shell = app.querySelector(".cinema-view");
@@ -665,10 +695,11 @@
               activeMedia.index !== index
             )
               return;
+            img.removeAttribute("srcset"); img.removeAttribute("sizes"); img.removeAttribute("width"); img.removeAttribute("height");
             img.src = item.src;
             stage.removeAttribute("aria-busy");
             if (!reduced.matches)
-              img.animate([{ opacity: 0.55 }, { opacity: 1 }], {
+              img.animate([{ opacity: 0.65, transform: `translateX(${6 * transitionDirection}px)` }, { opacity: 1, transform: "translateX(0)" }], {
                 duration: 220,
               });
           };
@@ -808,7 +839,7 @@
         href: "#/library/teachings",
       },
     ];
-    app.innerHTML = `<section class="view learning-gateway">${heading("Learn Swamiji’s Teachings.", '<a href="#/">Meet Swamiji</a>', "A thought to reflect on. A way to live.")}<div class="learning-doors">${choices.map((c, i) => `<a class="learning-door ${c.id}" href="${c.href}"><span class="door-number">0${i + 1}</span><div class="door-art">${photo(c.cover, c.title)}</div><div class="door-copy"><p class="eyebrow">${c.eyebrow}</p><h2>${c.title}</h2><p>${c.description}</p><span class="door-action">${c.id === "messages" ? "Read the blessings" : c.id === "books" ? "Find a book" : c.id === "readings" ? "Read a reflection" : "Begin with a teaching"} ↗</span></div></a>`).join("")}</div><a class="gateway-pearl" href="reading-room.html">A quiet moment? Open Pearls of Wisdom →</a></section>`;
+    app.innerHTML = `<section class="view learning-gateway">${heading("Learn Swamiji’s Teachings.", "", "A thought to reflect on. A way to live.")}<nav class="learning-shortcuts" aria-label="Choose a teaching experience">${choices.map(c => `<a href="${c.href}">${esc({readings:"Satsangs",books:"Books",messages:"Blessings",teachings:"Practice"}[c.id])}</a>`).join("")}</nav><div class="learning-doors">${choices.map((c, i) => `<a class="learning-door ${c.id}" href="${c.href}"><span class="door-number">0${i + 1}</span><div class="door-art">${photo(c.cover, c.title)}</div><div class="door-copy"><p class="eyebrow">${c.eyebrow}</p><h2>${c.title}</h2><p>${c.description}</p><span class="door-action">${c.id === "messages" ? "Read the blessings" : c.id === "books" ? "Find a book" : c.id === "readings" ? "Read a reflection" : "Begin with a teaching"} ↗</span></div></a>`).join("")}</div><a class="gateway-pearl" href="reading-room.html?open=1">A quiet moment? Open Pearls of Wisdom →</a></section>`;
   }
   async function library(name = "readings", selected) {
     if (!libNames[name]) name = "readings";
@@ -917,7 +948,7 @@
       calendarIcon = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M7 2v6m10-6v6M3 11h18"/></svg>',
       filters = [state.month ? monthLabel(state.month) : "", state.search ? "Matching: " + state.search : "", state.topic].filter(Boolean);
     let calendarMonth = state.month || item?.date.slice(0, 7) || months[months.length - 1];
-    app.innerHTML = `<section class="view satsang-view"><div class="satsang-top">${heading("Satsangs", '<a href="#/learn">Learn Swamiji’s Teachings</a>')}<div class="satsang-tools"><form class="satsang-search" role="search"><input type="search" name="thought" aria-label="Search Satsangs" placeholder="Find a thought…" value="${esc(state.search)}"><button type="submit" aria-label="Search messages">↗</button></form><details class="satsang-calendar"><summary>${calendarIcon}<span>Calendar</span>${state.month ? '<i aria-hidden="true"></i>' : ""}</summary><div class="satsang-calendar-panel"><div class="satsang-calendar-head"><button type="button" data-calendar-step="-1" aria-label="Previous month">←</button><h2 id="satsang-calendar-month"></h2><button type="button" data-calendar-step="1" aria-label="Next month">→</button></div><div class="calendar-weekdays" aria-hidden="true">${["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map((d) => `<span>${d}</span>`).join("")}</div><div class="satsang-calendar-days" aria-labelledby="satsang-calendar-month"></div><p class="calendar-hint">Choose a highlighted date to open its Satsang.</p><div class="calendar-actions"><button type="button" data-calendar-month>Read this month</button><button type="button" data-satsang-clear>All dates</button></div><label class="calendar-topic">A theme to reflect on<select aria-label="Filter Satsangs by theme"><option value="">Every theme</option>${[...new Set(all.flatMap((e) => e.topics || e.tags || []))].sort().map((topic) => `<option value="${esc(topic)}" ${state.topic === topic ? "selected" : ""}>${esc(topic)}</option>`).join("")}</select></label></div></details></div></div><div class="satsang-filter-note">${filters.length ? `<span>${esc(filters.join(" · "))}</span><button type="button" data-satsang-clear>Show all Satsangs ×</button>` : '<span>A quiet moment. A little clarity.</span>'}</div><div class="satsang-stage"><article class="satsang-message-card ${item ? "" : "satsang-empty"}"><figure class="satsang-photo">${photo(getCategory("teachings").cover, "His Holiness Sri Vidyanarayana Thirtha Swamiji by the water")}</figure><div class="satsang-copy"><div class="satsang-meta"><p class="satsang-kicker">WORDS FOR EVERYDAY LIFE</p>${item ? `<time datetime="${esc(item.date)}">${dateLabel(item.date)}</time>` : '<span class="satsang-no-date">A moment to begin again</span>'}</div>${item ? `<h2><a href="#/read/readings/${esc(item.id)}">${esc(item.title)}</a></h2><p class="satsang-lead">${esc(item.lead || item.essence || "")}</p><div class="satsang-read"><a class="button" href="#/read/readings/${esc(item.id)}">Read this Satsang <span aria-hidden="true">↗</span></a><span>Edited Satsang reflection</span></div>` : '<h2>No Satsangs match this selection.</h2><p class="satsang-lead">Try another word, choose a highlighted calendar date, or return to all messages.</p><button class="button" type="button" data-satsang-clear>Show all Satsangs ↗</button>'}</div></article></div><nav class="satsang-navigation" aria-label="Browse Satsangs">${previous ? `<a href="${previous}" aria-label="Previous Satsang">← <span>Previous</span></a>` : '<button type="button" disabled aria-label="Previous Satsang">← <span>Previous</span></button>'}<div><strong>${item ? dateLabel(item.date) : "No matching message"}</strong><span>${item ? `${index + 1} of ${matches.length} Satsangs` : "Choose another date or clear your filters"}</span></div>${next ? `<a href="${next}" aria-label="Next Satsang"><span>Next</span> →</a>` : '<button type="button" disabled aria-label="Next Satsang"><span>Next</span> →</button>'}</nav></section>`;
+    app.innerHTML = `<section class="view satsang-view"><div class="satsang-top">${heading("Satsangs", '<a href="#/learn">Learn Swamiji’s Teachings</a>')}<div class="satsang-tools"><form class="satsang-search" role="search"><input type="search" name="thought" aria-label="Search Satsangs" placeholder="Find a thought…" value="${esc(state.search)}"><button type="submit" aria-label="Search messages">↗</button></form><details class="satsang-calendar"><summary>${calendarIcon}<span>Calendar</span>${state.month ? '<i aria-hidden="true"></i>' : ""}</summary><div class="satsang-calendar-panel"><div class="satsang-calendar-head"><button type="button" data-calendar-step="-1" aria-label="Previous month">←</button><h2 id="satsang-calendar-month"></h2><button type="button" data-calendar-step="1" aria-label="Next month">→</button></div><div class="calendar-weekdays" aria-hidden="true">${["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map((d) => `<span>${d}</span>`).join("")}</div><div class="satsang-calendar-days" aria-labelledby="satsang-calendar-month"></div><p class="calendar-hint">Choose a highlighted date to open its Satsang.</p><div class="calendar-actions"><button type="button" data-calendar-month>Read this month</button><button type="button" data-satsang-clear>All dates</button></div></div></details><label class="satsang-topic">A theme to reflect on<select aria-label="Filter Satsangs by theme"><option value="">Every theme</option>${[...new Set(all.flatMap((e) => e.topics || e.tags || []))].sort().map((topic) => `<option value="${esc(topic)}" ${state.topic === topic ? "selected" : ""}>${esc(topic)}</option>`).join("")}</select></label></div></div><div class="satsang-filter-note">${filters.length ? `<span>${esc(filters.join(" · "))}</span><button type="button" data-satsang-clear>Show all Satsangs ×</button>` : '<span>A quiet moment. A little clarity.</span>'}</div><div class="satsang-stage"><article class="satsang-message-card ${item ? "" : "satsang-empty"}"><figure class="satsang-photo">${photo(getCategory("teachings").cover, "His Holiness Sri Vidyanarayana Thirtha Swamiji by the water")}</figure><div class="satsang-copy"><div class="satsang-meta"><p class="satsang-kicker">WORDS FOR EVERYDAY LIFE</p>${item ? `<time datetime="${esc(item.date)}">${dateLabel(item.date)}</time>` : '<span class="satsang-no-date">A moment to begin again</span>'}</div>${item ? `<h2><a href="#/read/readings/${esc(item.id)}">${esc(item.title)}</a></h2><p class="satsang-lead">${esc(item.lead || item.essence || "")}</p><div class="satsang-read"><a class="button" href="#/read/readings/${esc(item.id)}">Read this Satsang <span aria-hidden="true">↗</span></a><span>Edited Satsang reflection</span></div>` : '<h2>No Satsangs match this selection.</h2><p class="satsang-lead">Try another word, choose a highlighted calendar date, or return to all messages.</p><button class="button" type="button" data-satsang-clear>Show all Satsangs ↗</button>'}</div></article></div><nav class="satsang-navigation" aria-label="Browse Satsangs">${previous ? `<a href="${previous}" aria-label="Previous Satsang">← <span>Previous</span></a>` : '<button type="button" disabled aria-label="Previous Satsang">← <span>Previous</span></button>'}<div><strong>${item ? dateLabel(item.date) : "No matching message"}</strong><span>${item ? `${index + 1} of ${matches.length} Satsangs` : "Choose another date or clear your filters"}</span></div>${next ? `<a href="${next}" aria-label="Next Satsang"><span>Next</span> →</a>` : '<button type="button" disabled aria-label="Next Satsang"><span>Next</span> →</button>'}</nav></section>`;
     const calendar = app.querySelector(".satsang-calendar"),
       calendarPanel = app.querySelector(".satsang-calendar-panel"),
       grid = app.querySelector(".satsang-calendar-days");
@@ -960,7 +991,7 @@
     app.querySelector(".satsang-search").addEventListener("submit", (event) => {
       event.preventDefault(); state.search = new FormData(event.currentTarget).get("thought").trim(); refresh();
     });
-    app.querySelector(".calendar-topic select").addEventListener("change", (event) => {
+    app.querySelector(".satsang-topic select").addEventListener("change", (event) => {
       state.topic = event.target.value; refresh();
     });
     calendar.addEventListener("toggle", () => { if (calendar.open) paintCalendar(); });
@@ -1001,7 +1032,7 @@
         "#/library/books/" +
         books[(index - 1 + books.length) % books.length].id,
       next = "#/library/books/" + after.id;
-    app.innerHTML = `<section class="view books-experience">${heading("A quiet companion for the journey.", '<a href="#/learn">Learn Swamiji’s Teachings</a>')}<div class="book-scene"><div class="book-copy"><p class="eyebrow">${book.reader ? "A SPECIAL DIGITAL EDITION · READ HERE" : "THE BOOK COLLECTION"}</p><h2>${esc(book.title)}</h2><p>${esc(book.subtitle || "Teachings to read, reflect upon, and bring into everyday life.")}</p><p class="book-attribution">${esc(book.attribution)}</p><div class="story-actions">${book.reader ? '<a class="button" href="reading-room.html">Open the book ↗</a>' : `<a class="button" href="${href(book.purchaseUrl)}" target="_blank" rel="noopener">View the book ↗</a>`}<a class="text-link" href="${book.reader ? "reading-room.html" : "#/read/books/" + esc(book.id)}">${book.reader ? "Enter the reading room" : "About this edition"} →</a></div>${book.reader ? '<span class="scene-kicker">180 pearls · Save your place · Read at your own pace</span>' : '<span class="scene-kicker">Published editions and availability depend on the seller.</span>'}</div><div class="book-display"><a class="physical-book" href="${book.reader ? "reading-room.html" : "#/read/books/" + esc(book.id)}" aria-label="${book.reader ? "Open" : "Explore"} ${esc(book.title)}">${photo(book.cover, book.title)}<span aria-hidden="true"></span></a><p>OPEN · READ · REFLECT</p></div></div><div class="book-shelf" aria-label="Choose a book">${books.map((b, i) => `<a href="#/library/books/${esc(b.id)}" ${i === index ? 'aria-current="true"' : ""} aria-label="Show ${esc(b.title)}">${photo(b.cover, b.title)}<span>${String(i + 1).padStart(2, "0")}</span></a>`).join("")}</div>${sceneControls(previous, next, `${String(index + 1).padStart(2, "0")} / ${String(books.length).padStart(2, "0")}`, "All eight books")}</section>`;
+    app.innerHTML = `<section class="view books-experience">${heading("A quiet companion for the journey.", '<a href="#/learn">Learn Swamiji’s Teachings</a>')}<div class="book-scene"><div class="book-copy"><p class="eyebrow">${book.reader ? "A SPECIAL DIGITAL EDITION · READ HERE" : "THE BOOK COLLECTION"}</p><h2>${esc(book.title)}</h2><p>${esc(book.subtitle || "Teachings to read, reflect upon, and bring into everyday life.")}</p><p class="book-attribution">${esc(book.attribution)}</p><div class="story-actions">${book.reader ? '<a class="button" href="reading-room.html?open=1">Open the book ↗</a>' : `<a class="button" href="${href(book.purchaseUrl)}" target="_blank" rel="noopener">View the book ↗</a>`}${book.reader ? "" : `<a class="text-link" href="#/read/books/${esc(book.id)}">About this edition →</a>`}</div>${book.reader ? '<span class="scene-kicker">180 pearls · Save your place · Read at your own pace</span>' : '<span class="scene-kicker">Published editions and availability depend on the seller.</span>'}</div><div class="book-display"><a class="physical-book" href="${book.reader ? "reading-room.html?open=1" : "#/read/books/" + esc(book.id)}" aria-label="${book.reader ? "Open" : "Explore"} ${esc(book.title)}">${photo(book.cover, book.title)}<span aria-hidden="true"></span></a><p>OPEN · READ · REFLECT</p></div></div><div class="book-shelf" aria-label="Choose a book">${books.map((b, i) => `<a href="#/library/books/${esc(b.id)}" ${i === index ? 'aria-current="true"' : ""} aria-label="Show ${esc(b.title)}">${photo(b.cover, b.title)}<span>${String(i + 1).padStart(2, "0")}</span></a>`).join("")}</div>${sceneControls(previous, next, `${String(index + 1).padStart(2, "0")} / ${String(books.length).padStart(2, "0")}`, "All eight books")}</section>`;
     bindSequence(previous, next, "#/learn");
   }
 
@@ -1010,7 +1041,11 @@
     const data = await collection(name);
     if (token !== routeToken) return;
     theme(getCategory("teachings"));
-    const list = collectionEntries(data);
+    let list = collectionEntries(data);
+    if (name === "readings") {
+      const filtered = list.filter(e => (!state.month || e.date.startsWith(state.month)) && (!state.topic || (e.topics || e.tags || []).includes(state.topic)) && (!state.search || JSON.stringify(e).toLowerCase().includes(state.search.toLowerCase())));
+      list = (filtered.some(e => e.id === id) ? filtered : list).slice().sort((a,b) => (b.date || "").localeCompare(a.date || ""));
+    }
     const item = list.find((e) => String(e.id || e.number) === id);
     if (!item) throw Error("This reading is not available.");
     if (name === "pearls") {
@@ -1030,7 +1065,7 @@
       body = `<h1>${esc(title)}</h1><h2>What it means</h2>${paragraphs(item.meaning)}<h2>Put it into practice</h2><ul>${(item.actions || []).map((x) => `<li>${esc(x)}</li>`).join("")}</ul><p class="source-note">${esc(data.editorialNote || "A practical paraphrase from the available satsang summaries, including devotees’ reflections. Not a direct quotation.")}</p>`;
     else if (name === "books")
       body = `<h1>${esc(title)}</h1><p class="lead">${esc(item.subtitle || "Teachings to read, reflect upon, and bring into everyday life.")}</p><p>${esc(item.attribution || "A compilation of Swamiji’s teachings.")}</p>${item.coverNote ? `<p class="source-note">${esc(item.coverNote)}</p>` : ""}${item.reader ? `<a class="button" href="#/library/${esc(item.reader)}">Open the reading edition →</a>` : ""}${item.purchaseUrl ? `<a class="button" href="${href(item.purchaseUrl)}" target="_blank" rel="noopener">View the book ↗</a><p class="source-note">Edition and availability depend on the seller and location.</p>` : ""}`;
-    app.innerHTML = `<section class="view">${heading(name === "readings" ? dateLabel(item.date) : name === "books" ? "The book collection" : libNames[name], `<a href="#/library/${esc(name)}">${esc(libNames[name])}</a>`)}<div class="reader-layout"><aside class="reader-aside">${photo(item.cover || getCategory("teachings").cover, title)}<div class="reader-controls"><span>Reading size</span><button data-action="reader-size" data-delta="-1" aria-label="Decrease reading text size">A−</button><button data-action="reader-size" data-delta="1" aria-label="Increase reading text size">A+</button></div><p>A little time to read.<br>A little space to reflect.</p><span class="tag">${name === "readings" ? dateLabel(item.date) : libNames[name]}</span></aside><article class="reader-scroll">${body}<nav class="reader-next" aria-label="Continue reading">${list.indexOf(item) > 0 ? `<a href="#/read/${name}/${esc(list[list.indexOf(item) - 1].id || list[list.indexOf(item) - 1].number)}">← Previous</a>` : ""}<a href="#/library/${name}">Back to ${esc(libNames[name])}</a>${list.indexOf(item) < list.length - 1 ? `<a href="#/read/${name}/${esc(list[list.indexOf(item) + 1].id || list[list.indexOf(item) + 1].number)}">Next →</a>` : ""}</nav></article></div></section>`;
+    app.innerHTML = `<section class="view">${heading(name === "readings" ? dateLabel(item.date) : name === "books" ? "The book collection" : libNames[name], `<a href="#/library/${esc(name)}">${esc(libNames[name])}</a>`)}<div class="reader-layout"><aside class="reader-aside">${photo(item.cover || getCategory("teachings").cover, title)}<div class="reader-controls"><span>Reading size</span><button data-action="reader-size" data-delta="-1" aria-label="Decrease reading text size">A−</button><button data-action="reader-size" data-delta="1" aria-label="Increase reading text size">A+</button></div><p>A little time to read.<br>A little space to reflect.</p><span class="tag">${name === "readings" ? dateLabel(item.date) : libNames[name]}</span></aside><article class="reader-scroll" tabindex="0" aria-label="Reading"><p class="reader-position">${list.indexOf(item)+1} of ${list.length} · ${name === "readings" ? "Edited Satsang reflection" : esc(libNames[name])}</p>${body}<nav class="reader-next" aria-label="Continue reading">${list.indexOf(item) > 0 ? `<a href="#/read/${name}/${esc(list[list.indexOf(item) - 1].id || list[list.indexOf(item) - 1].number)}">← Previous</a>` : ""}<a href="#/library/${name}${name === "readings" ? "/" + esc(item.id) : ""}">Back to ${esc(libNames[name])}</a>${list.indexOf(item) < list.length - 1 ? `<a href="#/read/${name}/${esc(list[list.indexOf(item) + 1].id || list[list.indexOf(item) + 1].number)}">Next →</a>` : ""}</nav></article></div></section>`;
   }
   async function messageView(id) {
     location.replace("message-cards.html?open=" + encodeURIComponent(id));
@@ -1087,7 +1122,7 @@
     const previous =
         "#/record/" + records[(index - 1 + records.length) % records.length].id,
       next = "#/record/" + records[(index + 1) % records.length].id;
-    app.innerHTML = `<section class="view story-view support-record-view" data-back="#/category/${esc(c.id)}">${heading(c.title + " · support", '<a href="#/category/' + c.id + '">' + esc(c.title) + "</a>")}<div class="story-scene"><div class="scene-backdrop" style="${supportCover ? `background-image:url('${href(supportCover)}')` : ""}"></div><div class="story-copy"><p class="eyebrow">${esc(record.evidenceLabel || record.evidenceStatus)}</p><h2>${esc(record.recipient)}</h2><p class="story-description">${esc(record.summary || "Support for " + record.recipient + ", recorded in the accompanying acknowledgement.")}</p><div class="record-context"><small>${esc(record.amountLabel || "Recorded support")}</small><strong class="record-amount">${record.approximate ? "≈ " : ""}${formatMoney(record.amount)}</strong>${record.displayDonor || record.donor ? `<span class="record-donor">${esc(record.displayDonor || record.donor)}</span>` : ""}</div>${event && event.presentation !== "service-story" ? `<a class="button" href="#/event/${esc(event.id)}">Meet the story behind the support ↗</a>` : `<a class="button" href="#/foundation/connect">Carry this care forward ↗</a>`}<details class="evidence-note ${record.receipts.length > 1 ? "grouped-receipts" : ""}"><summary>${record.receipts.length > 1 ? `Receipts (${record.receipts.length}) ↗` : "Read the supporting acknowledgement"}</summary><div class="evidence-content">${record.receipts.length > 1 ? `<div class="contribution-receipts">${record.receipts.map((receipt) => `<a href="${href(receipt.src)}" target="_blank" rel="noopener"><strong>${formatMoney(receipt.amount)}</strong><span>${esc(receipt.date ? dateLabel(receipt.date) : receipt.evidenceLabel)}</span><small>Full-page receipt ↗</small></a>`).join("")}</div>` : `<p>${esc(record.evidenceLabel)}</p>${record.document ? `<p>${record.document.pageCount} full ${record.document.pageCount === 1 ? "page" : "pages"} · Private details masked.</p>` : ""}${record.src ? `<a class="text-link" href="${href(record.src)}" target="_blank" rel="noopener">View full-page document ↗</a>` : ""}${
+    app.innerHTML = `<section class="view story-view support-record-view" data-back="#/category/${esc(c.id)}">${heading(c.title + " · support", '<a href="#/category/' + c.id + '">' + esc(c.title) + "</a>")}<div class="story-scene"><div class="scene-backdrop" style="${supportCover ? `background-image:url('${href(supportCover)}')` : ""}"></div><div class="story-copy"><p class="eyebrow">${esc(record.date ? dateLabel(record.date) : "SERVICE THROUGH GENEROSITY")}</p><h2>${esc(record.recipient)}</h2><p class="story-description">${esc(record.summary || "A contribution to " + record.recipient + ".")}</p><div class="record-context"><small>${esc(record.amountLabel || "Recorded support")}</small><strong class="record-amount">${record.approximate ? "≈ " : ""}${formatMoney(record.amount)}</strong>${record.displayDonor || record.donor ? `<span class="record-donor">${esc(record.displayDonor || record.donor)}</span>` : ""}</div>${event && event.presentation !== "service-story" ? `<a class="button" href="#/event/${esc(event.id)}">View photographs →</a>` : `<a class="button" href="#/foundation/connect">Contact the foundation →</a>`}<details class="evidence-note ${record.receipts.length > 1 ? "grouped-receipts" : ""}"><summary>${record.receipts.length > 1 ? `Receipts (${record.receipts.length}) ↗` : "Read the supporting acknowledgement"}</summary><div class="evidence-content">${record.receipts.length > 1 ? `<div class="contribution-receipts">${record.receipts.map((receipt) => `<a href="${href(receipt.src)}" target="_blank" rel="noopener"><strong>${formatMoney(receipt.amount)}</strong><span>${esc(receipt.date ? dateLabel(receipt.date) : receipt.evidenceLabel)}</span><small>Full-page receipt ↗</small></a>`).join("")}</div>` : `<p>${esc(record.publicEvidenceLabel || record.evidenceLabel)}</p>${record.document ? `<p>Full acknowledgement · ${record.document.pageCount} ${record.document.pageCount === 1 ? "page" : "pages"}.</p>` : ""}${record.src ? `<a class="text-link" href="${href(record.src)}" target="_blank" rel="noopener">View full-page document ↗</a>` : ""}${
       record.src && event?.media?.length
         ? `<div class="evidence-links">${event.media
             .filter((m) => m.src !== record.src && m.id.includes(record.id))
@@ -1097,12 +1132,39 @@
             )
             .join("")}</div>`
         : ""
-    }`}</div></details>${event?.photoSource ? `<a class="school-photo-credit" href="${esc(event.photoSource)}" target="_blank" rel="noopener">${esc(event.photoCredit)} ↗</a>` : ""}</div><div class="foundation-image recipient-image">${supportCover ? photo(supportCover, schoolProfile?.title || event?.coverAlt || event?.title || c.title) : ""}</div></div>${sceneNavigation(c.title + " support", records.map((r) => ({ title: r.navigationTitle || r.recipient, href: "#/record/" + r.id })), index, previous, next)}<nav class="service-causes" aria-label="Choose a type of support">${[...new Set(allRecords.map((r) => r.category))].map((kind) => `<a href="#/foundation/support/${kind}" ${kind === record.category ? 'aria-current="page"' : ""}>${esc({ education: "Education", annadanam: "Annadanam", medical: "Medical care", temple: "Temple support" }[kind] || kind)}</a>`).join("")}</nav></section>`;
+    }`}</div></details>${event?.photoSource ? `<a class="school-photo-credit" href="${esc(event.photoSource)}" target="_blank" rel="noopener">${esc(event.photoCredit)} ↗</a>` : ""}</div><div class="foundation-image recipient-image">${supportCover ? photo(supportCover, schoolProfile?.title || event?.coverAlt || event?.title || c.title) : ""}</div></div>${sceneNavigation(c.title + " support", records.map((r) => ({ title: r.navigationTitle || r.recipient, href: "#/record/" + r.id })), index, previous, next)}</section>`;
     bindSequence(previous, next, "#/category/" + c.id);
   }
   function about() {
     theme(getCategory("his-holiness"));
-    app.innerHTML = `<section class="view">${heading("A tribute, through real moments.", "About the collection")}<article class="about-scroll"><p>This collection brings together the many expressions of His Holiness Sri Vidyanarayana Thirtha Swamiji’s life: spiritual practice, learning, care, service, and everyday wisdom.</p><h2>Begin with a photograph.</h2><p>Choose a portrait, open a collection, and step into an occasion. Photographs, films, audio recordings, messages, and readings stay together with their context.</p><h2>Care for the source.</h2><p>Visit identities and original media were shared by the foundation. An exact date appears only where it was supplied. Historical acknowledgements retain their named donors. Devotee reflections, edited summaries, and practical paraphrases are distinguished from original texts.</p><h2>A growing collection.</h2><p>This is a living collection of moments shared through the foundation: a place to return to for quiet reading, listening, and discovery.</p><p><a href="#/category/foundation">Connect with the foundation →</a></p></article></section>`;
+    app.innerHTML = `<section class="view">${heading("A tribute, through real moments.", "About the collection")}<article class="about-scroll"><p>This collection brings together the many expressions of His Holiness Sri Vidyanarayana Thirtha Swamiji’s life: spiritual practice, learning, care, service, and everyday wisdom.</p><h2>Begin with a photograph.</h2><p>Choose a portrait, open a collection, and step into an occasion. Photographs, films, audio recordings, messages, and readings stay together with their context.</p><h2>Care for the source.</h2><p>Visit identities and original media were shared by the foundation. An exact date appears only where it was supplied. Historical acknowledgements retain their named donors. Devotee reflections, edited summaries, and practical paraphrases are distinguished from original texts.</p><h2>A growing collection.</h2><p>This is a living collection of moments shared through the foundation: a place to return to for quiet reading, listening, and discovery.</p><p><a href="#/foundation/connect">Connect with the foundation →</a></p></article></section>`;
+  }
+  function finishNavigation(parts) {
+    const title = app.querySelector(".satsang-copy h2,.reader-scroll h1,.story-copy h2,.book-copy h2,.cinema-heading h1,h1")?.textContent.trim() || site.title;
+    document.title = parts.length ? title + " — " + site.title : "Sri Vidyanarayana Thirtha Swamiji — " + site.title;
+    const summary = app.querySelector(".satsang-lead,.story-description,.reader-scroll .lead")?.textContent || "A living tribute to His Holiness Sri Vidyanarayana Thirtha Swamiji, through spiritual practice, teaching and service.";
+    document.querySelector('meta[name="description"]').content = summary;
+    document.querySelector('meta[property="og:title"]').content = document.title;
+    document.querySelector('meta[property="og:description"]').content = summary;
+    document.querySelector('meta[property="og:url"]').content = location.href;
+    document.querySelectorAll(".masthead nav a").forEach(link => {
+      const route = link.getAttribute("href"), selected = route === "#/" ? !parts.length : route === "#/learn" ? ["learn","library","read"].includes(parts[0]) : route === "#/explore" ? ["explore","category","event","record"].includes(parts[0]) : parts[0] === "foundation";
+      if (selected) link.setAttribute("aria-current", "page"); else link.removeAttribute("aria-current");
+    });
+    const back = document.querySelector("#back-view"), parent = parentRoute();
+    const parentName = parent === "#/" ? "Home" : parent.startsWith("#/category/") ? getCategory(parent.split('/')[2])?.shortTitle || "section" : parent.startsWith("#/library/") ? libNames[parent.split('/')[2]] : parent === "#/learn" ? "Teachings" : "Foundation";
+    back.textContent = parentName === "Home" ? "← Back" : "← " + parentName; back.setAttribute("aria-label", "Back to " + parentName);
+    app.querySelectorAll('a[href^="#/"]').forEach(link => {
+      const walker = document.createTreeWalker(link, NodeFilter.SHOW_TEXT);
+      while (walker.nextNode()) walker.currentNode.textContent = walker.currentNode.textContent.replace(/↗/g, "→");
+    });
+    const focus = app.querySelector("h1");
+    if (focus && parts.length) { focus.tabIndex = -1; focus.focus({preventScroll:true}); }
+    announce.textContent = title;
+    if (parts[0] === "foundation" && parts[1] === "connect") {
+      const dialog = app.querySelector("#contact-dialog");
+      if (dialog) { dialog.removeAttribute("open"); dialog.showModal(); dialog.addEventListener("close", () => { if (location.hash === "#/foundation/connect") location.hash = "#/foundation"; }); }
+    }
   }
   async function render() {
     if (!site) return;
@@ -1133,6 +1195,7 @@
     document
       .querySelector(".mobile-menu")
       .setAttribute("aria-expanded", "false");
+    document.querySelector(".mobile-menu").setAttribute("aria-label", "Open navigation");
     try {
       if (!parts.length) home();
       else if (parts[0] === "explore") explore(parts[1]);
@@ -1167,20 +1230,17 @@
               : app.firstElementChild;
         foreground?.animate(
           calm ? [
-            { opacity: .4, transform: "translateY(8px)" },
-            { opacity: 1, transform: "translateY(0)" },
+            { opacity: .4, transform: `translateX(${10 * transitionDirection}px)` },
+            { opacity: 1, transform: "translateX(0)" },
           ] : [
-            { opacity: 0, transform: "translateX(16px) rotateY(-5deg)" },
-            { opacity: 1, transform: "translateX(0) rotateY(0)" },
+            { opacity: 0, transform: `translateX(${16 * transitionDirection}px)` },
+            { opacity: 1, transform: "translateX(0)" },
           ],
           { duration: calm ? 320 : 600, easing: "cubic-bezier(.2,.65,.2,1)" },
         );
       }
-      if (token === routeToken)
-        document.title =
-          (parts.length
-            ? (getCategory(parts[1])?.title || "The collection") + " — "
-            : "") + site.title;
+      if (token === routeToken) finishNavigation(parts);
+
     } catch (error) {
       if (token === routeToken) showError(error);
     }
@@ -1221,9 +1281,12 @@
         .startsWith("#/event/" + activeMedia.id + "/")
     ) {
       e.preventDefault();
+      transitionDirection = mediaLink.getAttribute("aria-label") === "Previous moment" ? -1 : 1;
       goTo(mediaLink.getAttribute("href"));
       return;
     }
+    const directionLink = e.target.closest('a[aria-label="Previous story"],a[aria-label="Previous moment"],a[aria-label="Previous Satsang"]');
+    transitionDirection = directionLink ? -1 : 1;
     const b = e.target.closest("[data-action]");
     if (!b) return;
     const action = b.dataset.action;
@@ -1262,6 +1325,17 @@
       document.body.style.setProperty("--reader-size", readerSize + "px");
     }
   });
+  document.querySelector("#share-view").addEventListener("click", async () => {
+    const parts = routeParts();
+    let route = location.hash || "#/";
+    if (parts[0] === "event") route = "#/event/" + parts[1];
+    if (parts[0] === "category" && !site.sharePages?.[route]) route = parts[2] === "moments" && parts[3] ? "#/event/" + parts[3] : "#/category/" + parts[1];
+    if (parts[0] === "library" && parts[1] === "readings" && parts[2]) route = "#/read/readings/" + parts[2];
+    if (parts[0] === "foundation") route = "#/foundation";
+    const url = site.sharePages?.[route] ? new URL(site.sharePages[route], location.href).href : location.href;
+    try { await navigator.clipboard.writeText(url); announce.textContent = "Link copied"; document.querySelector("#share-view").textContent = "Copied"; setTimeout(() => { document.querySelector("#share-view").textContent = "Share"; }, 2000); }
+    catch (_) { announce.textContent = "Copy this page’s address from your browser to share it."; }
+  });
   document.querySelector("#back-view").addEventListener("click", () => {
     location.hash = parentRoute();
   });
@@ -1274,6 +1348,7 @@
       button = document.querySelector(".mobile-menu");
     const open = nav.classList.toggle("open");
     button.setAttribute("aria-expanded", String(open));
+    button.setAttribute("aria-label", open ? "Close navigation" : "Open navigation");
   });
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape") {
@@ -1281,6 +1356,7 @@
       document
         .querySelector(".mobile-menu")
         .setAttribute("aria-expanded", "false");
+    document.querySelector(".mobile-menu").setAttribute("aria-label", "Open navigation");
     }
   });
   window.addEventListener("hashchange", render);

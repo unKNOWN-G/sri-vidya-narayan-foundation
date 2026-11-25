@@ -93,5 +93,22 @@ class ReaderBuildTest(unittest.TestCase):
             self.build()
 
 
+    def test_share_previews_escape_text_and_preserve_route(self):
+        self.write("content/site.json", {"categories": [{"id": "care", "title": 'Care <and> "kindness"', "caption": 'Read & reflect.'}], "events": []})
+        self.write("content/image-variants.json", {"assets/photo.webp": {"width": 800, "height": 600, "sources": [{"src": "assets/small.webp", "width": 400}]}})
+        output = self.build()
+        manifest = json.loads((output / "content/site.json").read_text())
+        relative = manifest["sharePages"]["#/category/care"]
+        html = (output / relative).read_text()
+        self.assertIn('Care &lt;and&gt; &quot;kindness&quot;', html)
+        self.assertIn('../../index.html#/category/care', html)
+        self.assertIn('property="og:image"', html)
+        self.assertEqual(manifest["imageVariants"]["assets/photo.webp"]["height"], 600)
+
+    def test_share_previews_reject_path_traversal(self):
+        self.write("content/site.json", {"categories": [{"id": "../../outside", "title": "Invalid"}], "events": []})
+        with self.assertRaisesRegex(ValueError, "Invalid share page identifier"):
+            self.build()
+
 if __name__ == "__main__":
     unittest.main()

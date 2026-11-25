@@ -5,8 +5,8 @@
   "headline": "Medical camps and care.",
   "caption": "Medical camps and documented donations, supporting care for children, elders and the wider community.",
   "shortCaption": "Medical camps · Medical donations",
-  "cover": "assets/media/healthcare/vision-camp-2022/photo-01.webp",
-  "coverAlt": "Medical care & children’s welfare — photograph shared by the foundation",
+  "cover": "assets/media/healthcare/vision-camp-2022/photo-06.webp",
+  "coverAlt": "Photographs of eye examinations and care at the C.K. Palya vision camp",
   "theme": {
     "key": "lotus",
     "paper": "#faedf0",
@@ -24,5 +24,6 @@
     "shirdi-medical"
   ],
   "position": "50% 45%",
-  "homeContributionCategory": "medical"
+  "homeContributionCategory": "medical",
+  "shortTitle": "Medical"
 }

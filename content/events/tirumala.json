@@ -5,7 +5,7 @@
   "location": "",
   "date": null,
   "year": null,
-  "description": "Moments shared by the foundation from Swamiji’s life and service.",
+  "description": "An offering towards Annadanam at Tirumala, supporting the tradition of sharing food with devotees.",
   "cover": "assets/media/annadanam/tirumala/tirumala-temple.webp",
   "credit": "Original media shared by the foundation.",
   "note": "",
@@ -44,5 +44,6 @@
     "tirumala"
   ],
   "coverAlt": "An offering at Tirumala · the place of service",
-  "coverContext": "A supplied view of the place; the original acknowledgement is available within this service story."
+  "coverContext": "A supplied view of the place; the original acknowledgement is available within this service story.",
+  "intro": "An offering towards Annadanam at Tirumala, supporting the tradition of sharing food with devotees."
 }

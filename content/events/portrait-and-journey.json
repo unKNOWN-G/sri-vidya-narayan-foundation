@@ -5,7 +5,7 @@
   "location": "",
   "date": null,
   "year": null,
-  "description": "His Holiness Sri Vidyanarayana Thirtha Swamiji brings spiritual practice, teaching and service into daily life. His guidance reaches devotees through satsangs, books and blessings, and students through personal visits and encouragement.",
+  "description": "His Holiness Sri Vidyanarayana Thirtha Swamiji has completed 52 Chaturmasyas. His life brings together spiritual practice, teaching and service: eight published spiritual books, satsangs and blessings, personal visits to students, and support for education and care.",
   "cover": "assets/media/his-holiness/portrait-and-journey/foundation-5.webp",
   "credit": "Original media shared by the foundation.",
   "note": "",
@@ -25,21 +25,22 @@
     {
       "id": "his-holiness-portrait-and-journey-foundation-1",
       "type": "photo",
-      "title": "Portrait And Journey — foundation 1",
-      "caption": "Portrait And Journey. Photograph supplied by the foundation.",
-      "alt": "Portrait And Journey — foundation 1",
+      "title": "Swamiji with the community",
+      "caption": "A gathering with Swamiji, shared by the foundation.",
+      "alt": "Swamiji standing with a group outside a tiled-roof building",
       "src": "assets/media/his-holiness/portrait-and-journey/foundation-1.webp",
       "thumb": "assets/media/his-holiness/portrait-and-journey/foundation-1.thumb.webp"
     },
     {
       "id": "his-holiness-portrait-and-journey-foundation-2",
       "type": "photo",
-      "title": "Portrait And Journey — foundation 2",
-      "caption": "Portrait And Journey. Photograph supplied by the foundation.",
-      "alt": "Portrait And Journey — foundation 2",
+      "title": "An offering of respect",
+      "caption": "Swamiji honours a guest with a ceremonial shawl.",
+      "alt": "Swamiji draping a ceremonial shawl around a guest",
       "src": "assets/media/his-holiness/portrait-and-journey/foundation-2.webp",
       "thumb": "assets/media/his-holiness/portrait-and-journey/foundation-2.thumb.webp"
     }
   ],
-  "coverPosition": "50% 14%"
+  "coverPosition": "50% 14%",
+  "intro": "52 Chaturmasyas completed. Spiritual practice, eight published books, and a life of teaching and service."
 }

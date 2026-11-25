@@ -8,7 +8,8 @@
       "yelahanka-trust"
     ],
     "amountLabel": "Educational support",
-    "description": "Swamiji with students and staff at Air Force School, Yelahanka. Educational support is acknowledged from Swamiji and Sri Krishna Sudama Religious & Charitable Trust."
+    "description": "Swamiji with students and staff at Air Force School, Yelahanka. Educational support is acknowledged from Swamiji and Sri Krishna Sudama Religious & Charitable Trust.",
+    "intro": "Personal support from Swamiji and Sri Krishna Sudama Religious & Charitable Trust."
   },
   {
     "id": "gollapalli",
@@ -17,7 +18,9 @@
     "recordIds": [],
     "amountLabel": "Land donated for the school · 2004",
     "contributionText": "Nearly 3 acres",
-    "description": "Swamiji donated nearly three acres for the school in 2004. Air Marshal B. K. Pandey arrived by helicopter to inaugurate the school in this remote village."
+    "description": "Swamiji donated nearly three acres for the school in 2004. Air Marshal B. K. Pandey arrived by helicopter to inaugurate the school in this remote village.",
+    "photoCaption": "Photograph: a later celebration of Swamiji’s 78th birthday at the school.",
+    "intro": "Land donated in 2004. Air Marshal B. K. Pandey arrived by helicopter to inaugurate the school."
   },
   {
     "id": "danavaipeta",
@@ -26,7 +29,8 @@
     "recordIds": [],
     "amountLabel": "Supporting young learners",
     "contributionText": "Pens for all Class 10 students",
-    "description": "Pens for every Class 10 student, with Swamiji’s blessings and encouragement. Moments shared with the school community at ZP High School, Danavaipeta."
+    "description": "Pens for every Class 10 student, with Swamiji’s blessings and encouragement. Moments shared with the school community at ZP High School, Danavaipeta.",
+    "intro": "Pens for every Class 10 student, with Swamiji’s blessings and encouragement."
   },
   {
     "id": "a-kothakota",
@@ -35,7 +39,8 @@
     "recordIds": [],
     "amountLabel": "Blessings and encouragement",
     "contributionText": "In person. With the students.",
-    "description": "Swamiji visits ZP High School, A. Kothakota in person, blessing students and encouraging them in their learning. His presence, time and guidance are a service in themselves."
+    "description": "Swamiji visits ZP High School, A. Kothakota in person, blessing students and encouraging them in their learning. His presence, time and guidance are a service in themselves.",
+    "intro": "Swamiji visits in person to bless, encourage and motivate students."
   },
   {
     "id": "madanapalle-school",
@@ -44,7 +49,8 @@
     "recordIds": [],
     "amountLabel": "A gesture of affection",
     "contributionText": "Chocolates for the children",
-    "description": "Swamiji distributes chocolates to children at Municipal Primary School, Chandra Colony, Madanapalle. The photographs show the school gathering and interaction with students."
+    "description": "Swamiji distributes chocolates to children at Municipal Primary School, Chandra Colony, Madanapalle. The photographs show the school gathering and interaction with students.",
+    "intro": "Chocolates and blessings for the children at Chandra Colony, Madanapalle."
   },
   {
     "id": "sgdc-college",
@@ -53,7 +59,8 @@
     "recordIds": [],
     "amountLabel": "Student engagement",
     "contributionText": "Interaction and awareness",
-    "description": "Swamiji shares his time and guidance with students at Shri Gnanambica Degree College (SGDC), Madanapalle, through interaction and an awareness session."
+    "description": "Swamiji shares his time and guidance with students at Shri Gnanambica Degree College (SGDC), Madanapalle, through interaction and an awareness session.",
+    "intro": "An interaction and awareness session with students in Madanapalle."
   },
   {
     "id": "navajeevan",

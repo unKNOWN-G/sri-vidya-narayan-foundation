@@ -5,8 +5,8 @@
   "location": "C.K. Palya",
   "date": "2022-12-04",
   "year": 2022,
-  "description": "The vision camp was held at C.K. Palya on 4 December 2022. The supplied report records Swamiji’s presence and names Sri Krishna Sudhama Religious and Charitable Trust as organiser, with support from Narayana Nethralaya and ATB Developers.",
-  "cover": "assets/media/healthcare/vision-camp-2022/photo-01.webp",
+  "description": "Swamiji joined the vision camp at C.K. Palya on 4 December 2022. Organised by Sri Krishna Sudhama Religious and Charitable Trust, with support from Narayana Nethralaya and ATB Developers.",
+  "cover": "assets/media/healthcare/vision-camp-2022/photo-06.webp",
   "credit": "Original media shared by the foundation.",
   "note": "The report’s organiser attribution is preserved; this occasion is not attributed solely to Sri Vidya Narayan Foundation.",
   "counts": {
@@ -17,63 +17,63 @@
     {
       "id": "healthcare-vision-camp-2022-photo-01",
       "type": "photo",
-      "title": "Vision Camp 2022 — photo 01",
-      "caption": "Medical Camp for a better Vision",
-      "alt": "Vision Camp 2022 — photo 01",
+      "title": "Swamiji and guests at the vision camp",
+      "caption": "Vision camp · C.K. Palya · 4 December 2022.",
+      "alt": "Swamiji and guests at the vision camp",
       "src": "assets/media/healthcare/vision-camp-2022/photo-01.webp",
       "thumb": "assets/media/healthcare/vision-camp-2022/photo-01.thumb.webp"
     },
     {
       "id": "healthcare-vision-camp-2022-photo-02",
       "type": "photo",
-      "title": "Vision Camp 2022 — photo 02",
-      "caption": "Medical Camp for a better Vision",
-      "alt": "Vision Camp 2022 — photo 02",
+      "title": "Swamiji addressing the gathering",
+      "caption": "Vision camp · C.K. Palya · 4 December 2022.",
+      "alt": "Swamiji addressing the gathering",
       "src": "assets/media/healthcare/vision-camp-2022/photo-02.webp",
       "thumb": "assets/media/healthcare/vision-camp-2022/photo-02.thumb.webp"
     },
     {
       "id": "healthcare-vision-camp-2022-photo-03",
       "type": "photo",
-      "title": "Vision Camp 2022 — photo 03",
-      "caption": "Medical Camp for a better Vision",
-      "alt": "Vision Camp 2022 — photo 03",
+      "title": "The camp inauguration gathering",
+      "caption": "Vision camp · C.K. Palya · 4 December 2022.",
+      "alt": "The camp inauguration gathering",
       "src": "assets/media/healthcare/vision-camp-2022/photo-03.webp",
       "thumb": "assets/media/healthcare/vision-camp-2022/photo-03.thumb.webp"
     },
     {
       "id": "healthcare-vision-camp-2022-photo-04",
       "type": "photo",
-      "title": "Vision Camp 2022 — photo 04",
-      "caption": "Medical Camp for a better Vision",
-      "alt": "Vision Camp 2022 — photo 04",
+      "title": "Honouring a guest",
+      "caption": "Vision camp · C.K. Palya · 4 December 2022.",
+      "alt": "Honouring a guest",
       "src": "assets/media/healthcare/vision-camp-2022/photo-04.webp",
       "thumb": "assets/media/healthcare/vision-camp-2022/photo-04.thumb.webp"
     },
     {
       "id": "healthcare-vision-camp-2022-photo-05",
       "type": "photo",
-      "title": "Vision Camp 2022 — photo 05",
-      "caption": "Medical Camp for a better Vision",
-      "alt": "Vision Camp 2022 — photo 05",
+      "title": "Moments with the camp community",
+      "caption": "Vision camp · C.K. Palya · 4 December 2022.",
+      "alt": "Moments with the camp community",
       "src": "assets/media/healthcare/vision-camp-2022/photo-05.webp",
       "thumb": "assets/media/healthcare/vision-camp-2022/photo-05.thumb.webp"
     },
     {
       "id": "healthcare-vision-camp-2022-photo-06",
       "type": "photo",
-      "title": "Vision Camp 2022 — photo 06",
-      "caption": "Medical Camp for a better Vision",
-      "alt": "Vision Camp 2022 — photo 06",
+      "title": "Eye examinations and care",
+      "caption": "Vision camp · C.K. Palya · 4 December 2022.",
+      "alt": "Eye examinations and care",
       "src": "assets/media/healthcare/vision-camp-2022/photo-06.webp",
       "thumb": "assets/media/healthcare/vision-camp-2022/photo-06.thumb.webp"
     },
     {
       "id": "healthcare-vision-camp-2022-photo-07",
       "type": "photo",
-      "title": "Vision Camp 2022 — photo 07",
-      "caption": "Medical Camp for a better Vision",
-      "alt": "Vision Camp 2022 — photo 07",
+      "title": "A day of service at C.K. Palya",
+      "caption": "Vision camp · C.K. Palya · 4 December 2022.",
+      "alt": "A day of service at C.K. Palya",
       "src": "assets/media/healthcare/vision-camp-2022/photo-07.webp",
       "thumb": "assets/media/healthcare/vision-camp-2022/photo-07.thumb.webp"
     },
@@ -87,5 +87,6 @@
       "thumb": "",
       "poster": "assets/media/healthcare/vision-camp-2022/medical-camp-report.preview.webp"
     }
-  ]
+  ],
+  "intro": "Eye care at C.K. Palya, with Swamiji’s presence and encouragement. Organised by Sri Krishna Sudhama Religious and Charitable Trust, with Narayana Nethralaya and ATB Developers."
 }

@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+from html import escape
 import json
 from pathlib import Path
 import re
@@ -72,6 +73,56 @@ def build(destination=None, skip_validation=False):
                     "amount": sum(r["amount"] for r in selected),
                     "approximate": any(r.get("approximate") or r.get("reported") for r in selected),
                 }
+    variants = output / "content" / "image-variants.json"
+    if variants.is_file():
+        manifest["imageVariants"] = json.loads(variants.read_text(encoding="utf-8"))
+    # Static social previews give individual stories a meaningful share card.
+    # The browser redirects to the same SPA route; no content is duplicated manually.
+    public_base = "https://unknown-g.github.io/sri-vidya-narayan-foundation/"
+    shares = {}
+    def share_page(kind, identifier, title, description, image, route):
+        if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_-]*", identifier):
+            raise ValueError("Invalid share page identifier.")
+        relative = f"visit/{kind}/{identifier}.html"
+        target = "../../index.html" + route
+        canonical = public_base + relative
+        image_url = public_base + (image or "assets/media/his-holiness/portrait-and-journey/foundation-5.webp")
+        page = output / relative
+        page.parent.mkdir(parents=True, exist_ok=True)
+        page.write_text(f'''<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{escape(title)} — Sri Vidya Narayan Foundation</title><meta name="description" content="{escape(description, quote=True)}"><meta property="og:type" content="website"><meta property="og:title" content="{escape(title, quote=True)}"><meta property="og:description" content="{escape(description, quote=True)}"><meta property="og:image" content="{escape(image_url, quote=True)}"><meta property="og:url" content="{escape(canonical, quote=True)}"><meta name="twitter:card" content="summary_large_image"><link rel="canonical" href="{escape(canonical, quote=True)}"><meta http-equiv="refresh" content="0;url={escape(target, quote=True)}"></head><body><main><h1>{escape(title)}</h1><p>{escape(description)}</p><a href="{escape(target, quote=True)}">Open this story</a></main></body></html>''', encoding="utf-8")
+        shares[route] = relative
+    for category in manifest.get("categories", []):
+        if category.get("published") is not False:
+            route = "#/learn" if category["id"] == "teachings" else "#/category/" + category["id"]
+            share_page("category", category["id"], category.get("title", category["id"]), category.get("caption", ""), category.get("cover"), route)
+    for event in manifest.get("events", []):
+        share_page("event", event["id"], event["title"], event.get("intro") or event.get("description", ""), event.get("cover"), "#/event/" + event["id"])
+    profiles_path = output / "content" / "collections" / "education-profiles.json"
+    profiles = json.loads(profiles_path.read_text(encoding="utf-8")) if profiles_path.is_file() else []
+    events_by_id = {event["id"]: event for event in manifest.get("events", [])}
+    for profile in profiles:
+        image = profile.get("cover") or events_by_id.get(profile.get("eventId"), {}).get("cover")
+        share_page("school", profile["id"], profile["title"], profile.get("description", ""), image, "#/category/education/schools/" + profile["id"])
+    ledger_path = output / "content" / "collections" / "contributions.json"
+    if ledger_path.is_file():
+        ledger = json.loads(ledger_path.read_text(encoding="utf-8"))
+        for record in ledger.get("records", []):
+            profile = next((p for p in profiles if record["id"] in p.get("recordIds", [])), {})
+            event = events_by_id.get(profile.get("eventId")) or next((e for e in manifest.get("events", []) if record["id"] in e.get("supportRecordIds", [])), {})
+            image = profile.get("cover") or event.get("cover")
+            share_page("support", record["id"], record.get("recipient", "Historical support"), record.get("summary") or "Service through generosity.", image, "#/record/" + record["id"])
+        for group in ledger.get("displayGroups", []):
+            event = next((e for e in manifest.get("events", []) if e.get("supportGroupId") == group["id"]), {})
+            share_page("support", group["id"], group["title"], group.get("summary", ""), event.get("cover"), "#/record/" + group["id"])
+    readings_path = output / "content" / "collections" / "readings.json"
+    if readings_path.is_file():
+        readings = json.loads(readings_path.read_text(encoding="utf-8")).get("readings", [])
+        for reading in readings:
+            share_page("reading", reading["id"], reading["title"], reading.get("lead", ""), None, "#/read/readings/" + reading["id"])
+    for identifier, title in (("readings", "Satsangs"), ("books", "Spiritual books"), ("teachings", "Everyday teachings")):
+        share_page("library", identifier, title, "Teachings of Sri Vidyanarayana Thirtha Swamiji: read, reflect and carry them into daily life.", None, "#/library/" + identifier)
+    share_page("foundation", "about", "Sri Vidya Narayan Foundation", manifest.get("foundation", {}).get("description", "A tribute through service."), None, "#/foundation")
+    manifest["sharePages"] = shares
     manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     # Separate readers use synchronous globals, generated from canonical JSON.
     # Source JS stubs document this boundary and never duplicate editorial data.

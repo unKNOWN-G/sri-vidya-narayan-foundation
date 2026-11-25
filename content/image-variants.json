@@ -1,0 +1,696 @@
+{
+  "assets/media/annadanam/bodhendra/adhishtanam.png": {
+    "width": 512,
+    "height": 458,
+    "sources": [
+      {
+        "src": "assets/variants/925b8f2fc20f-400.webp",
+        "width": 400
+      },
+      {
+        "src": "assets/media/annadanam/bodhendra/adhishtanam.png",
+        "width": 512
+      }
+    ]
+  },
+  "assets/media/annadanam/shirdi/prasadalaya-dining-hall.jpg": {
+    "width": 500,
+    "height": 375,
+    "sources": [
+      {
+        "src": "assets/variants/28e454d052c0-400.webp",
+        "width": 400
+      },
+      {
+        "src": "assets/media/annadanam/shirdi/prasadalaya-dining-hall.jpg",
+        "width": 500
+      }
+    ]
+  },
+  "assets/media/annadanam/tirumala/tirumala-temple.webp": {
+    "width": 1600,
+    "height": 1200,
+    "sources": [
+      {
+        "src": "assets/variants/11b8c9b84973-400.webp",
+        "width": 400
+      },
+      {
+        "src": "assets/variants/11b8c9b84973-800.webp",
+        "width": 800
+      },
+      {
+        "src": "assets/media/annadanam/tirumala/tirumala-temple.webp",
+        "width": 1600
+      }
+    ]
+  },
+  "assets/media/compassion/farmers-annavaram-2026/photo-02.webp": {
+    "width": 737,
+    "height": 1600,
+    "sources": [
+      {
+        "src": "assets/variants/ea7ab6cdda74-400.webp",
+        "width": 400
+      },
+      {
+        "src": "assets/media/compassion/farmers-annavaram-2026/photo-02.webp",
+        "width": 737
+      }
+    ]
+  },
+  "assets/media/compassion/tirumala-goshala-2026/photo-25.webp": {
+    "width": 1600,
+    "height": 728,
+    "sources": [
+      {
+        "src": "assets/variants/62818e37ddac-400.webp",
+        "width": 400
+      },
+      {
+        "src": "assets/variants/62818e37ddac-800.webp",
+        "width": 800
+      },
+      {
+        "src": "assets/media/compassion/tirumala-goshala-2026/photo-25.webp",
+        "width": 1600
+      }
+    ]
+  },
+  "assets/media/education/a-kothakota/photo-09.webp": {
+    "width": 900,
+    "height": 1600,
+    "sources": [
+      {
+        "src": "assets/variants/01bc4049653a-400.webp",
+        "width": 400
+      },
+      {
+        "src": "assets/variants/01bc4049653a-800.webp",
+        "width": 800
+      },
+      {
+        "src": "assets/media/education/a-kothakota/photo-09.webp",
+        "width": 900
+      }
+    ]
+  },
+  "assets/media/education/danavaipeta/photo-06.webp": {
+    "width": 1280,
+    "height": 720,
+    "sources": [
+      {
+        "src": "assets/variants/069ef9f28a51-400.webp",
+        "width": 400
+      },
+      {
+        "src": "assets/variants/069ef9f28a51-800.webp",
+        "width": 800
+      },
+      {
+        "src": "assets/media/education/danavaipeta/photo-06.webp",
+        "width": 1280
+      }
+    ]
+  },
+  "assets/media/education/gollapalli/photo-01.webp": {
+    "width": 1032,
+    "height": 774,
+    "sources": [
+      {
+        "src": "assets/variants/5fbf02e0508f-400.webp",
+        "width": 400
+      },
+      {
+        "src": "assets/variants/5fbf02e0508f-800.webp",
+        "width": 800
+      },
+      {
+        "src": "assets/media/education/gollapalli/photo-01.webp",
+        "width": 1032
+      }
+    ]
+  },
+  "assets/media/education/madanapalle-school/photo-01.webp": {
+    "width": 1599,
+    "height": 899,
+    "sources": [
+      {
+        "src": "assets/variants/c9c9f0df549a-400.webp",
+        "width": 400
+      },
+      {
+        "src": "assets/variants/c9c9f0df549a-800.webp",
+        "width": 800
+      },
+      {
+        "src": "assets/media/education/madanapalle-school/photo-01.webp",
+        "width": 1599
+      }
+    ]
+  },
+  "assets/media/education/navajeevan/photo-05.webp": {
+    "width": 1600,
+    "height": 1200,
+    "sources": [
+      {
+        "src": "assets/variants/fc43771904e6-400.webp",
+        "width": 400
+      },
+      {
+        "src": "assets/variants/fc43771904e6-800.webp",
+        "width": 800
+      },
+      {
+        "src": "assets/media/education/navajeevan/photo-05.webp",
+        "width": 1600
+      }
+    ]
+  },
+  "assets/media/education/sgdc-college/photo-01.webp": {
+    "width": 1600,
+    "height": 1200,
+    "sources": [
+      {
+        "src": "assets/variants/79b7213887a8-400.webp",
+        "width": 400
+      },
+      {
+        "src": "assets/variants/79b7213887a8-800.webp",
+        "width": 800
+      },
+      {
+        "src": "assets/media/education/sgdc-college/photo-01.webp",
+        "width": 1600
+      }
+    ]
+  },
+  "assets/media/education/yelahanka/photo-01.webp": {
+    "width": 1600,
+    "height": 1200,
+    "sources": [
+      {
+        "src": "assets/variants/c8613c5e122d-400.webp",
+        "width": 400
+      },
+      {
+        "src": "assets/variants/c8613c5e122d-800.webp",
+        "width": 800
+      },
+      {
+        "src": "assets/media/education/yelahanka/photo-01.webp",
+        "width": 1600
+      }
+    ]
+  },
+  "assets/media/foundation/ayodhya/ayodhya-ram-mandir.webp": {
+    "width": 1491,
+    "height": 874,
+    "sources": [
+      {
+        "src": "assets/variants/192283ec768b-400.webp",
+        "width": 400
+      },
+      {
+        "src": "assets/variants/192283ec768b-800.webp",
+        "width": 800
+      },
+      {
+        "src": "assets/media/foundation/ayodhya/ayodhya-ram-mandir.webp",
+        "width": 1491
+      }
+    ]
+  },
+  "assets/media/foundation/border-visit/photo-01.webp": {
+    "width": 1280,
+    "height": 960,
+    "sources": [
+      {
+        "src": "assets/variants/a46c2e8691b2-400.webp",
+        "width": 400
+      },
+      {
+        "src": "assets/variants/a46c2e8691b2-800.webp",
+        "width": 800
+      },
+      {
+        "src": "assets/media/foundation/border-visit/photo-01.webp",
+        "width": 1280
+      }
+    ]
+  },
+  "assets/media/foundation/community/foundation-3.webp": {
+    "width": 1024,
+    "height": 576,
+    "sources": [
+      {
+        "src": "assets/variants/72fceaf66cd1-400.webp",
+        "width": 400
+      },
+      {
+        "src": "assets/variants/72fceaf66cd1-800.webp",
+        "width": 800
+      },
+      {
+        "src": "assets/media/foundation/community/foundation-3.webp",
+        "width": 1024
+      }
+    ]
+  },
+  "assets/media/healthcare/dhanvantari-day/photo-01.webp": {
+    "width": 1280,
+    "height": 960,
+    "sources": [
+      {
+        "src": "assets/variants/f36f1ad7913f-400.webp",
+        "width": 400
+      },
+      {
+        "src": "assets/variants/f36f1ad7913f-800.webp",
+        "width": 800
+      },
+      {
+        "src": "assets/media/healthcare/dhanvantari-day/photo-01.webp",
+        "width": 1280
+      }
+    ]
+  },
+  "assets/media/healthcare/shirdi-medical/shri-saibaba-hospital.png": {
+    "width": 506,
+    "height": 278,
+    "sources": [
+      {
+        "src": "assets/variants/ae6aeb5471ec-400.webp",
+        "width": 400
+      },
+      {
+        "src": "assets/media/healthcare/shirdi-medical/shri-saibaba-hospital.png",
+        "width": 506
+      }
+    ]
+  },
+  "assets/media/healthcare/vision-camp-2022/photo-06.webp": {
+    "width": 1566,
+    "height": 1162,
+    "sources": [
+      {
+        "src": "assets/variants/c1a1a1c1ad2e-400.webp",
+        "width": 400
+      },
+      {
+        "src": "assets/variants/c1a1a1c1ad2e-800.webp",
+        "width": 800
+      },
+      {
+        "src": "assets/media/healthcare/vision-camp-2022/photo-06.webp",
+        "width": 1566
+      }
+    ]
+  },
+  "assets/media/his-holiness/archival-portrait/swamiji-older-photograph.webp": {
+    "width": 720,
+    "height": 1280,
+    "sources": [
+      {
+        "src": "assets/variants/853f37bc3744-400.webp",
+        "width": 400
+      },
+      {
+        "src": "assets/media/his-holiness/archival-portrait/swamiji-older-photograph.webp",
+        "width": 720
+      }
+    ]
+  },
+  "assets/media/his-holiness/birthday-78-undated/photo-03.webp": {
+    "width": 1600,
+    "height": 1200,
+    "sources": [
+      {
+        "src": "assets/variants/88840547a5f0-400.webp",
+        "width": 400
+      },
+      {
+        "src": "assets/variants/88840547a5f0-800.webp",
+        "width": 800
+      },
+      {
+        "src": "assets/media/his-holiness/birthday-78-undated/photo-03.webp",
+        "width": 1600
+      }
+    ]
+  },
+  "assets/media/his-holiness/portrait-and-journey/foundation-5.webp": {
+    "width": 768,
+    "height": 1024,
+    "sources": [
+      {
+        "src": "assets/variants/31fc22a4b324-400.webp",
+        "width": 400
+      },
+      {
+        "src": "assets/media/his-holiness/portrait-and-journey/foundation-5.webp",
+        "width": 768
+      }
+    ]
+  },
+  "assets/media/his-holiness/swamiji-stuti/swamiji-stuti-original.webp": {
+    "width": 540,
+    "height": 1172,
+    "sources": [
+      {
+        "src": "assets/variants/c8bc3251c240-400.webp",
+        "width": 400
+      },
+      {
+        "src": "assets/media/his-holiness/swamiji-stuti/swamiji-stuti-original.webp",
+        "width": 540
+      }
+    ]
+  },
+  "assets/media/spiritual-life/anjaneya-madanapalle-2026/photo-04.webp": {
+    "width": 720,
+    "height": 1280,
+    "sources": [
+      {
+        "src": "assets/variants/a1ebcd0c7704-400.webp",
+        "width": 400
+      },
+      {
+        "src": "assets/media/spiritual-life/anjaneya-madanapalle-2026/photo-04.webp",
+        "width": 720
+      }
+    ]
+  },
+  "assets/media/spiritual-life/annavaram-siva-ghanapati-undated/photo-07.webp": {
+    "width": 1599,
+    "height": 899,
+    "sources": [
+      {
+        "src": "assets/variants/190e28c2073b-400.webp",
+        "width": 400
+      },
+      {
+        "src": "assets/variants/190e28c2073b-800.webp",
+        "width": 800
+      },
+      {
+        "src": "assets/media/spiritual-life/annavaram-siva-ghanapati-undated/photo-07.webp",
+        "width": 1599
+      }
+    ]
+  },
+  "assets/media/spiritual-life/annavaram-temple-2026/photo-04.webp": {
+    "width": 1280,
+    "height": 720,
+    "sources": [
+      {
+        "src": "assets/variants/3a43299dbab7-400.webp",
+        "width": 400
+      },
+      {
+        "src": "assets/variants/3a43299dbab7-800.webp",
+        "width": 800
+      },
+      {
+        "src": "assets/media/spiritual-life/annavaram-temple-2026/photo-04.webp",
+        "width": 1280
+      }
+    ]
+  },
+  "assets/media/spiritual-life/chaturmasya-50-2024/photo-01.webp": {
+    "width": 1600,
+    "height": 1067,
+    "sources": [
+      {
+        "src": "assets/variants/d3e9f9487447-400.webp",
+        "width": 400
+      },
+      {
+        "src": "assets/variants/d3e9f9487447-800.webp",
+        "width": 800
+      },
+      {
+        "src": "assets/media/spiritual-life/chaturmasya-50-2024/photo-01.webp",
+        "width": 1600
+      }
+    ]
+  },
+  "assets/media/spiritual-life/chinmaya-mission-2019/photo-11.webp": {
+    "width": 1024,
+    "height": 768,
+    "sources": [
+      {
+        "src": "assets/variants/e555bcd8e44d-400.webp",
+        "width": 400
+      },
+      {
+        "src": "assets/variants/e555bcd8e44d-800.webp",
+        "width": 800
+      },
+      {
+        "src": "assets/media/spiritual-life/chinmaya-mission-2019/photo-11.webp",
+        "width": 1024
+      }
+    ]
+  },
+  "assets/media/spiritual-life/gokulastami-2024/photo-19.webp": {
+    "width": 1280,
+    "height": 720,
+    "sources": [
+      {
+        "src": "assets/variants/8f2143228691-400.webp",
+        "width": 400
+      },
+      {
+        "src": "assets/variants/8f2143228691-800.webp",
+        "width": 800
+      },
+      {
+        "src": "assets/media/spiritual-life/gokulastami-2024/photo-19.webp",
+        "width": 1280
+      }
+    ]
+  },
+  "assets/media/spiritual-life/kanchi-mutt-2024/photo-01.webp": {
+    "width": 755,
+    "height": 1599,
+    "sources": [
+      {
+        "src": "assets/variants/f3c779c28e09-400.webp",
+        "width": 400
+      },
+      {
+        "src": "assets/media/spiritual-life/kanchi-mutt-2024/photo-01.webp",
+        "width": 755
+      }
+    ]
+  },
+  "assets/media/spiritual-life/kanchi-mutt-2024/photo-04.webp": {
+    "width": 1599,
+    "height": 755,
+    "sources": [
+      {
+        "src": "assets/variants/c938b62798c0-400.webp",
+        "width": 400
+      },
+      {
+        "src": "assets/variants/c938b62798c0-800.webp",
+        "width": 800
+      },
+      {
+        "src": "assets/media/spiritual-life/kanchi-mutt-2024/photo-04.webp",
+        "width": 1599
+      }
+    ]
+  },
+  "assets/media/spiritual-life/murdi-kumbabhishekam-2004/photo-25.webp": {
+    "width": 1280,
+    "height": 963,
+    "sources": [
+      {
+        "src": "assets/variants/58dd77a9ce77-400.webp",
+        "width": 400
+      },
+      {
+        "src": "assets/variants/58dd77a9ce77-800.webp",
+        "width": 800
+      },
+      {
+        "src": "assets/media/spiritual-life/murdi-kumbabhishekam-2004/photo-25.webp",
+        "width": 1280
+      }
+    ]
+  },
+  "assets/media/spiritual-life/nandyal-sai-baba-1989/photo-03.webp": {
+    "width": 1280,
+    "height": 864,
+    "sources": [
+      {
+        "src": "assets/variants/b49a6a62755f-400.webp",
+        "width": 400
+      },
+      {
+        "src": "assets/variants/b49a6a62755f-800.webp",
+        "width": 800
+      },
+      {
+        "src": "assets/media/spiritual-life/nandyal-sai-baba-1989/photo-03.webp",
+        "width": 1280
+      }
+    ]
+  },
+  "assets/media/spiritual-life/prasanna-venkateswara-2026/photo-04.webp": {
+    "width": 720,
+    "height": 1280,
+    "sources": [
+      {
+        "src": "assets/variants/d9103aa7c4f5-400.webp",
+        "width": 400
+      },
+      {
+        "src": "assets/media/spiritual-life/prasanna-venkateswara-2026/photo-04.webp",
+        "width": 720
+      }
+    ]
+  },
+  "assets/media/spiritual-life/radha-kalyanam-2024/photo-01.webp": {
+    "width": 1280,
+    "height": 720,
+    "sources": [
+      {
+        "src": "assets/variants/5583353f093f-400.webp",
+        "width": 400
+      },
+      {
+        "src": "assets/variants/5583353f093f-800.webp",
+        "width": 800
+      },
+      {
+        "src": "assets/media/spiritual-life/radha-kalyanam-2024/photo-01.webp",
+        "width": 1280
+      }
+    ]
+  },
+  "assets/media/spiritual-life/shiva-temple-madanapalle-2026/photo-06.webp": {
+    "width": 720,
+    "height": 1280,
+    "sources": [
+      {
+        "src": "assets/variants/41964537454d-400.webp",
+        "width": 400
+      },
+      {
+        "src": "assets/media/spiritual-life/shiva-temple-madanapalle-2026/photo-06.webp",
+        "width": 720
+      }
+    ]
+  },
+  "assets/media/spiritual-life/tirumala-visit-2025/photo-03.webp": {
+    "width": 1280,
+    "height": 720,
+    "sources": [
+      {
+        "src": "assets/variants/e7ff59742a63-400.webp",
+        "width": 400
+      },
+      {
+        "src": "assets/variants/e7ff59742a63-800.webp",
+        "width": 800
+      },
+      {
+        "src": "assets/media/spiritual-life/tirumala-visit-2025/photo-03.webp",
+        "width": 1280
+      }
+    ]
+  },
+  "assets/media/spiritual-life/vaikunta-ekadashi-2025/photo-02.webp": {
+    "width": 1600,
+    "height": 1066,
+    "sources": [
+      {
+        "src": "assets/variants/40155ad3f957-400.webp",
+        "width": 400
+      },
+      {
+        "src": "assets/variants/40155ad3f957-800.webp",
+        "width": 800
+      },
+      {
+        "src": "assets/media/spiritual-life/vaikunta-ekadashi-2025/photo-02.webp",
+        "width": 1600
+      }
+    ]
+  },
+  "assets/media/vedic-learning/dharmagiri-2026/photo-04.webp": {
+    "width": 1599,
+    "height": 899,
+    "sources": [
+      {
+        "src": "assets/variants/7c04e687cdef-400.webp",
+        "width": 400
+      },
+      {
+        "src": "assets/variants/7c04e687cdef-800.webp",
+        "width": 800
+      },
+      {
+        "src": "assets/media/vedic-learning/dharmagiri-2026/photo-04.webp",
+        "width": 1599
+      }
+    ]
+  },
+  "assets/media/vedic-learning/vaikhanasa-mutt-2026/photo-03.webp": {
+    "width": 1600,
+    "height": 728,
+    "sources": [
+      {
+        "src": "assets/variants/ae21ea1ae59d-400.webp",
+        "width": 400
+      },
+      {
+        "src": "assets/variants/ae21ea1ae59d-800.webp",
+        "width": 800
+      },
+      {
+        "src": "assets/media/vedic-learning/vaikhanasa-mutt-2026/photo-03.webp",
+        "width": 1600
+      }
+    ]
+  },
+  "assets/media/vedic-learning/veda-sabha-2025/photo-02.webp": {
+    "width": 1280,
+    "height": 581,
+    "sources": [
+      {
+        "src": "assets/variants/6283409862b2-400.webp",
+        "width": 400
+      },
+      {
+        "src": "assets/variants/6283409862b2-800.webp",
+        "width": 800
+      },
+      {
+        "src": "assets/media/vedic-learning/veda-sabha-2025/photo-02.webp",
+        "width": 1280
+      }
+    ]
+  },
+  "assets/media/vedic-learning/veda-sabha-2025/photo-17.webp": {
+    "width": 1280,
+    "height": 960,
+    "sources": [
+      {
+        "src": "assets/variants/259bcf1f8610-400.webp",
+        "width": 400
+      },
+      {
+        "src": "assets/variants/259bcf1f8610-800.webp",
+        "width": 800
+      },
+      {
+        "src": "assets/media/vedic-learning/veda-sabha-2025/photo-17.webp",
+        "width": 1280
+      }
+    ]
+  }
+}

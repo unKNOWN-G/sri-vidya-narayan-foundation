@@ -112,4 +112,5 @@
   appearance();
   const match = location.hash.match(/^#pearl-(\d+)$/);
   if (match && Number(match[1]) >= 1 && Number(match[1]) <= lessons.length) openBook(Number(match[1]) - 1);
+  else if (new URLSearchParams(location.search).get('open') === '1') requestAnimationFrame(() => openBook(resumeAt ?? 0, true));
 })();
