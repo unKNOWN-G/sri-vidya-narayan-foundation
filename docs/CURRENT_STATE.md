@@ -32,3 +32,5 @@ Run source validation, the independent route check, the tests and the build. Git
 
 - Receipts and acknowledgements use full supplied page frames and proportions. No cropped/rearranged excerpts. Relevant privacy fields are masked in place, and Yelahanka includes both the school letter and the actual receipt. Public PDFs and page previews live in `assets/documents/contributions/`; unchanged source documents remain local in `media/receipt-originals/`.
 - The user deferred the website critique: do not begin it until they explicitly ask again.
+
+- Occasion, school and contribution selectors are persistent numbered strips at the bottom, with horizontal scrolling and an active label. No chooser popup. Scrolling this strip must not advance the main story. Preserve its position when changing stories, and keep the active choice visible. Books retain the visible cover strip. Message cards also use a numbered bottom strip instead of an occasion dropdown; the original folded-card reader is preserved. Reflection search remains a separate search function.

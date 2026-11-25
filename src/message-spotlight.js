@@ -11,7 +11,7 @@
   const previous = document.querySelector('#event-reader-previous');
   const next = document.querySelector('#event-reader-next');
   const rotation = document.querySelector('#spotlight-rotation');
-  const chooser = document.querySelector('#message-select');
+  const chooser = document.querySelector('#message-occasions');
   const coverChooser = document.querySelector('#event-reader-cover');
   const coverField = document.querySelector('#event-reader-cover-field');
   const zoomButton = document.querySelector('#event-reader-zoom');
@@ -54,7 +54,7 @@
     const button = el('button', '', `spotlight-entry theme-${card.theme}`); button.type = 'button';
     const back = el('span', '', 'spotlight-card-back'); back.setAttribute('aria-hidden','true');
     button.append(back, page(card, 1, 'spotlight-card-front'));
-    const option=el('option',card.title);option.value=String(i);chooser.append(option);
+    const choice=el('button','','message-occasion-stop');choice.type='button';choice.setAttribute('aria-label',`${i+1}. ${card.title}`);choice.append(el('span',String(i+1).padStart(2,'0'),'message-occasion-number'),el('span',card.title,'message-occasion-title'));choice.addEventListener('click',()=>{setRotation(false);select(i);});chooser.append(choice);
     button.addEventListener('click', () => {
       setRotation(false);
       if (selected === i) openReader(button); else select(i);
@@ -70,18 +70,29 @@
       button.setAttribute('aria-label', (offset === 0 ? 'Open ' : 'Spotlight ') + samples[i].title);
       button.tabIndex = offset === 0 ? 0 : -1;
     });
-    chooser.value=String(selected);stage.setAttribute('aria-labelledby','spotlight-title');
+    [...chooser.children].forEach((choice,i)=>choice.setAttribute('aria-pressed',String(i===selected)));
+    const activeChoice=chooser.children[selected];if(activeChoice.offsetLeft<chooser.scrollLeft||activeChoice.offsetLeft+activeChoice.offsetWidth>chooser.scrollLeft+chooser.clientWidth)chooser.scrollTo({left:activeChoice.offsetLeft-(chooser.clientWidth-activeChoice.offsetWidth)/2,behavior:reduced.matches?'instant':'smooth'});
+    stage.setAttribute('aria-labelledby','spotlight-title');
     document.querySelector('#spotlight-count').textContent = `${String(selected+1).padStart(2,'0')} / ${String(samples.length).padStart(2,'0')}`;
     document.querySelector('#spotlight-title').textContent = samples[selected].title;
     document.querySelector('#spotlight-description').textContent = samples[selected].description;
+    fitSpotlight();
   }
+  function fitSpotlight() {
+    const caption = stage.querySelector('.spotlight-caption');
+    stage.style.setProperty('--card-height',`${Math.max(110,Math.min(385,stage.clientHeight-caption.offsetHeight-40))}px`);
+  }
+  const spotlightLayout = new ResizeObserver(fitSpotlight);
+  spotlightLayout.observe(stage);spotlightLayout.observe(stage.querySelector('.spotlight-caption'));
   function setRotation(enabled) {
     rotating = enabled && !reduced.matches; clearInterval(timer); timer = null;
     rotation.setAttribute('aria-pressed', String(rotating));
     rotation.textContent = rotating ? 'Pause rotation  Ⅱ' : 'Rotate collection  ↻';
     if (rotating) timer = setInterval(() => {if (!hovered && !dialog.open && !document.hidden) select(selected+1);}, 6000);
   }
-  chooser.addEventListener('change',()=>{setRotation(false);select(Number(chooser.value));});
+  chooser.addEventListener('wheel',event=>{if(!event.ctrlKey&&Math.abs(event.deltaY)>Math.abs(event.deltaX)&&chooser.scrollWidth>chooser.clientWidth){event.preventDefault();chooser.scrollLeft+=event.deltaY*(event.deltaMode===1?18:1);}},{passive:false});
+  chooser.addEventListener('keydown',event=>{if(!['ArrowLeft','ArrowRight','Home','End'].includes(event.key))return;const index=[...chooser.children].indexOf(document.activeElement),target=event.key==='Home'?0:event.key==='End'?samples.length-1:Math.max(0,Math.min(samples.length-1,index+(event.key==='ArrowRight'?1:-1)));event.preventDefault();const choice=chooser.children[target];choice.focus({preventScroll:true});chooser.scrollTo({left:choice.offsetLeft-(chooser.clientWidth-choice.offsetWidth)/2,behavior:reduced.matches?'instant':'smooth'});});
+  chooser.addEventListener('pointerenter',()=>{hovered=true;});chooser.addEventListener('pointerleave',()=>{hovered=false;});chooser.addEventListener('focusin',()=>{hovered=true;});chooser.addEventListener('focusout',()=>{hovered=false;});
   document.querySelector('#spotlight-next').addEventListener('click',()=>{setRotation(false);select(selected+1);});
   document.querySelector('#spotlight-previous').addEventListener('click',()=>{setRotation(false);select(selected-1);});
   rotation.addEventListener('click',()=>setRotation(!rotating));

@@ -341,11 +341,49 @@
       title: c.title,
       href: c.id === "teachings" ? "#/learn" : "#/category/" + c.id,
     }));
-  function choiceDialog(title, links) {
-    return `<dialog class="scene-index" id="scene-index"><div class="index-head"><p class="eyebrow">CHOOSE WHAT SPEAKS TO YOU</p><button data-action="close-index" aria-label="Close choices">×</button></div><h2>${esc(title)}</h2><div class="index-links">${links.map((x, i) => `<a href="${href(x.href)}"><span>${String(i + 1).padStart(2, "0")}</span>${esc(x.title)}<b aria-hidden="true">↗</b></a>`).join("")}</div></dialog>`;
+  const stripPositions = new Map();
+  function sceneNavigation(title, links, index, previous, next) {
+    return `<div class="scene-navigation"><nav class="occasion-track" aria-label="${esc(title)}" tabindex="0">${links.map((item, i) => `<a class="occasion-stop" href="${href(item.href)}" ${i === index ? 'aria-current="page"' : ""} aria-label="${esc(`${i + 1}. ${item.title}`)}" title="${esc(item.title)}"><span class="occasion-number">${String(i + 1).padStart(2, "0")}</span><span class="occasion-title">${esc(item.title)}</span></a>`).join("")}</nav><div class="strip-arrows" aria-label="Move between occasions"><a href="${href(previous)}" aria-label="Previous story">←</a><span class="strip-count">${index + 1} / ${links.length}</span><a href="${href(next)}" aria-label="Next story">→</a></div></div>`;
   }
-  function sceneControls(previous, next, label, button = "Choose a moment") {
-    return `<div class="scene-controls"><button class="scene-choice" data-action="open-index">${esc(button)} <span aria-hidden="true">↗</span></button><div class="sequence"><a href="${href(previous)}" aria-label="Previous story">←</a><span>${esc(label)}</span><a href="${href(next)}" aria-label="Next story">→</a></div><span class="gesture-note">Swipe or use ← →</span></div>`;
+  function bindSceneNavigation() {
+    const track = app.querySelector(".occasion-track");
+    if (!track) return () => {};
+    const key = track.getAttribute("aria-label"),
+      active = track.querySelector('[aria-current="page"]');
+    track.scrollLeft = stripPositions.get(key) || 0;
+    const revealActive = () => {
+      if (active && (active.offsetLeft < track.scrollLeft || active.offsetLeft + active.offsetWidth > track.scrollLeft + track.clientWidth))
+        track.scrollLeft = active.offsetLeft - (track.clientWidth - active.offsetWidth) / 2;
+    };
+    revealActive();
+    const observer = new ResizeObserver(revealActive);
+    observer.observe(track);
+    const wheel = (event) => {
+      if (event.ctrlKey || Math.abs(event.deltaX) >= Math.abs(event.deltaY) || track.scrollWidth <= track.clientWidth) return;
+      event.preventDefault();
+      track.scrollLeft += event.deltaY * (event.deltaMode === 1 ? 18 : 1);
+    };
+    const keyboard = (event) => {
+      if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
+      const links = [...track.querySelectorAll("a")],
+        current = Math.max(0, links.indexOf(document.activeElement)),
+        target = event.key === "Home" ? 0 : event.key === "End" ? links.length - 1 : Math.max(0, Math.min(links.length - 1, current + (event.key === "ArrowRight" ? 1 : -1)));
+      event.preventDefault();
+      event.stopPropagation();
+      links[target].focus({ preventScroll: true });
+      track.scrollTo({ left: links[target].offsetLeft - (track.clientWidth - links[target].offsetWidth) / 2, behavior: reduced.matches ? "instant" : "smooth" });
+    };
+    track.addEventListener("wheel", wheel, { passive: false });
+    track.addEventListener("keydown", keyboard);
+    return () => {
+      stripPositions.set(key, track.scrollLeft);
+      observer.disconnect();
+      track.removeEventListener("wheel", wheel);
+      track.removeEventListener("keydown", keyboard);
+    };
+  }
+  function sceneControls(previous, next, label, button = "") {
+    return `<div class="scene-controls">${button === "Find a thought" ? `<button class="scene-choice" data-action="open-index">Find a thought <span aria-hidden="true">↗</span></button>` : `<span class="scene-collection-note">${esc(button)}</span>`}<div class="sequence"><a href="${href(previous)}" aria-label="Previous story">←</a><span>${esc(label)}</span><a href="${href(next)}" aria-label="Next story">→</a></div><span class="gesture-note">Swipe or use ← →</span></div>`;
   }
   function goTo(value) {
     const hash = value.startsWith("#") ? value : "#" + value;
@@ -372,13 +410,14 @@
     return "#/";
   }
   function bindSequence(previous, next, back) {
+    const releaseStrip = bindSceneNavigation();
     let startX = 0,
       startY = 0,
       started = false;
     const resolve = (value) => (typeof value === "function" ? value() : value);
     const ignored = (e) =>
       e.target.closest?.(
-        "input,select,textarea,video,audio,iframe,dialog,[contenteditable=true]",
+        "input,select,textarea,video,audio,iframe,dialog,.scene-navigation,[contenteditable=true]",
       );
     const key = (e) => {
       if (ignored(e) || e.altKey || e.ctrlKey || e.metaKey) return;
@@ -413,6 +452,7 @@
     app.addEventListener("pointerdown", down);
     app.addEventListener("pointerup", up);
     cleanup = () => {
+      releaseStrip();
       document.removeEventListener("keydown", key);
       app.removeEventListener("pointerdown", down);
       app.removeEventListener("pointerup", up);
@@ -444,7 +484,7 @@
         "#/explore/" + cats[(index - 1 + cats.length) % cats.length].id,
       next = "#/explore/" + after.id,
       target = c.id === "teachings" ? "#/learn" : "#/category/" + c.id;
-    app.innerHTML = `<section class="view story-view">${heading("His life, in action.", '<a href="#/">Meet Swamiji</a>')}<div class="story-scene"><div class="scene-backdrop" style="background-image:url('${href(c.cover)}')"></div><div class="story-copy"><p class="eyebrow">${esc(c.eyebrow)}</p><h2>${esc(c.headline || c.title)}</h2><p class="story-description">${esc(c.caption)}</p><a class="button" href="${target}">${c.id === "teachings" ? "Learn from Swamiji" : "Meet this side"} <span aria-hidden="true">↗</span></a><span class="scene-kicker">${esc(c.title)}</span></div>${sceneArt(c.cover, c.title, after.cover, next, c.position || "50% 35%", false, target)}</div>${sceneControls(prev, next, `${String(index + 1).padStart(2, "0")} / ${String(cats.length).padStart(2, "0")}`, "All perspectives")}${choiceDialog("A life. Many expressions.", experienceLinks())}</section>`;
+    app.innerHTML = `<section class="view story-view">${heading("His life, in action.", '<a href="#/">Meet Swamiji</a>')}<div class="story-scene"><div class="scene-backdrop" style="background-image:url('${href(c.cover)}')"></div><div class="story-copy"><p class="eyebrow">${esc(c.eyebrow)}</p><h2>${esc(c.headline || c.title)}</h2><p class="story-description">${esc(c.caption)}</p><a class="button" href="${target}">${c.id === "teachings" ? "Learn from Swamiji" : "Meet this side"} <span aria-hidden="true">↗</span></a><span class="scene-kicker">${esc(c.title)}</span></div>${sceneArt(c.cover, c.title, after.cover, next, c.position || "50% 35%", false, target)}</div>${sceneNavigation("A life. Many expressions.", experienceLinks(), index, prev, next)}</section>`;
     bindSequence(prev, next, "#/");
   }
   async function category(id, selectedTab, selectedId) {
@@ -501,10 +541,7 @@
                 `${v} ${v === 1 ? { photos: "photograph", films: "film", recordings: "recording", documents: "document" }[k] || k : k}`,
             )
             .join(" · ")
-    }</span></div>${sceneArt(event.cover, event.coverAlt || event.title, "", next, event.coverPosition || "50% 35%", false, target)}</div>${sceneControls(prev, next, `${String(index + 1).padStart(2, "0")} / ${String(events.length).padStart(2, "0")}`, "Choose an occasion")}${choiceDialog(
-      c.title,
-      events.map((e) => ({ title: e.title, href: base + e.id })),
-    )}</section>`;
+    }</span></div>${sceneArt(event.cover, event.coverAlt || event.title, "", next, event.coverPosition || "50% 35%", false, target)}</div>${sceneNavigation(c.title, events.map((e) => ({ title: e.title, href: base + e.id })), index, prev, next)}</section>`;
     bindSequence(prev, next, "#/explore/" + id);
   }
   async function educationView(selected) {
@@ -542,10 +579,7 @@
       target = photographs
         ? "#/event/" + event.id
         : "#/record/" + profile.recordIds[0];
-    app.innerHTML = `<section class="view story-view education-view">${heading(c.title, '<a href="#/explore/education">His life in action</a>')}<div class="story-scene"><div class="scene-backdrop" style="background-image:url('${href(schoolCover)}')"></div><div class="story-copy"><p class="eyebrow">${esc(event.location || "DEFENCE SCHOOLS · EDUCATIONAL SUPPORT")}</p><h2>${esc(profile.title)}</h2><div class="school-contribution"><small>${esc(profile.amountLabel)}</small><strong class="${records.length ? "cash-amount" : "contribution-kind"}">${esc(amountText)}</strong></div><p class="story-description">${esc(profile.description)}</p><div class="story-actions"><a class="button" href="${target}">${photographs ? "See the school moments" : "View the contribution record"} ↗</a>${records.some((r) => r.src) ? `<details class="school-attachments"><summary>Supporting acknowledgements ↗</summary><div class="school-attachment-list">${records.filter((r) => r.src).map((r) => `<a class="text-link" href="${href(r.src)}" target="_blank" rel="noopener">${esc(r.donor || r.evidenceLabel)} ↗</a>`).join("")}</div></details>` : ""}</div>${profile.photoSource ? `<a class="school-photo-credit" href="${esc(profile.photoSource)}" target="_blank" rel="noopener">${esc(profile.photoCredit)} ↗</a>` : ""}</div>${sceneArt(schoolCover, profile.title, "", next, event.coverPosition || "50% 30%", false, target)}</div>${sceneControls(previous, next, `${index + 1} / ${profiles.length}`, "Choose a school or college")}${choiceDialog(
-      "Schools and colleges",
-      profiles.map((p) => ({ title: p.title, href: base + p.id })),
-    )}</section>`;
+    app.innerHTML = `<section class="view story-view education-view">${heading(c.title, '<a href="#/explore/education">His life in action</a>')}<div class="story-scene"><div class="scene-backdrop" style="background-image:url('${href(schoolCover)}')"></div><div class="story-copy"><p class="eyebrow">${esc(event.location || "DEFENCE SCHOOLS · EDUCATIONAL SUPPORT")}</p><h2>${esc(profile.title)}</h2><div class="school-contribution"><small>${esc(profile.amountLabel)}</small><strong class="${records.length ? "cash-amount" : "contribution-kind"}">${esc(amountText)}</strong></div><p class="story-description">${esc(profile.description)}</p><div class="story-actions"><a class="button" href="${target}">${photographs ? "See the school moments" : "View the contribution record"} ↗</a>${records.some((r) => r.src) ? `<details class="school-attachments"><summary>Supporting acknowledgements ↗</summary><div class="school-attachment-list">${records.filter((r) => r.src).map((r) => `<a class="text-link" href="${href(r.src)}" target="_blank" rel="noopener">${esc(r.donor || r.evidenceLabel)} ↗</a>`).join("")}</div></details>` : ""}</div>${profile.photoSource ? `<a class="school-photo-credit" href="${esc(profile.photoSource)}" target="_blank" rel="noopener">${esc(profile.photoCredit)} ↗</a>` : ""}</div>${sceneArt(schoolCover, profile.title, "", next, event.coverPosition || "50% 30%", false, target)}</div>${sceneNavigation("Schools and colleges", profiles.map((p) => ({ title: p.title, href: base + p.id })), index, previous, next)}</section>`;
     bindSequence(previous, next, "#/explore/education");
   }
 
@@ -873,10 +907,7 @@
         "#/library/books/" +
         books[(index - 1 + books.length) % books.length].id,
       next = "#/library/books/" + after.id;
-    app.innerHTML = `<section class="view books-experience">${heading("A quiet companion for the journey.", '<a href="#/learn">Learn Swamiji’s Teachings</a>')}<div class="book-scene"><div class="book-copy"><p class="eyebrow">${book.reader ? "A SPECIAL DIGITAL EDITION · READ HERE" : "THE BOOK COLLECTION"}</p><h2>${esc(book.title)}</h2><p>${esc(book.subtitle || "Teachings to read, reflect upon, and bring into everyday life.")}</p><p class="book-attribution">${esc(book.attribution)}</p><div class="story-actions">${book.reader ? '<a class="button" href="reading-room.html">Open the book ↗</a>' : `<a class="button" href="${href(book.purchaseUrl)}" target="_blank" rel="noopener">View the book ↗</a>`}<a class="text-link" href="${book.reader ? "reading-room.html" : "#/read/books/" + esc(book.id)}">${book.reader ? "Enter the reading room" : "About this edition"} →</a></div>${book.reader ? '<span class="scene-kicker">180 pearls · Save your place · Read at your own pace</span>' : '<span class="scene-kicker">Published editions and availability depend on the seller.</span>'}</div><div class="book-display"><a class="physical-book" href="${book.reader ? "reading-room.html" : "#/read/books/" + esc(book.id)}" aria-label="${book.reader ? "Open" : "Explore"} ${esc(book.title)}">${photo(book.cover, book.title)}<span aria-hidden="true"></span></a><p>OPEN · READ · REFLECT</p></div></div><div class="book-shelf" aria-label="Choose a book">${books.map((b, i) => `<a href="#/library/books/${esc(b.id)}" ${i === index ? 'aria-current="true"' : ""} aria-label="Show ${esc(b.title)}">${photo(b.cover, b.title)}<span>${String(i + 1).padStart(2, "0")}</span></a>`).join("")}</div>${sceneControls(previous, next, `${String(index + 1).padStart(2, "0")} / ${String(books.length).padStart(2, "0")}`, "All eight books")}${choiceDialog(
-      "Wisdom to read. Values to live.",
-      books.map((b) => ({ title: b.title, href: "#/library/books/" + b.id })),
-    )}</section>`;
+    app.innerHTML = `<section class="view books-experience">${heading("A quiet companion for the journey.", '<a href="#/learn">Learn Swamiji’s Teachings</a>')}<div class="book-scene"><div class="book-copy"><p class="eyebrow">${book.reader ? "A SPECIAL DIGITAL EDITION · READ HERE" : "THE BOOK COLLECTION"}</p><h2>${esc(book.title)}</h2><p>${esc(book.subtitle || "Teachings to read, reflect upon, and bring into everyday life.")}</p><p class="book-attribution">${esc(book.attribution)}</p><div class="story-actions">${book.reader ? '<a class="button" href="reading-room.html">Open the book ↗</a>' : `<a class="button" href="${href(book.purchaseUrl)}" target="_blank" rel="noopener">View the book ↗</a>`}<a class="text-link" href="${book.reader ? "reading-room.html" : "#/read/books/" + esc(book.id)}">${book.reader ? "Enter the reading room" : "About this edition"} →</a></div>${book.reader ? '<span class="scene-kicker">180 pearls · Save your place · Read at your own pace</span>' : '<span class="scene-kicker">Published editions and availability depend on the seller.</span>'}</div><div class="book-display"><a class="physical-book" href="${book.reader ? "reading-room.html" : "#/read/books/" + esc(book.id)}" aria-label="${book.reader ? "Open" : "Explore"} ${esc(book.title)}">${photo(book.cover, book.title)}<span aria-hidden="true"></span></a><p>OPEN · READ · REFLECT</p></div></div><div class="book-shelf" aria-label="Choose a book">${books.map((b, i) => `<a href="#/library/books/${esc(b.id)}" ${i === index ? 'aria-current="true"' : ""} aria-label="Show ${esc(b.title)}">${photo(b.cover, b.title)}<span>${String(i + 1).padStart(2, "0")}</span></a>`).join("")}</div>${sceneControls(previous, next, `${String(index + 1).padStart(2, "0")} / ${String(books.length).padStart(2, "0")}`, "All eight books")}</section>`;
     bindSequence(previous, next, "#/learn");
   }
 
@@ -944,10 +975,7 @@
             )
             .join("")}</div>`
         : ""
-    }</div></details>${event?.photoSource ? `<a class="school-photo-credit" href="${esc(event.photoSource)}" target="_blank" rel="noopener">${esc(event.photoCredit)} ↗</a>` : ""}</div><div class="foundation-image recipient-image">${supportCover ? photo(supportCover, schoolProfile?.title || event?.coverAlt || event?.title || c.title) : ""}</div></div>${sceneControls(previous, next, `${index + 1} / ${records.length}`, "More " + c.title.toLowerCase() + " support")}${choiceDialog(
-      c.title + " support",
-      records.map((r) => ({ title: r.recipient, href: "#/record/" + r.id })),
-    )}<nav class="service-causes" aria-label="Choose a type of support">${[...new Set(allRecords.map((r) => r.category))].map((kind) => `<a href="#/foundation/support/${kind}" ${kind === record.category ? 'aria-current="page"' : ""}>${esc({ education: "Education", annadanam: "Annadanam", medical: "Medical care", temple: "Temple support" }[kind] || kind)}</a>`).join("")}</nav></section>`;
+    }</div></details>${event?.photoSource ? `<a class="school-photo-credit" href="${esc(event.photoSource)}" target="_blank" rel="noopener">${esc(event.photoCredit)} ↗</a>` : ""}</div><div class="foundation-image recipient-image">${supportCover ? photo(supportCover, schoolProfile?.title || event?.coverAlt || event?.title || c.title) : ""}</div></div>${sceneNavigation(c.title + " support", records.map((r) => ({ title: r.recipient, href: "#/record/" + r.id })), index, previous, next)}<nav class="service-causes" aria-label="Choose a type of support">${[...new Set(allRecords.map((r) => r.category))].map((kind) => `<a href="#/foundation/support/${kind}" ${kind === record.category ? 'aria-current="page"' : ""}>${esc({ education: "Education", annadanam: "Annadanam", medical: "Medical care", temple: "Temple support" }[kind] || kind)}</a>`).join("")}</nav></section>`;
     bindSequence(previous, next, "#/category/" + c.id);
   }
   function about() {
@@ -1009,7 +1037,7 @@
       else throw Error("This part of the collection could not be found.");
       if (token === routeToken && !reduced.matches) {
         const foreground =
-          parts[0] === "library" && parts[2]
+          app.querySelector(".scene-navigation") ? app.querySelector(".story-scene,.book-scene") : parts[0] === "library" && parts[2]
             ? app.querySelector(".thought-paper,.physical-book")
             : parts[0] === "category" && parts[3]
               ? app.querySelector(".story-scene")

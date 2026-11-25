@@ -35,13 +35,6 @@
             foundation team. Open a card to read, turn its pages, or enlarge it.
           </p>
           <div class="spotlight-toolbar">
-            <div class="message-picker">
-              <label for="message-select">CHOOSE AN OCCASION</label
-              ><select
-                aria-label="Choose an event message"
-                id="message-select"
-              ></select>
-            </div>
             <button
               aria-pressed="true"
               class="spotlight-rotation"
@@ -81,11 +74,7 @@
           >
             ←
           </button>
-          <p>
-            One message in the light.<br /><span
-              >Open. Read. Return whenever you wish.</span
-            >
-          </p>
+          <nav class="message-occasion-track" id="message-occasions" aria-label="Message occasions"></nav>
           <button
             aria-label="Next message"
             class="spotlight-nav-button"

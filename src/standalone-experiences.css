@@ -578,3 +578,20 @@ img {
     gap: 10px;
   }
 }
+
+/* Message occasions use the same visible bottom-strip pattern. */
+.page-messages .spotlight-bottom.wrap { max-width: none; gap: 12px; min-width: 0; border-top: 1px solid #d9c89b22; padding-top: 8px; }
+.message-occasion-track { position: relative; display: flex; align-items: center; gap: 8px; flex: 1; min-width: 0; overflow-x: auto; overscroll-behavior-x: contain; touch-action: pan-x; padding: 6px 2px; scrollbar-width: thin; scrollbar-color: #d9c89b55 transparent; }
+.message-occasion-stop { display: inline-flex; align-items: center; flex: 0 0 auto; gap: 9px; border: 0; border-radius: 28px; min-height: 44px; padding: 10px 16px; max-width: 235px; color: #d1d6c8; background: #d9c89b0b; font: 11px/1.4 var(--sans); transition: background .22s, color .22s, transform .22s; }
+.message-occasion-number { color: #d5b578; font-variant-numeric: tabular-nums; }
+.message-occasion-title { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.message-occasion-stop[aria-pressed="true"] { background: #dcc18b; color: #1b3229; }
+.message-occasion-stop[aria-pressed="true"] .message-occasion-number { color: inherit; opacity: .65; }
+.message-occasion-stop:hover { background: #d9c89b25; transform: translateY(-2px); }
+.message-occasion-stop[aria-pressed="true"]:hover { background: #e6cfa2; }
+@media(max-width:700px) {
+ .page-messages .spotlight-bottom.wrap { gap: 6px; }
+ .message-occasion-stop { padding: 10px 13px; min-width: 44px; max-width: 180px; justify-content: center; }
+ .message-occasion-stop:not([aria-pressed="true"]) .message-occasion-title { display: none; }
+}
+@media(prefers-reduced-motion:reduce) { .message-occasion-stop { transition: none; } }
