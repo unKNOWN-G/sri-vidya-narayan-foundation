@@ -1,5 +1,7 @@
 # Sri Vidya Narayan Foundation
 
+[Visit the website](https://unknown-g.github.io/sri-vidya-narayan-foundation/) · [GitHub repository](https://github.com/unKNOWN-G/sri-vidya-narayan-foundation)
+
 A photograph-led tribute to **Sri Vidyanarayana Thirtha Swamiji**, presented through the foundation. Visitors begin with the side of his life that interests them, then open an occasion, gallery, reflection, book, or supporting record.
 
 The website is a static project: HTML, CSS, browser JavaScript, JSON content, and reviewed media. Building and previewing it require **Python 3.9 or later**. There is no npm installation step, service account, or frontend database.
@@ -69,7 +71,7 @@ The build adds content-based version labels to the main stylesheet and script UR
 
 ## GitHub and publishing
 
-The repository contains a **manual** GitHub Pages workflow in `.github/workflows/pages.yml`. After creating a remote repository, pushing the reviewed source, and enabling GitHub Pages with GitHub Actions as its publishing source, run **Publish website** from the Actions tab. A local build does not publish anything.
+The repository contains a **manual** GitHub Pages workflow in `.github/workflows/pages.yml`. This project is published from this repository. For an update, push the reviewed source, then run **Publish website** from the Actions tab. A local build does not publish anything.
 
 The workflow follows [GitHub's custom Pages workflow guidance](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages). Keep relative asset URLs so the site works below a repository path as well as on a custom domain.
 

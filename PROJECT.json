@@ -25,7 +25,9 @@
     "target": "GitHub Pages or another static host",
     "workflow": ".github/workflows/pages.yml",
     "automatic_deployment": false,
-    "status": "Local project; creating or publishing a remote repository is a separate action."
+    "status": "GitHub repository created; published through the included GitHub Pages workflow.",
+    "repository": "https://github.com/unKNOWN-G/sri-vidya-narayan-foundation",
+    "website": "https://unknown-g.github.io/sri-vidya-narayan-foundation/"
   },
   "principles": [
     "A tribute to a living spiritual guide, with specific stories and restrained language",
