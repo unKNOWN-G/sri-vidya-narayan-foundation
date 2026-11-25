@@ -1,0 +1,41 @@
+{
+  "id": "ayodhya",
+  "category": "foundation",
+  "title": "An offering to Ayodhya",
+  "location": "",
+  "date": null,
+  "year": null,
+  "description": "Moments shared by the foundation from Swamiji’s life and service.",
+  "cover": "assets/media/foundation/ayodhya/ayodhya-ram-mandir.webp",
+  "credit": "Original media shared by the foundation.",
+  "note": "",
+  "counts": {
+    "photos": 2
+  },
+  "media": [
+    {
+      "id": "foundation-ayodhya-ayodhya-2021-receipt-excerpt",
+      "type": "photo",
+      "title": "Ayodhya — ayodhya 2021 receipt excerpt",
+      "caption": "Ayodhya. Photograph supplied by the foundation.",
+      "alt": "Ayodhya — ayodhya 2021 receipt excerpt",
+      "src": "assets/media/foundation/ayodhya/ayodhya-2021-receipt-excerpt.webp",
+      "thumb": "assets/media/foundation/ayodhya/ayodhya-2021-receipt-excerpt.thumb.webp"
+    },
+    {
+      "id": "foundation-ayodhya-ayodhya-ram-mandir",
+      "type": "photo",
+      "title": "Ayodhya — ayodhya ram mandir",
+      "caption": "Ayodhya. Photograph supplied by the foundation.",
+      "alt": "Ayodhya — ayodhya ram mandir",
+      "src": "assets/media/foundation/ayodhya/ayodhya-ram-mandir.webp",
+      "thumb": "assets/media/foundation/ayodhya/ayodhya-ram-mandir.thumb.webp"
+    }
+  ],
+  "presentation": "service-story",
+  "supportRecordIds": [
+    "ayodhya-2021"
+  ],
+  "coverAlt": "An offering to Ayodhya · the place of service",
+  "coverContext": "A supplied view of the place; the original acknowledgement is available within this service story."
+}

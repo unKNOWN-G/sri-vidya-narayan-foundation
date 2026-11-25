@@ -1,0 +1,54 @@
+{
+  "name": "sri-vidya-narayan-foundation",
+  "title": "Sri Vidya Narayan Foundation — A Tribute to Swamiji",
+  "purpose": "An interactive, photograph-led tribute to Sri Vidyanarayana Thirtha Swamiji through the foundation.",
+  "architecture": "Framework-free static website with structured JSON content and a Python-only build",
+  "entry_point": "src/index.html",
+  "content_entry": "content/site.json",
+  "canonical_categories": "content/categories/",
+  "canonical_events": "content/events/",
+  "reading_collections": "content/collections/",
+  "public_assets": "assets/",
+  "local_originals": "media/",
+  "local_media_catalog": "media/catalog.json",
+  "generated_output": "dist/",
+  "preview": {
+    "host": "127.0.0.1",
+    "preferred_port": 8876
+  },
+  "commands": {
+    "validate": "python3 scripts/validate.py",
+    "build": "python3 scripts/build.py",
+    "preview": "python3 scripts/serve.py --port 8876"
+  },
+  "publication": {
+    "target": "GitHub Pages or another static host",
+    "workflow": ".github/workflows/pages.yml",
+    "automatic_deployment": false,
+    "status": "Local project; creating or publishing a remote repository is a separate action."
+  },
+  "principles": [
+    "A tribute to a living spiritual guide, with specific stories and restrained language",
+    "Authentic photographs before decorative illustrations",
+    "Visible choices and short captions before long reading",
+    "Stable categories, event folders and media provenance for future additions",
+    "Source originals remain unchanged; public derivatives are reviewed separately",
+    "No unsupported event dates, donation amounts, identities or outcomes"
+  ],
+  "snapshot": {
+    "description": "Refreshed from the current website, event manifests, and foundation-supplied material. Later uploads can be added through the project workflow.",
+    "realEvents": 40,
+    "dailyReadings": 132,
+    "pearls": 180,
+    "practicalTeachings": 38,
+    "books": 8,
+    "messageCollections": 8,
+    "givingRecords": 12
+  },
+  "experience_blueprint": "docs/EXPERIENCE_BLUEPRINT.md",
+  "teaching_gateway": "#/learn",
+  "dedicated_experiences": [
+    "reading-room.html",
+    "message-cards.html"
+  ]
+}

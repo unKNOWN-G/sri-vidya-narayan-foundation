@@ -1,0 +1,35 @@
+{
+  "id": "border-visit",
+  "category": "foundation",
+  "title": "Encouraging those who protect us",
+  "location": "",
+  "date": null,
+  "year": null,
+  "description": "Swamiji’s visit with soldiers, as identified by the foundation. The collection celebrates encouragement and gratitude without inferring a location or date.",
+  "cover": "assets/media/foundation/border-visit/photo-01.webp",
+  "credit": "Original media shared by the foundation.",
+  "note": "",
+  "counts": {
+    "photos": 2
+  },
+  "media": [
+    {
+      "id": "foundation-border-visit-photo-01",
+      "type": "photo",
+      "title": "Swamiji standing with uniformed soldiers during the border visit",
+      "caption": "Swamiji with soldiers during the visit. Photograph shared by the Foundation.",
+      "alt": "Swamiji standing with uniformed soldiers during the border visit",
+      "src": "assets/media/foundation/border-visit/photo-01.webp",
+      "thumb": "assets/media/foundation/border-visit/photo-01.thumb.webp"
+    },
+    {
+      "id": "foundation-border-visit-photo-02",
+      "type": "photo",
+      "title": "Swamiji with companions beside a river during the visit",
+      "caption": "Swamiji with companions during the visit. Photograph shared by the Foundation.",
+      "alt": "Swamiji with companions beside a river during the visit",
+      "src": "assets/media/foundation/border-visit/photo-02.webp",
+      "thumb": "assets/media/foundation/border-visit/photo-02.thumb.webp"
+    }
+  ]
+}

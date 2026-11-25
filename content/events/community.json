@@ -1,0 +1,35 @@
+{
+  "id": "community",
+  "category": "foundation",
+  "title": "Community",
+  "location": "",
+  "date": null,
+  "year": null,
+  "description": "Moments shared by the foundation from Swamiji’s life and service.",
+  "cover": "assets/media/foundation/community/foundation-3.webp",
+  "credit": "Original media shared by the foundation.",
+  "note": "",
+  "counts": {
+    "photos": 2
+  },
+  "media": [
+    {
+      "id": "foundation-community-foundation-3",
+      "type": "photo",
+      "title": "Swamiji with members of the community",
+      "caption": "Community photograph from the existing Guruashraya collection. Kept separate from the curated medical-camp gallery.",
+      "alt": "Swamiji with members of the community",
+      "src": "assets/media/foundation/community/foundation-3.webp",
+      "thumb": "assets/media/foundation/community/foundation-3.thumb.webp"
+    },
+    {
+      "id": "foundation-community-healthcare",
+      "type": "photo",
+      "title": "A community gathering with Swamiji",
+      "caption": "Community photograph from the existing Guruashraya collection. Kept separate from the curated medical-camp gallery.",
+      "alt": "A community gathering with Swamiji",
+      "src": "assets/media/foundation/community/healthcare.webp",
+      "thumb": "assets/media/foundation/community/healthcare.thumb.webp"
+    }
+  ]
+}

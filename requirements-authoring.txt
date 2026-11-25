@@ -1,0 +1,2 @@
+# Optional: only needed for photo ingestion, not normal build/preview/validation.
+Pillow>=10.0

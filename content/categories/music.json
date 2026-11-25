@@ -1,0 +1,22 @@
+{
+  "id": "music",
+  "title": "Music & concerts",
+  "eyebrow": "MUSIC & DEVOTION",
+  "headline": "Where melody meets devotion.",
+  "caption": "A dedicated place for original music photographs and recordings as they are added.",
+  "shortCaption": "Where melody meets devotion.",
+  "cover": null,
+  "coverAlt": "Music & concerts — photograph shared by the foundation",
+  "theme": {
+    "key": "raga",
+    "paper": "#f2ecf7",
+    "wash": "#cdb6df",
+    "ink": "#42304c",
+    "muted": "#564361",
+    "accent": "#79518d",
+    "surface": "#fdf9ff",
+    "line": "#d6c5e1"
+  },
+  "published": false,
+  "eventIds": []
+}

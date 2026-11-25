@@ -1,0 +1,46 @@
+{
+  "id": "farmers-annavaram-2026",
+  "category": "compassion",
+  "title": "With the farmers of Annavaram",
+  "location": "Annavaram",
+  "date": null,
+  "year": 2026,
+  "description": "During the Annavaram Girivalam in 2026, Swamiji spent time with farmers, offered his blessings, and greeted them with affection. These simple moments reflect humility, warmth and compassion in his life as a Shankaracharya.",
+  "cover": "assets/media/compassion/farmers-annavaram-2026/photo-02.webp",
+  "credit": "Photographs, event account, location and year shared by the Foundation",
+  "note": "",
+  "counts": {
+    "photos": 3
+  },
+  "media": [
+    {
+      "id": "compassion-farmers-annavaram-2026-photo-02",
+      "type": "photo",
+      "title": "The warmth of a simple blessing",
+      "caption": "During the Annavaram Girivalam in 2026, Swamiji spent time with farmers, offered his blessings, and greeted them with affection. These simple moments reflect humility, warmth and compassion in his life as a Shankaracharya.",
+      "alt": "Swamiji warmly holding a farmer’s hands during the Annavaram Girivalam · 2026",
+      "src": "assets/media/compassion/farmers-annavaram-2026/photo-02.webp",
+      "thumb": "assets/media/compassion/farmers-annavaram-2026/photo-02.thumb.webp"
+    },
+    {
+      "id": "compassion-farmers-annavaram-2026-photo-01",
+      "type": "photo",
+      "title": "A moment of kindness",
+      "caption": "Swamiji meeting and blessing farmers during the Annavaram Girivalam · 2026. Photographs and event account shared by the Foundation.",
+      "alt": "Swamiji warmly holding a farmer’s hands during the Annavaram Girivalam · 2026",
+      "src": "assets/media/compassion/farmers-annavaram-2026/photo-01.webp",
+      "thumb": "assets/media/compassion/farmers-annavaram-2026/photo-01.thumb.webp"
+    },
+    {
+      "id": "compassion-farmers-annavaram-2026-photo-03",
+      "type": "photo",
+      "title": "Meeting with affection",
+      "caption": "Swamiji meeting and blessing farmers during the Annavaram Girivalam · 2026. Photographs and event account shared by the Foundation.",
+      "alt": "Swamiji warmly holding a farmer’s hands during the Annavaram Girivalam · 2026",
+      "src": "assets/media/compassion/farmers-annavaram-2026/photo-03.webp",
+      "thumb": "assets/media/compassion/farmers-annavaram-2026/photo-03.thumb.webp"
+    }
+  ],
+  "sourceTitle": "Blessings and compassion · Annavaram Girivalam",
+  "sourceCollection": "farmers-annavaram"
+}

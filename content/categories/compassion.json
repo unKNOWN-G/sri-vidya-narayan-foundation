@@ -1,0 +1,25 @@
+{
+  "id": "compassion",
+  "title": "Compassion in action",
+  "eyebrow": "COMPASSION BEYOND WORDS",
+  "headline": "Every life deserves care.",
+  "caption": "Moments at Tirumala’s Goshala and Gajashala reveal a caring connection with animals and the world around us.",
+  "shortCaption": "Every life deserves care.",
+  "cover": "assets/media/compassion/tirumala-goshala-2026/photo-25.webp",
+  "coverAlt": "Care for all life — photograph shared by the foundation",
+  "theme": {
+    "key": "all-life",
+    "paper": "#eaf4ef",
+    "wash": "#b1d3c6",
+    "ink": "#24443c",
+    "muted": "#37584f",
+    "accent": "#2d715f",
+    "surface": "#f6fcf8",
+    "line": "#bfd9ce"
+  },
+  "published": true,
+  "eventIds": [
+    "tirumala-goshala-2026",
+    "farmers-annavaram-2026"
+  ]
+}

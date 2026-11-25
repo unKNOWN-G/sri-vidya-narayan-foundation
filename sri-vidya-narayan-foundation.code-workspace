@@ -1,0 +1,12 @@
+{
+  "folders": [{ "path": "." }],
+  "settings": {
+    "search.exclude": {
+      "dist": true,
+      "media": true,
+      "incoming": true
+    },
+    "files.encoding": "utf8",
+    "files.eol": "\n"
+  }
+}

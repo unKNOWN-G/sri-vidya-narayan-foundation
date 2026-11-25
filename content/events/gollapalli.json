@@ -1,0 +1,264 @@
+{
+  "id": "gollapalli",
+  "category": "education",
+  "title": "A school. Generations of possibility.",
+  "location": "Gollapalli, Andhra Pradesh",
+  "date": null,
+  "year": null,
+  "description": "The Gollapalli community celebrates Swamiji’s 78th birthday. Swamiji established the school in 2004; these photographs show the later celebration, not its inauguration.",
+  "cover": "assets/media/education/gollapalli/photo-01.webp",
+  "credit": "Original media shared by the foundation.",
+  "note": "",
+  "counts": {
+    "photos": 24,
+    "films": 3
+  },
+  "media": [
+    {
+      "id": "education-gollapalli-photo-01",
+      "type": "photo",
+      "title": "A group gathered indoors at ZP High School, Gollapalli",
+      "caption": "Celebration of Swamiji’s 78th birthday at ZP High School, Gollapalli. Photographs supplied by the foundation team.",
+      "alt": "A group gathered indoors at ZP High School, Gollapalli",
+      "src": "assets/media/education/gollapalli/photo-01.webp",
+      "thumb": "assets/media/education/gollapalli/photo-01.thumb.webp"
+    },
+    {
+      "id": "education-gollapalli-photo-02",
+      "type": "photo",
+      "title": "Adults gathered beside framed portraits inside the school at Gollapalli",
+      "caption": "Celebration of Swamiji’s 78th birthday at ZP High School, Gollapalli. Photographs supplied by the foundation team.",
+      "alt": "Adults gathered beside framed portraits inside the school at Gollapalli",
+      "src": "assets/media/education/gollapalli/photo-02.webp",
+      "thumb": "assets/media/education/gollapalli/photo-02.thumb.webp"
+    },
+    {
+      "id": "education-gollapalli-photo-03",
+      "type": "photo",
+      "title": "A group standing beside framed portraits inside the school at Gollapalli",
+      "caption": "Celebration of Swamiji’s 78th birthday at ZP High School, Gollapalli. Photographs supplied by the foundation team.",
+      "alt": "A group standing beside framed portraits inside the school at Gollapalli",
+      "src": "assets/media/education/gollapalli/photo-03.webp",
+      "thumb": "assets/media/education/gollapalli/photo-03.thumb.webp"
+    },
+    {
+      "id": "education-gollapalli-photo-04",
+      "type": "photo",
+      "title": "Students seated in the school courtyard during a gathering at Gollapalli",
+      "caption": "Celebration of Swamiji’s 78th birthday at ZP High School, Gollapalli. Photographs supplied by the foundation team.",
+      "alt": "Students seated in the school courtyard during a gathering at Gollapalli",
+      "src": "assets/media/education/gollapalli/photo-04.webp",
+      "thumb": "assets/media/education/gollapalli/photo-04.thumb.webp"
+    },
+    {
+      "id": "education-gollapalli-photo-05",
+      "type": "photo",
+      "title": "Students and speakers gathered in the school courtyard at Gollapalli",
+      "caption": "Celebration of Swamiji’s 78th birthday at ZP High School, Gollapalli. Photographs supplied by the foundation team.",
+      "alt": "Students and speakers gathered in the school courtyard at Gollapalli",
+      "src": "assets/media/education/gollapalli/photo-05.webp",
+      "thumb": "assets/media/education/gollapalli/photo-05.thumb.webp"
+    },
+    {
+      "id": "education-gollapalli-photo-06",
+      "type": "photo",
+      "title": "Students seated beneath trees in the school grounds at Gollapalli",
+      "caption": "Celebration of Swamiji’s 78th birthday at ZP High School, Gollapalli. Photographs supplied by the foundation team.",
+      "alt": "Students seated beneath trees in the school grounds at Gollapalli",
+      "src": "assets/media/education/gollapalli/photo-06.webp",
+      "thumb": "assets/media/education/gollapalli/photo-06.thumb.webp"
+    },
+    {
+      "id": "education-gollapalli-photo-07",
+      "type": "photo",
+      "title": "Adults addressing students in the school courtyard at Gollapalli",
+      "caption": "Celebration of Swamiji’s 78th birthday at ZP High School, Gollapalli. Photographs supplied by the foundation team.",
+      "alt": "Adults addressing students in the school courtyard at Gollapalli",
+      "src": "assets/media/education/gollapalli/photo-07.webp",
+      "thumb": "assets/media/education/gollapalli/photo-07.thumb.webp"
+    },
+    {
+      "id": "education-gollapalli-photo-08",
+      "type": "photo",
+      "title": "A woman speaking at the school gathering at Gollapalli",
+      "caption": "Celebration of Swamiji’s 78th birthday at ZP High School, Gollapalli. Photographs supplied by the foundation team.",
+      "alt": "A woman speaking at the school gathering at Gollapalli",
+      "src": "assets/media/education/gollapalli/photo-08.webp",
+      "thumb": "assets/media/education/gollapalli/photo-08.thumb.webp"
+    },
+    {
+      "id": "education-gollapalli-photo-09",
+      "type": "photo",
+      "title": "A wide view of students seated for the school gathering at Gollapalli",
+      "caption": "Celebration of Swamiji’s 78th birthday at ZP High School, Gollapalli. Photographs supplied by the foundation team.",
+      "alt": "A wide view of students seated for the school gathering at Gollapalli",
+      "src": "assets/media/education/gollapalli/photo-09.webp",
+      "thumb": "assets/media/education/gollapalli/photo-09.thumb.webp"
+    },
+    {
+      "id": "education-gollapalli-photo-10",
+      "type": "photo",
+      "title": "A group standing before seated students at the school at Gollapalli",
+      "caption": "Celebration of Swamiji’s 78th birthday at ZP High School, Gollapalli. Photographs supplied by the foundation team.",
+      "alt": "A group standing before seated students at the school at Gollapalli",
+      "src": "assets/media/education/gollapalli/photo-10.webp",
+      "thumb": "assets/media/education/gollapalli/photo-10.thumb.webp"
+    },
+    {
+      "id": "education-gollapalli-photo-11",
+      "type": "photo",
+      "title": "Students listening to a group at the front of the gathering at Gollapalli",
+      "caption": "Celebration of Swamiji’s 78th birthday at ZP High School, Gollapalli. Photographs supplied by the foundation team.",
+      "alt": "Students listening to a group at the front of the gathering at Gollapalli",
+      "src": "assets/media/education/gollapalli/photo-11.webp",
+      "thumb": "assets/media/education/gollapalli/photo-11.thumb.webp"
+    },
+    {
+      "id": "education-gollapalli-photo-12",
+      "type": "photo",
+      "title": "A group addressing students under the trees at Gollapalli",
+      "caption": "Celebration of Swamiji’s 78th birthday at ZP High School, Gollapalli. Photographs supplied by the foundation team.",
+      "alt": "A group addressing students under the trees at Gollapalli",
+      "src": "assets/media/education/gollapalli/photo-12.webp",
+      "thumb": "assets/media/education/gollapalli/photo-12.thumb.webp"
+    },
+    {
+      "id": "education-gollapalli-photo-13",
+      "type": "photo",
+      "title": "Students and adults taking part in the school gathering at Gollapalli",
+      "caption": "Celebration of Swamiji’s 78th birthday at ZP High School, Gollapalli. Photographs supplied by the foundation team.",
+      "alt": "Students and adults taking part in the school gathering at Gollapalli",
+      "src": "assets/media/education/gollapalli/photo-13.webp",
+      "thumb": "assets/media/education/gollapalli/photo-13.thumb.webp"
+    },
+    {
+      "id": "education-gollapalli-photo-14",
+      "type": "photo",
+      "title": "A school. Generations of possibility.",
+      "caption": "Celebration of Swamiji’s 78th birthday at ZP High School, Gollapalli. Photographs supplied by the foundation team.",
+      "alt": "A wide view of adults and seated students at the school gathering at Gollapalli",
+      "src": "assets/media/education/gollapalli/photo-14.webp",
+      "thumb": "assets/media/education/gollapalli/photo-14.thumb.webp"
+    },
+    {
+      "id": "education-gollapalli-photo-15",
+      "type": "photo",
+      "title": "Students seated together in the school courtyard at Gollapalli",
+      "caption": "Celebration of Swamiji’s 78th birthday at ZP High School, Gollapalli. Photographs supplied by the foundation team.",
+      "alt": "Students seated together in the school courtyard at Gollapalli",
+      "src": "assets/media/education/gollapalli/photo-15.webp",
+      "thumb": "assets/media/education/gollapalli/photo-15.thumb.webp"
+    },
+    {
+      "id": "education-gollapalli-photo-16",
+      "type": "photo",
+      "title": "A portrait view of the gathering in the school grounds at Gollapalli",
+      "caption": "Celebration of Swamiji’s 78th birthday at ZP High School, Gollapalli. Photographs supplied by the foundation team.",
+      "alt": "A portrait view of the gathering in the school grounds at Gollapalli",
+      "src": "assets/media/education/gollapalli/photo-16.webp",
+      "thumb": "assets/media/education/gollapalli/photo-16.thumb.webp"
+    },
+    {
+      "id": "education-gollapalli-photo-17",
+      "type": "photo",
+      "title": "A wide view of the gathering beneath the school trees at Gollapalli",
+      "caption": "Celebration of Swamiji’s 78th birthday at ZP High School, Gollapalli. Photographs supplied by the foundation team.",
+      "alt": "A wide view of the gathering beneath the school trees at Gollapalli",
+      "src": "assets/media/education/gollapalli/photo-17.webp",
+      "thumb": "assets/media/education/gollapalli/photo-17.thumb.webp"
+    },
+    {
+      "id": "education-gollapalli-photo-18",
+      "type": "photo",
+      "title": "Rows of students seated in the courtyard at Gollapalli",
+      "caption": "Celebration of Swamiji’s 78th birthday at ZP High School, Gollapalli. Photographs supplied by the foundation team.",
+      "alt": "Rows of students seated in the courtyard at Gollapalli",
+      "src": "assets/media/education/gollapalli/photo-18.webp",
+      "thumb": "assets/media/education/gollapalli/photo-18.thumb.webp"
+    },
+    {
+      "id": "education-gollapalli-photo-19",
+      "type": "photo",
+      "title": "A speaker addressing students in the school courtyard at Gollapalli",
+      "caption": "Celebration of Swamiji’s 78th birthday at ZP High School, Gollapalli. Photographs supplied by the foundation team.",
+      "alt": "A speaker addressing students in the school courtyard at Gollapalli",
+      "src": "assets/media/education/gollapalli/photo-19.webp",
+      "thumb": "assets/media/education/gollapalli/photo-19.thumb.webp"
+    },
+    {
+      "id": "education-gollapalli-photo-20",
+      "type": "photo",
+      "title": "A wide view across the school assembly at Gollapalli",
+      "caption": "Celebration of Swamiji’s 78th birthday at ZP High School, Gollapalli. Photographs supplied by the foundation team.",
+      "alt": "A wide view across the school assembly at Gollapalli",
+      "src": "assets/media/education/gollapalli/photo-20.webp",
+      "thumb": "assets/media/education/gollapalli/photo-20.thumb.webp"
+    },
+    {
+      "id": "education-gollapalli-photo-21",
+      "type": "photo",
+      "title": "Students listening to speakers beside the school building at Gollapalli",
+      "caption": "Celebration of Swamiji’s 78th birthday at ZP High School, Gollapalli. Photographs supplied by the foundation team.",
+      "alt": "Students listening to speakers beside the school building at Gollapalli",
+      "src": "assets/media/education/gollapalli/photo-21.webp",
+      "thumb": "assets/media/education/gollapalli/photo-21.thumb.webp"
+    },
+    {
+      "id": "education-gollapalli-photo-22",
+      "type": "photo",
+      "title": "A man addressing the school gathering at Gollapalli",
+      "caption": "Celebration of Swamiji’s 78th birthday at ZP High School, Gollapalli. Photographs supplied by the foundation team.",
+      "alt": "A man addressing the school gathering at Gollapalli",
+      "src": "assets/media/education/gollapalli/photo-22.webp",
+      "thumb": "assets/media/education/gollapalli/photo-22.thumb.webp"
+    },
+    {
+      "id": "education-gollapalli-photo-23",
+      "type": "photo",
+      "title": "The school gathering beneath the courtyard trees at Gollapalli",
+      "caption": "Celebration of Swamiji’s 78th birthday at ZP High School, Gollapalli. Photographs supplied by the foundation team.",
+      "alt": "The school gathering beneath the courtyard trees at Gollapalli",
+      "src": "assets/media/education/gollapalli/photo-23.webp",
+      "thumb": "assets/media/education/gollapalli/photo-23.thumb.webp"
+    },
+    {
+      "id": "education-gollapalli-photo-24",
+      "type": "photo",
+      "title": "Students seated together beneath the trees at Gollapalli",
+      "caption": "Celebration of Swamiji’s 78th birthday at ZP High School, Gollapalli. Photographs supplied by the foundation team.",
+      "alt": "Students seated together beneath the trees at Gollapalli",
+      "src": "assets/media/education/gollapalli/photo-24.webp",
+      "thumb": "assets/media/education/gollapalli/photo-24.thumb.webp"
+    },
+    {
+      "id": "education-gollapalli-video-01",
+      "type": "video",
+      "title": "Gollapalli. Published source material.",
+      "caption": "Gollapalli. Published source material.",
+      "alt": "Video 01",
+      "src": "assets/media/education/gollapalli/video-01.mp4",
+      "thumb": "",
+      "poster": "assets/media/education/gollapalli/video-01-poster.webp"
+    },
+    {
+      "id": "education-gollapalli-video-02",
+      "type": "video",
+      "title": "Gollapalli. Published source material.",
+      "caption": "Gollapalli. Published source material.",
+      "alt": "Video 02",
+      "src": "assets/media/education/gollapalli/video-02.mp4",
+      "thumb": "",
+      "poster": "assets/media/education/gollapalli/video-02-poster.webp"
+    },
+    {
+      "id": "education-gollapalli-video-03",
+      "type": "video",
+      "title": "Gollapalli. Published source material.",
+      "caption": "Gollapalli. Published source material.",
+      "alt": "Video 03",
+      "src": "assets/media/education/gollapalli/video-03.mp4",
+      "thumb": "",
+      "poster": "assets/media/education/gollapalli/video-03-poster.webp"
+    }
+  ]
+}

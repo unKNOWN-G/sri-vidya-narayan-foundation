@@ -1,0 +1,41 @@
+{
+  "id": "tirumala",
+  "category": "annadanam",
+  "title": "An offering at Tirumala",
+  "location": "",
+  "date": null,
+  "year": null,
+  "description": "Moments shared by the foundation from Swamiji’s life and service.",
+  "cover": "assets/media/annadanam/tirumala/tirumala-temple.webp",
+  "credit": "Original media shared by the foundation.",
+  "note": "",
+  "counts": {
+    "photos": 2
+  },
+  "media": [
+    {
+      "id": "annadanam-tirumala-tirumala-2025-acknowledgement-excerpt",
+      "type": "photo",
+      "title": "Tirumala — tirumala 2025 acknowledgement excerpt",
+      "caption": "Tirumala. Photograph supplied by the foundation.",
+      "alt": "Tirumala — tirumala 2025 acknowledgement excerpt",
+      "src": "assets/media/annadanam/tirumala/tirumala-2025-acknowledgement-excerpt.webp",
+      "thumb": "assets/media/annadanam/tirumala/tirumala-2025-acknowledgement-excerpt.thumb.webp"
+    },
+    {
+      "id": "annadanam-tirumala-tirumala-temple",
+      "type": "photo",
+      "title": "Tirumala — tirumala temple",
+      "caption": "Tirumala. Photograph supplied by the foundation.",
+      "alt": "Tirumala — tirumala temple",
+      "src": "assets/media/annadanam/tirumala/tirumala-temple.webp",
+      "thumb": "assets/media/annadanam/tirumala/tirumala-temple.thumb.webp"
+    }
+  ],
+  "presentation": "service-story",
+  "supportRecordIds": [
+    "tirumala"
+  ],
+  "coverAlt": "An offering at Tirumala · the place of service",
+  "coverContext": "A supplied view of the place; the original acknowledgement is available within this service story."
+}

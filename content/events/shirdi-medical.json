@@ -1,0 +1,32 @@
+{
+  "id": "shirdi-medical",
+  "category": "healthcare",
+  "title": "Supporting the Shirdi Medical Fund",
+  "location": "",
+  "date": null,
+  "year": null,
+  "description": "Moments shared by the foundation from Swamiji’s life and service.",
+  "cover": "assets/media/his-holiness/portrait-and-journey/foundation-5.webp",
+  "credit": "Original media shared by the foundation.",
+  "note": "",
+  "counts": {
+    "photos": 1
+  },
+  "media": [
+    {
+      "id": "healthcare-shirdi-medical-medical-2024-excerpt",
+      "type": "photo",
+      "title": "Medical 2024 Excerpt",
+      "caption": "Shirdi Medical. Published source material.",
+      "alt": "Medical 2024 Excerpt",
+      "src": "assets/media/healthcare/shirdi-medical/medical-2024-excerpt.webp",
+      "thumb": "assets/media/healthcare/shirdi-medical/medical-2024-excerpt.thumb.webp"
+    }
+  ],
+  "presentation": "service-story",
+  "supportRecordIds": [
+    "shirdi-2024-medical"
+  ],
+  "coverAlt": "Sri Swamiji",
+  "coverContext": "Portrait of Sri Swamiji; supporting acknowledgements are available within this service story."
+}

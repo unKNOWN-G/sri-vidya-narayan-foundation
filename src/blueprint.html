@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="en">
+  <meta charset="utf-8" /><meta
+    name="viewport"
+    content="width=device-width,initial-scale=1"
+  /><title>Tribute experience — navigation skeleton</title
+  ><style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      background: #f5f0e7;
+      color: #273c33;
+      font: 15px/1.7 system-ui;
+    }
+    header {
+      padding: 32px 5vw;
+      border-bottom: 1px solid #ccd2c7;
+    }
+    header small {
+      letter-spacing: 0.15em;
+      font-size: 11px;
+    }
+    h1 {
+      font: 48px/1.1 Georgia;
+      margin: 14px 0;
+    }
+    header p {
+      max-width: 850px;
+    }
+    main {
+      display: grid;
+      grid-template-columns: 310px 1fr;
+      gap: 6vw;
+      padding: 35px 5vw;
+    }
+    nav {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    button {
+      font: inherit;
+      text-align: left;
+      cursor: pointer;
+      border: 0;
+      background: transparent;
+      color: inherit;
+      padding: 10px 14px;
+      border-left: 2px solid #d7d8ce;
+    }
+    button[aria-pressed="true"] {
+      border-color: #94643c;
+      background: #eae1d0;
+    }
+    article {
+      max-width: 760px;
+      position: sticky;
+      top: 25px;
+      align-self: start;
+    }
+    h2 {
+      font: 40px Georgia;
+    }
+    h3 {
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-top: 30px;
+      color: #94643c;
+    }
+    .flow {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin: 24px 0;
+    }
+    .flow span {
+      border-bottom: 1px solid #b9c2b2;
+      padding: 10px;
+    }
+    a {
+      color: #75512d;
+    }
+    footer {
+      padding: 25px 5vw;
+      border-top: 1px solid #ccd2c7;
+    }
+    @media (max-width: 750px) {
+      h1 {
+        font-size: 34px;
+      }
+      main {
+        grid-template-columns: 1fr;
+      }
+      nav {
+        flex-direction: row;
+        overflow-x: auto;
+      }
+      nav button {
+        min-width: 150px;
+      }
+      article {
+        position: static;
+      }
+      h2 {
+        font-size: 32px;
+      }
+    }
+  </style>
+  <header>
+    <small>SRI VIDYA NARAYAN FOUNDATION · EXPERIENCE SKELETON</small>
+    <h1>A tribute. A way to know him.</h1>
+    <p>
+      Begin with a person. Enter a story. Carry something with you. Choose a
+      page below to see its purpose, content and onward connections.
+    </p>
+    <div class="flow">
+      <span>Meet Swamiji →</span><span>His Life in Action →</span
+      ><span>Enter an occasion</span>
+    </div>
+    <div class="flow">
+      <span>Learn Swamiji’s Teachings →</span
+      ><span>Satsangh · Books · Cards · Everyday Teachings</span>
+    </div>
+  </header>
+  <main>
+    <nav aria-label="Choose a planned page" id="pages"></nav>
+    <article aria-live="polite" id="detail"></article>
+  </main>
+  <footer>
+    Planning view · <a href="index.html">Open the website preview ↗</a>
+  </footer>
+  <script>
+    const rows = [
+      [
+        "Meet Swamiji",
+        "Reveal several sides at first glance",
+        "Actual portraits rotating smoothly; concise action-led caption; warm changing ambience",
+        "Meet this side → its story scene",
+        "His Life in Action; Learn Swamiji’s Teachings; Foundation",
+      ],
+      [
+        "His Life in Action",
+        "Let a visitor choose a human interest",
+        "One generous photograph and story at a time; visible neighbouring scenes; a compact choice of perspectives",
+        "Enter this story → occasion",
+        "Direct jump between perspectives; return to portraits",
+      ],
+      [
+        "His Holiness Shankaracharya",
+        "Understand the spiritual guide",
+        "Portrait and journey, archival photograph, Swamiji Stuti, birthday gathering",
+        "Open a moment → photograph, Stuti, occasion",
+        "Devotion & celebrations; Learn the teachings",
+      ],
+      [
+        "Education",
+        "Show encouragement and support in real settings",
+        "School visits, student interactions, SGDC college visit",
+        "Step into a visit → full occasion",
+        "Relevant support note behind story; Teachings",
+      ],
+      [
+        "Vedic Learning & Parayanam",
+        "Connect learning, practice and living tradition",
+        "Dharmagiri, Vaikhanasa Mutt, Veda Sabha and related gatherings",
+        "Enter the occasion → photo / film / audio / supplied YouTube recording",
+        "Devotion & celebrations; education",
+      ],
+      [
+        "Care & Wellbeing",
+        "Show specific acts of care",
+        "Vision camp, Dhanvantari Day, Navajeevan, medical support",
+        "See the occasion → photographs / original report",
+        "Relevant historical support; Foundation",
+      ],
+      [
+        "Compassion in Action",
+        "Make the action explicit",
+        "Goshala/Gajashala visit and farmer interaction",
+        "Step into the visit",
+        "Related service and devotion",
+      ],
+      [
+        "Annadanam",
+        "Present nourishment as service",
+        "Tirumala, Shirdi, Bodhendra support and supplied context",
+        "Discover the story",
+        "Supporting acknowledgement only on request; Foundation",
+      ],
+      [
+        "Devotion & Celebrations",
+        "Preserve the strong existing event experience",
+        "Large event compositions; worship and gatherings; Chaturmasya, Radha Kalyanam and other authentic occasions",
+        "Enter occasion → photographs, film, audio",
+        "Adjacent occasion; Vedic learning",
+      ],
+      [
+        "Learn Swamiji’s Teachings",
+        "One unmistakable gateway to the whole teaching experience",
+        "Four generous, distinct choices: Satsangh Messages, Books, Message Cards & Blessings, Everyday Teachings",
+        "Choose a way to learn",
+        "Back to his life; direct entry to Pearls",
+      ],
+      [
+        "Satsangh Messages",
+        "Offer a thought worth taking into daily life",
+        "Featured dated reflection; concise adjacent choices; search / date / topic tools available intentionally",
+        "Read reflection → focused reading",
+        "Previous / next date; everyday practice; return with search remembered",
+      ],
+      [
+        "Books",
+        "Make each actual cover inviting",
+        "One featured book, neighbouring covers, short attribution",
+        "Pearls → cover welcome → Open book; other seven books → supplied publication link",
+        "All eight titles; Teachings gateway",
+      ],
+      [
+        "Pearls of Wisdom",
+        "Preserve the real opening and reading experience",
+        "Actual digital cover, opening animation, one pearl per page, page turns, contents/search, bookmarks, resume, size and appearance",
+        "Open → read / turn / save",
+        "Close to cover; Back to Books",
+      ],
+      [
+        "Message Cards & Blessings",
+        "Invite a visitor to open a personal message",
+        "Rotating actual covers; selected card under a spotlight",
+        "Open card → front / inside spread / back, or real page sequence",
+        "Enlarge/Fit; original PDF/image; return to same card",
+      ],
+      [
+        "Everyday Teachings",
+        "Turn understanding into a small action",
+        "One practical teaching with meaning and actions",
+        "Read / next teaching",
+        "Source-labelled satsang reflections; Teachings gateway",
+      ],
+      [
+        "The Foundation",
+        "Explain how the example continues",
+        "Purpose, actual service moments, contact and involvement",
+        "Connect → email/phone; discover a service story",
+        "Historical support notes reachable as evidence, not the landing page",
+      ],
+      [
+        "Supporting acknowledgement",
+        "Provide context when requested",
+        "Recipient, named donor/trust, date and amount as supplied; reviewed source excerpt",
+        "View original acknowledgement",
+        "Return to the relevant service story",
+      ],
+    ];
+    const pages = document.querySelector("#pages"),
+      detail = document.querySelector("#detail");
+    rows.forEach((r, i) => {
+      const b = document.createElement("button");
+      b.textContent = r[0];
+      b.onclick = () => select(i);
+      pages.append(b);
+    });
+    function select(i) {
+      pages
+        .querySelectorAll("button")
+        .forEach((b, n) => b.setAttribute("aria-pressed", String(i === n)));
+      const r = rows[i];
+      detail.replaceChildren();
+      [
+        "Planned page",
+        r[0],
+        "Main goal",
+        r[1],
+        "What the visitor sees",
+        r[2],
+        "Primary action → destination",
+        r[3],
+        "Other connections",
+        r[4],
+      ].forEach((v, n) => {
+        const el = document.createElement(
+          n === 1 ? "h2" : n % 2 === 0 ? "h3" : "p",
+        );
+        el.textContent = v;
+        detail.append(el);
+      });
+    }
+    select(0);
+  </script>
+</html>

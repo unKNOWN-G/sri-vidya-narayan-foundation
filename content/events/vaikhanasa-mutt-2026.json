@@ -1,0 +1,76 @@
+{
+  "id": "vaikhanasa-mutt-2026",
+  "category": "vedic-learning",
+  "title": "At Vaikhanasa Mutt, Tirumala",
+  "location": "",
+  "date": null,
+  "year": 2026,
+  "description": "Photographs, video and event details shared by the Foundation",
+  "cover": "assets/media/vedic-learning/vaikhanasa-mutt-2026/photo-03.webp",
+  "credit": "Photographs, video and event details shared by the Foundation",
+  "note": "",
+  "counts": {
+    "photos": 5,
+    "films": 1
+  },
+  "media": [
+    {
+      "id": "vedic-learning-vaikhanasa-mutt-2026-photo-03",
+      "type": "photo",
+      "title": "A visit in devotion",
+      "caption": "Vaikhanasa Mutt Visit · Tirumala · 2026. Photographs shared by the Foundation.",
+      "alt": "Swamiji standing beside the decorated shrine — Vaikhanasa Mutt, Tirumala, 2026",
+      "src": "assets/media/vedic-learning/vaikhanasa-mutt-2026/photo-03.webp",
+      "thumb": "assets/media/vedic-learning/vaikhanasa-mutt-2026/photo-03.thumb.webp"
+    },
+    {
+      "id": "vedic-learning-vaikhanasa-mutt-2026-veda-parayanam",
+      "type": "video",
+      "title": "Veda Parayanam",
+      "caption": "Veda Parayanam during Swamiji’s visit to Vaikhanasa Mutt · Tirumala · 2026. Video shared by the Foundation.",
+      "alt": "Veda Parayanam",
+      "src": "assets/media/vedic-learning/vaikhanasa-mutt-2026/veda-parayanam.mp4",
+      "thumb": "",
+      "poster": "assets/media/vedic-learning/vaikhanasa-mutt-2026/veda-parayanam-poster.webp",
+      "durationSeconds": 63.46066666666667
+    },
+    {
+      "id": "vedic-learning-vaikhanasa-mutt-2026-photo-01",
+      "type": "photo",
+      "title": "At Vaikhanasa Mutt",
+      "caption": "Vaikhanasa Mutt Visit · Tirumala · 2026. Photographs shared by the Foundation.",
+      "alt": "Swamiji beside the decorated shrine during his visit — Vaikhanasa Mutt, Tirumala, 2026",
+      "src": "assets/media/vedic-learning/vaikhanasa-mutt-2026/photo-01.webp",
+      "thumb": "assets/media/vedic-learning/vaikhanasa-mutt-2026/photo-01.thumb.webp"
+    },
+    {
+      "id": "vedic-learning-vaikhanasa-mutt-2026-photo-02",
+      "type": "photo",
+      "title": "A temple moment",
+      "caption": "Vaikhanasa Mutt Visit · Tirumala · 2026. Photographs shared by the Foundation.",
+      "alt": "Swamiji with participants near the shrine — Vaikhanasa Mutt, Tirumala, 2026",
+      "src": "assets/media/vedic-learning/vaikhanasa-mutt-2026/photo-02.webp",
+      "thumb": "assets/media/vedic-learning/vaikhanasa-mutt-2026/photo-02.thumb.webp"
+    },
+    {
+      "id": "vedic-learning-vaikhanasa-mutt-2026-photo-04",
+      "type": "photo",
+      "title": "Together at the shrine",
+      "caption": "Vaikhanasa Mutt Visit · Tirumala · 2026. Photographs shared by the Foundation.",
+      "alt": "Swamiji with a companion beside the shrine — Vaikhanasa Mutt, Tirumala, 2026",
+      "src": "assets/media/vedic-learning/vaikhanasa-mutt-2026/photo-04.webp",
+      "thumb": "assets/media/vedic-learning/vaikhanasa-mutt-2026/photo-04.thumb.webp"
+    },
+    {
+      "id": "vedic-learning-vaikhanasa-mutt-2026-photo-05",
+      "type": "photo",
+      "title": "Swamiji at Vaikhanasa Mutt",
+      "caption": "Swamiji seated at Vaikhanasa Mutt · Tirumala · 2026. Photograph shared by the Foundation.",
+      "alt": "Swamiji seated with a flower garland, holding his staff at Vaikhanasa Mutt, Tirumala, 2026",
+      "src": "assets/media/vedic-learning/vaikhanasa-mutt-2026/photo-05.webp",
+      "thumb": "assets/media/vedic-learning/vaikhanasa-mutt-2026/photo-05.thumb.webp"
+    }
+  ],
+  "sourceTitle": "Vaikhanasa Mutt Visit, Tirumala",
+  "sourceCollection": "vaikhanasa-mutt"
+}

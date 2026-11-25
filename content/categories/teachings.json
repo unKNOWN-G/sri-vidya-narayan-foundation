@@ -1,0 +1,23 @@
+{
+  "id": "teachings",
+  "title": "Learn Swamiji’s Teachings",
+  "eyebrow": "WORDS FOR EVERYDAY LIFE",
+  "headline": "A little reflection. A little more clarity.",
+  "caption": "Choose a satsang, a pearl, a practical teaching, a book, or a message. Take something meaningful into your day.",
+  "shortCaption": "A little reflection. A little more clarity.",
+  "cover": "assets/media/his-holiness/portrait-and-journey/foundation-5.webp",
+  "coverAlt": "Wisdom, books & satsang — photograph shared by the foundation",
+  "theme": {
+    "key": "ink",
+    "paper": "#eef0f9",
+    "wash": "#bfc9e6",
+    "ink": "#303851",
+    "muted": "#47516b",
+    "accent": "#4c5f98",
+    "surface": "#fafbff",
+    "line": "#c8cfe3"
+  },
+  "published": true,
+  "eventIds": [],
+  "thumbPosition": "50% 14%"
+}

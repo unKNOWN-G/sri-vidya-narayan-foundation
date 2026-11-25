@@ -1,0 +1,120 @@
+{
+  "id": "navajeevan",
+  "category": "healthcare",
+  "title": "Alongside children at Navajeevan",
+  "location": "Tirupati",
+  "date": null,
+  "year": null,
+  "description": "Swamiji visited Navajeevan Blind High School and supported the children’s welfare, bringing devotees together in this act of care.",
+  "cover": "assets/media/education/navajeevan/photo-05.webp",
+  "credit": "Original media shared by the foundation.",
+  "note": "",
+  "counts": {
+    "photos": 8,
+    "films": 3
+  },
+  "media": [
+    {
+      "id": "education-navajeevan-photo-05",
+      "type": "photo",
+      "title": "Alongside children at Navajeevan",
+      "caption": "Swamiji’s visit to Navajeevan Blind High School. Photograph supplied by the foundation team.",
+      "alt": "Swamiji handing a bundle of books to a student at Navajeevan Blind High School",
+      "src": "assets/media/education/navajeevan/photo-05.webp",
+      "thumb": "assets/media/education/navajeevan/photo-05.thumb.webp"
+    },
+    {
+      "id": "education-navajeevan-photo-01",
+      "type": "photo",
+      "title": "Swamiji seated beside a woman during the Navajeevan school visit",
+      "caption": "Swamiji’s visit to Navajeevan Blind High School. Photograph supplied by the foundation team.",
+      "alt": "Swamiji seated beside a woman during the Navajeevan school visit",
+      "src": "assets/media/education/navajeevan/photo-01.webp",
+      "thumb": "assets/media/education/navajeevan/photo-01.thumb.webp"
+    },
+    {
+      "id": "education-navajeevan-photo-02",
+      "type": "photo",
+      "title": "Swamiji seated with a group in the school courtyard",
+      "caption": "Swamiji’s visit to Navajeevan Blind High School. Photograph supplied by the foundation team.",
+      "alt": "Swamiji seated with a group in the school courtyard",
+      "src": "assets/media/education/navajeevan/photo-02.webp",
+      "thumb": "assets/media/education/navajeevan/photo-02.thumb.webp"
+    },
+    {
+      "id": "education-navajeevan-photo-03",
+      "type": "photo",
+      "title": "Swamiji blessing a student in the school courtyard",
+      "caption": "Swamiji’s visit to Navajeevan Blind High School. Photograph supplied by the foundation team.",
+      "alt": "Swamiji blessing a student in the school courtyard",
+      "src": "assets/media/education/navajeevan/photo-03.webp",
+      "thumb": "assets/media/education/navajeevan/photo-03.thumb.webp"
+    },
+    {
+      "id": "education-navajeevan-photo-04",
+      "type": "photo",
+      "title": "Students and adults gathered beside Swamiji at Navajeevan",
+      "caption": "Swamiji’s visit to Navajeevan Blind High School. Photograph supplied by the foundation team.",
+      "alt": "Students and adults gathered beside Swamiji at Navajeevan",
+      "src": "assets/media/education/navajeevan/photo-04.webp",
+      "thumb": "assets/media/education/navajeevan/photo-04.thumb.webp"
+    },
+    {
+      "id": "education-navajeevan-photo-06",
+      "type": "photo",
+      "title": "Swamiji with students gathered around him in the school courtyard",
+      "caption": "Swamiji’s visit to Navajeevan Blind High School. Photograph supplied by the foundation team.",
+      "alt": "Swamiji with students gathered around him in the school courtyard",
+      "src": "assets/media/education/navajeevan/photo-06.webp",
+      "thumb": "assets/media/education/navajeevan/photo-06.thumb.webp"
+    },
+    {
+      "id": "education-navajeevan-photo-07",
+      "type": "photo",
+      "title": "Students gathered outside at Navajeevan Blind High School",
+      "caption": "Swamiji’s visit to Navajeevan Blind High School. Photograph supplied by the foundation team.",
+      "alt": "Students gathered outside at Navajeevan Blind High School",
+      "src": "assets/media/education/navajeevan/photo-07.webp",
+      "thumb": "assets/media/education/navajeevan/photo-07.thumb.webp"
+    },
+    {
+      "id": "education-navajeevan-photo-08",
+      "type": "photo",
+      "title": "Swamiji blessing a student holding books at Navajeevan",
+      "caption": "Swamiji’s visit to Navajeevan Blind High School. Photograph supplied by the foundation team.",
+      "alt": "Swamiji blessing a student holding books at Navajeevan",
+      "src": "assets/media/education/navajeevan/photo-08.webp",
+      "thumb": "assets/media/education/navajeevan/photo-08.thumb.webp"
+    },
+    {
+      "id": "education-navajeevan-video-01",
+      "type": "video",
+      "title": "Navajeevan. Published source material.",
+      "caption": "Navajeevan. Published source material.",
+      "alt": "Video 01",
+      "src": "assets/media/education/navajeevan/video-01.mp4",
+      "thumb": "",
+      "poster": "assets/media/education/navajeevan/video-01-poster.webp"
+    },
+    {
+      "id": "education-navajeevan-video-02",
+      "type": "video",
+      "title": "Navajeevan. Published source material.",
+      "caption": "Navajeevan. Published source material.",
+      "alt": "Video 02",
+      "src": "assets/media/education/navajeevan/video-02.mp4",
+      "thumb": "",
+      "poster": "assets/media/education/navajeevan/video-02-poster.webp"
+    },
+    {
+      "id": "education-navajeevan-video-03",
+      "type": "video",
+      "title": "Navajeevan. Published source material.",
+      "caption": "Navajeevan. Published source material.",
+      "alt": "Video 03",
+      "src": "assets/media/education/navajeevan/video-03.mp4",
+      "thumb": "",
+      "poster": "assets/media/education/navajeevan/video-03-poster.webp"
+    }
+  ]
+}

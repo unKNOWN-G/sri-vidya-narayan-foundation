@@ -1,0 +1,26 @@
+{
+  "id": "annadanam",
+  "title": "Annadanam",
+  "eyebrow": "THE SPIRIT OF SHARING",
+  "headline": "An offering of food. An expression of love.",
+  "caption": "At Tirumala, Shirdi, and Govindapuram, nourishment becomes an opportunity to give and to inspire others to share.",
+  "shortCaption": "An offering of food. An expression of love.",
+  "cover": "assets/media/annadanam/tirumala/tirumala-temple.webp",
+  "coverAlt": "Annadanam — photograph shared by the foundation",
+  "theme": {
+    "key": "marigold",
+    "paper": "#fcf0df",
+    "wash": "#efc08c",
+    "ink": "#513820",
+    "muted": "#664b30",
+    "accent": "#975a24",
+    "surface": "#fffaf1",
+    "line": "#e4c7a3"
+  },
+  "published": true,
+  "eventIds": [
+    "bodhendra",
+    "shirdi",
+    "tirumala"
+  ]
+}

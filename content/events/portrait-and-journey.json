@@ -1,0 +1,45 @@
+{
+  "id": "portrait-and-journey",
+  "category": "his-holiness",
+  "title": "A life of spiritual practice",
+  "location": "",
+  "date": null,
+  "year": null,
+  "description": "Moments shared by the foundation from Swamiji’s life and service.",
+  "cover": "assets/media/his-holiness/portrait-and-journey/foundation-5.webp",
+  "credit": "Original media shared by the foundation.",
+  "note": "",
+  "counts": {
+    "photos": 3
+  },
+  "media": [
+    {
+      "id": "his-holiness-portrait-and-journey-foundation-5",
+      "type": "photo",
+      "title": "Sri Vidyanarayana Thirtha Swamiji seated outdoors in saffron robes",
+      "caption": "Sri Vidyanarayana Thirtha Swamiji · photograph from Guruashraya.",
+      "alt": "Sri Vidyanarayana Thirtha Swamiji seated outdoors in saffron robes",
+      "src": "assets/media/his-holiness/portrait-and-journey/foundation-5.webp",
+      "thumb": "assets/media/his-holiness/portrait-and-journey/foundation-5.thumb.webp"
+    },
+    {
+      "id": "his-holiness-portrait-and-journey-foundation-1",
+      "type": "photo",
+      "title": "Portrait And Journey — foundation 1",
+      "caption": "Portrait And Journey. Photograph supplied by the foundation.",
+      "alt": "Portrait And Journey — foundation 1",
+      "src": "assets/media/his-holiness/portrait-and-journey/foundation-1.webp",
+      "thumb": "assets/media/his-holiness/portrait-and-journey/foundation-1.thumb.webp"
+    },
+    {
+      "id": "his-holiness-portrait-and-journey-foundation-2",
+      "type": "photo",
+      "title": "Portrait And Journey — foundation 2",
+      "caption": "Portrait And Journey. Photograph supplied by the foundation.",
+      "alt": "Portrait And Journey — foundation 2",
+      "src": "assets/media/his-holiness/portrait-and-journey/foundation-2.webp",
+      "thumb": "assets/media/his-holiness/portrait-and-journey/foundation-2.thumb.webp"
+    }
+  ],
+  "coverPosition": "50% 14%"
+}

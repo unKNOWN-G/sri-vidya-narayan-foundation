@@ -1,0 +1,26 @@
+{
+  "id": "swamiji-stuti",
+  "category": "his-holiness",
+  "title": "Swamiji Stuti",
+  "location": "",
+  "date": null,
+  "year": null,
+  "description": "A handwritten Telugu stuti shared by the foundation.",
+  "cover": "assets/media/his-holiness/swamiji-stuti/swamiji-stuti-original.webp",
+  "credit": "Original media shared by the foundation.",
+  "note": "",
+  "counts": {
+    "photos": 1
+  },
+  "media": [
+    {
+      "id": "his-holiness-swamiji-stuti-swamiji-stuti-original",
+      "type": "photo",
+      "title": "Handwritten Telugu Swamiji Stuti on a diary page",
+      "caption": "Swamiji Stuti · original handwritten page supplied by the foundation.",
+      "alt": "Handwritten Telugu Swamiji Stuti on a diary page",
+      "src": "assets/media/his-holiness/swamiji-stuti/swamiji-stuti-original.webp",
+      "thumb": "assets/media/his-holiness/swamiji-stuti/swamiji-stuti-original.thumb.webp"
+    }
+  ]
+}

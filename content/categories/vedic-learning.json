@@ -1,0 +1,28 @@
+{
+  "id": "vedic-learning",
+  "title": "Vedic learning & parayanam",
+  "eyebrow": "KNOWLEDGE, KEPT ALIVE",
+  "headline": "Ancient roots. Living knowledge.",
+  "caption": "Enter the Veda Sabha, listen to parayanam, and visit places where knowledge passes from teacher to student.",
+  "shortCaption": "Ancient roots. Living knowledge.",
+  "cover": "assets/media/vedic-learning/veda-sabha-2025/photo-02.webp",
+  "coverAlt": "Vedic learning & parayanam — photograph shared by the foundation",
+  "theme": {
+    "key": "earth",
+    "paper": "#f7efde",
+    "wash": "#ddbc7c",
+    "ink": "#483620",
+    "muted": "#5c482c",
+    "accent": "#876023",
+    "surface": "#fffaf0",
+    "line": "#ddc9a3"
+  },
+  "published": true,
+  "eventIds": [
+    "veda-sabha-2025",
+    "dharmagiri-2026",
+    "vaikhanasa-mutt-2026",
+    "annavaram-temple-2026",
+    "annavaram-siva-ghanapati-undated"
+  ]
+}

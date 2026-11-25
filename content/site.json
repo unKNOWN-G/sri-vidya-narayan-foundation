@@ -1,0 +1,47 @@
+{
+  "version": 1,
+  "title": "Sri Vidya Narayan Foundation",
+  "categories": [],
+  "events": [],
+  "collections": {
+    "readings": "content/collections/readings.json",
+    "pearls": "content/collections/pearls.json",
+    "teachings": "content/collections/teachings.json",
+    "books": "content/collections/books.json",
+    "messages": "content/collections/messages.json",
+    "contributions": "content/collections/contributions.json",
+    "supportLinks": "content/collections/service-links.json"
+  },
+  "foundation": {
+    "description": "Sri Vidya Narayan Foundation brings Swamiji and his devotees together in a shared commitment to charitable service, inspired by his personal example.",
+    "email": "guruashraya2022@gmail.com",
+    "phone": "+91 80 2346 0365",
+    "office": "Guruashraya office · Sri Jagadguru Shankaracharya Samsthanam Dwaraka Badarikashram, Bangalore"
+  },
+  "snapshot": {
+    "description": "Refreshed from the current website, event manifests, and foundation-supplied material. Later uploads can be added through the project workflow.",
+    "realEvents": 40,
+    "dailyReadings": 132,
+    "pearls": 180,
+    "practicalTeachings": 38,
+    "books": 8,
+    "messageCollections": 8,
+    "givingRecords": 12
+  },
+  "contentDirectories": {
+    "categories": "categories",
+    "events": "events"
+  },
+  "categoryOrder": [
+    "his-holiness",
+    "education",
+    "vedic-learning",
+    "healthcare",
+    "spiritual-life",
+    "compassion",
+    "annadanam",
+    "teachings",
+    "foundation",
+    "music"
+  ]
+}

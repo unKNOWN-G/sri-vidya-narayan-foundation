@@ -1,0 +1,155 @@
+{
+  "id": "annavaram-siva-ghanapati-undated",
+  "category": "vedic-learning",
+  "title": "Annavaram: a gathering of Vedic learning",
+  "location": "",
+  "date": null,
+  "year": null,
+  "description": "Original photographs, films and recordings from the Annavaram gathering with Siva Ghanapati, as identified in the source collection. No year is inferred.",
+  "cover": "assets/media/spiritual-life/annavaram-siva-ghanapati-undated/photo-07.webp",
+  "credit": "Original media shared by the foundation.",
+  "note": "",
+  "counts": {
+    "recordings": 4,
+    "photos": 8,
+    "films": 2
+  },
+  "media": [
+    {
+      "id": "spiritual-life-annavaram-siva-ghanapati-undated-photo-07",
+      "type": "photo",
+      "title": "Vedic learning in Swamiji’s presence",
+      "caption": "Veda Parayanam with Sri Siva Ghanapati, identified by the Foundation as the temple’s chief Vedic priest, at Annavaram. Photographs and event account shared by the Foundation.",
+      "alt": "Swamiji seated with a Vedic priest and children · Annavaram",
+      "src": "assets/media/spiritual-life/annavaram-siva-ghanapati-undated/photo-07.webp",
+      "thumb": "assets/media/spiritual-life/annavaram-siva-ghanapati-undated/photo-07.thumb.webp"
+    },
+    {
+      "id": "spiritual-life-annavaram-siva-ghanapati-undated-photo-08",
+      "type": "photo",
+      "title": "With Sri Siva Ghanapati",
+      "caption": "Veda Parayanam with Sri Siva Ghanapati, identified by the Foundation as the temple’s chief Vedic priest, at Annavaram. Photographs and event account shared by the Foundation.",
+      "alt": "Swamiji seated beside Sri Siva Ghanapati · Annavaram",
+      "src": "assets/media/spiritual-life/annavaram-siva-ghanapati-undated/photo-08.webp",
+      "thumb": "assets/media/spiritual-life/annavaram-siva-ghanapati-undated/photo-08.thumb.webp"
+    },
+    {
+      "id": "spiritual-life-annavaram-siva-ghanapati-undated-photo-03",
+      "type": "photo",
+      "title": "The next generation of Vedic voices",
+      "caption": "Veda Parayanam with Sri Siva Ghanapati, identified by the Foundation as the temple’s chief Vedic priest, at Annavaram. Photographs and event account shared by the Foundation.",
+      "alt": "Veda Patashala children standing and chanting before Swamiji · Annavaram",
+      "src": "assets/media/spiritual-life/annavaram-siva-ghanapati-undated/photo-03.webp",
+      "thumb": "assets/media/spiritual-life/annavaram-siva-ghanapati-undated/photo-03.thumb.webp"
+    },
+    {
+      "id": "spiritual-life-annavaram-siva-ghanapati-undated-audio-05",
+      "type": "audio",
+      "title": "Veda Patashala children · Recording 1",
+      "caption": "Veda Parayanam by Veda Patashala children, shared by the Foundation for the gathering with Sri Siva Ghanapati at Annavaram. Select Play to listen.",
+      "alt": "Veda Patashala children · Recording 1",
+      "src": "assets/media/spiritual-life/annavaram-siva-ghanapati-undated/audio-05.mp3",
+      "thumb": "",
+      "durationSeconds": 249.888
+    },
+    {
+      "id": "spiritual-life-annavaram-siva-ghanapati-undated-audio-02",
+      "type": "audio",
+      "title": "Veda Patashala children · Recording 2",
+      "caption": "Veda Parayanam by Veda Patashala children, shared by the Foundation for the gathering with Sri Siva Ghanapati at Annavaram. Select Play to listen.",
+      "alt": "Veda Patashala children · Recording 2",
+      "src": "assets/media/spiritual-life/annavaram-siva-ghanapati-undated/audio-02.mp3",
+      "thumb": "",
+      "durationSeconds": 561.477062
+    },
+    {
+      "id": "spiritual-life-annavaram-siva-ghanapati-undated-audio-03",
+      "type": "audio",
+      "title": "Veda Patashala children · Recording 3",
+      "caption": "Veda Parayanam by Veda Patashala children, shared by the Foundation for the gathering with Sri Siva Ghanapati at Annavaram. Select Play to listen.",
+      "alt": "Veda Patashala children · Recording 3",
+      "src": "assets/media/spiritual-life/annavaram-siva-ghanapati-undated/audio-03.mp3",
+      "thumb": "",
+      "durationSeconds": 58.671875
+    },
+    {
+      "id": "spiritual-life-annavaram-siva-ghanapati-undated-audio-04",
+      "type": "audio",
+      "title": "Veda Patashala children · Recording 4",
+      "caption": "Veda Parayanam by Veda Patashala children, shared by the Foundation for the gathering with Sri Siva Ghanapati at Annavaram. Select Play to listen.",
+      "alt": "Veda Patashala children · Recording 4",
+      "src": "assets/media/spiritual-life/annavaram-siva-ghanapati-undated/audio-04.mp3",
+      "thumb": "",
+      "durationSeconds": 164.546437
+    },
+    {
+      "id": "spiritual-life-annavaram-siva-ghanapati-undated-video-01",
+      "type": "video",
+      "title": "Veda Parayanam gathering · Film 1",
+      "caption": "A recording of the gathering with Swamiji, Sri Siva Ghanapati and Veda Patashala children at Annavaram. Shared by the Foundation.",
+      "alt": "Veda Parayanam gathering · Film 1",
+      "src": "assets/media/spiritual-life/annavaram-siva-ghanapati-undated/video-01.mp4",
+      "thumb": "",
+      "poster": "assets/media/spiritual-life/annavaram-siva-ghanapati/video-01-poster.webp",
+      "durationSeconds": 4.067633333333333
+    },
+    {
+      "id": "spiritual-life-annavaram-siva-ghanapati-undated-photo-01",
+      "type": "photo",
+      "title": "A gathering around the Guru",
+      "caption": "Veda Parayanam with Sri Siva Ghanapati, identified by the Foundation as the temple’s chief Vedic priest, at Annavaram. Photographs and event account shared by the Foundation.",
+      "alt": "A Vedic priest and children with Swamiji · Annavaram",
+      "src": "assets/media/spiritual-life/annavaram-siva-ghanapati-undated/photo-01.webp",
+      "thumb": "assets/media/spiritual-life/annavaram-siva-ghanapati-undated/photo-01.thumb.webp"
+    },
+    {
+      "id": "spiritual-life-annavaram-siva-ghanapati-undated-photo-02",
+      "type": "photo",
+      "title": "A moment together",
+      "caption": "Veda Parayanam with Sri Siva Ghanapati, identified by the Foundation as the temple’s chief Vedic priest, at Annavaram. Photographs and event account shared by the Foundation.",
+      "alt": "Swamiji seated with a Vedic priest · Annavaram",
+      "src": "assets/media/spiritual-life/annavaram-siva-ghanapati-undated/photo-02.webp",
+      "thumb": "assets/media/spiritual-life/annavaram-siva-ghanapati-undated/photo-02.thumb.webp"
+    },
+    {
+      "id": "spiritual-life-annavaram-siva-ghanapati-undated-photo-04",
+      "type": "photo",
+      "title": "Chanting in Swamiji’s presence",
+      "caption": "Veda Parayanam with Sri Siva Ghanapati, identified by the Foundation as the temple’s chief Vedic priest, at Annavaram. Photographs and event account shared by the Foundation.",
+      "alt": "Veda Patashala children during the Vedic gathering · Annavaram",
+      "src": "assets/media/spiritual-life/annavaram-siva-ghanapati-undated/photo-04.webp",
+      "thumb": "assets/media/spiritual-life/annavaram-siva-ghanapati-undated/photo-04.thumb.webp"
+    },
+    {
+      "id": "spiritual-life-annavaram-siva-ghanapati-undated-video-02",
+      "type": "video",
+      "title": "Veda Parayanam gathering · Film 2",
+      "caption": "A recording of the gathering with Swamiji, Sri Siva Ghanapati and Veda Patashala children at Annavaram. Shared by the Foundation.",
+      "alt": "Veda Parayanam gathering · Film 2",
+      "src": "assets/media/spiritual-life/annavaram-siva-ghanapati-undated/video-02.mp4",
+      "thumb": "",
+      "poster": "assets/media/spiritual-life/annavaram-siva-ghanapati/video-02-poster.webp",
+      "durationSeconds": 56.55537777777778
+    },
+    {
+      "id": "spiritual-life-annavaram-siva-ghanapati-undated-photo-05",
+      "type": "photo",
+      "title": "Learning through recitation",
+      "caption": "Veda Parayanam with Sri Siva Ghanapati, identified by the Foundation as the temple’s chief Vedic priest, at Annavaram. Photographs and event account shared by the Foundation.",
+      "alt": "Children and a Vedic priest standing near Swamiji · Annavaram",
+      "src": "assets/media/spiritual-life/annavaram-siva-ghanapati-undated/photo-05.webp",
+      "thumb": "assets/media/spiritual-life/annavaram-siva-ghanapati-undated/photo-05.thumb.webp"
+    },
+    {
+      "id": "spiritual-life-annavaram-siva-ghanapati-undated-photo-06",
+      "type": "photo",
+      "title": "A moment with Swamiji",
+      "caption": "Veda Parayanam with Sri Siva Ghanapati, identified by the Foundation as the temple’s chief Vedic priest, at Annavaram. Photographs and event account shared by the Foundation.",
+      "alt": "Swamiji seated and holding his staff · Annavaram",
+      "src": "assets/media/spiritual-life/annavaram-siva-ghanapati-undated/photo-06.webp",
+      "thumb": "assets/media/spiritual-life/annavaram-siva-ghanapati-undated/photo-06.thumb.webp"
+    }
+  ],
+  "sourceTitle": "Veda Parayanam with Sri Siva Ghanapati · Annavaram",
+  "sourceCollection": "annavaram-siva-ghanapati"
+}

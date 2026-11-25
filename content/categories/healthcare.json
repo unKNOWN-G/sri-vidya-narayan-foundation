@@ -1,0 +1,28 @@
+{
+  "id": "healthcare",
+  "title": "Medical care & children’s welfare",
+  "eyebrow": "PRACTICAL CARE",
+  "headline": "Care that reaches people.",
+  "caption": "A vision camp, support for children, and gratitude to doctors show care taking a practical form.",
+  "shortCaption": "Care that reaches people.",
+  "cover": "assets/media/healthcare/vision-camp-2022/photo-01.webp",
+  "coverAlt": "Medical care & children’s welfare — photograph shared by the foundation",
+  "theme": {
+    "key": "lotus",
+    "paper": "#faedf0",
+    "wash": "#e4b8c5",
+    "ink": "#4c2a36",
+    "muted": "#684250",
+    "accent": "#93435b",
+    "surface": "#fff8fa",
+    "line": "#e1c3cc"
+  },
+  "published": true,
+  "eventIds": [
+    "navajeevan",
+    "vision-camp-2022",
+    "dhanvantari-day",
+    "shirdi-medical"
+  ],
+  "position": "50% 45%"
+}

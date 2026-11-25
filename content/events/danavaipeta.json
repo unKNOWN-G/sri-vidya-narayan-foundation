@@ -1,0 +1,138 @@
+{
+  "id": "danavaipeta",
+  "category": "education",
+  "title": "Encouragement in the classroom",
+  "location": "Danavaipeta, Andhra Pradesh",
+  "date": null,
+  "year": 2026,
+  "description": "Moments shared by the foundation from Swamiji’s life and service.",
+  "cover": "assets/media/education/danavaipeta/photo-06.webp",
+  "credit": "Original media shared by the foundation.",
+  "note": "",
+  "counts": {
+    "photos": 10,
+    "films": 3
+  },
+  "media": [
+    {
+      "id": "education-danavaipeta-photo-06",
+      "type": "photo",
+      "title": "Encouragement in the classroom",
+      "caption": "Swamiji’s visit to ZP High School, Danavaipeta. Photograph supplied by the foundation team.",
+      "alt": "Swamiji with students and an adult beside classroom desks at ZP High School, Danavaipeta",
+      "src": "assets/media/education/danavaipeta/photo-06.webp",
+      "thumb": "assets/media/education/danavaipeta/photo-06.thumb.webp"
+    },
+    {
+      "id": "education-danavaipeta-photo-01",
+      "type": "photo",
+      "title": "Swamiji addressing a classroom gathering at ZP High School, Danavaipeta",
+      "caption": "Swamiji’s visit to ZP High School, Danavaipeta. Photograph supplied by the foundation team.",
+      "alt": "Swamiji addressing a classroom gathering at ZP High School, Danavaipeta",
+      "src": "assets/media/education/danavaipeta/photo-01.webp",
+      "thumb": "assets/media/education/danavaipeta/photo-01.thumb.webp"
+    },
+    {
+      "id": "education-danavaipeta-photo-02",
+      "type": "photo",
+      "title": "Encouragement in the classroom",
+      "caption": "Swamiji’s visit to ZP High School, Danavaipeta. Photograph supplied by the foundation team.",
+      "alt": "Swamiji speaking with people gathered in a classroom at ZP High School, Danavaipeta",
+      "src": "assets/media/education/danavaipeta/photo-02.webp",
+      "thumb": "assets/media/education/danavaipeta/photo-02.thumb.webp"
+    },
+    {
+      "id": "education-danavaipeta-photo-03",
+      "type": "photo",
+      "title": "Encouragement in the classroom",
+      "caption": "Swamiji’s visit to ZP High School, Danavaipeta. Photograph supplied by the foundation team.",
+      "alt": "Swamiji with a group at the front of the classroom at ZP High School, Danavaipeta",
+      "src": "assets/media/education/danavaipeta/photo-03.webp",
+      "thumb": "assets/media/education/danavaipeta/photo-03.thumb.webp"
+    },
+    {
+      "id": "education-danavaipeta-photo-04",
+      "type": "photo",
+      "title": "Encouragement in the classroom",
+      "caption": "Swamiji’s visit to ZP High School, Danavaipeta. Photograph supplied by the foundation team.",
+      "alt": "A group gathered with Swamiji beside the classroom board at ZP High School, Danavaipeta",
+      "src": "assets/media/education/danavaipeta/photo-04.webp",
+      "thumb": "assets/media/education/danavaipeta/photo-04.thumb.webp"
+    },
+    {
+      "id": "education-danavaipeta-photo-05",
+      "type": "photo",
+      "title": "Encouragement in the classroom",
+      "caption": "Swamiji’s visit to ZP High School, Danavaipeta. Photograph supplied by the foundation team.",
+      "alt": "Swamiji visiting students seated at their desks at ZP High School, Danavaipeta",
+      "src": "assets/media/education/danavaipeta/photo-05.webp",
+      "thumb": "assets/media/education/danavaipeta/photo-05.thumb.webp"
+    },
+    {
+      "id": "education-danavaipeta-photo-07",
+      "type": "photo",
+      "title": "Encouragement in the classroom",
+      "caption": "Swamiji’s visit to ZP High School, Danavaipeta. Photograph supplied by the foundation team.",
+      "alt": "Swamiji speaking with a student and adults in the classroom at ZP High School, Danavaipeta",
+      "src": "assets/media/education/danavaipeta/photo-07.webp",
+      "thumb": "assets/media/education/danavaipeta/photo-07.thumb.webp"
+    },
+    {
+      "id": "education-danavaipeta-photo-08",
+      "type": "photo",
+      "title": "Encouragement in the classroom",
+      "caption": "Swamiji’s visit to ZP High School, Danavaipeta. Photograph supplied by the foundation team.",
+      "alt": "Writing on a classroom board during the school visit at ZP High School, Danavaipeta",
+      "src": "assets/media/education/danavaipeta/photo-08.webp",
+      "thumb": "assets/media/education/danavaipeta/photo-08.thumb.webp"
+    },
+    {
+      "id": "education-danavaipeta-photo-09",
+      "type": "photo",
+      "title": "Encouragement in the classroom",
+      "caption": "Swamiji’s visit to ZP High School, Danavaipeta. Photograph supplied by the foundation team.",
+      "alt": "People gathered around Swamiji inside the classroom at ZP High School, Danavaipeta",
+      "src": "assets/media/education/danavaipeta/photo-09.webp",
+      "thumb": "assets/media/education/danavaipeta/photo-09.thumb.webp"
+    },
+    {
+      "id": "education-danavaipeta-photo-10",
+      "type": "photo",
+      "title": "Swamiji seated beside a classroom desk at ZP High School, Danavaipeta",
+      "caption": "Swamiji’s visit to ZP High School, Danavaipeta. Photograph supplied by the foundation team.",
+      "alt": "Swamiji seated beside a classroom desk at ZP High School, Danavaipeta",
+      "src": "assets/media/education/danavaipeta/photo-10.webp",
+      "thumb": "assets/media/education/danavaipeta/photo-10.thumb.webp"
+    },
+    {
+      "id": "education-danavaipeta-video-01",
+      "type": "video",
+      "title": "Danavaipeta. Published source material.",
+      "caption": "Danavaipeta. Published source material.",
+      "alt": "Video 01",
+      "src": "assets/media/education/danavaipeta/video-01.mp4",
+      "thumb": "",
+      "poster": "assets/media/education/danavaipeta/video-01-poster.webp"
+    },
+    {
+      "id": "education-danavaipeta-video-02",
+      "type": "video",
+      "title": "Danavaipeta. Published source material.",
+      "caption": "Danavaipeta. Published source material.",
+      "alt": "Video 02",
+      "src": "assets/media/education/danavaipeta/video-02.mp4",
+      "thumb": "",
+      "poster": "assets/media/education/danavaipeta/video-02-poster.webp"
+    },
+    {
+      "id": "education-danavaipeta-video-03",
+      "type": "video",
+      "title": "Danavaipeta. Published source material.",
+      "caption": "Danavaipeta. Published source material.",
+      "alt": "Video 03",
+      "src": "assets/media/education/danavaipeta/video-03.mp4",
+      "thumb": "",
+      "poster": "assets/media/education/danavaipeta/video-03-poster.webp"
+    }
+  ]
+}

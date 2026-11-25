@@ -1,0 +1,465 @@
+{
+  "id": "tirumala-goshala-2026",
+  "category": "compassion",
+  "title": "Care for every living being",
+  "location": "",
+  "date": null,
+  "year": 2026,
+  "description": "Photographs, videos, location and year shared by the Foundation",
+  "cover": "assets/media/compassion/tirumala-goshala-2026/photo-25.webp",
+  "credit": "Photographs, videos, location and year shared by the Foundation",
+  "note": "",
+  "counts": {
+    "photos": 47,
+    "films": 2
+  },
+  "media": [
+    {
+      "id": "compassion-tirumala-goshala-2026-photo-01",
+      "type": "photo",
+      "title": "At the Goshala",
+      "caption": "Tirumala Goshala & Gajashala Visit · 2026. Photograph shared by the Foundation.",
+      "alt": "Swamiji beside cows during the Tirumala Goshala visit · 2026",
+      "src": "assets/media/compassion/tirumala-goshala-2026/photo-01.webp",
+      "thumb": "assets/media/compassion/tirumala-goshala-2026/photo-01.thumb.webp"
+    },
+    {
+      "id": "compassion-tirumala-goshala-2026-photo-02",
+      "type": "photo",
+      "title": "At the Goshala",
+      "caption": "Tirumala Goshala & Gajashala Visit · 2026. Photograph shared by the Foundation.",
+      "alt": "Swamiji beside cows during the Tirumala Goshala visit · 2026",
+      "src": "assets/media/compassion/tirumala-goshala-2026/photo-02.webp",
+      "thumb": "assets/media/compassion/tirumala-goshala-2026/photo-02.thumb.webp"
+    },
+    {
+      "id": "compassion-tirumala-goshala-2026-video-01",
+      "type": "video",
+      "title": "A gathering in devotion · Film 1",
+      "caption": "A video from the Tirumala Goshala & Gajashala visit collection · 2026. Shared by the Foundation.",
+      "alt": "A gathering in devotion · Film 1",
+      "src": "assets/media/compassion/tirumala-goshala-2026/video-01.mp4",
+      "thumb": "",
+      "poster": "assets/media/compassion/tirumala-goshala-2026/video-01-poster.webp",
+      "durationSeconds": 21.012922222222223
+    },
+    {
+      "id": "compassion-tirumala-goshala-2026-photo-03",
+      "type": "photo",
+      "title": "The Goshala grounds",
+      "caption": "Tirumala Goshala & Gajashala Visit · 2026. Photograph shared by the Foundation.",
+      "alt": "A view of the animal shelter during the Tirumala visit · 2026",
+      "src": "assets/media/compassion/tirumala-goshala-2026/photo-03.webp",
+      "thumb": "assets/media/compassion/tirumala-goshala-2026/photo-03.thumb.webp"
+    },
+    {
+      "id": "compassion-tirumala-goshala-2026-photo-04",
+      "type": "photo",
+      "title": "A gathering in devotion",
+      "caption": "Tirumala Goshala & Gajashala Visit · 2026. Photograph shared by the Foundation.",
+      "alt": "Swamiji and devotees gathered near a decorated shrine during the Tirumala visit · 2026",
+      "src": "assets/media/compassion/tirumala-goshala-2026/photo-04.webp",
+      "thumb": "assets/media/compassion/tirumala-goshala-2026/photo-04.thumb.webp"
+    },
+    {
+      "id": "compassion-tirumala-goshala-2026-photo-05",
+      "type": "photo",
+      "title": "A gathering in devotion",
+      "caption": "Tirumala Goshala & Gajashala Visit · 2026. Photograph shared by the Foundation.",
+      "alt": "Swamiji and devotees gathered near a decorated shrine during the Tirumala visit · 2026",
+      "src": "assets/media/compassion/tirumala-goshala-2026/photo-05.webp",
+      "thumb": "assets/media/compassion/tirumala-goshala-2026/photo-05.thumb.webp"
+    },
+    {
+      "id": "compassion-tirumala-goshala-2026-photo-06",
+      "type": "photo",
+      "title": "A gathering in devotion",
+      "caption": "Tirumala Goshala & Gajashala Visit · 2026. Photograph shared by the Foundation.",
+      "alt": "Swamiji and devotees gathered near a decorated shrine during the Tirumala visit · 2026",
+      "src": "assets/media/compassion/tirumala-goshala-2026/photo-06.webp",
+      "thumb": "assets/media/compassion/tirumala-goshala-2026/photo-06.thumb.webp"
+    },
+    {
+      "id": "compassion-tirumala-goshala-2026-photo-07",
+      "type": "photo",
+      "title": "A gathering in devotion",
+      "caption": "Tirumala Goshala & Gajashala Visit · 2026. Photograph shared by the Foundation.",
+      "alt": "Swamiji and devotees gathered near a decorated shrine during the Tirumala visit · 2026",
+      "src": "assets/media/compassion/tirumala-goshala-2026/photo-07.webp",
+      "thumb": "assets/media/compassion/tirumala-goshala-2026/photo-07.thumb.webp"
+    },
+    {
+      "id": "compassion-tirumala-goshala-2026-video-02",
+      "type": "video",
+      "title": "A gathering in devotion · Film 2",
+      "caption": "A video from the Tirumala Goshala & Gajashala visit collection · 2026. Shared by the Foundation.",
+      "alt": "A gathering in devotion · Film 2",
+      "src": "assets/media/compassion/tirumala-goshala-2026/video-02.mp4",
+      "thumb": "",
+      "poster": "assets/media/compassion/tirumala-goshala-2026/video-02-poster.webp",
+      "durationSeconds": 14.230688888888888
+    },
+    {
+      "id": "compassion-tirumala-goshala-2026-photo-08",
+      "type": "photo",
+      "title": "A gathering in devotion",
+      "caption": "Tirumala Goshala & Gajashala Visit · 2026. Photograph shared by the Foundation.",
+      "alt": "Swamiji and devotees gathered near a decorated shrine during the Tirumala visit · 2026",
+      "src": "assets/media/compassion/tirumala-goshala-2026/photo-08.webp",
+      "thumb": "assets/media/compassion/tirumala-goshala-2026/photo-08.thumb.webp"
+    },
+    {
+      "id": "compassion-tirumala-goshala-2026-photo-09",
+      "type": "photo",
+      "title": "A gathering in devotion",
+      "caption": "Tirumala Goshala & Gajashala Visit · 2026. Photograph shared by the Foundation.",
+      "alt": "Swamiji and devotees gathered near a decorated shrine during the Tirumala visit · 2026",
+      "src": "assets/media/compassion/tirumala-goshala-2026/photo-09.webp",
+      "thumb": "assets/media/compassion/tirumala-goshala-2026/photo-09.thumb.webp"
+    },
+    {
+      "id": "compassion-tirumala-goshala-2026-photo-10",
+      "type": "photo",
+      "title": "A gathering in devotion",
+      "caption": "Tirumala Goshala & Gajashala Visit · 2026. Photograph shared by the Foundation.",
+      "alt": "Swamiji and devotees gathered near a decorated shrine during the Tirumala visit · 2026",
+      "src": "assets/media/compassion/tirumala-goshala-2026/photo-10.webp",
+      "thumb": "assets/media/compassion/tirumala-goshala-2026/photo-10.thumb.webp"
+    },
+    {
+      "id": "compassion-tirumala-goshala-2026-photo-11",
+      "type": "photo",
+      "title": "A gathering in devotion",
+      "caption": "Tirumala Goshala & Gajashala Visit · 2026. Photograph shared by the Foundation.",
+      "alt": "Swamiji and devotees gathered near a decorated shrine during the Tirumala visit · 2026",
+      "src": "assets/media/compassion/tirumala-goshala-2026/photo-11.webp",
+      "thumb": "assets/media/compassion/tirumala-goshala-2026/photo-11.thumb.webp"
+    },
+    {
+      "id": "compassion-tirumala-goshala-2026-photo-12",
+      "type": "photo",
+      "title": "A gathering in devotion",
+      "caption": "Tirumala Goshala & Gajashala Visit · 2026. Photograph shared by the Foundation.",
+      "alt": "Swamiji and devotees gathered near a decorated shrine during the Tirumala visit · 2026",
+      "src": "assets/media/compassion/tirumala-goshala-2026/photo-12.webp",
+      "thumb": "assets/media/compassion/tirumala-goshala-2026/photo-12.thumb.webp"
+    },
+    {
+      "id": "compassion-tirumala-goshala-2026-photo-13",
+      "type": "photo",
+      "title": "A gathering in devotion",
+      "caption": "Tirumala Goshala & Gajashala Visit · 2026. Photograph shared by the Foundation.",
+      "alt": "Swamiji and devotees gathered near a decorated shrine during the Tirumala visit · 2026",
+      "src": "assets/media/compassion/tirumala-goshala-2026/photo-13.webp",
+      "thumb": "assets/media/compassion/tirumala-goshala-2026/photo-13.thumb.webp"
+    },
+    {
+      "id": "compassion-tirumala-goshala-2026-photo-14",
+      "type": "photo",
+      "title": "A gathering in devotion",
+      "caption": "Tirumala Goshala & Gajashala Visit · 2026. Photograph shared by the Foundation.",
+      "alt": "Swamiji and devotees gathered near a decorated shrine during the Tirumala visit · 2026",
+      "src": "assets/media/compassion/tirumala-goshala-2026/photo-14.webp",
+      "thumb": "assets/media/compassion/tirumala-goshala-2026/photo-14.thumb.webp"
+    },
+    {
+      "id": "compassion-tirumala-goshala-2026-photo-15",
+      "type": "photo",
+      "title": "A gathering in devotion",
+      "caption": "Tirumala Goshala & Gajashala Visit · 2026. Photograph shared by the Foundation.",
+      "alt": "Swamiji and devotees gathered near a decorated shrine during the Tirumala visit · 2026",
+      "src": "assets/media/compassion/tirumala-goshala-2026/photo-15.webp",
+      "thumb": "assets/media/compassion/tirumala-goshala-2026/photo-15.thumb.webp"
+    },
+    {
+      "id": "compassion-tirumala-goshala-2026-photo-16",
+      "type": "photo",
+      "title": "A gathering in devotion",
+      "caption": "Tirumala Goshala & Gajashala Visit · 2026. Photograph shared by the Foundation.",
+      "alt": "Swamiji and devotees gathered near a decorated shrine during the Tirumala visit · 2026",
+      "src": "assets/media/compassion/tirumala-goshala-2026/photo-16.webp",
+      "thumb": "assets/media/compassion/tirumala-goshala-2026/photo-16.thumb.webp"
+    },
+    {
+      "id": "compassion-tirumala-goshala-2026-photo-17",
+      "type": "photo",
+      "title": "A gathering in devotion",
+      "caption": "Tirumala Goshala & Gajashala Visit · 2026. Photograph shared by the Foundation.",
+      "alt": "Swamiji and devotees gathered near a decorated shrine during the Tirumala visit · 2026",
+      "src": "assets/media/compassion/tirumala-goshala-2026/photo-17.webp",
+      "thumb": "assets/media/compassion/tirumala-goshala-2026/photo-17.thumb.webp"
+    },
+    {
+      "id": "compassion-tirumala-goshala-2026-photo-18",
+      "type": "photo",
+      "title": "A gathering in devotion",
+      "caption": "Tirumala Goshala & Gajashala Visit · 2026. Photograph shared by the Foundation.",
+      "alt": "Swamiji and devotees gathered near a decorated shrine during the Tirumala visit · 2026",
+      "src": "assets/media/compassion/tirumala-goshala-2026/photo-18.webp",
+      "thumb": "assets/media/compassion/tirumala-goshala-2026/photo-18.thumb.webp"
+    },
+    {
+      "id": "compassion-tirumala-goshala-2026-photo-19",
+      "type": "photo",
+      "title": "At the Gajashala",
+      "caption": "Tirumala Goshala & Gajashala Visit · 2026. Photograph shared by the Foundation.",
+      "alt": "An elephant and visitors at the Gajashala during Swamiji’s Tirumala visit · 2026",
+      "src": "assets/media/compassion/tirumala-goshala-2026/photo-19.webp",
+      "thumb": "assets/media/compassion/tirumala-goshala-2026/photo-19.thumb.webp"
+    },
+    {
+      "id": "compassion-tirumala-goshala-2026-photo-20",
+      "type": "photo",
+      "title": "At the Gajashala",
+      "caption": "Tirumala Goshala & Gajashala Visit · 2026. Photograph shared by the Foundation.",
+      "alt": "An elephant and visitors at the Gajashala during Swamiji’s Tirumala visit · 2026",
+      "src": "assets/media/compassion/tirumala-goshala-2026/photo-20.webp",
+      "thumb": "assets/media/compassion/tirumala-goshala-2026/photo-20.thumb.webp"
+    },
+    {
+      "id": "compassion-tirumala-goshala-2026-photo-21",
+      "type": "photo",
+      "title": "At the Gajashala",
+      "caption": "Tirumala Goshala & Gajashala Visit · 2026. Photograph shared by the Foundation.",
+      "alt": "An elephant and visitors at the Gajashala during Swamiji’s Tirumala visit · 2026",
+      "src": "assets/media/compassion/tirumala-goshala-2026/photo-21.webp",
+      "thumb": "assets/media/compassion/tirumala-goshala-2026/photo-21.thumb.webp"
+    },
+    {
+      "id": "compassion-tirumala-goshala-2026-photo-22",
+      "type": "photo",
+      "title": "At the Gajashala",
+      "caption": "Tirumala Goshala & Gajashala Visit · 2026. Photograph shared by the Foundation.",
+      "alt": "An elephant and visitors at the Gajashala during Swamiji’s Tirumala visit · 2026",
+      "src": "assets/media/compassion/tirumala-goshala-2026/photo-22.webp",
+      "thumb": "assets/media/compassion/tirumala-goshala-2026/photo-22.thumb.webp"
+    },
+    {
+      "id": "compassion-tirumala-goshala-2026-photo-23",
+      "type": "photo",
+      "title": "At the Gajashala",
+      "caption": "Tirumala Goshala & Gajashala Visit · 2026. Photograph shared by the Foundation.",
+      "alt": "An elephant and visitors at the Gajashala during Swamiji’s Tirumala visit · 2026",
+      "src": "assets/media/compassion/tirumala-goshala-2026/photo-23.webp",
+      "thumb": "assets/media/compassion/tirumala-goshala-2026/photo-23.thumb.webp"
+    },
+    {
+      "id": "compassion-tirumala-goshala-2026-photo-24",
+      "type": "photo",
+      "title": "At the Gajashala",
+      "caption": "Tirumala Goshala & Gajashala Visit · 2026. Photograph shared by the Foundation.",
+      "alt": "An elephant and visitors at the Gajashala during Swamiji’s Tirumala visit · 2026",
+      "src": "assets/media/compassion/tirumala-goshala-2026/photo-24.webp",
+      "thumb": "assets/media/compassion/tirumala-goshala-2026/photo-24.thumb.webp"
+    },
+    {
+      "id": "compassion-tirumala-goshala-2026-photo-25",
+      "type": "photo",
+      "title": "At the Gajashala",
+      "caption": "Tirumala Goshala & Gajashala Visit · 2026. Photograph shared by the Foundation.",
+      "alt": "An elephant and visitors at the Gajashala during Swamiji’s Tirumala visit · 2026",
+      "src": "assets/media/compassion/tirumala-goshala-2026/photo-25.webp",
+      "thumb": "assets/media/compassion/tirumala-goshala-2026/photo-25.thumb.webp"
+    },
+    {
+      "id": "compassion-tirumala-goshala-2026-photo-26",
+      "type": "photo",
+      "title": "At the Gajashala",
+      "caption": "Tirumala Goshala & Gajashala Visit · 2026. Photograph shared by the Foundation.",
+      "alt": "An elephant and visitors at the Gajashala during Swamiji’s Tirumala visit · 2026",
+      "src": "assets/media/compassion/tirumala-goshala-2026/photo-26.webp",
+      "thumb": "assets/media/compassion/tirumala-goshala-2026/photo-26.thumb.webp"
+    },
+    {
+      "id": "compassion-tirumala-goshala-2026-photo-27",
+      "type": "photo",
+      "title": "At the Gajashala",
+      "caption": "Tirumala Goshala & Gajashala Visit · 2026. Photograph shared by the Foundation.",
+      "alt": "An elephant and visitors at the Gajashala during Swamiji’s Tirumala visit · 2026",
+      "src": "assets/media/compassion/tirumala-goshala-2026/photo-27.webp",
+      "thumb": "assets/media/compassion/tirumala-goshala-2026/photo-27.thumb.webp"
+    },
+    {
+      "id": "compassion-tirumala-goshala-2026-photo-28",
+      "type": "photo",
+      "title": "At the Gajashala",
+      "caption": "Tirumala Goshala & Gajashala Visit · 2026. Photograph shared by the Foundation.",
+      "alt": "An elephant and visitors at the Gajashala during Swamiji’s Tirumala visit · 2026",
+      "src": "assets/media/compassion/tirumala-goshala-2026/photo-28.webp",
+      "thumb": "assets/media/compassion/tirumala-goshala-2026/photo-28.thumb.webp"
+    },
+    {
+      "id": "compassion-tirumala-goshala-2026-photo-29",
+      "type": "photo",
+      "title": "At the Gajashala",
+      "caption": "Tirumala Goshala & Gajashala Visit · 2026. Photograph shared by the Foundation.",
+      "alt": "An elephant and visitors at the Gajashala during Swamiji’s Tirumala visit · 2026",
+      "src": "assets/media/compassion/tirumala-goshala-2026/photo-29.webp",
+      "thumb": "assets/media/compassion/tirumala-goshala-2026/photo-29.thumb.webp"
+    },
+    {
+      "id": "compassion-tirumala-goshala-2026-photo-30",
+      "type": "photo",
+      "title": "At the Gajashala",
+      "caption": "Tirumala Goshala & Gajashala Visit · 2026. Photograph shared by the Foundation.",
+      "alt": "An elephant and visitors at the Gajashala during Swamiji’s Tirumala visit · 2026",
+      "src": "assets/media/compassion/tirumala-goshala-2026/photo-30.webp",
+      "thumb": "assets/media/compassion/tirumala-goshala-2026/photo-30.thumb.webp"
+    },
+    {
+      "id": "compassion-tirumala-goshala-2026-photo-31",
+      "type": "photo",
+      "title": "At the Gajashala",
+      "caption": "Tirumala Goshala & Gajashala Visit · 2026. Photograph shared by the Foundation.",
+      "alt": "An elephant and visitors at the Gajashala during Swamiji’s Tirumala visit · 2026",
+      "src": "assets/media/compassion/tirumala-goshala-2026/photo-31.webp",
+      "thumb": "assets/media/compassion/tirumala-goshala-2026/photo-31.thumb.webp"
+    },
+    {
+      "id": "compassion-tirumala-goshala-2026-photo-32",
+      "type": "photo",
+      "title": "At the Gajashala",
+      "caption": "Tirumala Goshala & Gajashala Visit · 2026. Photograph shared by the Foundation.",
+      "alt": "An elephant and visitors at the Gajashala during Swamiji’s Tirumala visit · 2026",
+      "src": "assets/media/compassion/tirumala-goshala-2026/photo-32.webp",
+      "thumb": "assets/media/compassion/tirumala-goshala-2026/photo-32.thumb.webp"
+    },
+    {
+      "id": "compassion-tirumala-goshala-2026-photo-33",
+      "type": "photo",
+      "title": "At the Gajashala",
+      "caption": "Tirumala Goshala & Gajashala Visit · 2026. Photograph shared by the Foundation.",
+      "alt": "An elephant and visitors at the Gajashala during Swamiji’s Tirumala visit · 2026",
+      "src": "assets/media/compassion/tirumala-goshala-2026/photo-33.webp",
+      "thumb": "assets/media/compassion/tirumala-goshala-2026/photo-33.thumb.webp"
+    },
+    {
+      "id": "compassion-tirumala-goshala-2026-photo-34",
+      "type": "photo",
+      "title": "At the Gajashala",
+      "caption": "Tirumala Goshala & Gajashala Visit · 2026. Photograph shared by the Foundation.",
+      "alt": "An elephant and visitors at the Gajashala during Swamiji’s Tirumala visit · 2026",
+      "src": "assets/media/compassion/tirumala-goshala-2026/photo-34.webp",
+      "thumb": "assets/media/compassion/tirumala-goshala-2026/photo-34.thumb.webp"
+    },
+    {
+      "id": "compassion-tirumala-goshala-2026-photo-35",
+      "type": "photo",
+      "title": "At the Gajashala",
+      "caption": "Tirumala Goshala & Gajashala Visit · 2026. Photograph shared by the Foundation.",
+      "alt": "An elephant and visitors at the Gajashala during Swamiji’s Tirumala visit · 2026",
+      "src": "assets/media/compassion/tirumala-goshala-2026/photo-35.webp",
+      "thumb": "assets/media/compassion/tirumala-goshala-2026/photo-35.thumb.webp"
+    },
+    {
+      "id": "compassion-tirumala-goshala-2026-photo-36",
+      "type": "photo",
+      "title": "At the Gajashala",
+      "caption": "Tirumala Goshala & Gajashala Visit · 2026. Photograph shared by the Foundation.",
+      "alt": "An elephant and visitors at the Gajashala during Swamiji’s Tirumala visit · 2026",
+      "src": "assets/media/compassion/tirumala-goshala-2026/photo-36.webp",
+      "thumb": "assets/media/compassion/tirumala-goshala-2026/photo-36.thumb.webp"
+    },
+    {
+      "id": "compassion-tirumala-goshala-2026-photo-37",
+      "type": "photo",
+      "title": "At the Gajashala",
+      "caption": "Tirumala Goshala & Gajashala Visit · 2026. Photograph shared by the Foundation.",
+      "alt": "An elephant and visitors at the Gajashala during Swamiji’s Tirumala visit · 2026",
+      "src": "assets/media/compassion/tirumala-goshala-2026/photo-37.webp",
+      "thumb": "assets/media/compassion/tirumala-goshala-2026/photo-37.thumb.webp"
+    },
+    {
+      "id": "compassion-tirumala-goshala-2026-photo-38",
+      "type": "photo",
+      "title": "At the Gajashala",
+      "caption": "Tirumala Goshala & Gajashala Visit · 2026. Photograph shared by the Foundation.",
+      "alt": "An elephant and visitors at the Gajashala during Swamiji’s Tirumala visit · 2026",
+      "src": "assets/media/compassion/tirumala-goshala-2026/photo-38.webp",
+      "thumb": "assets/media/compassion/tirumala-goshala-2026/photo-38.thumb.webp"
+    },
+    {
+      "id": "compassion-tirumala-goshala-2026-photo-39",
+      "type": "photo",
+      "title": "At the Gajashala",
+      "caption": "Tirumala Goshala & Gajashala Visit · 2026. Photograph shared by the Foundation.",
+      "alt": "An elephant and visitors at the Gajashala during Swamiji’s Tirumala visit · 2026",
+      "src": "assets/media/compassion/tirumala-goshala-2026/photo-39.webp",
+      "thumb": "assets/media/compassion/tirumala-goshala-2026/photo-39.thumb.webp"
+    },
+    {
+      "id": "compassion-tirumala-goshala-2026-photo-40",
+      "type": "photo",
+      "title": "At the Gajashala",
+      "caption": "Tirumala Goshala & Gajashala Visit · 2026. Photograph shared by the Foundation.",
+      "alt": "An elephant and visitors at the Gajashala during Swamiji’s Tirumala visit · 2026",
+      "src": "assets/media/compassion/tirumala-goshala-2026/photo-40.webp",
+      "thumb": "assets/media/compassion/tirumala-goshala-2026/photo-40.thumb.webp"
+    },
+    {
+      "id": "compassion-tirumala-goshala-2026-photo-41",
+      "type": "photo",
+      "title": "At the Gajashala",
+      "caption": "Tirumala Goshala & Gajashala Visit · 2026. Photograph shared by the Foundation.",
+      "alt": "An elephant and visitors at the Gajashala during Swamiji’s Tirumala visit · 2026",
+      "src": "assets/media/compassion/tirumala-goshala-2026/photo-41.webp",
+      "thumb": "assets/media/compassion/tirumala-goshala-2026/photo-41.thumb.webp"
+    },
+    {
+      "id": "compassion-tirumala-goshala-2026-photo-42",
+      "type": "photo",
+      "title": "At the Gajashala",
+      "caption": "Tirumala Goshala & Gajashala Visit · 2026. Photograph shared by the Foundation.",
+      "alt": "An elephant and visitors at the Gajashala during Swamiji’s Tirumala visit · 2026",
+      "src": "assets/media/compassion/tirumala-goshala-2026/photo-42.webp",
+      "thumb": "assets/media/compassion/tirumala-goshala-2026/photo-42.thumb.webp"
+    },
+    {
+      "id": "compassion-tirumala-goshala-2026-photo-43",
+      "type": "photo",
+      "title": "At the Gajashala",
+      "caption": "Tirumala Goshala & Gajashala Visit · 2026. Photograph shared by the Foundation.",
+      "alt": "An elephant and visitors at the Gajashala during Swamiji’s Tirumala visit · 2026",
+      "src": "assets/media/compassion/tirumala-goshala-2026/photo-43.webp",
+      "thumb": "assets/media/compassion/tirumala-goshala-2026/photo-43.thumb.webp"
+    },
+    {
+      "id": "compassion-tirumala-goshala-2026-photo-44",
+      "type": "photo",
+      "title": "At the Gajashala",
+      "caption": "Tirumala Goshala & Gajashala Visit · 2026. Photograph shared by the Foundation.",
+      "alt": "An elephant and visitors at the Gajashala during Swamiji’s Tirumala visit · 2026",
+      "src": "assets/media/compassion/tirumala-goshala-2026/photo-44.webp",
+      "thumb": "assets/media/compassion/tirumala-goshala-2026/photo-44.thumb.webp"
+    },
+    {
+      "id": "compassion-tirumala-goshala-2026-photo-45",
+      "type": "photo",
+      "title": "At the Gajashala",
+      "caption": "Tirumala Goshala & Gajashala Visit · 2026. Photograph shared by the Foundation.",
+      "alt": "An elephant and visitors at the Gajashala during Swamiji’s Tirumala visit · 2026",
+      "src": "assets/media/compassion/tirumala-goshala-2026/photo-45.webp",
+      "thumb": "assets/media/compassion/tirumala-goshala-2026/photo-45.thumb.webp"
+    },
+    {
+      "id": "compassion-tirumala-goshala-2026-photo-46",
+      "type": "photo",
+      "title": "At the Gajashala",
+      "caption": "Tirumala Goshala & Gajashala Visit · 2026. Photograph shared by the Foundation.",
+      "alt": "An elephant and visitors at the Gajashala during Swamiji’s Tirumala visit · 2026",
+      "src": "assets/media/compassion/tirumala-goshala-2026/photo-46.webp",
+      "thumb": "assets/media/compassion/tirumala-goshala-2026/photo-46.thumb.webp"
+    },
+    {
+      "id": "compassion-tirumala-goshala-2026-photo-47",
+      "type": "photo",
+      "title": "At the Gajashala",
+      "caption": "Tirumala Goshala & Gajashala Visit · 2026. Photograph shared by the Foundation.",
+      "alt": "An elephant and visitors at the Gajashala during Swamiji’s Tirumala visit · 2026",
+      "src": "assets/media/compassion/tirumala-goshala-2026/photo-47.webp",
+      "thumb": "assets/media/compassion/tirumala-goshala-2026/photo-47.thumb.webp"
+    }
+  ],
+  "sourceTitle": "Tirumala Goshala & Gajashala Visit",
+  "sourceCollection": "tirumala-goshala"
+}

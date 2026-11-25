@@ -1,0 +1,32 @@
+{
+  "id": "bodhendra",
+  "category": "annadanam",
+  "title": "Annadanam at Govindapuram",
+  "location": "",
+  "date": null,
+  "year": null,
+  "description": "Moments shared by the foundation from Swamiji’s life and service.",
+  "cover": "assets/media/his-holiness/portrait-and-journey/foundation-5.webp",
+  "credit": "Original media shared by the foundation.",
+  "note": "",
+  "counts": {
+    "photos": 1
+  },
+  "media": [
+    {
+      "id": "annadanam-bodhendra-annadanam-2025-11-26-excerpt",
+      "type": "photo",
+      "title": "Annadanam 2025 11 26 Excerpt",
+      "caption": "Bodhendra. Published source material.",
+      "alt": "Annadanam 2025 11 26 Excerpt",
+      "src": "assets/media/annadanam/bodhendra/annadanam-2025-11-26-excerpt.webp",
+      "thumb": "assets/media/annadanam/bodhendra/annadanam-2025-11-26-excerpt.thumb.webp"
+    }
+  ],
+  "presentation": "service-story",
+  "supportRecordIds": [
+    "bodhendra-2025-annadanam"
+  ],
+  "coverAlt": "Sri Swamiji",
+  "coverContext": "Portrait of Sri Swamiji; supporting acknowledgements are available within this service story."
+}

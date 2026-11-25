@@ -1,0 +1,61 @@
+{
+  "id": "shirdi",
+  "category": "annadanam",
+  "title": "Sharing nourishment at Shirdi",
+  "location": "",
+  "date": null,
+  "year": null,
+  "description": "Moments shared by the foundation from Swamiji’s life and service.",
+  "cover": "assets/media/annadanam/shirdi/shirdi-sai-baba.webp",
+  "credit": "Original media shared by the foundation.",
+  "note": "",
+  "counts": {
+    "photos": 4
+  },
+  "media": [
+    {
+      "id": "annadanam-shirdi-shirdi-sai-baba",
+      "type": "photo",
+      "title": "Shirdi — shirdi sai baba",
+      "caption": "Shirdi. Photograph supplied by the foundation.",
+      "alt": "Shirdi — shirdi sai baba",
+      "src": "assets/media/annadanam/shirdi/shirdi-sai-baba.webp",
+      "thumb": "assets/media/annadanam/shirdi/shirdi-sai-baba.thumb.webp"
+    },
+    {
+      "id": "annadanam-shirdi-annadan-2024-excerpt",
+      "type": "photo",
+      "title": "Annadan 2024 Excerpt",
+      "caption": "Shirdi. Published source material.",
+      "alt": "Annadan 2024 Excerpt",
+      "src": "assets/media/annadanam/shirdi/annadan-2024-excerpt.webp",
+      "thumb": "assets/media/annadanam/shirdi/annadan-2024-excerpt.thumb.webp"
+    },
+    {
+      "id": "annadanam-shirdi-annadan-2026-10-22-excerpt",
+      "type": "photo",
+      "title": "Annadan 2026 10 22 Excerpt",
+      "caption": "Shirdi. Published source material.",
+      "alt": "Annadan 2026 10 22 Excerpt",
+      "src": "assets/media/annadanam/shirdi/annadan-2026-10-22-excerpt.webp",
+      "thumb": "assets/media/annadanam/shirdi/annadan-2026-10-22-excerpt.thumb.webp"
+    },
+    {
+      "id": "annadanam-shirdi-annadan-2026-10-29-excerpt",
+      "type": "photo",
+      "title": "Annadan 2026 10 29 Excerpt",
+      "caption": "Shirdi. Published source material.",
+      "alt": "Annadan 2026 10 29 Excerpt",
+      "src": "assets/media/annadanam/shirdi/annadan-2026-10-29-excerpt.webp",
+      "thumb": "assets/media/annadanam/shirdi/annadan-2026-10-29-excerpt.thumb.webp"
+    }
+  ],
+  "presentation": "service-story",
+  "supportRecordIds": [
+    "shirdi-2024-food",
+    "shirdi-oct22",
+    "shirdi-oct29"
+  ],
+  "coverAlt": "Sharing nourishment at Shirdi · the place of service",
+  "coverContext": "A supplied view of the place; the original acknowledgement is available within this service story."
+}

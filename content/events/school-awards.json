@@ -1,0 +1,71 @@
+{
+  "id": "school-awards",
+  "category": "foundation",
+  "title": "Support that helps learning continue",
+  "location": "",
+  "date": null,
+  "year": null,
+  "description": "Moments shared by the foundation from Swamiji’s life and service.",
+  "cover": "assets/media/his-holiness/portrait-and-journey/foundation-5.webp",
+  "credit": "Original media shared by the foundation.",
+  "note": "",
+  "counts": {
+    "photos": 5
+  },
+  "media": [
+    {
+      "id": "foundation-school-awards-hebbal-2018-letter-excerpt",
+      "type": "photo",
+      "title": "Hebbal 2018 Letter Excerpt",
+      "caption": "School Awards. Published source material.",
+      "alt": "Hebbal 2018 Letter Excerpt",
+      "src": "assets/media/foundation/school-awards/hebbal-2018-letter-excerpt.webp",
+      "thumb": "assets/media/foundation/school-awards/hebbal-2018-letter-excerpt.thumb.webp"
+    },
+    {
+      "id": "foundation-school-awards-hebbal-excerpt",
+      "type": "photo",
+      "title": "Hebbal Excerpt",
+      "caption": "School Awards. Published source material.",
+      "alt": "Hebbal Excerpt",
+      "src": "assets/media/foundation/school-awards/hebbal-excerpt.webp",
+      "thumb": "assets/media/foundation/school-awards/hebbal-excerpt.thumb.webp"
+    },
+    {
+      "id": "foundation-school-awards-viman-nagar-excerpt",
+      "type": "photo",
+      "title": "Viman Nagar Excerpt",
+      "caption": "School Awards. Published source material.",
+      "alt": "Viman Nagar Excerpt",
+      "src": "assets/media/foundation/school-awards/viman-nagar-excerpt.webp",
+      "thumb": "assets/media/foundation/school-awards/viman-nagar-excerpt.thumb.webp"
+    },
+    {
+      "id": "foundation-school-awards-yelahanka-swamiji-excerpt",
+      "type": "photo",
+      "title": "Yelahanka Swamiji Excerpt",
+      "caption": "School Awards. Published source material.",
+      "alt": "Yelahanka Swamiji Excerpt",
+      "src": "assets/media/foundation/school-awards/yelahanka-swamiji-excerpt.webp",
+      "thumb": "assets/media/foundation/school-awards/yelahanka-swamiji-excerpt.thumb.webp"
+    },
+    {
+      "id": "foundation-school-awards-yelahanka-trust-excerpt",
+      "type": "photo",
+      "title": "Yelahanka Trust Excerpt",
+      "caption": "School Awards. Published source material.",
+      "alt": "Yelahanka Trust Excerpt",
+      "src": "assets/media/foundation/school-awards/yelahanka-trust-excerpt.webp",
+      "thumb": "assets/media/foundation/school-awards/yelahanka-trust-excerpt.thumb.webp"
+    }
+  ],
+  "presentation": "service-story",
+  "supportRecordIds": [
+    "hebbal",
+    "viman-nagar",
+    "yelahanka-swamiji",
+    "yelahanka-trust"
+  ],
+  "coverAlt": "Sri Swamiji",
+  "coverContext": "Portrait of Sri Swamiji; supporting acknowledgements are available within this service story."
+}

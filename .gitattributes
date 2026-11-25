@@ -1,0 +1,28 @@
+* text=auto eol=lf
+*.html text
+*.css text
+*.js text
+*.json text
+*.md text
+*.py text
+*.yml text
+*.svg text
+*.jpg -text
+*.jpeg -text
+*.png -text
+*.webp -text
+*.gif -text
+*.mp4 -text
+*.mov -text
+*.mp3 -text
+*.m4a -text
+*.wav -text
+*.aac -text
+*.webm -text
+*.pdf -text
+*.woff2 -text
+*.ttf -text
+
+# Large original media stay in the ignored media/ archive by default.
+# If originals must later be shared through Git, configure Git LFS explicitly
+# on every contributing machine before adding LFS filter rules here.

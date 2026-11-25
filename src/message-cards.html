@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="theme-color" content="#173f35" />
+    <meta
+      name="description"
+      content="Open Swamiji’s original message cards, blessings and prayers. Turn the pages, enlarge a card, and return to his words."
+    />
+    <title>Messages &amp; blessings — Sri Vidya Narayan Foundation</title>
+    <link rel="stylesheet" href="message-spotlight.css" />
+    <link rel="stylesheet" href="messages-only.css" />
+    <link rel="stylesheet" href="standalone-experiences.css" />
+  </head>
+  <body class="page-messages">
+    <a class="skip" href="#main">Skip to messages</a>
+    <header class="experience-header">
+      <a class="experience-back" href="index.html#/learn">← Back to wisdom</a
+      ><a class="experience-brand" href="index.html"
+        >Sri Vidya Narayan <span>FOUNDATION</span></a
+      ><a class="experience-home" href="index.html">Home ↗</a>
+    </header>
+    <main id="main">
+      <section class="message-spotlight-section" id="message-spotlight">
+        <div class="wrap spotlight-intro">
+          <p class="spotlight-eyebrow">
+            IN HIS WORDS · MESSAGES &amp; BLESSINGS
+          </p>
+          <h1>Messages &amp; blessings.</h1>
+          <p class="spotlight-lead">
+            New Year, Guru Purnima, Deepavali, and words to return to. Choose a
+            card and open its message.
+          </p>
+          <p class="spotlight-demo-note">
+            Original message cards, prayers, and greetings shared by the
+            foundation team. Open a card to read, turn its pages, or enlarge it.
+          </p>
+          <div class="spotlight-toolbar">
+            <div class="message-picker">
+              <label for="message-select">CHOOSE A MESSAGE</label
+              ><select
+                aria-label="Choose an event message"
+                id="message-select"
+              ></select>
+            </div>
+            <button
+              aria-pressed="true"
+              class="spotlight-rotation"
+              id="spotlight-rotation"
+              type="button"
+            >
+              Pause rotation <span aria-hidden="true">Ⅱ</span>
+            </button>
+          </div>
+        </div>
+        <div
+          aria-labelledby="spotlight-title"
+          class="spotlight-stage"
+          id="spotlight-stage"
+          role="tabpanel"
+        >
+          <div aria-hidden="true" class="spotlight-beam"></div>
+          <div aria-hidden="true" class="spotlight-floor"></div>
+          <div class="spotlight-cards" id="spotlight-cards"></div>
+          <div class="spotlight-caption">
+            <span id="spotlight-count">01 / 08</span>
+            <h2 id="spotlight-title">New Year 2026</h2>
+            <p id="spotlight-description">
+              Swamiji’s New Year message for 2026.
+            </p>
+            <span class="spotlight-open-hint"
+              >Choose a card · Open its message</span
+            >
+          </div>
+        </div>
+        <div class="wrap spotlight-bottom">
+          <button
+            aria-label="Previous message"
+            class="spotlight-nav-button"
+            id="spotlight-previous"
+            type="button"
+          >
+            ←
+          </button>
+          <p>
+            One message in the light.<br /><span
+              >Open. Read. Return whenever you wish.</span
+            >
+          </p>
+          <button
+            aria-label="Next message"
+            class="spotlight-nav-button"
+            id="spotlight-next"
+            type="button"
+          >
+            →
+          </button>
+        </div>
+      </section>
+    </main>
+    <dialog
+      aria-labelledby="event-reader-title"
+      class="event-card-reader"
+      id="event-card-reader"
+    >
+      <div class="event-reader-toolbar">
+        <div>
+          <span id="event-reader-format"></span>
+          <h2 id="event-reader-title">Message &amp; blessings</h2>
+        </div>
+        <button
+          aria-label="Close card reader"
+          id="event-reader-close"
+          type="button"
+        >
+          ×
+        </button>
+      </div>
+      <p class="event-reader-demo">
+        Original card shared by the foundation team
+      </p>
+      <div class="original-reader-tools">
+        <label hidden="" id="event-reader-cover-field"
+          >Cover design
+          <select
+            aria-label="Choose the New Year cover design"
+            id="event-reader-cover"
+          ></select></label
+        ><button aria-pressed="false" id="event-reader-zoom" type="button">
+          Enlarge card ⊕</button
+        ><a id="event-reader-original" rel="noopener noreferrer" target="_blank"
+          >Open original ↗</a
+        >
+      </div>
+      <div
+        aria-label="Card pages. Scroll or use arrow keys to turn."
+        class="event-reader-viewport"
+        id="event-reader-viewport"
+        tabindex="0"
+      >
+        <div class="event-reader-paper" id="event-reader-paper"></div>
+      </div>
+      <div class="event-reader-controls">
+        <button
+          aria-label="Turn to previous page"
+          id="event-reader-previous"
+          type="button"
+        >
+          ← Previous
+        </button>
+        <p aria-live="polite" id="event-reader-position">
+          Inside · pages 2–3 of 4
+        </p>
+        <button
+          aria-label="Turn to next page"
+          id="event-reader-next"
+          type="button"
+        >
+          Next →
+        </button>
+      </div>
+      <div class="event-reader-footer">
+        <button id="event-reader-back" type="button">
+          ← Back to collection</button
+        ><span>Click a page · scroll · swipe · arrows</span>
+      </div>
+    </dialog>
+    <script src="event-cards-data.js" defer></script>
+    <script src="message-spotlight.js" defer></script>
+  </body>
+</html>

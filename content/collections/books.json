@@ -1,0 +1,91 @@
+[
+  {
+    "id": "pearls-of-wisdom",
+    "title": "Pearls of Wisdom",
+    "subtitle": "180 teachings in a digital reading edition",
+    "kind": "digital-reader",
+    "src": "assets/media/teachings/books/pearls-of-wisdom.svg",
+    "reader": "pearls",
+    "purchaseUrl": null,
+    "coverNote": "Website-designed cover; not a reproduction of the scanned original.",
+    "attribution": "Teachings of Sri Vidyanarayana Theertha Swamiji",
+    "cover": "assets/media/teachings/books/pearls-of-wisdom.svg"
+  },
+  {
+    "id": "zero-to-zero",
+    "title": "Zero to Zero: The Mystic Circle",
+    "kind": "commercial-compilation",
+    "src": "assets/media/teachings/books/zero-to-zero.webp",
+    "purchaseUrl": "https://amzn.in/d/b7zS4DS",
+    "productUrl": "https://www.amazon.in/dp/B0DR38PK1M",
+    "attribution": "A compilation of Swamiji’s teachings",
+    "availabilityNote": "Editions and availability depend on title and country. No price or stock promise.",
+    "cover": "assets/media/teachings/books/zero-to-zero.webp"
+  },
+  {
+    "id": "waves-of-wisdom",
+    "title": "Waves of Wisdom",
+    "kind": "commercial-compilation",
+    "src": "assets/media/teachings/books/waves-of-wisdom.webp",
+    "purchaseUrl": "https://amzn.in/d/iXaKcvV",
+    "productUrl": "https://www.amazon.in/dp/B0F6JM1JZY",
+    "attribution": "A compilation of Swamiji’s teachings",
+    "availabilityNote": "Editions and availability depend on title and country. No price or stock promise.",
+    "cover": "assets/media/teachings/books/waves-of-wisdom.webp"
+  },
+  {
+    "id": "beyond-boundaries",
+    "title": "Beyond Boundaries",
+    "kind": "commercial-compilation",
+    "src": "assets/media/teachings/books/beyond-boundaries.webp",
+    "purchaseUrl": "https://amzn.in/d/9QviMro",
+    "productUrl": "https://www.amazon.in/dp/B0F4L2KCN5",
+    "attribution": "A compilation of Swamiji’s teachings",
+    "availabilityNote": "Editions and availability depend on title and country. No price or stock promise.",
+    "cover": "assets/media/teachings/books/beyond-boundaries.webp"
+  },
+  {
+    "id": "the-cosmic-mirror",
+    "title": "The Cosmic Mirror",
+    "kind": "commercial-compilation",
+    "src": "assets/media/teachings/books/the-cosmic-mirror.webp",
+    "purchaseUrl": "https://amzn.in/d/eHBwF0k",
+    "productUrl": "https://www.amazon.in/dp/B0F4Y3PHSS",
+    "attribution": "A compilation of Swamiji’s teachings",
+    "availabilityNote": "Editions and availability depend on title and country. No price or stock promise.",
+    "cover": "assets/media/teachings/books/the-cosmic-mirror.webp"
+  },
+  {
+    "id": "when-silence-speaks",
+    "title": "When Silence Speaks",
+    "kind": "commercial-compilation",
+    "src": "assets/media/teachings/books/when-silence-speaks.webp",
+    "purchaseUrl": "https://amzn.in/d/5Bwwy0q",
+    "productUrl": "https://www.amazon.in/dp/B0FTFZXCJG",
+    "attribution": "A compilation of Swamiji’s teachings",
+    "availabilityNote": "Editions and availability depend on title and country. No price or stock promise.",
+    "cover": "assets/media/teachings/books/when-silence-speaks.webp"
+  },
+  {
+    "id": "inward-compass",
+    "title": "Inward Compass",
+    "kind": "commercial-compilation",
+    "src": "assets/media/teachings/books/inward-compass.webp",
+    "purchaseUrl": "https://amzn.in/d/0ioKWDZ8",
+    "productUrl": "https://www.amazon.in/dp/B0GK1KCX4R",
+    "attribution": "A compilation of Swamiji’s teachings",
+    "availabilityNote": "Editions and availability depend on title and country. No price or stock promise.",
+    "cover": "assets/media/teachings/books/inward-compass.webp"
+  },
+  {
+    "id": "bhaja-govindam",
+    "title": "Bhaja Govindam: Timeless Wisdom for Modern Life",
+    "kind": "commercial-compilation",
+    "src": "assets/media/teachings/books/bhaja-govindam.webp",
+    "purchaseUrl": "https://amzn.in/d/0bTDVdT6",
+    "productUrl": "https://www.amazon.in/dp/B0H99Y2TY9",
+    "attribution": "A compilation of Swamiji’s teachings",
+    "availabilityNote": "Editions and availability depend on title and country. No price or stock promise.",
+    "cover": "assets/media/teachings/books/bhaja-govindam.webp"
+  }
+]

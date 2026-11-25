@@ -1,0 +1,27 @@
+{
+  "id": "archival-portrait",
+  "category": "his-holiness",
+  "title": "An earlier portrait of Sri Swamiji",
+  "location": "",
+  "date": null,
+  "year": null,
+  "description": "An older photograph of Swamiji, identified and shared by the foundation. No date has been inferred.",
+  "cover": "assets/media/his-holiness/archival-portrait/swamiji-older-photograph.webp",
+  "credit": "Original media shared by the foundation.",
+  "note": "",
+  "counts": {
+    "photos": 1
+  },
+  "media": [
+    {
+      "id": "his-holiness-archival-portrait-swamiji-older-photograph",
+      "type": "photo",
+      "title": "Older photograph of Sri Vidyanarayana Thirtha Swamiji",
+      "caption": "Archival photograph supplied by the foundation; date not supplied.",
+      "alt": "Older photograph of Sri Vidyanarayana Thirtha Swamiji",
+      "src": "assets/media/his-holiness/archival-portrait/swamiji-older-photograph.webp",
+      "thumb": "assets/media/his-holiness/archival-portrait/swamiji-older-photograph.thumb.webp"
+    }
+  ],
+  "coverPosition": "50% 14%"
+}

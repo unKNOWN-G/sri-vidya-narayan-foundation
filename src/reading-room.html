@@ -1,0 +1,1294 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#102d27" />
+    <meta
+      name="description"
+      content="Read 180 simple life lessons from Sri Vidyanarayana Theertha Swamiji’s Pearls of Wisdom. A quiet, beautifully typeset reading experience."
+    />
+    <title>Pearls of Wisdom — Read with Swamiji</title>
+    <link rel="stylesheet" href="standalone-experiences.css" />
+    <link rel="stylesheet" href="pearls-reader.css" />
+    <script src="pearls-data.js" defer></script>
+    <script src="pearls-reader.js" defer></script>
+  </head>
+  <body data-theme="paper">
+    <a class="skip" href="#reader-main">Skip to book</a>
+    <header class="reader-header">
+      <a class="back-books" href="index.html#/library/books"
+        >← <span>Back to books</span></a
+      ><a class="reader-brand" href="index.html#/learn"
+        ><span>Sri Vidya Narayan <small>FOUNDATION</small></span></a
+      ><span class="edition-label">THE READING ROOM</span>
+    </header>
+    <main id="reader-main">
+      <section
+        class="book-welcome"
+        id="book-welcome"
+        aria-labelledby="welcome-title"
+      >
+        <div class="welcome-copy">
+          <p class="overline">THE WISDOM OF SRI SWAMIJI</p>
+          <h1 id="welcome-title">
+            Simple words.<br /><em>A deeper way<br />to live.</em>
+          </h1>
+          <p class="welcome-description">
+            A moment to pause. A thought to carry.<br />Discover 180 life
+            lessons from Swamiji’s<br class="desktop-break" />
+            <i>Pearls of Wisdom.</i>
+          </p>
+          <div class="welcome-actions">
+            <button class="primary" id="begin-reading">
+              Open the book <span>↗</span></button
+            ><button class="resume-link" id="resume-reading" hidden>
+              Continue reading →
+            </button>
+          </div>
+          <p class="welcome-author">
+            Sri Vidyanarayana Theertha Swamiji<span
+              >From the 2021 collection · A new digital edition</span
+            >
+          </p>
+        </div>
+        <button
+          class="hero-book"
+          id="cover-open"
+          aria-label="Open Pearls of Wisdom"
+        >
+          <span class="book-pages" aria-hidden="true"></span
+          ><img
+            src="assets/media/teachings/books/pearls-of-wisdom.svg?v=2"
+            alt="Pearls of Wisdom — luminous pearl, ivory and gold cover"
+            width="600"
+            height="840"
+          /><span class="cover-hint">OPEN · READ · REFLECT</span></button
+        ><span class="welcome-bottom"
+          >ONE LESSON AT A TIME. A LITTLE CLOSER TO YOURSELF.</span
+        >
+      </section>
+      <section
+        class="reading-room"
+        id="reading-room"
+        aria-label="Pearls of Wisdom book reader"
+        hidden
+      >
+        <div class="reading-top">
+          <div>
+            <button id="close-book" class="quiet-button">← Close book</button>
+            <h1>Pearls of Wisdom <span>by Sri Swamiji</span></h1>
+          </div>
+          <div class="reader-tools">
+            <button id="open-contents" aria-haspopup="dialog">
+              ☷ <span>Contents</span>
+            </button>
+            <details class="reader-settings">
+              <summary aria-label="Reading appearance">Aa</summary>
+              <div class="settings-panel">
+                <span class="control-label">TEXT SIZE</span>
+                <div class="size-buttons">
+                  <button id="text-smaller" aria-label="Decrease text size">
+                    A−</button
+                  ><output id="text-size" aria-live="polite">100%</output
+                  ><button id="text-larger" aria-label="Increase text size">
+                    A+
+                  </button>
+                </div>
+                <span class="control-label">PAGE COLOUR</span>
+                <div class="theme-buttons">
+                  <button data-theme-choice="paper" aria-pressed="true">
+                    Paper</button
+                  ><button data-theme-choice="sepia" aria-pressed="false">
+                    Sepia</button
+                  ><button data-theme-choice="night" aria-pressed="false">
+                    Night
+                  </button>
+                </div>
+              </div>
+            </details>
+            <button
+              id="save-pearl"
+              aria-label="Bookmark this lesson"
+              aria-pressed="false"
+            >
+              <svg class="bookmark-icon" viewBox="0 0 16 20" aria-hidden="true">
+                <path d="M2 1h12v17l-6-4-6 4z" /></svg
+              ><span>Save</span>
+            </button>
+          </div>
+        </div>
+        <div class="book-stage">
+          <button
+            class="turn-arrow"
+            id="previous-pearl"
+            aria-label="Previous lesson"
+          >
+            ←
+          </button>
+          <div class="paper-stack">
+            <article
+              class="pearl-page"
+              id="pearl-page"
+              aria-labelledby="pearl-label"
+              tabindex="-1"
+            >
+              <div class="paper-running">
+                <span>PEARLS OF WISDOM</span
+                ><span id="paper-position">001 / 180</span>
+              </div>
+              <div class="pearl-body">
+                <div class="pearl-ornament" aria-hidden="true">
+                  <i></i><b></b><i></i>
+                </div>
+                <h2 id="pearl-label">PEARL 001</h2>
+                <div id="pearl-text" class="pearl-text"></div>
+                <div class="pearl-signature">
+                  Sri Vidyanarayana Theertha Swamiji
+                </div>
+              </div>
+              <div class="paper-footer">
+                <span>READ SLOWLY. LET IT STAY.</span
+                ><span id="printed-page">1</span>
+              </div>
+            </article>
+          </div>
+          <button class="turn-arrow" id="next-pearl" aria-label="Next lesson">
+            →
+          </button>
+        </div>
+        <div class="reading-bottom">
+          <span id="reading-position" role="status" aria-live="polite"
+            >Lesson 1 of 180</span
+          ><label class="progress-label"
+            ><span class="sr-only">Go to lesson</span
+            ><input
+              id="reading-progress"
+              type="range"
+              min="1"
+              max="180"
+              value="1"
+              aria-label="Go to lesson" /></label
+          ><button id="share-pearl">Copy lesson link ↗</button>
+        </div>
+        <p class="reading-help">
+          Use the arrows or swipe to turn a page.<span>
+            Your place is saved on this device.</span
+          >
+        </p>
+        <p class="end-note" id="end-note" hidden>
+          You have reached the last pearl. Return to a favourite, or
+          <button id="read-again">begin again ↗</button>.
+        </p>
+      </section>
+      <noscript
+        ><section class="fallback">
+          <h2>Pearls of Wisdom</h2>
+          <p>
+            Enable JavaScript for the page-turning reader, or read all 180
+            lessons below.
+          </p>
+          <article>
+            <h3>Pearl 1</h3>
+            <p>
+              First and last are two precious words. First — Sacrifice Last —
+              Self Contentment We should realise that the first and the last are
+              two precious words given by Lord Shiva to one and all.
+            </p>
+          </article>
+          <article>
+            <h3>Pearl 2</h3>
+            <p>
+              All ends at God’s feet. Anything to everything. We foolish people
+              don’t understand this. We ignore going to the feet of God. And yet
+              get everything, gain everything, including Health — Peace —
+              Prosperity.
+            </p>
+          </article>
+          <article>
+            <h3>Pearl 3</h3>
+            <p>
+              Make clear. You will be made clear. Mint your life. Maintain your
+              life but don’t minus your life. Make clean. Make clear, mint and
+              maintain your life.
+            </p>
+          </article>
+          <article>
+            <h3>Pearl 4</h3>
+            <p>
+              One day man asked God: “What’s the difference between your love
+              and my love?” God smiled and replied: “A bird in the sky is my
+              love and a bird in the cage is your love.”
+            </p>
+          </article>
+          <article>
+            <h3>Pearl 5</h3>
+            <p>
+              Remember you are the most magnificent, outstanding, remarkable
+              being God has ever created. May God Guru bless you.
+            </p>
+          </article>
+          <article>
+            <h3>Pearl 6</h3>
+            <p>
+              The depth of your character will be revealed in the way you
+              respond to situation you dislike.
+            </p>
+          </article>
+          <article>
+            <h3>Pearl 7</h3>
+            <p>
+              The biggest temptation of life is “to convert dreams to reality”.
+              But, the biggest defect in life’s journey occurs when “we
+              surrender our dreams to reality”.
+            </p>
+          </article>
+          <article>
+            <h3>Pearl 8</h3>
+            <p>
+              Daddy is a great man who spares his life, Hides his feelings,
+              Ignores his happiness, Accepts the pain, Forgets his comfort,
+              Struggles at work, To make us life comfortably and be happy in our
+              life without a struggle. So don’t hurt daddy, pat gentle daddy.
+            </p>
+          </article>
+          <article>
+            <h3>Pearl 9</h3>
+            <p>
+              A mind in peace is heaven. A mind in pieces is hell. We should
+              watch our thoughts in our mind.
+            </p>
+          </article>
+          <article>
+            <h3>Pearl 10</h3>
+            <p>I love you all I thank you all I bless you all</p>
+          </article>
+          <article>
+            <h3>Pearl 11</h3>
+            <p>
+              Prayer is where an amazing exchange happens. You handover your
+              worries to God and He handles over his peace to you.
+            </p>
+          </article>
+          <article>
+            <h3>Pearl 12</h3>
+            <p>
+              Millions of trees in the world are accidentally planted by
+              squirrels who bury nuts and then forget where they hid them. Do
+              good and forget it.
+            </p>
+          </article>
+          <article>
+            <h3>Pearl 13</h3>
+            <p>
+              Caste is concentration of energy. Energy to dedicate to suit the
+              humanity and human tendencies. To have heart. To recognize super
+              fine energy which is called God. Caste is distribution of energy
+              to suit human mental attitude.
+            </p>
+          </article>
+          <article>
+            <h3>Pearl 14</h3>
+            <p>
+              Prayer is equal to good time. Good time for remembrances,
+              discussions and to analyse our minds. Prayers divert our negative
+              thoughts to positive thoughts. To do this we offer our prayers as
+              “I love you master, I thank you master, Please bless me to be at
+              your feet.”
+            </p>
+          </article>
+          <article>
+            <h3>Pearl 15</h3>
+            <p>I am master. Master is in me. I am at his holy feet.</p>
+          </article>
+          <article>
+            <h3>Pearl 16</h3>
+            <p>I am this. I am not this. But I am this. God is very kind.</p>
+          </article>
+          <article>
+            <h3>Pearl 17</h3>
+            <p>
+              Everyone is allotted duty. What is duty? Duty is allotted by
+              divinity. Duty is divine. Human beings claim but God does not
+              claim.
+            </p>
+          </article>
+          <article>
+            <h3>Pearl 18</h3>
+            <p>Be inside, look outside. Be outside, look inside.</p>
+          </article>
+          <article>
+            <h3>Pearl 19</h3>
+            <p>
+              The more you move in, You get more power to enjoy Peace, Health,
+              Prosperity.
+            </p>
+          </article>
+          <article>
+            <h3>Pearl 20</h3>
+            <p>M — Mind O — Order R — Regain E — Entertain</p>
+          </article>
+          <article>
+            <h3>Pearl 21</h3>
+            <p>
+              If you put mind in order, you regain. What do you regain? Good,
+              and Bad. Reject the bad. Entertain the good.
+            </p>
+          </article>
+          <article>
+            <h3>Pearl 22</h3>
+            <p>
+              Space — Brahma Air — Vishnu Water — Ganapathi Fire — Surya Earth —
+              Goddess
+            </p>
+          </article>
+          <article>
+            <h3>Pearl 23</h3>
+            <p>
+              Be near become one, benefit. Become benevolent, bake. Bend and
+              balance your life’s activities. God is in you. You get blessed by
+              yourself.
+            </p>
+          </article>
+          <article>
+            <h3>Pearl 24</h3>
+            <p>
+              Your own actions have to fix the present. But, our past good
+              actions from previous birth are fixed deposits. We already have
+              fixed deposits.
+            </p>
+          </article>
+          <article>
+            <h3>Pearl 25</h3>
+            <p>
+              Always see the feet of God. Activate your action by seeing the
+              feet of God. By this, you reap rich dividends.
+            </p>
+          </article>
+          <article>
+            <h3>Pearl 26</h3>
+            <p>Prayer is compulsory. Bake yourself before prayer.</p>
+          </article>
+          <article>
+            <h3>Pearl 27</h3>
+            <p>
+              You want benefit? You want benefit but, you don’t want to become
+              one. Become one and benefit from oneness.
+            </p>
+          </article>
+          <article>
+            <h3>Pearl 28</h3>
+            <p>Men should kill selfishness, ego and jealousy.</p>
+          </article>
+          <article>
+            <h3>Pearl 29</h3>
+            <p>Relax, retain, regain the Dharma.</p>
+          </article>
+          <article>
+            <h3>Pearl 30</h3>
+            <p>
+              From birth to 5 years there is no account for any individual. 5
+              years to 21 years there is a joint account (Individual + Parents +
+              Teachers). From 21 years till marriage there is an independent
+              account holder. After marriage, there is a joint account
+              (Individual + Spouse).
+            </p>
+          </article>
+          <article>
+            <h3>Pearl 31</h3>
+            <p>
+              I am a bubble in the ocean. There are millions of bubbles in the
+              ocean.
+            </p>
+          </article>
+          <article>
+            <h3>Pearl 32</h3>
+            <p>The miracle is to accept divinity.</p>
+          </article>
+          <article>
+            <h3>Pearl 33</h3>
+            <p>
+              Don’t copy. Don’t compare. Don’t get into compression and
+              confusion.
+            </p>
+          </article>
+          <article>
+            <h3>Pearl 34</h3>
+            <p>We want benefit from Guru but no Guru.</p>
+          </article>
+          <article>
+            <h3>Pearl 35</h3>
+            <p>Whatever you do you are accountable.</p>
+          </article>
+          <article>
+            <h3>Pearl 36</h3>
+            <p>Mind energy is potential energy.</p>
+          </article>
+          <article>
+            <h3>Pearl 37</h3>
+            <p>Silence is Brahma. Protection is Vishnu. Maintenance is Siva.</p>
+          </article>
+          <article>
+            <h3>Pearl 38</h3>
+            <p>
+              Cat comes. Rat comes. Cat wants to catch the rat. Rat should not
+              run away. Rat should catch cat.
+            </p>
+          </article>
+          <article>
+            <h3>Pearl 39</h3>
+            <p>
+              Ego wants to conquer. Humble wants humbleness, egoless, selfless.
+            </p>
+          </article>
+          <article>
+            <h3>Pearl 40</h3>
+            <p>
+              True master will always be free, frank, true, neutral, natural.
+            </p>
+          </article>
+          <article>
+            <h3>Pearl 41</h3>
+            <p>Master reflects love to whole family members.</p>
+          </article>
+          <article>
+            <h3>Pearl 42</h3>
+            <p>Fail Pass Fail Pass Fail Pass Pass Pass Pass Fail Fail Pass</p>
+          </article>
+          <article>
+            <h3>Pearl 43</h3>
+            <p>
+              I am a servant to God. God is serving me. This is surrender to
+              God.
+            </p>
+          </article>
+          <article>
+            <h3>Pearl 44</h3>
+            <p>
+              Study the situation Don’t seek the situation Settle down with the
+              situation
+            </p>
+          </article>
+          <article>
+            <h3>Pearl 45</h3>
+            <p>
+              People want equality. People don’t show equality. Dharma Guru is
+              to be given respect.
+            </p>
+          </article>
+          <article>
+            <h3>Pearl 46</h3>
+            <p>Obey the order. Order is divinity.</p>
+          </article>
+          <article>
+            <h3>Pearl 47</h3>
+            <p>
+              Unknowingly you come Unknowingly you serve Unknowingly is the
+              essence of philosophy
+            </p>
+          </article>
+          <article>
+            <h3>Pearl 48</h3>
+            <p>Baking is the duty of a Guru towards a student.</p>
+          </article>
+          <article>
+            <h3>Pearl 49</h3>
+            <p>Thought is Runam.</p>
+          </article>
+          <article>
+            <h3>Pearl 50</h3>
+            <p>
+              Dirty. Don’t fall in ditch water. Ditch water has bad smell but
+              good.
+            </p>
+          </article>
+          <article>
+            <h3>Pearl 51</h3>
+            <p>All Gurus are Dhobis.</p>
+          </article>
+          <article>
+            <h3>Pearl 52</h3>
+            <p>Give Gain God Go forward with God</p>
+          </article>
+          <article>
+            <h3>Pearl 53</h3>
+            <p>Grind Ground Grind</p>
+          </article>
+          <article>
+            <h3>Pearl 54</h3>
+            <p>Don’t claim Don’t clamour</p>
+          </article>
+          <article>
+            <h3>Pearl 55</h3>
+            <p>Quality outside Quality inside</p>
+          </article>
+          <article>
+            <h3>Pearl 56</h3>
+            <p>
+              Education plays a vital role. The quality of education determines
+              how we live. The highly qualified people are simple.
+            </p>
+          </article>
+          <article>
+            <h3>Pearl 57</h3>
+            <p>Indian caste is inside. Western caste is outside.</p>
+          </article>
+          <article>
+            <h3>Pearl 58</h3>
+            <p>
+              Be fashionable, Don’t beat fashion, Don’t bear fashion, Don’t be
+              after fashion.
+            </p>
+          </article>
+          <article>
+            <h3>Pearl 59</h3>
+            <p>Are you ready to go with the world, or with divinity?</p>
+          </article>
+          <article>
+            <h3>Pearl 60</h3>
+            <p>
+              Mix to mingle, Mingle to mingle, Mingle to maintain, Maintain to
+              minus, And Minus to maintain.
+            </p>
+          </article>
+          <article>
+            <h3>Pearl 61</h3>
+            <p>They are masters But they are not masters</p>
+          </article>
+          <article>
+            <h3>Pearl 62</h3>
+            <p>Help the poor, But don’t advertise.</p>
+          </article>
+          <article>
+            <h3>Pearl 63</h3>
+            <p>Truth is fire. You cannot touch truth.</p>
+          </article>
+          <article>
+            <h3>Pearl 64</h3>
+            <p>
+              Condition corruption and conceive corruption. Conditioned
+              corruption is allowed. Conceive corruption is not allowed.
+            </p>
+          </article>
+          <article>
+            <h3>Pearl 65</h3>
+            <p>Cheat society but don’t cheat God.</p>
+          </article>
+          <article>
+            <h3>Pearl 66</h3>
+            <p>I need discipline. But, I don’t want discipline.</p>
+          </article>
+          <article>
+            <h3>Pearl 67</h3>
+            <p>
+              I need an orthodox order in my life. But, I don’t want an orthodox
+              order.
+            </p>
+          </article>
+          <article>
+            <h3>Pearl 68</h3>
+            <p>
+              We all came to earth, It is a beautiful thing. To enjoy all his
+              things in a right way given by him, To help his needful children
+              in a good and needful manner.
+            </p>
+          </article>
+          <article>
+            <h3>Pearl 69</h3>
+            <p>Energy is rotating to reveal.</p>
+          </article>
+          <article>
+            <h3>Pearl 70</h3>
+            <p>Fact is a fact.</p>
+          </article>
+          <article>
+            <h3>Pearl 71</h3>
+            <p>Sharing is very very important.</p>
+          </article>
+          <article>
+            <h3>Pearl 72</h3>
+            <p>I need media But, I don’t want media.</p>
+          </article>
+          <article>
+            <h3>Pearl 73</h3>
+            <p>Time is precious.</p>
+          </article>
+          <article>
+            <h3>Pearl 74</h3>
+            <p>Relieve to retain and Retain to relieve.</p>
+          </article>
+          <article>
+            <h3>Pearl 75</h3>
+            <p>Truth is Rama. Truth is God.</p>
+          </article>
+          <article>
+            <h3>Pearl 76</h3>
+            <p>
+              Compare inside and outside power and status. Don’t compare. Don’t
+              copy. Compose yourself.
+            </p>
+          </article>
+          <article>
+            <h3>Pearl 77</h3>
+            <p>
+              North &amp; East — Positive Directions South — Negative Direction
+              West — Neutral Direction
+            </p>
+          </article>
+          <article>
+            <h3>Pearl 78</h3>
+            <p>
+              Don’t attract to attack. Attract to adjust, Don’t get attracted,
+              Attract to accuse.
+            </p>
+          </article>
+          <article>
+            <h3>Pearl 79</h3>
+            <p>Don’t establish. If you establish you will extract.</p>
+          </article>
+          <article>
+            <h3>Pearl 80</h3>
+            <p>Continue simple living. Continue seva in a simple way.</p>
+          </article>
+          <article>
+            <h3>Pearl 81</h3>
+            <p>Lead a practical, perfect and powerful life.</p>
+          </article>
+          <article>
+            <h3>Pearl 82</h3>
+            <p>
+              When you maintain yourself, Then you come near to Master. When you
+              maintain yourself as Master, Then, you become yourself Master.
+            </p>
+          </article>
+          <article>
+            <h3>Pearl 83</h3>
+            <p>
+              Love to lead Love to link Love to leap Love to lend Love to level
+              Love to balance Charity means without expectation.
+            </p>
+          </article>
+          <article>
+            <h3>Pearl 84</h3>
+            <p>
+              What is recognition? You re-organise your mind, Recharge your
+              mind, Automatically you get recognition.
+            </p>
+          </article>
+          <article>
+            <h3>Pearl 85</h3>
+            <p>Media and charity is not countable.</p>
+          </article>
+          <article>
+            <h3>Pearl 86</h3>
+            <p>
+              Over talk and over thought will override your life. Balance talk
+              and balanced thought will bring bounty of bliss.
+            </p>
+          </article>
+          <article>
+            <h3>Pearl 87</h3>
+            <p>If one wants to click their life then move like clock hand.</p>
+          </article>
+          <article>
+            <h3>Pearl 88</h3>
+            <p>Observe to absorb.</p>
+          </article>
+          <article>
+            <h3>Pearl 89</h3>
+            <p>Be bold Be brave Balance your mind.</p>
+          </article>
+          <article>
+            <h3>Pearl 90</h3>
+            <p>
+              Be like a dog. Don’t become a donkey. Carry like a donkey. Don’t
+              run like a horse. Don’t expand but extend.
+            </p>
+          </article>
+          <article>
+            <h3>Pearl 91</h3>
+            <p>There are so many masters unseen, unheard and mystic.</p>
+          </article>
+          <article>
+            <h3>Pearl 92</h3>
+            <p>
+              Everywhere is In everything, at all time, at all places, in each
+              item, see Him. Seek His Grace. Surrender to Him.
+            </p>
+          </article>
+          <article>
+            <h3>Pearl 93</h3>
+            <p>
+              Become cat before rat. Become rat before cat. Cat means Wealth.
+              Rat means Wisdom.
+            </p>
+          </article>
+          <article>
+            <h3>Pearl 94</h3>
+            <p>Blessings brings bountiful peace, health and prosperity.</p>
+          </article>
+          <article>
+            <h3>Pearl 95</h3>
+            <p>
+              Bake and become one. Bring near, don’t beat. Benefit from your
+              life. Balance your mind. Bring all near you. But be away from all.
+              Best is balance of one’s life. Through body and words from your
+              mouth.
+            </p>
+          </article>
+          <article>
+            <h3>Pearl 96</h3>
+            <p>
+              Base and background are necessary in one’s life. Base is
+              professional background (economic status). Background is family
+              background (caste is society allotted duty to oneself).
+            </p>
+          </article>
+          <article>
+            <h3>Pearl 97</h3>
+            <p>Account of life Good deeds and bad deeds.</p>
+          </article>
+          <article>
+            <h3>Pearl 98</h3>
+            <p>
+              For ladies not accountable to any level to anything. Why? Ladies
+              are not accountable for one’s life. But, they are accountable for
+              every aspect of life.
+            </p>
+          </article>
+          <article>
+            <h3>Pearl 99</h3>
+            <p>Correct to connect. Connect to correct.</p>
+          </article>
+          <article>
+            <h3>Pearl 100</h3>
+            <p>
+              Birth to death, all human beings are accountable. Not only human
+              beings. But, all living creatures are accountable — for good and
+              bad deeds.
+            </p>
+          </article>
+          <article>
+            <h3>Pearl 101</h3>
+            <p>Connect Contact Conceive Compose Cool Don’t confuse</p>
+          </article>
+          <article>
+            <h3>Pearl 102</h3>
+            <p>
+              Darkness goes, light comes called Morning. Light goes, darkness
+              comes called Evening. During these two periods if you offer
+              prayers they will remove obstacles.
+            </p>
+          </article>
+          <article>
+            <h3>Pearl 103</h3>
+            <p>
+              Society is accountable at every level i.e. happening in day to day
+              activities (kings, rulers and political leaders). Media is
+              accountable.
+            </p>
+          </article>
+          <article>
+            <h3>Pearl 104</h3>
+            <p>
+              Exposure leads to explosion. Good thoughts like rays affect the
+              body system and brings the fruits of your activities in life.
+            </p>
+          </article>
+          <article>
+            <h3>Pearl 105</h3>
+            <p>
+              When you cannot recognize yourself, you cannot recognize others.
+              You only recognize yourself.
+            </p>
+          </article>
+          <article>
+            <h3>Pearl 106</h3>
+            <p>
+              Time is God, Time is discipline, Time is system, Its life and
+              love, Time is your future, Time is silence, Seek time to settle
+              down, Don’t search to seek, But search to settle down.
+            </p>
+          </article>
+          <article>
+            <h3>Pearl 107</h3>
+            <p>
+              God is silence God is everything Dedicate to Him Dive in Him
+              Derive Him Drive him in all body
+            </p>
+          </article>
+          <article>
+            <h3>Pearl 108</h3>
+            <p>
+              Do all the good you can By all the means you can In all the ways
+              you can In all the places you can At all the time you can To all
+              the people you can As long as ever you can
+            </p>
+          </article>
+          <article>
+            <h3>Pearl 109</h3>
+            <p>Master outside, Monk inside.</p>
+          </article>
+          <article>
+            <h3>Pearl 110</h3>
+            <p>Enough is energy. Don’t fix and follow. But, follow and fix.</p>
+          </article>
+          <article>
+            <h3>Pearl 111</h3>
+            <p>
+              Don’t repeat. Request your mind not to think negative. But, put
+              forward pure energy thought into heart-soul. That means surrender
+              to soul.
+            </p>
+          </article>
+          <article>
+            <h3>Pearl 112</h3>
+            <p>Media and charity are not countable part of your recognition.</p>
+          </article>
+          <article>
+            <h3>Pearl 113</h3>
+            <p>Whoever controls their mind will become Master.</p>
+          </article>
+          <article>
+            <h3>Pearl 114</h3>
+            <p>All human beings are credit card holders.</p>
+          </article>
+          <article>
+            <h3>Pearl 115</h3>
+            <p>Change of body is called death.</p>
+          </article>
+          <article>
+            <h3>Pearl 116</h3>
+            <p>Time is God. Time is Energy. Track your time.</p>
+          </article>
+          <article>
+            <h3>Pearl 117</h3>
+            <p>Prayer is perfect when you pray yourself.</p>
+          </article>
+          <article>
+            <h3>Pearl 118</h3>
+            <p>Shock, shiver makes a mind clean. (Awareness)</p>
+          </article>
+          <article>
+            <h3>Pearl 119</h3>
+            <p>Change for exchange.</p>
+          </article>
+          <article>
+            <h3>Pearl 120</h3>
+            <p>
+              Release to retain Retain to reach Reach to reap Reap to
+              re-organise
+            </p>
+          </article>
+          <article>
+            <h3>Pearl 121</h3>
+            <p>
+              I will speak the truth. I will make others to speak the truth.
+            </p>
+          </article>
+          <article>
+            <h3>Pearl 122</h3>
+            <p>
+              Cat &amp; Rat Rat should not be afraid of the cat. If rat is weak
+              and is afraid of the cat, Cat will swallow Rat. Be bold to face
+              rich people.
+            </p>
+          </article>
+          <article>
+            <h3>Pearl 123</h3>
+            <p>Attract soul. Don’t attach to the activeness.</p>
+          </article>
+          <article>
+            <h3>Pearl 124</h3>
+            <p>
+              If you expose, you could be explored. Express your inner feelings,
+              then you extend.
+            </p>
+          </article>
+          <article>
+            <h3>Pearl 125</h3>
+            <p>Ego, selfishness should go. Then only, society will improve.</p>
+          </article>
+          <article>
+            <h3>Pearl 126</h3>
+            <p>
+              Time is the answer. As you seek inner realization, say: I love you
+              Master, Thank you Master, Always, at all times.
+            </p>
+          </article>
+          <article>
+            <h3>Pearl 127</h3>
+            <p>If you can withstand, you will not have desires.</p>
+          </article>
+          <article>
+            <h3>Pearl 128</h3>
+            <p>
+              The biggest challenge is to be yourself in a world where everyone
+              is trying to make you someone else. Dare to be yourself.
+            </p>
+          </article>
+          <article>
+            <h3>Pearl 129</h3>
+            <p>
+              He carries on He will carry on and Trust Him forever to carry on
+              in our life.
+            </p>
+          </article>
+          <article>
+            <h3>Pearl 130</h3>
+            <p>Aspire to inspire Before you expire.</p>
+          </article>
+          <article>
+            <h3>Pearl 131</h3>
+            <p>
+              Live simply, Love generously, Care deeply, Speak kindly, Leave the
+              rest to God.
+            </p>
+          </article>
+          <article>
+            <h3>Pearl 132</h3>
+            <p>
+              Happiness keeps you sweet, Trials keep you strong, Sorrows keep
+              you human, Failures keep you humble.
+            </p>
+          </article>
+          <article>
+            <h3>Pearl 133</h3>
+            <p>Success keeps you glowing. But only God keeps you going.</p>
+          </article>
+          <article>
+            <h3>Pearl 134</h3>
+            <p>Dharmic life is a tasteful life.</p>
+          </article>
+          <article>
+            <h3>Pearl 135</h3>
+            <p>We have something to share — Kaya, vacha, manasa.</p>
+          </article>
+          <article>
+            <h3>Pearl 136</h3>
+            <p>Listen to link. Listen to leave. Leave to life.</p>
+          </article>
+          <article>
+            <h3>Pearl 137</h3>
+            <p>
+              Fill up but, don’t fill over. Earn but not to exist, but to
+              extend.
+            </p>
+          </article>
+          <article>
+            <h3>Pearl 138</h3>
+            <p>
+              They carry but they don’t know what they carry. Like donkeys they
+              don’t know. Be aware that you carry your karma.
+            </p>
+          </article>
+          <article>
+            <h3>Pearl 139</h3>
+            <p>
+              Save to speak. Save to serve. Save to settle. Save to be with
+              saints and seers. The result of this is balance of mind = peace +
+              health + wisdom
+            </p>
+          </article>
+          <article>
+            <h3>Pearl 140</h3>
+            <p>
+              Maya is very very powerful. Maya is multiple energy. Be with maya.
+              Become one with maya. Bake in maya. Benefit from maya. Be away but
+              be near to maya.
+            </p>
+          </article>
+          <article>
+            <h3>Pearl 141</h3>
+            <p>
+              Be aware that some enormous energy is working you. Accept that
+              energy, analyze that energy. Act according to that energy. Adjust
+              with that energy. Don’t accuse that energy.
+            </p>
+          </article>
+          <article>
+            <h3>Pearl 142</h3>
+            <p>
+              What is birthday? Birthday means — Remember the past, work for the
+              present, pray for the future.
+            </p>
+          </article>
+          <article>
+            <h3>Pearl 143</h3>
+            <p>
+              Birthday means — Recharge, Rechange, Re-equip, Retain, Realize,
+              Reach to relax.
+            </p>
+          </article>
+          <article>
+            <h3>Pearl 144</h3>
+            <p>Mercy, grace, love is equal to inside maya.</p>
+          </article>
+          <article>
+            <h3>Pearl 145</h3>
+            <p>Forget home in office and office in home.</p>
+          </article>
+          <article>
+            <h3>Pearl 146</h3>
+            <p>Look down, go up. Look back, gain forward.</p>
+          </article>
+          <article>
+            <h3>Pearl 147</h3>
+            <p>
+              Sanatana Dharma is not be considered as a religion but, as a way
+              of life that allows self purification and self realization.
+            </p>
+          </article>
+          <article>
+            <h3>Pearl 148</h3>
+            <p>
+              Sadhana Vijayate Dhairya Sadhana Vijayate Dhairya Dharma Sadhana
+              Vijayate Dhairya Satya Dharma Sadhana Vijayate Do Sadhana
+            </p>
+          </article>
+          <article>
+            <h3>Pearl 149</h3>
+            <p>
+              Why do we have heart, lungs, kidney? System is one. But, each part
+              has allotted duty.
+            </p>
+          </article>
+          <article>
+            <h3>Pearl 150</h3>
+            <p>
+              Heart gets blood. It does not manufacture blood. Its duty is to
+              circulate blood.
+            </p>
+          </article>
+          <article>
+            <h3>Pearl 151</h3>
+            <p>Nature has allocated duties.</p>
+          </article>
+          <article>
+            <h3>Pearl 152</h3>
+            <p>
+              Karma: Do your duty, understand why. Bhakti: is practicing the
+              experience of Karma. Gnana: is the extension of Bhakti and Karma.
+            </p>
+          </article>
+          <article>
+            <h3>Pearl 153</h3>
+            <p>
+              Q: What is the difference between Change and Transformation? A:
+              Change is conversion. Transformation is change from the heart.
+              Change is for the world. Transformation is for self-realization.
+            </p>
+          </article>
+          <article>
+            <h3>Pearl 154</h3>
+            <p>
+              Guru is very powerful. Guru is form with energy. Worship Guru.
+            </p>
+          </article>
+          <article>
+            <h3>Pearl 155</h3>
+            <p>Where, When, Which, What, Why: Apply correct brakes</p>
+          </article>
+          <article>
+            <h3>Pearl 156</h3>
+            <p>
+              He is there. He will take care. Always remember God. Naamasmaranam
+              is the highest. Mind gets diverted directly.
+            </p>
+          </article>
+          <article>
+            <h3>Pearl 157</h3>
+            <p>
+              Love is Guru. Guru is Love. Why should Guru show compassion and
+              not you? Guru is there to teach us to love.
+            </p>
+          </article>
+          <article>
+            <h3>Pearl 158</h3>
+            <p>
+              Birth is death. Death is birth. One should go away as one enters
+              one’s own house happily.
+            </p>
+          </article>
+          <article>
+            <h3>Pearl 159</h3>
+            <p>Care the body. Cure the mind. Cure the body. Care the mind.</p>
+          </article>
+          <article>
+            <h3>Pearl 160</h3>
+            <p>Acquire to adjust. Do not acquire to accumulate.</p>
+          </article>
+          <article>
+            <h3>Pearl 161</h3>
+            <p>
+              Correct to conceive. Correct to control. Correct to compromise.
+            </p>
+          </article>
+          <article>
+            <h3>Pearl 162</h3>
+            <p>
+              Defence = Divinity Divinity = Discipline Discipline = Dedication
+            </p>
+          </article>
+          <article>
+            <h3>Pearl 163</h3>
+            <p>
+              Charity of material things is division. Charity of Wisdom is to
+              equalize. Wealth is weight. Wisdom is relief. Always try to secure
+              wisdom.
+            </p>
+          </article>
+          <article>
+            <h3>Pearl 164</h3>
+            <p>Shock Shiver Stand up Surrender</p>
+          </article>
+          <article>
+            <h3>Pearl 165</h3>
+            <p>Faith should be forwarded. Faith should not be changed.</p>
+          </article>
+          <article>
+            <h3>Pearl 166</h3>
+            <p>Do not claim. Do your duty.</p>
+          </article>
+          <article>
+            <h3>Pearl 167</h3>
+            <p>Karma is indiscipline. Dharma is discipline.</p>
+          </article>
+          <article>
+            <h3>Pearl 168</h3>
+            <p>
+              We are from nature. We are in nature. Please remember divinity of
+              nature.
+            </p>
+          </article>
+          <article>
+            <h3>Pearl 169</h3>
+            <p>Alcohol is outside peg. Naamajapa is inside peg.</p>
+          </article>
+          <article>
+            <h3>Pearl 170</h3>
+            <p>
+              There are so many habits. You need sadhana to overcome habits. It
+              takes years.
+            </p>
+          </article>
+          <article>
+            <h3>Pearl 171</h3>
+            <p>
+              Avoid and encourage to avoid 3 things: 1. Ego, 2. Selfishness, 3.
+              Jealousy
+            </p>
+          </article>
+          <article>
+            <h3>Pearl 172</h3>
+            <p>
+              Mind is the mightiest organ in the world. It can build. Or it can
+              blast.
+            </p>
+          </article>
+          <article>
+            <h3>Pearl 173</h3>
+            <p>
+              Impatience in young generation is because of comparison and copy.
+            </p>
+          </article>
+          <article>
+            <h3>Pearl 174</h3>
+            <p>Always compose. Don’t compare or copy.</p>
+          </article>
+          <article>
+            <h3>Pearl 175</h3>
+            <p>
+              Do not demand respect. Command Respect. Do not demand. Do not
+              command. But follow.
+            </p>
+          </article>
+          <article>
+            <h3>Pearl 176</h3>
+            <p>
+              What is prayer? Pooja What is tradition? Poojan Pooja is
+              remembering God. Tradition is service. Do not mix the two.
+            </p>
+          </article>
+          <article>
+            <h3>Pearl 177</h3>
+            <p>
+              Be disciplined in seva and prayer. Action with discipline will
+              give you siddhi.
+            </p>
+          </article>
+          <article>
+            <h3>Pearl 178</h3>
+            <p>Easy path is good thought, good words and good deeds.</p>
+          </article>
+          <article>
+            <h3>Pearl 179</h3>
+            <p>
+              A paper flying in air is due to its luck. But a bird is flying due
+              to its efforts. So, if luck is not with you, efforts are always
+              there to support you.
+            </p>
+          </article>
+          <article>
+            <h3>Pearl 180</h3>
+            <p>
+              Truth love action must be worshipped in the form of Sri Lord Rama.
+              Whenever you need me close your eyes and look into your heart, I
+              will be there at once.
+            </p>
+          </article>
+        </section></noscript
+      >
+    </main>
+    <footer class="edition-note">
+      Retypeset from Swamiji’s <i>Pearls of Wisdom</i> (2021). Original order
+      retained; spacing, punctuation and capitalisation lightly standardised.
+      <button id="about-edition">About this edition</button>
+    </footer>
+    <dialog id="contents-dialog" aria-labelledby="contents-title">
+      <header>
+        <div>
+          <p class="overline">FIND A THOUGHT TO CARRY</p>
+          <h2 id="contents-title">The collection</h2>
+        </div>
+        <button class="dialog-close" aria-label="Close contents">×</button>
+      </header>
+      <label class="search-label" for="lesson-search"
+        >Search the 180 lessons</label
+      ><input
+        type="search"
+        id="lesson-search"
+        placeholder="Try love, peace, duty…"
+      />
+      <div class="contents-filters">
+        <button id="all-lessons" aria-pressed="true">All pearls</button
+        ><button id="saved-lessons" aria-pressed="false">Saved pearls</button
+        ><span id="result-count" role="status"></span>
+      </div>
+      <ol id="contents-list"></ol>
+      <p id="no-results" hidden>No matching lessons. Try another word.</p>
+    </dialog>
+    <dialog id="edition-dialog" aria-labelledby="edition-title">
+      <button class="dialog-close" aria-label="Close edition information">
+        ×
+      </button>
+      <p class="overline">A NEW WAY TO READ</p>
+      <h2 id="edition-title">His words.<br />A quiet new home.</h2>
+      <p>
+        This digital edition brings together the 180 numbered messages in the
+        supplied 2021 <i>Pearls of Wisdom</i> collection. Every scanned page was
+        reviewed and the lessons have been transcribed into selectable text.
+      </p>
+      <p>
+        The teaching sequence and distinctive expressions are retained. Spacing,
+        punctuation and capitalisation have been lightly standardised for
+        reading. The cover and reading layout are new designs for this website.
+      </p>
+      <p>
+        Your reading position, page settings and saved lessons stay in this
+        browser on this device.
+      </p>
+    </dialog>
+    <div class="toast" id="reader-toast" role="status" aria-live="polite"></div>
+  </body>
+</html>

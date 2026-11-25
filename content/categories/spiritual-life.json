@@ -1,0 +1,35 @@
+{
+  "id": "spiritual-life",
+  "title": "Devotion & celebrations",
+  "eyebrow": "DEVOTION IN PRACTICE",
+  "headline": "Faith, lived day by day.",
+  "caption": "Puja, temple visits, spiritual gatherings, and occasions from Swamiji’s continuing journey.",
+  "shortCaption": "Faith, lived day by day.",
+  "cover": "assets/media/spiritual-life/kanchi-mutt-2024/photo-01.webp",
+  "coverAlt": "Temples & spiritual life — photograph shared by the foundation",
+  "theme": {
+    "key": "temple",
+    "paper": "#f7efde",
+    "wash": "#ddbc7c",
+    "ink": "#483620",
+    "muted": "#5c482c",
+    "accent": "#876023",
+    "surface": "#fffaf0",
+    "line": "#ddc9a3"
+  },
+  "published": true,
+  "eventIds": [
+    "gokulastami-2024",
+    "vaikunta-ekadashi-2025",
+    "tirumala-visit-2025",
+    "chinmaya-mission-2019",
+    "murdi-kumbabhishekam-2004",
+    "nandyal-sai-baba-1989",
+    "kanchi-mutt-2024",
+    "prasanna-venkateswara-2026",
+    "anjaneya-madanapalle-2026",
+    "shiva-temple-madanapalle-2026",
+    "chaturmasya-50-2024",
+    "radha-kalyanam-2024"
+  ]
+}

@@ -1,0 +1,73 @@
+{
+  "id": "tirumala-visit-2025",
+  "category": "spiritual-life",
+  "title": "A visit to Tirumala",
+  "location": "",
+  "date": null,
+  "year": 2025,
+  "description": "Photographs shared by the Foundation",
+  "cover": "assets/media/spiritual-life/tirumala-visit-2025/photo-03.webp",
+  "credit": "Photographs shared by the Foundation",
+  "note": "",
+  "counts": {
+    "photos": 6
+  },
+  "media": [
+    {
+      "id": "spiritual-life-tirumala-visit-2025-photo-01",
+      "type": "photo",
+      "title": "A moment with Swamiji",
+      "caption": "Tirumala Visit · 2025 · Photographs shared by the Foundation.",
+      "alt": "Swamiji in a red shawl holding his staff during the Tirumala visit — Tirumala Visit, 2025",
+      "src": "assets/media/spiritual-life/tirumala-visit-2025/photo-01.webp",
+      "thumb": "assets/media/spiritual-life/tirumala-visit-2025/photo-01.thumb.webp"
+    },
+    {
+      "id": "spiritual-life-tirumala-visit-2025-photo-02",
+      "type": "photo",
+      "title": "A devotional procession",
+      "caption": "Tirumala Visit · 2025 · Photographs shared by the Foundation.",
+      "alt": "Garlanded deities carried in procession during the Tirumala visit — Tirumala Visit, 2025",
+      "src": "assets/media/spiritual-life/tirumala-visit-2025/photo-02.webp",
+      "thumb": "assets/media/spiritual-life/tirumala-visit-2025/photo-02.thumb.webp"
+    },
+    {
+      "id": "spiritual-life-tirumala-visit-2025-photo-03",
+      "type": "photo",
+      "title": "Gathered in devotion",
+      "caption": "Tirumala Visit · 2025 · Photographs shared by the Foundation.",
+      "alt": "Swamiji with priests and devotees during an aarti — Tirumala Visit, 2025",
+      "src": "assets/media/spiritual-life/tirumala-visit-2025/photo-03.webp",
+      "thumb": "assets/media/spiritual-life/tirumala-visit-2025/photo-03.thumb.webp"
+    },
+    {
+      "id": "spiritual-life-tirumala-visit-2025-photo-04",
+      "type": "photo",
+      "title": "In the light of worship",
+      "caption": "Tirumala Visit · 2025 · Photographs shared by the Foundation.",
+      "alt": "Swamiji holding his staff beside an aarti flame — Tirumala Visit, 2025",
+      "src": "assets/media/spiritual-life/tirumala-visit-2025/photo-04.webp",
+      "thumb": "assets/media/spiritual-life/tirumala-visit-2025/photo-04.thumb.webp"
+    },
+    {
+      "id": "spiritual-life-tirumala-visit-2025-photo-05",
+      "type": "photo",
+      "title": "A visit shared together",
+      "caption": "Tirumala Visit · 2025 · Photographs shared by the Foundation.",
+      "alt": "Swamiji with priests and devotees at Tirumala — Tirumala Visit, 2025",
+      "src": "assets/media/spiritual-life/tirumala-visit-2025/photo-05.webp",
+      "thumb": "assets/media/spiritual-life/tirumala-visit-2025/photo-05.thumb.webp"
+    },
+    {
+      "id": "spiritual-life-tirumala-visit-2025-photo-06",
+      "type": "photo",
+      "title": "A quiet moment of prayer",
+      "caption": "Tirumala Visit · 2025 · Photographs shared by the Foundation.",
+      "alt": "Swamiji seated with folded hands in prayer — Tirumala Visit, 2025",
+      "src": "assets/media/spiritual-life/tirumala-visit-2025/photo-06.webp",
+      "thumb": "assets/media/spiritual-life/tirumala-visit-2025/photo-06.thumb.webp"
+    }
+  ],
+  "sourceTitle": "Tirumala Visit",
+  "sourceCollection": "tirumala-visit"
+}

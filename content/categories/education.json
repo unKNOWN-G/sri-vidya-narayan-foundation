@@ -1,0 +1,29 @@
+{
+  "id": "education",
+  "title": "Education",
+  "eyebrow": "ENCOURAGING STUDENTS",
+  "headline": "A child today. A world of possibility.",
+  "caption": "From the school at Gollapalli to college gatherings, learning is encouraged through presence, practical help, and values.",
+  "shortCaption": "A child today. A world of possibility.",
+  "cover": "assets/media/education/madanapalle-school/photo-01.webp",
+  "coverAlt": "Education — photograph shared by the foundation",
+  "theme": {
+    "key": "grove",
+    "paper": "#eff5e8",
+    "wash": "#c1d6ae",
+    "ink": "#283d2c",
+    "muted": "#465a45",
+    "accent": "#3f693a",
+    "surface": "#fafcf5",
+    "line": "#c7d7bd"
+  },
+  "published": true,
+  "eventIds": [
+    "gollapalli",
+    "danavaipeta",
+    "madanapalle-school",
+    "a-kothakota",
+    "yelahanka",
+    "sgdc-college"
+  ]
+}

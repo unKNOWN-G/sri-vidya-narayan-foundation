@@ -1,0 +1,27 @@
+{
+  "id": "foundation",
+  "title": "The foundation & giving",
+  "eyebrow": "INSPIRED BY HIS EXAMPLE",
+  "headline": "Kindness, carried forward together.",
+  "caption": "Discover the foundation, the people brought together by service, and the records behind historical contributions.",
+  "shortCaption": "Kindness, carried forward together.",
+  "cover": "assets/media/foundation/community/foundation-3.webp",
+  "coverAlt": "The foundation & giving — photograph shared by the foundation",
+  "theme": {
+    "key": "foundation",
+    "paper": "#fbf2e2",
+    "wash": "#edc283",
+    "ink": "#47301f",
+    "muted": "#654c35",
+    "accent": "#98521f",
+    "surface": "#fffaf0",
+    "line": "#dfc8a5"
+  },
+  "published": true,
+  "eventIds": [
+    "border-visit",
+    "ayodhya",
+    "school-awards",
+    "community"
+  ]
+}

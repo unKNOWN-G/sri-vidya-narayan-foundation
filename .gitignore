@@ -1,0 +1,26 @@
+# Generated website and local preview state
+/dist/
+/.preview-*.log
+/.preview-*.pid
+/.build.lock
+__pycache__/
+*.py[cod]
+.DS_Store
+Thumbs.db
+
+# Full-resolution originals, source paths and intake are local archival material.
+# Only reviewed, web-ready derivatives belong in assets/ and the public build.
+/media/**
+!/media/README.md
+/incoming/**
+!/incoming/README.md
+/private/
+/work/
+/.env
+/.env.*
+
+# Editors and environments
+.venv/
+venv/
+node_modules/
+.vscode/*.log

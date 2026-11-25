@@ -1,0 +1,105 @@
+{
+  "version": 1,
+  "note": "Editorial crosslinks only. Shared excerpts establish related occasions; they do not change attribution, amount, evidence status, or the record’s original category.",
+  "categoryAliases": {
+    "medical": "healthcare",
+    "temple": "foundation"
+  },
+  "records": {
+    "hebbal": {
+      "eventIds": [
+        "school-awards"
+      ],
+      "evidence": "shared-public-source",
+      "source": "assets/media/foundation/school-awards/hebbal-excerpt.webp",
+      "categoryFallback": "education"
+    },
+    "viman-nagar": {
+      "eventIds": [
+        "school-awards"
+      ],
+      "evidence": "shared-public-source",
+      "source": "assets/media/foundation/school-awards/viman-nagar-excerpt.webp",
+      "categoryFallback": "education"
+    },
+    "yelahanka-swamiji": {
+      "eventIds": [
+        "school-awards"
+      ],
+      "evidence": "shared-public-source",
+      "source": "assets/media/foundation/school-awards/yelahanka-swamiji-excerpt.webp",
+      "categoryFallback": "education"
+    },
+    "yelahanka-trust": {
+      "eventIds": [
+        "school-awards"
+      ],
+      "evidence": "shared-public-source",
+      "source": "assets/media/foundation/school-awards/yelahanka-trust-excerpt.webp",
+      "categoryFallback": "education"
+    },
+    "navajeevan": {
+      "eventIds": [
+        "navajeevan"
+      ],
+      "evidence": "exact-canonical-event-id; owner-reported amount",
+      "categoryFallback": "education"
+    },
+    "tirumala": {
+      "eventIds": [
+        "tirumala"
+      ],
+      "evidence": "shared-public-source",
+      "source": "assets/media/annadanam/tirumala/tirumala-2025-acknowledgement-excerpt.webp",
+      "categoryFallback": "annadanam"
+    },
+    "shirdi-2024-food": {
+      "eventIds": [
+        "shirdi"
+      ],
+      "evidence": "shared-public-source",
+      "source": "assets/media/annadanam/shirdi/annadan-2024-excerpt.webp",
+      "categoryFallback": "annadanam"
+    },
+    "shirdi-oct22": {
+      "eventIds": [
+        "shirdi"
+      ],
+      "evidence": "shared-public-source",
+      "source": "assets/media/annadanam/shirdi/annadan-2026-10-22-excerpt.webp",
+      "categoryFallback": "annadanam"
+    },
+    "shirdi-oct29": {
+      "eventIds": [
+        "shirdi"
+      ],
+      "evidence": "shared-public-source",
+      "source": "assets/media/annadanam/shirdi/annadan-2026-10-29-excerpt.webp",
+      "categoryFallback": "annadanam"
+    },
+    "shirdi-2024-medical": {
+      "eventIds": [
+        "shirdi-medical"
+      ],
+      "evidence": "shared-public-source",
+      "source": "assets/media/healthcare/shirdi-medical/medical-2024-excerpt.webp",
+      "categoryFallback": "healthcare"
+    },
+    "ayodhya-2021": {
+      "eventIds": [
+        "ayodhya"
+      ],
+      "evidence": "shared-public-source",
+      "source": "assets/media/foundation/ayodhya/ayodhya-2021-receipt-excerpt.webp",
+      "categoryFallback": "foundation"
+    },
+    "bodhendra-2025-annadanam": {
+      "eventIds": [
+        "bodhendra"
+      ],
+      "evidence": "shared-public-source",
+      "source": "assets/media/annadanam/bodhendra/annadanam-2025-11-26-excerpt.webp",
+      "categoryFallback": "annadanam"
+    }
+  }
+}
