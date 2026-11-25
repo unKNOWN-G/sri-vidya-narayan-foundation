@@ -74,7 +74,10 @@
         "pageCount": 2,
         "fullFrame": true,
         "privacyNote": "Private details masked in place; full supplied page dimensions retained."
-      }
+      },
+      "displayDonor": "Swamiji · personal contribution",
+      "navigationTitle": "Yelahanka · Swamiji (personal)",
+      "summary": "Swamiji’s personal contribution towards education at Air Force School, Yelahanka."
     },
     {
       "id": "yelahanka-trust",
@@ -97,7 +100,10 @@
         "pageCount": 2,
         "fullFrame": true,
         "privacyNote": "Private details masked in place; full supplied page dimensions retained."
-      }
+      },
+      "displayDonor": "Sri Krishna Sudama Religious & Charitable Trust",
+      "navigationTitle": "Yelahanka · Trust",
+      "summary": "A contribution from Sri Krishna Sudama Religious & Charitable Trust towards education at Air Force School, Yelahanka."
     },
     {
       "id": "navajeevan",

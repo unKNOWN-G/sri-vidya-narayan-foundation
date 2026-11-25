@@ -2186,3 +2186,6 @@
   .portrait-contribution { left: 10px; bottom: 69px; padding: 7px 10px; font-size: 18px; }
   .portrait-contribution small { font-size: 6px; }
 }
+
+.school-attachment-list .receipt-contribution { display: block; font: 21px/1.3 var(--serif); margin-bottom: 3px; color: var(--accent); }
+.school-attachment-list a > span { display: block; line-height: 1.5; }

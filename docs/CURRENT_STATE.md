@@ -34,3 +34,5 @@ Run source validation, the independent route check, the tests and the build. Git
 - The user deferred the website critique: do not begin it until they explicitly ask again.
 
 - Occasion, school and contribution selectors are persistent numbered strips at the bottom, with horizontal scrolling and an active label. No chooser popup. Scrolling this strip must not advance the main story. Preserve its position when changing stories, and keep the active choice visible. Books retain the visible cover strip. Message cards also use a numbered bottom strip instead of an occasion dropdown; the original folded-card reader is preserved. Reflection search remains a separate search function.
+
+- Yelahanka shows ₹4,00,000 at school level. Its receipt links explicitly distinguish ₹2,00,000 personal support from Swamiji and ₹2,00,000 from Sri Krishna Sudama Religious & Charitable Trust; preserve the original printed donor names and the two independent documents. Hebbal uses the owner-supplied entrance-gate photograph in `assets/media/education/hebbal/campus-user-reference.jpg`.

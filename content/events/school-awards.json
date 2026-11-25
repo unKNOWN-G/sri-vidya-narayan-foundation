@@ -6,8 +6,8 @@
   "date": null,
   "year": null,
   "description": "Educational support recorded by Air Force Schools at Hebbal, Viman Nagar and Yelahanka. Original school letters distinguish corpus gifts, annual interest and separate donors.",
-  "cover": "assets/media/education/hebbal/campus.png",
-  "credit": "School acknowledgements shared by the foundation. Campus photograph: Air Force School Hebbal nursery and primary wing, via Yellow Slate.",
+  "cover": "assets/media/education/hebbal/campus-user-reference.jpg",
+  "credit": "School acknowledgements shared by the foundation. Air Force School Hebbal photograph from the supplied reference.",
   "note": "",
   "counts": {
     "documents": 5
@@ -61,7 +61,7 @@
     {
       "id": "foundation-school-awards-yelahanka-swamiji-excerpt",
       "type": "document",
-      "title": "Air Force School, Yelahanka · letter and receipt",
+      "title": "Air Force School, Yelahanka · Swamiji’s personal contribution",
       "caption": "Full supplied pages. Private details are masked in place; the document is not cropped.",
       "alt": "Full supplied document page, with its original frame and proportions retained",
       "src": "assets/documents/contributions/yelahanka-swamiji-full-page.pdf",
@@ -77,7 +77,7 @@
     {
       "id": "foundation-school-awards-yelahanka-trust-excerpt",
       "type": "document",
-      "title": "Air Force School, Yelahanka · letter and receipt",
+      "title": "Air Force School, Yelahanka · Trust contribution",
       "caption": "Full supplied pages. Private details are masked in place; the document is not cropped.",
       "alt": "Full supplied document page, with its original frame and proportions retained",
       "src": "assets/documents/contributions/yelahanka-trust-full-page.pdf",
@@ -98,6 +98,8 @@
     "yelahanka-swamiji",
     "yelahanka-trust"
   ],
-  "coverAlt": "Sri Swamiji",
-  "coverContext": "Portrait of Sri Swamiji; supporting acknowledgements are available within this service story."
+  "coverAlt": "Entrance gate of Air Force School, Hebbal",
+  "coverContext": "Portrait of Sri Swamiji; supporting acknowledgements are available within this service story.",
+  "photoSource": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSfnTXHsnSW2nndLmJkHLYsun7XfQRKdaUh-vfboSRuAxTjD-iCY3n3soo&s=10",
+  "photoCredit": "School photograph · supplied reference"
 }

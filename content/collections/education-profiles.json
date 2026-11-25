@@ -74,9 +74,10 @@
     ],
     "amountLabel": "School-reported corpus",
     "description": "A corpus supporting education at Air Force School, Hebbal, acknowledged in the school’s letter of 26 July 2024.",
-    "cover": "assets/media/education/hebbal/campus.png",
-    "photoSource": "https://yellowslate.com/bengaluru/air-force-school-hebbal-kempapura-reviews",
-    "photoCredit": "Campus photograph · Yellow Slate"
+    "cover": "assets/media/education/hebbal/campus-user-reference.jpg",
+    "photoSource": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSfnTXHsnSW2nndLmJkHLYsun7XfQRKdaUh-vfboSRuAxTjD-iCY3n3soo&s=10",
+    "photoCredit": "School photograph · supplied reference",
+    "coverAlt": "Entrance gate of Air Force School, Hebbal, with the school name visible"
   },
   {
     "id": "viman-nagar",
