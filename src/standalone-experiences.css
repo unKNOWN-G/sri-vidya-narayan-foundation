@@ -539,3 +539,42 @@ img {
     display: none;
   }
 }
+.reader-home {
+  font: 11px var(--sans);
+  color: #d9c496;
+  white-space: nowrap;
+  min-height: 36px;
+  display: flex;
+  align-items: center;
+}
+.experience-header .experience-home.always-home {
+  display: flex !important;
+}
+@media (max-width: 700px) {
+  .reader-header {
+    gap: 10px;
+  }
+  .reader-brand {
+    font-size: 16px;
+  }
+  .reader-brand small {
+    font-size: 6px;
+    letter-spacing: 2px;
+  }
+  .back-books {
+    font-size: 9px;
+    gap: 5px;
+  }
+  .reader-home {
+    font-size: 9px;
+  }
+  .experience-header .experience-back {
+    font-size: 9px;
+  }
+  .experience-header .always-home {
+    font-size: 9px;
+  }
+  .experience-header {
+    gap: 10px;
+  }
+}

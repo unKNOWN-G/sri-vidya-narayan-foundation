@@ -44,6 +44,21 @@ class ContentRoutesTest(unittest.TestCase):
         self.assertEqual(report["errors"], [])
         self.assertEqual(report["givingRecordRelatedEvents"]["support"], ["school"])
 
+    def test_service_story_cannot_mix_education_with_annadanam(self):
+        event_path = self.root / "content/events/school.json"
+        event = json.loads(event_path.read_text())
+        event.update(presentation="service-story", supportRecordIds=["support"])
+        self.write("content/events/school.json", event)
+        self.write("content/collections/contributions.json", {"records": [{"id": "support", "category": "annadanam", "src": "assets/photo.webp", "evidenceStatus": "documented"}]})
+        self.assertIn("belongs to a different cause", self.errors())
+
+    def test_service_story_accepts_its_education_support(self):
+        event = json.loads((self.root / "content/events/school.json").read_text())
+        event.update(presentation="service-story", supportRecordIds=["support"])
+        self.write("content/events/school.json", event)
+        self.write("content/collections/contributions.json", {"records": [{"id": "support", "category": "education", "src": "assets/photo.webp", "evidenceStatus": "documented"}]})
+        self.assertEqual(self.errors(), "")
+
     def test_orphaned_occasion_is_detected(self):
         self.write("content/categories/education.json", {"id": "education", "cover": "assets/photo.webp", "eventIds": []})
         self.assertIn("not discoverable", self.errors())

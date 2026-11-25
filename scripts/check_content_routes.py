@@ -313,6 +313,19 @@ def check(root=ROOT, require_experiences=False):
         if not related:
             warnings.append(f"Giving record {identifier}: no related occasion found by explicit ID, exact ID, or shared source")
 
+    # A service story must not mix education, food, medical, and temple records.
+    support_by_id = {str(r.get("id")): r for r in contribution_data.get("records", [])}
+    cause_aliases = {"medical": "healthcare", "temple": "foundation"}
+    for identifier, event in public_events.items():
+        if event.get("presentation") != "service-story":
+            continue
+        for record_id in event.get("supportRecordIds", []):
+            record = support_by_id.get(str(record_id))
+            if not record:
+                fail(f"Service story {identifier}: missing support record {record_id}")
+            elif cause_aliases.get(record.get("category"), record.get("category")) != event.get("category"):
+                fail(f"Service story {identifier}: support record {record_id} belongs to a different cause")
+
     reached = {home}
     queue = deque([home])
     while queue:

@@ -1810,3 +1810,156 @@
     flex-basis: 74px;
   }
 }
+/* Persistent, plainly labelled exits on every inner screen. */
+.wayfinding {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex-shrink: 0;
+}
+.wayfinding button:not(.mobile-menu),
+.start-link {
+  font-size: 10px;
+  color: var(--accent);
+  border: 0;
+  background: none;
+  padding: 8px 0;
+  min-height: 36px;
+}
+.wayfinding [hidden] {
+  display: none !important;
+}
+.service-causes {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  font-size: 9px;
+  flex: 0 0 31px;
+  color: var(--muted);
+}
+.service-causes [aria-current] {
+  color: var(--accent);
+  border-bottom: 1px solid var(--accent);
+}
+.evidence-links {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 10px;
+}
+.cinema-stage[aria-busy="true"] {
+  cursor: progress;
+}
+@media (max-width: 1050px) and (min-width: 751px) {
+  .masthead nav {
+    gap: 15px;
+  }
+  .masthead nav a {
+    font-size: 9px;
+  }
+  .wayfinding {
+    gap: 11px;
+  }
+  .brand {
+    font-size: 21px;
+  }
+}
+@media (max-width: 750px) {
+  .wayfinding {
+    gap: 13px;
+  }
+  .wayfinding button:not(.mobile-menu),
+  .start-link {
+    font-size: 9px;
+  }
+  .wayfinding .mobile-menu {
+    font-size: 9px;
+    padding: 7px 0;
+    gap: 8px;
+  }
+  .service-causes {
+    font-size: 8px;
+    gap: 20px;
+    white-space: nowrap;
+    overflow-x: auto;
+    justify-content: flex-start;
+  }
+}
+@media (max-width: 380px) {
+  .wayfinding {
+    gap: 9px;
+  }
+  .wayfinding button:not(.mobile-menu),
+  .start-link,
+  .wayfinding .mobile-menu {
+    font-size: 8px;
+  }
+  .brand {
+    font-size: 17px;
+  }
+}
+/* Enlarging a photo stays within the occasion and has a clear way back. */
+.full-moment {
+  width: 96vw;
+  height: 94svh;
+  max-width: 1400px;
+  max-height: 94svh;
+  padding: 15px 20px 20px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--paper);
+  color: var(--ink);
+  overflow: hidden;
+}
+.full-moment::backdrop {
+  background: #14221de6;
+  backdrop-filter: blur(10px);
+}
+.full-moment > div {
+  height: 42px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+.full-moment button {
+  border: 0;
+  background: none;
+  color: var(--accent);
+  font-size: 12px;
+  padding: 8px 0;
+  cursor: pointer;
+}
+.full-moment button:last-child {
+  font-size: 27px;
+  min-width: 40px;
+}
+.full-moment img {
+  width: 100%;
+  height: calc(100% - 54px);
+  object-fit: contain;
+}
+@media (max-width: 750px) {
+  .full-moment {
+    padding: 10px 12px 15px;
+  }
+  .full-moment button {
+    font-size: 11px;
+  }
+}
+@media (max-width: 750px) {
+  .wayfinding #back-view,
+  .wayfinding .start-link {
+    font-size: 10px;
+    min-height: 40px;
+    display: inline-flex;
+    align-items: center;
+  }
+  .wayfinding #back-view {
+    min-width: 41px;
+  }
+  .wayfinding .start-link {
+    min-width: 31px;
+  }
+}

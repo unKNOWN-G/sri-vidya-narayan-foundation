@@ -9,7 +9,9 @@
     cleanup = () => {},
     activeTheme = "",
     washSide = 0,
-    readerSize = 17;
+    readerSize = 17,
+    activeMedia = null,
+    mediaRequest = 0;
   const defaultState = {
     page: 0,
     tab: "moments",
@@ -343,10 +345,35 @@
   function sceneControls(previous, next, label, button = "Choose a moment") {
     return `<div class="scene-controls"><button class="scene-choice" data-action="open-index">${esc(button)} <span aria-hidden="true">↗</span></button><div class="sequence"><a href="${href(previous)}" aria-label="Previous story">←</a><span>${esc(label)}</span><a href="${href(next)}" aria-label="Next story">→</a></div><span class="gesture-note">Swipe or use ← →</span></div>`;
   }
+  function goTo(value) {
+    const hash = value.startsWith("#") ? value : "#" + value;
+    if (activeMedia && hash.startsWith("#/event/" + activeMedia.id + "/")) {
+      history.replaceState(history.state, "", hash);
+      render();
+    } else location.hash = hash;
+  }
+  function parentRoute() {
+    const parts = routeParts();
+    if (parts[0] === "event") {
+      const e = getEvent(parts[1]);
+      return e ? "#/category/" + e.category + "/moments/" + e.id : "#/explore";
+    }
+    if (parts[0] === "read") return "#/library/" + parts[1];
+    if (parts[0] === "library") return "#/learn";
+    if (parts[0] === "category") return "#/explore/" + parts[1];
+    if (
+      parts[0] === "record" ||
+      (parts[0] === "foundation" && parts[1] === "support")
+    )
+      return app.firstElementChild?.dataset.back || "#/foundation";
+    if (parts[0] === "foundation" && parts[1]) return "#/foundation";
+    return "#/";
+  }
   function bindSequence(previous, next, back) {
     let startX = 0,
       startY = 0,
       started = false;
+    const resolve = (value) => (typeof value === "function" ? value() : value);
     const ignored = (e) =>
       e.target.closest?.(
         "input,select,textarea,video,audio,iframe,dialog,[contenteditable=true]",
@@ -355,11 +382,11 @@
       if (ignored(e) || e.altKey || e.ctrlKey || e.metaKey) return;
       if (e.key === "ArrowRight") {
         e.preventDefault();
-        location.hash = next;
+        goTo(resolve(next));
       }
       if (e.key === "ArrowLeft") {
         e.preventDefault();
-        location.hash = previous;
+        goTo(resolve(previous));
       }
       if (e.key === "Escape" && back && !document.querySelector("dialog[open]"))
         location.hash = back;
@@ -376,8 +403,8 @@
       const dx = e.clientX - startX,
         dy = e.clientY - startY;
       if (Math.abs(dx) > 55 && Math.abs(dx) > Math.abs(dy) * 1.3) {
-        swipeDeadline = performance.now()+350;
-        location.hash = dx < 0 ? next : previous;
+        swipeDeadline = performance.now() + 350;
+        goTo(resolve(dx < 0 ? next : previous));
       }
     };
     document.addEventListener("keydown", key);
@@ -486,11 +513,13 @@
     theme(c);
     app.innerHTML = `<section class="view story-view">${heading("Inspired by his example.", "The foundation")}<div class="story-scene"><div class="scene-backdrop" style="background-image:url('${href(c.cover)}')"></div><div class="story-copy"><p class="eyebrow">VIDYA · VAIDYA · VASATHI</p><h2>Kindness.<br><em>Carried forward.</em></h2><p class="story-description">${esc(site.foundation.description)}</p><div class="story-actions"><a class="button" href="#/foundation/connect">Be part of the work ↗</a><a class="text-link" href="#/category/foundation/moments">Moments of service ↗</a></div><a class="quiet-link" href="#/foundation/support">A clear account of historical support ↗</a></div><div class="foundation-image">${photo(c.cover, "Service inspired by Swamiji’s example")}</div></div>${connect ? `<dialog class="scene-index contact-dialog" id="contact-dialog" open><div class="index-head"><p class="eyebrow">A CONVERSATION IS A BEGINNING</p><a href="#/foundation" aria-label="Close contact details">×</a></div><h2>Let’s serve together.</h2><p>For current needs, volunteering and contribution guidance, speak with the foundation team.</p><a class="contact-link" href="mailto:${esc(site.foundation.email)}">${esc(site.foundation.email)}</a><a class="contact-link" href="tel:${esc(site.foundation.phone.replace(/[^+\d]/g, ""))}">${esc(site.foundation.phone)}</a><p>${esc(site.foundation.office)}</p></dialog>` : ""}<div class="foundation-bottom"><a href="#/category/education">Encourage learning ↗</a><a href="#/category/healthcare">Care for wellbeing ↗</a><a href="#/category/annadanam">Share nourishment ↗</a></div></section>`;
   }
-  async function supportView() {
+  async function supportView(category) {
     const token = routeToken;
     const data = await collection("contributions");
     if (token !== routeToken) return;
-    const first = data.records?.[0];
+    const first = data.records?.find(
+      (r) => !category || r.category === category,
+    );
     if (first) await recordView(first.id);
   }
   function mediaTabs(event, selected) {
@@ -530,13 +559,135 @@
             : type === "document"
               ? `<a class="document-preview" href="${href(item.src)}" target="_blank" rel="noopener" aria-label="Open full document">${item.poster ? photo(item.poster, item.title || event.title) : '<span class="document-label">Read the original document</span>'}<span class="button">Open full document ↗</span></a>`
               : `<div class="listen-stage">${photo(item.poster || event.cover, event.title)}<a class="button" href="${href(item.url || item.src)}" target="_blank" rel="noopener">Watch this recording on YouTube ↗</a></div>`;
-    app.innerHTML = `<section class="view cinema-view"><div class="cinema-heading"><a class="back-story" href="${href(parent)}">← ${esc(event.backLabel || getCategory(event.category)?.title || "Back to the story")}</a><p>${esc([event.location, event.date ? dateLabel(event.date) : event.year].filter(Boolean).join(" · "))}</p><h1>${esc(event.title)}</h1></div>${mediaTabs(event, type)}<div class="cinema-body"><div class="cinema-stage"><div class="cinema-backdrop" style="background-image:url('${href(item?.poster || event.cover)}')"></div>${frame}<div class="cinema-arrows"><a href="#${prev}" aria-label="Previous moment" ${index === 0 ? 'aria-disabled="true" tabindex="-1"' : ""}>←</a><a href="#${next}" aria-label="Next moment" ${index === media.length - 1 ? 'aria-disabled="true" tabindex="-1"' : ""}>→</a></div></div><aside class="cinema-caption"><span class="eyebrow">${type === "photo" ? "A MOMENT TO REMEMBER" : type === "audio" ? "VOICES OF THE OCCASION" : "FROM THE OCCASION"} · ${index + 1} / ${media.length}</span><h2>${esc(item?.title || event.title)}</h2><p>${esc(short(item?.caption || event.description, 320))}</p><details><summary>About this occasion</summary><p>${esc(event.description)}</p><p>${esc(event.credit)} ${esc(event.note)}</p></details><a class="text-link" href="${href(item?.src || item?.url || parent)}" target="_blank" rel="noopener">${type === "photo" ? "View full photograph" : type === "document" ? "Read original document" : "Open recording"} ↗</a>${after && after.id !== id ? `<a class="onward-story" href="#/category/${esc(event.category)}/moments/${esc(after.id)}"><small>ANOTHER MOMENT</small>${esc(after.title)} <span>→</span></a>` : `<a class="onward-story" href="#/learn"><small>STAY A LITTLE LONGER</small>Learn Swamiji’s teachings →</a>`}</aside></div><div class="moment-ribbon" aria-label="Choose a moment">${media.map((m, i) => `<a href="#/event/${esc(id)}/${type}/${i}" ${i === index ? 'aria-current="true"' : ""} aria-label="${esc(m.title || "Moment " + (i + 1))}">${m.type === "photo" ? photo(m.thumb || m.src, "") : m.poster ? photo(m.poster, "") : `<span>${type === "audio" ? "Listen" : type === "video" ? "Film" : "Read"} ${i + 1}</span>`}</a>`).join("")}</div></section>`;
-    bindSequence(prev, next, parent);
+    const caption = `<span class="eyebrow">${type === "photo" ? "A MOMENT TO REMEMBER" : type === "audio" ? "VOICES OF THE OCCASION" : "FROM THE OCCASION"} · ${index + 1} / ${media.length}</span><h2>${esc(item?.title || event.title)}</h2><p>${esc(short(item?.caption || event.description, 320))}</p><details><summary>About this occasion</summary><p>${esc(event.description)}</p><p>${esc(event.credit)} ${esc(event.note)}</p></details><a class="text-link" href="${href(item?.src || item?.url || parent)}" target="_blank" rel="noopener">${type === "photo" ? "View full photograph" : type === "document" ? "Read original document" : "Open recording"} ↗</a>${after && after.id !== id ? `<a class="onward-story" href="#/category/${esc(event.category)}/moments/${esc(after.id)}"><small>ANOTHER MOMENT</small>${esc(after.title)} <span>→</span></a>` : `<a class="onward-story" href="#/learn"><small>STAY A LITTLE LONGER</small>Learn Swamiji’s teachings →</a>`}`;
+    const ribbon = media
+      .map(
+        (m, i) =>
+          `<a href="#/event/${esc(id)}/${type}/${i}" ${i === index ? 'aria-current="true"' : ""} aria-label="${esc(m.title || "Moment " + (i + 1))}">${m.type === "photo" ? photo(m.thumb || m.src, "") : m.poster ? photo(m.poster, "") : `<span>${type === "audio" ? "Listen" : type === "video" ? "Film" : "Read"} ${i + 1}</span>`}</a>`,
+      )
+      .join("");
+    const shell = app.querySelector(".cinema-view");
+    const updating = activeMedia?.id === id && shell?.dataset.event === id;
+    const oldType = activeMedia?.type;
+    activeMedia = { id, type, index, previous: prev, next, parent };
+    if (updating) {
+      const stage = shell.querySelector(".cinema-stage");
+      stage.removeAttribute("aria-busy");
+      const current = Array.from(stage.children).find(
+        (el) => !el.matches(".cinema-backdrop,.cinema-arrows"),
+      );
+      const request = ++mediaRequest;
+      if (
+        type === "photo" &&
+        oldType === "photo" &&
+        current?.matches(".cinema-photo")
+      ) {
+        const img = current.querySelector("img");
+        current.href = item.src;
+        img.alt = item.alt || item.caption || event.title;
+        if (img.getAttribute("src") !== item.src) {
+          stage.setAttribute("aria-busy", "true");
+          const nextImage = new Image();
+          nextImage.onload = () => {
+            if (
+              request !== mediaRequest ||
+              activeMedia?.id !== id ||
+              activeMedia.index !== index
+            )
+              return;
+            img.src = item.src;
+            stage.removeAttribute("aria-busy");
+            if (!reduced.matches)
+              img.animate([{ opacity: 0.55 }, { opacity: 1 }], {
+                duration: 220,
+              });
+          };
+          nextImage.onerror = () => {
+            if (request === mediaRequest) {
+              stage.removeAttribute("aria-busy");
+              announce.textContent =
+                "This photograph could not be loaded. Try the next moment.";
+            }
+          };
+          nextImage.src = item.src;
+        }
+      } else if (
+        type === "video" &&
+        oldType === "video" &&
+        current?.matches("video")
+      ) {
+        if (current.getAttribute("src") !== item.src) {
+          current.pause();
+          current.src = item.src;
+          if (item.poster) current.poster = item.poster;
+          else current.removeAttribute("poster");
+          current.load();
+        }
+      } else if (
+        type === "audio" &&
+        oldType === "audio" &&
+        current?.matches(".listen-stage")
+      ) {
+        const player = current.querySelector("audio");
+        if (player?.getAttribute("src") !== item.src) {
+          player.pause();
+          player.src = item.src;
+          player.load();
+        }
+        const image = current.querySelector("img");
+        if (image) image.src = item.poster || event.cover;
+      } else {
+        current?.querySelectorAll("audio,video").forEach((x) => x.pause());
+        if (current?.matches("video,audio")) current.pause();
+        if (current) current.outerHTML = frame;
+      }
+      shell.querySelector(".cinema-caption").innerHTML = caption;
+      if (oldType !== type)
+        shell.querySelector(".moment-ribbon").innerHTML = ribbon;
+      shell
+        .querySelectorAll('[data-action="media-type"]')
+        .forEach((b) =>
+          b.setAttribute("aria-pressed", String(b.dataset.type === type)),
+        );
+      shell.querySelectorAll(".moment-ribbon a").forEach((a, i) => {
+        if (i === index) a.setAttribute("aria-current", "true");
+        else a.removeAttribute("aria-current");
+      });
+      const arrows = shell.querySelectorAll(".cinema-arrows a");
+      [prev, next].forEach((url, i) => {
+        const a = arrows[i];
+        a.href = "#" + url;
+        const disabled = i === 0 ? index === 0 : index === media.length - 1;
+        if (disabled) {
+          a.setAttribute("aria-disabled", "true");
+          a.tabIndex = -1;
+        } else {
+          a.removeAttribute("aria-disabled");
+          a.removeAttribute("tabindex");
+        }
+      });
+    } else {
+      ++mediaRequest;
+      app.innerHTML = `<section class="view cinema-view" data-event="${esc(id)}" data-gallery-session="${performance.now()}"><div class="cinema-heading"><a class="back-story" href="${href(parent)}">← ${esc(event.backLabel || getCategory(event.category)?.title || "Back to the story")}</a><p>${esc([event.location, event.date ? dateLabel(event.date) : event.year].filter(Boolean).join(" · "))}</p><h1>${esc(event.title)}</h1></div>${mediaTabs(event, type)}<div class="cinema-body"><div class="cinema-stage"><div class="cinema-backdrop" style="background-image:url('${href(item?.poster || event.cover)}')"></div>${frame}<div class="cinema-arrows"><a href="#${prev}" aria-label="Previous moment" ${index === 0 ? 'aria-disabled="true" tabindex="-1"' : ""}>←</a><a href="#${next}" aria-label="Next moment" ${index === media.length - 1 ? 'aria-disabled="true" tabindex="-1"' : ""}>→</a></div></div><aside class="cinema-caption">${caption}</aside></div><div class="moment-ribbon" aria-label="Choose a moment">${ribbon}</div><dialog class="full-moment" id="full-moment" aria-label="Full photograph"><div><button type="button" data-action="close-full-moment">← Back to photographs</button><button type="button" data-action="close-full-moment" aria-label="Close full photograph">×</button></div><img alt=""></dialog></section>`;
+      bindSequence(
+        () => activeMedia.previous,
+        () => activeMedia.next,
+        parent,
+      );
+    }
     app.querySelector(".moment-ribbon [aria-current]")?.scrollIntoView({
       block: "nearest",
       inline: "center",
       behavior: reduced.matches ? "instant" : "smooth",
     });
+    [index - 1, index + 1]
+      .filter((i) => i >= 0 && i < media.length)
+      .forEach((i) => {
+        if (media[i].type === "photo") {
+          const adjacent = new Image();
+          adjacent.src = media[i].src;
+        }
+      });
   }
 
   const libNames = {
@@ -730,31 +881,35 @@
       collection("supportLinks"),
     ]);
     if (token !== routeToken) return;
-    const records = data.records || [],
-      index = records.findIndex((r) => String(r.id) === String(id)),
-      record = records[index];
+    const allRecords = data.records || [];
+    const record = allRecords.find((r) => String(r.id) === String(id));
+    const records = allRecords.filter((r) => r.category === record?.category),
+      index = records.indexOf(record);
     if (!record) throw Error("This supporting note is not available.");
     const event = getEvent(links.records?.[id]?.eventIds?.[0]),
-      c = getCategory(event?.category || "foundation");
+      c =
+        getCategory(
+          links.categoryAliases?.[record.category] || record.category,
+        ) || getCategory("foundation");
     theme(c);
     const previous =
         "#/record/" + records[(index - 1 + records.length) % records.length].id,
       next = "#/record/" + records[(index + 1) % records.length].id;
-    app.innerHTML = `<section class="view story-view">${heading("Service, and the support behind it.", '<a href="#/foundation">The foundation</a>')}<div class="story-scene"><div class="scene-backdrop" style="background-image:url('${href(event?.cover || c.cover)}')"></div><div class="story-copy"><p class="eyebrow">${esc(record.evidenceLabel || record.evidenceStatus)}</p><h2>${esc(record.recipient)}</h2><p class="story-description">${esc(record.attributionNote || "Historical support recorded in the supplied acknowledgement.")}</p><span class="record-context">${record.approximate ? "Approximately " : ""}${formatMoney(record.amount)}${record.donor ? " · Named donor: " + esc(record.donor) : ""}</span>${event && event.presentation !== "service-story" ? `<a class="button" href="#/event/${esc(event.id)}">Meet the story behind the support ↗</a>` : `<a class="button" href="#/foundation/connect">Carry this care forward ↗</a>`}<details class="evidence-note"><summary>Read the supporting acknowledgement</summary><p>${esc(record.evidenceLabel)}</p>${record.src ? `<a class="text-link" href="${href(record.src)}" target="_blank" rel="noopener">View the published original ↗</a>` : ""}<p>Historical support retains the donor or trust named in the source. Corpus principal and annual interest are distinct records.</p>${
-      event?.media?.length
+    app.innerHTML = `<section class="view story-view" data-back="#/category/${esc(c.id)}">${heading(c.title + " · support", '<a href="#/category/' + c.id + '">' + esc(c.title) + "</a>")}<div class="story-scene"><div class="scene-backdrop" style="background-image:url('${href(event?.cover || c.cover)}')"></div><div class="story-copy"><p class="eyebrow">${esc(record.evidenceLabel || record.evidenceStatus)}</p><h2>${esc(record.recipient)}</h2><p class="story-description">${esc(record.attributionNote || "Historical support recorded in the supplied acknowledgement.")}</p><span class="record-context">${record.approximate ? "Approximately " : ""}${formatMoney(record.amount)}${record.donor ? " · Named donor: " + esc(record.donor) : ""}</span>${event && event.presentation !== "service-story" ? `<a class="button" href="#/event/${esc(event.id)}">Meet the story behind the support ↗</a>` : `<a class="button" href="#/foundation/connect">Carry this care forward ↗</a>`}<details class="evidence-note"><summary>Read the supporting acknowledgement</summary><p>${esc(record.evidenceLabel)}</p>${record.src ? `<a class="text-link" href="${href(record.src)}" target="_blank" rel="noopener">View the published original ↗</a>` : ""}<p>Historical support retains the donor or trust named in the source. Corpus principal and annual interest are distinct records.</p>${
+      record.src && event?.media?.length
         ? `<div class="evidence-links">${event.media
-            .filter((m) => m.src !== record.src)
+            .filter((m) => m.src !== record.src && m.id.includes(record.id))
             .map(
               (m) =>
                 `<a href="${href(m.src)}" target="_blank" rel="noopener">${esc(m.title || "Related supporting document")} ↗</a>`,
             )
             .join("")}</div>`
         : ""
-    }</details></div><div class="foundation-image">${photo(event?.cover || c.cover, event?.title || c.title)}</div></div>${sceneControls(previous, next, `${index + 1} / ${records.length}`, "Other service stories")}${choiceDialog(
-      "The care behind the giving.",
+    }</details></div><div class="foundation-image">${photo(event?.cover || c.cover, event?.title || c.title)}</div></div>${sceneControls(previous, next, `${index + 1} / ${records.length}`, "More " + c.title.toLowerCase() + " support")}${choiceDialog(
+      c.title + " support",
       records.map((r) => ({ title: r.recipient, href: "#/record/" + r.id })),
-    )}</section>`;
-    bindSequence(previous, next, "#/foundation");
+    )}<nav class="service-causes" aria-label="Choose a type of support">${[...new Set(allRecords.map((r) => r.category))].map((kind) => `<a href="#/foundation/support/${kind}" ${kind === record.category ? 'aria-current="page"' : ""}>${esc({ education: "Education", annadanam: "Annadanam", medical: "Medical care", temple: "Temple support" }[kind] || kind)}</a>`).join("")}</nav></section>`;
+    bindSequence(previous, next, "#/category/" + c.id);
   }
   function about() {
     theme(getCategory("his-holiness"));
@@ -763,6 +918,23 @@
   async function render() {
     if (!site) return;
     const token = ++routeToken;
+    const nextParts = routeParts();
+    document.querySelector("#back-view").hidden = !nextParts.length;
+    document.querySelector(".start-link").hidden = !nextParts.length;
+    if (
+      nextParts[0] === "event" &&
+      activeMedia?.id === nextParts[1] &&
+      app.querySelector(".cinema-view")?.dataset.event === nextParts[1]
+    ) {
+      try {
+        eventView(nextParts[1], nextParts[2], nextParts[3]);
+      } catch (error) {
+        showError(error);
+      }
+      return;
+    }
+    activeMedia = null;
+    ++mediaRequest;
     cleanup();
     cleanup = () => {};
     app.querySelectorAll("video,audio").forEach((e) => e.pause());
@@ -788,7 +960,7 @@
         else eventView(parts[1], parts[2], parts[3]);
       } else if (parts[0] === "learn") teachingGateway();
       else if (parts[0] === "foundation") {
-        if (parts[1] === "support") await supportView();
+        if (parts[1] === "support") await supportView(parts[2]);
         else foundationView(parts[1] === "connect");
       } else if (parts[0] === "library") await library(parts[1], parts[2]);
       else if (parts[0] === "read") await reader(parts[1], parts[2]);
@@ -820,11 +992,50 @@
       if (token === routeToken) showError(error);
     }
   }
-  app.addEventListener("click", e=>{if(performance.now()<swipeDeadline){swipeDeadline=0;e.preventDefault();e.stopImmediatePropagation();}},true);
+  app.addEventListener(
+    "click",
+    (e) => {
+      if (performance.now() < swipeDeadline) {
+        swipeDeadline = 0;
+        e.preventDefault();
+        e.stopImmediatePropagation();
+      }
+    },
+    true,
+  );
   app.addEventListener("click", (e) => {
+    const zoom = e.target.closest(".cinema-photo,.cinema-caption .text-link");
+    if (zoom && activeMedia?.type === "photo" && !e.ctrlKey && !e.metaKey) {
+      e.preventDefault();
+      const item = getEvent(activeMedia.id).media.filter(
+        (m) => m.type === "photo",
+      )[activeMedia.index];
+      const dialog = app.querySelector("#full-moment");
+      if (dialog && item) {
+        const img = dialog.querySelector("img");
+        img.src = item.src;
+        img.alt = item.alt || item.title || "Full photograph";
+        dialog.showModal();
+      }
+      return;
+    }
+    const mediaLink = e.target.closest('.cinema-view a[href^="#/event/"]');
+    if (
+      mediaLink &&
+      activeMedia &&
+      mediaLink
+        .getAttribute("href")
+        .startsWith("#/event/" + activeMedia.id + "/")
+    ) {
+      e.preventDefault();
+      goTo(mediaLink.getAttribute("href"));
+      return;
+    }
     const b = e.target.closest("[data-action]");
     if (!b) return;
     const action = b.dataset.action;
+    if (action === "close-full-moment")
+      app.querySelector("#full-moment")?.close();
     if (action === "clear-reflection-search") {
       state.search = "";
       state.month = "";
@@ -847,9 +1058,9 @@
       location.hash = "/library/" + b.dataset.tab;
     }
     if (action === "media-type")
-      location.hash = `/event/${b.dataset.event}/${b.dataset.type}/0`;
+      goTo(`/event/${b.dataset.event}/${b.dataset.type}/0`);
     if (action === "media-index")
-      location.hash = `/event/${b.dataset.event}/${b.dataset.type}/${b.dataset.index}`;
+      goTo(`/event/${b.dataset.event}/${b.dataset.type}/${b.dataset.index}`);
     if (action === "reader-size") {
       readerSize = Math.max(
         15,
@@ -857,6 +1068,13 @@
       );
       document.body.style.setProperty("--reader-size", readerSize + "px");
     }
+  });
+  document.querySelector("#back-view").addEventListener("click", () => {
+    location.hash = parentRoute();
+  });
+  document.querySelector(".skip").addEventListener("click", (e) => {
+    e.preventDefault();
+    app.focus({ preventScroll: true });
   });
   document.querySelector(".mobile-menu").addEventListener("click", () => {
     const nav = document.querySelector(".masthead nav"),
