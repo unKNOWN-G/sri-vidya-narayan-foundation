@@ -59,6 +59,19 @@ def build(destination=None, skip_validation=False):
             value = record.get("order", 1000000)
             return (explicit_order.get(record.get("id"), len(explicit_order)), value if isinstance(value, (int, float)) else 1000000, str(record.get("id", "")))
         manifest[name] = sorted(records, key=order)
+    total_categories = [c for c in manifest["categories"] if c.get("homeContributionCategory")]
+    if total_categories:
+        ledger = json.loads((output / manifest["collections"]["contributions"]).read_text(encoding="utf-8"))
+        records = ledger.get("records", [])
+        if len({r["id"] for r in records}) != len(records):
+            raise ValueError("Duplicate contribution IDs would inflate homepage totals.")
+        for category in total_categories:
+            selected = [r for r in records if r.get("category") == category["homeContributionCategory"]]
+            if selected:
+                category["homeContributionTotal"] = {
+                    "amount": sum(r["amount"] for r in selected),
+                    "approximate": any(r.get("approximate") or r.get("reported") for r in selected),
+                }
     manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     # Separate readers use synchronous globals, generated from canonical JSON.
     # Source JS stubs document this boundary and never duplicate editorial data.

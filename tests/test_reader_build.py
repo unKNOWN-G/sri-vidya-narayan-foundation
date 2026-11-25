@@ -47,6 +47,20 @@ class ReaderBuildTest(unittest.TestCase):
         text = (output / name).read_text()
         return json.loads(text.split(" = ", 1)[1].rstrip().removesuffix(";"))
 
+    def test_home_totals_keep_causes_and_approximation_distinct(self):
+        self.write("content/site.json", {"categories": [{"id": "education", "homeContributionCategory": "education"}, {"id": "annadanam", "homeContributionCategory": "annadanam"}], "collections": {"contributions": "content/collections/contributions.json"}})
+        self.write("content/collections/contributions.json", {"records": [{"id": "school", "category": "education", "amount": 200000}, {"id": "reported", "category": "education", "amount": 100000, "approximate": True}, {"id": "food", "category": "annadanam", "amount": 50000}]})
+        output = self.build()
+        categories = json.loads((output / "content/site.json").read_text())["categories"]
+        self.assertEqual(categories[0]["homeContributionTotal"], {"amount": 300000, "approximate": True})
+        self.assertEqual(categories[1]["homeContributionTotal"], {"amount": 50000, "approximate": False})
+
+    def test_duplicate_contributions_cannot_inflate_home_total(self):
+        self.write("content/site.json", {"categories": [{"id": "education", "homeContributionCategory": "education"}], "collections": {"contributions": "content/collections/contributions.json"}})
+        self.write("content/collections/contributions.json", {"records": [{"id": "same", "category": "education", "amount": 10}, {"id": "same", "category": "education", "amount": 10}]})
+        with self.assertRaisesRegex(ValueError, "Duplicate contribution IDs"):
+            self.build()
+
     def test_generates_exact_presentation_and_pearls_without_changing_sources(self):
         output = self.build()
         self.assertEqual(self.generated(output, "event-cards-data.js"), self.cards)
