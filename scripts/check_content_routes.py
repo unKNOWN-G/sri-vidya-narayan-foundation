@@ -114,12 +114,22 @@ def check(root=ROOT, require_experiences=False):
     link(home, "#/explore")
     link(home, "#/learn")
     link(home, "#/foundation")
+    featured = site.get("homeCards", list(public_categories))
+    if len(featured) != len(set(featured)):
+        fail("Homepage card IDs must be unique")
+    for identifier in featured:
+        if identifier not in public_categories:
+            fail(f"Homepage card {identifier}: missing or unpublished category")
+    secondary = site.get("secondaryCategories", [])
     listed_events = set()
     for identifier, category in public_categories.items():
         node = "#/category/" + quote(identifier)
         routes.add(node)
-        link(home, node)
-        link("#/explore", node)
+        if identifier in featured:
+            link(home, node)
+            link("#/explore", node)
+        elif identifier in secondary:
+            link("#/foundation", node)
         local_resource(category.get("cover"), f"Category {identifier} cover")
         declared = category.get("eventIds", [])
         if not isinstance(declared, list):
@@ -199,7 +209,7 @@ def check(root=ROOT, require_experiences=False):
     if "teachings" not in public_categories:
         fail("The public wisdom/teachings entry point is missing")
     for name, data in collections.items():
-        if name in ("contributions", "supportLinks"):
+        if name in ("contributions", "supportLinks", "educationProfiles"):
             continue
         node = "#/library/" + quote(name)
         routes.add(node)
@@ -325,6 +335,16 @@ def check(root=ROOT, require_experiences=False):
                 fail(f"Service story {identifier}: missing support record {record_id}")
             elif cause_aliases.get(record.get("category"), record.get("category")) != event.get("category"):
                 fail(f"Service story {identifier}: support record {record_id} belongs to a different cause")
+
+    education_profiles = collections.get("educationProfiles", [])
+    education_records = {str(r.get("id")): r for r in contribution_data.get("records", [])}
+    for profile in entries(education_profiles):
+        event = public_events.get(profile.get("eventId"))
+        if not event or event.get("category") != "education":
+            fail(f"School profile {profile.get('id')}: missing education event")
+        for record_id in profile.get("recordIds", []):
+            if education_records.get(record_id, {}).get("category") != "education":
+                fail(f"School profile {profile.get('id')}: contribution {record_id} is missing or belongs to another cause")
 
     reached = {home}
     queue = deque([home])

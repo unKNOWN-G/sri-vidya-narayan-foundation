@@ -1,0 +1,94 @@
+[
+  {
+    "id": "yelahanka",
+    "eventId": "yelahanka",
+    "title": "Air Force School, Yelahanka",
+    "recordIds": [
+      "yelahanka-swamiji",
+      "yelahanka-trust"
+    ],
+    "amountLabel": "Educational support",
+    "description": "Swamiji with students and staff at Air Force School, Yelahanka. Educational support is acknowledged from Swamiji and Sri Krishna Sudama Religious & Charitable Trust."
+  },
+  {
+    "id": "gollapalli",
+    "eventId": "gollapalli",
+    "title": "ZP High School, Gollapalli",
+    "recordIds": [],
+    "amountLabel": "Land donated for the school · 2004",
+    "contributionText": "Nearly 3 acres",
+    "description": "Swamiji donated nearly three acres for the school in 2004. Air Marshal B. K. Pandey arrived by helicopter to inaugurate the school in this remote village."
+  },
+  {
+    "id": "danavaipeta",
+    "eventId": "danavaipeta",
+    "title": "ZP High School, Danavaipeta",
+    "recordIds": [],
+    "amountLabel": "Supporting young learners",
+    "contributionText": "Pens for all Class 10 students",
+    "description": "Pens for every Class 10 student, with Swamiji’s blessings and encouragement. Moments shared with the school community at ZP High School, Danavaipeta."
+  },
+  {
+    "id": "a-kothakota",
+    "eventId": "a-kothakota",
+    "title": "ZP High School, A. Kothakota",
+    "recordIds": [],
+    "amountLabel": "Blessings and encouragement",
+    "contributionText": "In person. With the students.",
+    "description": "Swamiji visits ZP High School, A. Kothakota in person, blessing students and encouraging them in their learning. His presence, time and guidance are a service in themselves."
+  },
+  {
+    "id": "madanapalle-school",
+    "eventId": "madanapalle-school",
+    "title": "Municipal Primary School, Chandra Colony",
+    "recordIds": [],
+    "amountLabel": "A gesture of affection",
+    "contributionText": "Chocolates for the children",
+    "description": "Swamiji distributes chocolates to children at Municipal Primary School, Chandra Colony, Madanapalle. The photographs show the school gathering and interaction with students."
+  },
+  {
+    "id": "sgdc-college",
+    "eventId": "sgdc-college",
+    "title": "Shri Gnanambica Degree College",
+    "recordIds": [],
+    "amountLabel": "Student engagement",
+    "contributionText": "Interaction and awareness",
+    "description": "Swamiji shares his time and guidance with students at Shri Gnanambica Degree College (SGDC), Madanapalle, through interaction and an awareness session."
+  },
+  {
+    "id": "navajeevan",
+    "eventId": "navajeevan",
+    "title": "Navajeevan Blind High School",
+    "recordIds": [
+      "navajeevan"
+    ],
+    "amountLabel": "Approximate combined support",
+    "description": "Support through Swamiji and devotees for Navajeevan Blind High School, together with his blessings and encouragement for its students."
+  },
+  {
+    "id": "hebbal",
+    "eventId": "school-awards",
+    "title": "Air Force School, Hebbal",
+    "recordIds": [
+      "hebbal"
+    ],
+    "amountLabel": "School-reported corpus",
+    "description": "A corpus supporting education at Air Force School, Hebbal, acknowledged in the school’s letter of 26 July 2024.",
+    "cover": "assets/media/education/hebbal/campus.png",
+    "photoSource": "https://yellowslate.com/bengaluru/air-force-school-hebbal-kempapura-reviews",
+    "photoCredit": "Campus photograph · Yellow Slate"
+  },
+  {
+    "id": "viman-nagar",
+    "eventId": "school-awards",
+    "title": "Air Force School, Viman Nagar",
+    "recordIds": [
+      "viman-nagar"
+    ],
+    "amountLabel": "School-reported corpus",
+    "description": "A corpus supporting education at Air Force School, Viman Nagar, acknowledged in the school’s letter of 8 September 2020.",
+    "cover": "assets/media/education/viman-nagar/campus.jpg",
+    "photoSource": "https://www.airforceschoolpune.ac.in/",
+    "photoCredit": "Campus photograph · Official school website"
+  }
+]

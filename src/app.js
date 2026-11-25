@@ -93,6 +93,12 @@
       ? `<img src="${href(src)}" alt="${esc(alt)}" class="${cls}" ${position ? `style="object-position:${esc(position)}"` : ""} decoding="async">`
       : "";
   const getCategory = (id) => site.categories.find((c) => c.id === id);
+  const featuredCategories = () =>
+    site.homeCards
+      ? site.homeCards
+          .map(getCategory)
+          .filter((c) => c && c.published !== false && c.cover)
+      : site.categories.filter((c) => c.published !== false && c.cover);
   const getEvent = (id) => site.events.find((e) => e.id === id);
   const dateLabel = (d) =>
     d
@@ -137,7 +143,7 @@
     const url = site.collections[name];
     if (!url) throw Error("This collection is not available.");
     if (!cache.has(name)) {
-      const request = fetch(url, {cache: "no-cache"})
+      const request = fetch(url, { cache: "no-cache" })
         .then((r) => {
           if (!r.ok) throw Error("This collection could not be loaded.");
           return r.json();
@@ -157,9 +163,7 @@
     app.innerHTML = `<section class="view"><div class="empty"><div><h1>A moment, please.</h1><p>${esc(error.message || error)}</p><a class="text-link" href="#/">Return to Swamiji’s portraits →</a></div></div></section>`;
   }
   function home() {
-    const cats = site.categories.filter(
-      (c) => c.published !== false && c.cover,
-    );
+    const cats = featuredCategories();
     let current = Math.max(
         0,
         cats.findIndex((c) => c.id === homeCategory),
@@ -333,12 +337,10 @@
           .replace(/\s+\S*$/, "") + "…"
       : String(text || "");
   const experienceLinks = () =>
-    site.categories
-      .filter((c) => c.published !== false && c.cover)
-      .map((c) => ({
-        title: c.title,
-        href: c.id === "teachings" ? "#/learn" : "#/category/" + c.id,
-      }));
+    featuredCategories().map((c) => ({
+      title: c.title,
+      href: c.id === "teachings" ? "#/learn" : "#/category/" + c.id,
+    }));
   function choiceDialog(title, links) {
     return `<dialog class="scene-index" id="scene-index"><div class="index-head"><p class="eyebrow">CHOOSE WHAT SPEAKS TO YOU</p><button data-action="close-index" aria-label="Close choices">×</button></div><h2>${esc(title)}</h2><div class="index-links">${links.map((x, i) => `<a href="${href(x.href)}"><span>${String(i + 1).padStart(2, "0")}</span>${esc(x.title)}<b aria-hidden="true">↗</b></a>`).join("")}</div></dialog>`;
   }
@@ -429,9 +431,7 @@
     return `<div class="story-art ${book ? "book-art" : ""}"><div class="art-orbit" aria-hidden="true"></div>${nextCover ? `<a class="next-glimpse" href="${href(nextHref)}" aria-label="Next story">${photo(nextCover, "")}<span>Up next ↗</span></a>` : ""}<a class="story-image" href="${href(openHref || nextHref)}" aria-label="${esc(title)}">${photo(cover, title, "", position)}</a></div>`;
   }
   function explore(selected) {
-    const cats = site.categories.filter(
-      (c) => c.published !== false && c.cover,
-    );
+    const cats = featuredCategories();
     let index = Math.max(
       0,
       cats.findIndex((c) => c.id === (selected || deckMemory.get("explore"))),
@@ -463,9 +463,17 @@
       return;
     }
     theme(c);
-    const events = site.events.filter(
-      (e) => e.category === id && e.published !== false,
-    );
+    if (id === "education") {
+      await educationView(selectedId);
+      return;
+    }
+    const events = site.events
+      .filter((e) => e.category === id && e.published !== false)
+      .sort(
+        (a, b) =>
+          (c.eventIds?.indexOf(a.id) ?? 1000) -
+          (c.eventIds?.indexOf(b.id) ?? 1000),
+      );
     if (!events.length) {
       app.innerHTML = `<section class="view">${heading(c.title)}<p>This story is being prepared.</p></section>`;
       return;
@@ -499,10 +507,52 @@
     )}</section>`;
     bindSequence(prev, next, "#/explore/" + id);
   }
+  async function educationView(selected) {
+    const token = routeToken;
+    const [profiles, ledger] = await Promise.all([
+      collection("educationProfiles"),
+      collection("contributions"),
+    ]);
+    if (token !== routeToken) return;
+    const c = getCategory("education");
+    theme(c);
+    const requested = selected || deckMemory.get("education");
+    let index = Math.max(
+      0,
+      profiles.findIndex((p) => p.id === requested || p.eventId === requested),
+    );
+    const profile = profiles[index],
+      event = getEvent(profile.eventId),
+      schoolCover = profile.cover || event?.cover;
+    if (!event) throw Error("This school collection is unavailable.");
+    deckMemory.set("education", profile.id);
+    const records = profile.recordIds
+      .map((id) => ledger.records.find((r) => r.id === id))
+      .filter(Boolean);
+    const amount = records.reduce((n, r) => n + r.amount, 0),
+      approximate = records.some((r) => r.approximate || r.reported);
+    const amountText = records.length
+      ? (approximate ? "≈ " : "") + formatMoney(amount)
+      : profile.contributionText;
+    const base = "#/category/education/schools/",
+      previous =
+        base + profiles[(index - 1 + profiles.length) % profiles.length].id,
+      next = base + profiles[(index + 1) % profiles.length].id;
+    const photographs = event.presentation !== "service-story",
+      target = photographs
+        ? "#/event/" + event.id
+        : "#/record/" + profile.recordIds[0];
+    app.innerHTML = `<section class="view story-view education-view">${heading(c.title, '<a href="#/explore/education">His life in action</a>')}<div class="story-scene"><div class="scene-backdrop" style="background-image:url('${href(schoolCover)}')"></div><div class="story-copy"><p class="eyebrow">${esc(event.location || "DEFENCE SCHOOLS · EDUCATIONAL SUPPORT")}</p><h2>${esc(profile.title)}</h2><div class="school-contribution"><small>${esc(profile.amountLabel)}</small><strong class="${records.length ? "cash-amount" : "contribution-kind"}">${esc(amountText)}</strong></div><p class="story-description">${esc(profile.description)}</p><div class="story-actions"><a class="button" href="${target}">${photographs ? "See the school moments" : "View the contribution record"} ↗</a>${records.some((r) => r.src) ? `<details class="school-attachments"><summary>Supporting acknowledgements ↗</summary><div class="school-attachment-list">${records.filter((r) => r.src).map((r) => `<a class="text-link" href="${href(r.src)}" target="_blank" rel="noopener">${esc(r.donor || r.evidenceLabel)} ↗</a>`).join("")}</div></details>` : ""}</div>${profile.photoSource ? `<a class="school-photo-credit" href="${esc(profile.photoSource)}" target="_blank" rel="noopener">${esc(profile.photoCredit)} ↗</a>` : ""}</div>${sceneArt(schoolCover, profile.title, "", next, event.coverPosition || "50% 30%", false, target)}</div>${sceneControls(previous, next, `${index + 1} / ${profiles.length}`, "Choose a school or college")}${choiceDialog(
+      "Schools and colleges",
+      profiles.map((p) => ({ title: p.title, href: base + p.id })),
+    )}</section>`;
+    bindSequence(previous, next, "#/explore/education");
+  }
+
   function foundationView(connect = false) {
     const c = getCategory("foundation");
     theme(c);
-    app.innerHTML = `<section class="view story-view">${heading("Inspired by his example.", "The foundation")}<div class="story-scene"><div class="scene-backdrop" style="background-image:url('${href(c.cover)}')"></div><div class="story-copy"><p class="eyebrow">VIDYA · VAIDYA · VASATHI</p><h2>Kindness.<br><em>Carried forward.</em></h2><p class="story-description">${esc(site.foundation.description)}</p><div class="story-actions"><a class="button" href="#/foundation/connect">Be part of the work ↗</a><a class="text-link" href="#/category/foundation/moments">Moments of service ↗</a></div><a class="quiet-link" href="#/foundation/support">A clear account of historical support ↗</a></div><div class="foundation-image">${photo(c.cover, "Service inspired by Swamiji’s example")}</div></div>${connect ? `<dialog class="scene-index contact-dialog" id="contact-dialog" open><div class="index-head"><p class="eyebrow">A CONVERSATION IS A BEGINNING</p><a href="#/foundation" aria-label="Close contact details">×</a></div><h2>Let’s serve together.</h2><p>For current needs, volunteering and contribution guidance, speak with the foundation team.</p><a class="contact-link" href="mailto:${esc(site.foundation.email)}">${esc(site.foundation.email)}</a><a class="contact-link" href="tel:${esc(site.foundation.phone.replace(/[^+\d]/g, ""))}">${esc(site.foundation.phone)}</a><p>${esc(site.foundation.office)}</p></dialog>` : ""}<div class="foundation-bottom"><a href="#/category/education">Encourage learning ↗</a><a href="#/category/healthcare">Care for wellbeing ↗</a><a href="#/category/annadanam">Share nourishment ↗</a></div></section>`;
+    app.innerHTML = `<section class="view story-view">${heading("Inspired by his example.", "The foundation")}<div class="story-scene"><div class="scene-backdrop" style="background-image:url('${href(c.cover)}')"></div><div class="story-copy"><p class="eyebrow">VIDYA · VAIDYA · VASATHI</p><h2>Kindness.<br><em>Carried forward.</em></h2><p class="story-description">${esc(site.foundation.description)}</p><div class="story-actions"><a class="button" href="#/foundation/connect">Be part of the work ↗</a><a class="text-link" href="#/category/foundation/moments">Moments of service ↗</a></div><a class="quiet-link" href="#/foundation/support">A clear account of historical support ↗</a></div><div class="foundation-image">${photo(c.cover, "Service inspired by Swamiji’s example")}</div></div>${connect ? `<dialog class="scene-index contact-dialog" id="contact-dialog" open><div class="index-head"><p class="eyebrow">A CONVERSATION IS A BEGINNING</p><a href="#/foundation" aria-label="Close contact details">×</a></div><h2>Let’s serve together.</h2><p>For current needs, volunteering and contribution guidance, speak with the foundation team.</p><a class="contact-link" href="mailto:${esc(site.foundation.email)}">${esc(site.foundation.email)}</a><a class="contact-link" href="tel:${esc(site.foundation.phone.replace(/[^+\d]/g, ""))}">${esc(site.foundation.phone)}</a><p>${esc(site.foundation.office)}</p></dialog>` : ""}<div class="foundation-bottom"><a href="#/category/education">Encourage learning ↗</a><a href="#/category/healthcare">Care for wellbeing ↗</a><a href="#/category/annadanam">Share nourishment ↗</a><a href="#/category/compassion">Care for all life ↗</a></div></section>`;
   }
   async function supportView(category) {
     const token = routeToken;
@@ -677,11 +727,11 @@
   }
 
   const libNames = {
-    readings: "Satsangh Messages",
+    readings: "Satsangs",
     pearls: "Pearls of Wisdom",
     teachings: "Practical teachings",
     books: "Books",
-    messages: "Messages & blessings",
+    messages: "Anugraha Bhashanams",
   };
   function teachingGateway() {
     theme(getCategory("teachings"));
@@ -689,7 +739,7 @@
       {
         id: "readings",
         eyebrow: "A THOUGHT FOR TODAY",
-        title: "Satsangh Messages",
+        title: "Satsangs",
         description:
           "Pause with a reflection. Bring a little of it into your day.",
         cover: getCategory("teachings").cover,
@@ -706,9 +756,9 @@
       {
         id: "messages",
         eyebrow: "WORDS, SHARED WITH LOVE",
-        title: "Message Cards & Blessings",
+        title: "Anugraha Bhashanams",
         description:
-          "Open the card. Unfold a message. Keep its thought with you.",
+          "Words of guidance and blessings, shared on special occasions.",
         cover:
           site.teachingMessageCover ||
           "assets/media/messages/new-year-2026/cover-01.webp",
@@ -724,7 +774,7 @@
         href: "#/library/teachings",
       },
     ];
-    app.innerHTML = `<section class="view learning-gateway">${heading("Learn Swamiji’s Teachings.", '<a href="#/">Meet Swamiji</a>', "A thought to reflect on. A way to live.")}<div class="learning-doors">${choices.map((c, i) => `<a class="learning-door ${c.id}" href="${c.href}"><span class="door-number">0${i + 1}</span><div class="door-art">${photo(c.cover, c.title)}</div><div class="door-copy"><p class="eyebrow">${c.eyebrow}</p><h2>${c.title}</h2><p>${c.description}</p><span class="door-action">${c.id === "messages" ? "Open a card" : c.id === "books" ? "Find a book" : c.id === "readings" ? "Read a reflection" : "Begin with a teaching"} ↗</span></div></a>`).join("")}</div><a class="gateway-pearl" href="reading-room.html">A quiet moment? Open Pearls of Wisdom →</a></section>`;
+    app.innerHTML = `<section class="view learning-gateway">${heading("Learn Swamiji’s Teachings.", '<a href="#/">Meet Swamiji</a>', "A thought to reflect on. A way to live.")}<div class="learning-doors">${choices.map((c, i) => `<a class="learning-door ${c.id}" href="${c.href}"><span class="door-number">0${i + 1}</span><div class="door-art">${photo(c.cover, c.title)}</div><div class="door-copy"><p class="eyebrow">${c.eyebrow}</p><h2>${c.title}</h2><p>${c.description}</p><span class="door-action">${c.id === "messages" ? "Read the blessings" : c.id === "books" ? "Find a book" : c.id === "readings" ? "Read a reflection" : "Begin with a teaching"} ↗</span></div></a>`).join("")}</div><a class="gateway-pearl" href="reading-room.html">A quiet moment? Open Pearls of Wisdom →</a></section>`;
   }
   async function library(name = "readings", selected) {
     if (!libNames[name]) name = "readings";
@@ -775,7 +825,7 @@
       next = item ? route(list[(index + 1) % list.length]) : "#/learn";
     const headingText =
       name === "readings" ? "A thought to carry." : "A way to live.";
-    app.innerHTML = `<section class="view reflection-view">${heading(name === "readings" ? "Satsangh Messages" : "Everyday Teachings", '<a href="#/learn">Learn Swamiji’s Teachings</a>')}<div class="reflection-scene"><div class="reflection-portrait">${photo(getCategory("teachings").cover, "Sri Swamiji")}</div><div class="reflection-intro"><p class="eyebrow">${name === "readings" ? "PAUSE · REFLECT · BRING IT INTO YOUR DAY" : "UNDERSTAND · PRACTISE · GROW"}</p><h2>${headingText.split(" ").slice(0, 2).join(" ")}<br><em>${headingText.split(" ").slice(2).join(" ")}</em></h2><p>${name === "readings" ? "A few quiet words can change how we meet the day. Begin with a reflection from Swamiji’s satsangh." : "Wisdom takes shape in the way we live. Begin with one teaching, and a small action you can make your own."}</p><a class="text-link" href="#/learn">Other ways to learn ↗</a></div><div class="thought-deck">${item ? `<a class="thought-behind back-left" href="${previous}" aria-label="Previous reflection"><span>${esc(list[(index - 1 + list.length) % list.length].title || "A moment of reflection")}</span></a><a class="thought-behind back-right" href="${next}" aria-label="Next reflection"><span>${esc(list[(index + 1) % list.length].title || "A little everyday wisdom")}</span></a><a class="thought-paper" href="${target(item)}"><span class="paper-date">${name === "readings" ? dateLabel(item.date) : "A TEACHING FOR EVERYDAY LIFE"}</span><span class="paper-rule"></span><h3>${esc(item.title || item.caption || "A reflection")}</h3><p>${esc(short(item.lead || item.meaning || item.text, 245))}</p><span class="paper-action">${name === "readings" ? "Read. Reflect. Carry it with you." : "Understand. Put it into practice."} ↗</span><small>${name === "readings" ? "An edited satsangh reflection" : "A practical paraphrase"} · Sri Swamiji</small></a>` : '<div class="thought-paper empty"><h3>No matching reflection.</h3><p>Try another thought, month or topic.</p><button data-action="open-index" class="button">Find a thought ↗</button></div>'}</div></div><div class="reflection-bottom">${sceneControls(previous, next, item ? `${index + 1} / ${list.length}` : "", "Find a thought")}<span class="reflection-note">${state.search || state.month || state.topic ? `Showing your selection · <button data-action="clear-reflection-search">Show all reflections</button>` : "One reflection at a time. At your own pace."}</span></div><dialog class="scene-index reflection-search" id="scene-index"><div class="index-head"><p class="eyebrow">WHAT IS ON YOUR MIND?</p><button data-action="close-index" aria-label="Close search">×</button></div><h2>Find a thought.</h2><form id="reflection-filter"><label for="library-search">A word or question</label><input type="search" id="library-search" placeholder="Gratitude, duty, love…" value="${esc(state.search)}">${
+    app.innerHTML = `<section class="view reflection-view">${heading(name === "readings" ? "Satsangs" : "Everyday Teachings", '<a href="#/learn">Learn Swamiji’s Teachings</a>')}<div class="reflection-scene"><div class="reflection-portrait">${photo(getCategory("teachings").cover, "Sri Swamiji")}</div><div class="reflection-intro"><p class="eyebrow">${name === "readings" ? "PAUSE · REFLECT · BRING IT INTO YOUR DAY" : "UNDERSTAND · PRACTISE · GROW"}</p><h2>${headingText.split(" ").slice(0, 2).join(" ")}<br><em>${headingText.split(" ").slice(2).join(" ")}</em></h2><p>${name === "readings" ? "A few quiet words can change how we meet the day. Begin with a reflection from Swamiji’s satsangh." : "Wisdom takes shape in the way we live. Begin with one teaching, and a small action you can make your own."}</p><a class="text-link" href="#/learn">Other ways to learn ↗</a></div><div class="thought-deck">${item ? `<a class="thought-behind back-left" href="${previous}" aria-label="Previous reflection"><span>${esc(list[(index - 1 + list.length) % list.length].title || "A moment of reflection")}</span></a><a class="thought-behind back-right" href="${next}" aria-label="Next reflection"><span>${esc(list[(index + 1) % list.length].title || "A little everyday wisdom")}</span></a><a class="thought-paper" href="${target(item)}"><span class="paper-date">${name === "readings" ? dateLabel(item.date) : "A TEACHING FOR EVERYDAY LIFE"}</span><span class="paper-rule"></span><h3>${esc(item.title || item.caption || "A reflection")}</h3><p>${esc(short(item.lead || item.meaning || item.text, 245))}</p><span class="paper-action">${name === "readings" ? "Read. Reflect. Carry it with you." : "Understand. Put it into practice."} ↗</span><small>${name === "readings" ? "An edited satsangh reflection" : "A practical paraphrase"} · Sri Swamiji</small></a>` : '<div class="thought-paper empty"><h3>No matching reflection.</h3><p>Try another thought, month or topic.</p><button data-action="open-index" class="button">Find a thought ↗</button></div>'}</div></div><div class="reflection-bottom">${sceneControls(previous, next, item ? `${index + 1} / ${list.length}` : "", "Find a thought")}<span class="reflection-note">${state.search || state.month || state.topic ? `Showing your selection · <button data-action="clear-reflection-search">Show all reflections</button>` : "One reflection at a time. At your own pace."}</span></div><dialog class="scene-index reflection-search" id="scene-index"><div class="index-head"><p class="eyebrow">WHAT IS ON YOUR MIND?</p><button data-action="close-index" aria-label="Close search">×</button></div><h2>Find a thought.</h2><form id="reflection-filter"><label for="library-search">A word or question</label><input type="search" id="library-search" placeholder="Gratitude, duty, love…" value="${esc(state.search)}">${
       name === "readings"
         ? `<label for="month-filter">A month to return to</label><select id="month-filter"><option value="">Every month</option>${[
             ...new Set(all.map((e) => e.date?.slice(0, 7)).filter(Boolean)),
@@ -862,9 +912,10 @@
   }
   async function recordView(id) {
     const token = routeToken;
-    const [data, links] = await Promise.all([
+    const [data, links, profiles] = await Promise.all([
       collection("contributions"),
       collection("supportLinks"),
+      collection("educationProfiles"),
     ]);
     if (token !== routeToken) return;
     const allRecords = data.records || [];
@@ -877,11 +928,13 @@
         getCategory(
           links.categoryAliases?.[record.category] || record.category,
         ) || getCategory("foundation");
+    const schoolProfile = profiles.find((p) => p.recordIds.includes(record.id)),
+      supportCover = schoolProfile?.cover || event?.cover || c.cover;
     theme(c);
     const previous =
         "#/record/" + records[(index - 1 + records.length) % records.length].id,
       next = "#/record/" + records[(index + 1) % records.length].id;
-    app.innerHTML = `<section class="view story-view" data-back="#/category/${esc(c.id)}">${heading(c.title + " · support", '<a href="#/category/' + c.id + '">' + esc(c.title) + "</a>")}<div class="story-scene"><div class="scene-backdrop" style="background-image:url('${href(event?.cover || c.cover)}')"></div><div class="story-copy"><p class="eyebrow">${esc(record.evidenceLabel || record.evidenceStatus)}</p><h2>${esc(record.recipient)}</h2><p class="story-description">${esc(record.attributionNote || "Historical support recorded in the supplied acknowledgement.")}</p><span class="record-context">${record.approximate ? "Approximately " : ""}${formatMoney(record.amount)}${record.donor ? " · Named donor: " + esc(record.donor) : ""}</span>${event && event.presentation !== "service-story" ? `<a class="button" href="#/event/${esc(event.id)}">Meet the story behind the support ↗</a>` : `<a class="button" href="#/foundation/connect">Carry this care forward ↗</a>`}<details class="evidence-note"><summary>Read the supporting acknowledgement</summary><p>${esc(record.evidenceLabel)}</p>${record.src ? `<a class="text-link" href="${href(record.src)}" target="_blank" rel="noopener">View the published original ↗</a>` : ""}<p>Historical support retains the donor or trust named in the source. Corpus principal and annual interest are distinct records.</p>${
+    app.innerHTML = `<section class="view story-view" data-back="#/category/${esc(c.id)}">${heading(c.title + " · support", '<a href="#/category/' + c.id + '">' + esc(c.title) + "</a>")}<div class="story-scene"><div class="scene-backdrop" style="background-image:url('${href(supportCover)}')"></div><div class="story-copy"><p class="eyebrow">${esc(record.evidenceLabel || record.evidenceStatus)}</p><h2>${esc(record.recipient)}</h2><p class="story-description">${esc(record.summary || "Support for " + record.recipient + ", recorded in the accompanying acknowledgement.")}</p><span class="record-context">${record.approximate ? "Approximately " : ""}${formatMoney(record.amount)}${record.donor ? " · Named donor: " + esc(record.donor) : ""}</span>${event && event.presentation !== "service-story" ? `<a class="button" href="#/event/${esc(event.id)}">Meet the story behind the support ↗</a>` : `<a class="button" href="#/foundation/connect">Carry this care forward ↗</a>`}<details class="evidence-note"><summary>Read the supporting acknowledgement</summary><p>${esc(record.evidenceLabel)}</p>${record.src ? `<a class="text-link" href="${href(record.src)}" target="_blank" rel="noopener">View the published original ↗</a>` : ""}${
       record.src && event?.media?.length
         ? `<div class="evidence-links">${event.media
             .filter((m) => m.src !== record.src && m.id.includes(record.id))
@@ -891,7 +944,7 @@
             )
             .join("")}</div>`
         : ""
-    }</details></div><div class="foundation-image">${photo(event?.cover || c.cover, event?.title || c.title)}</div></div>${sceneControls(previous, next, `${index + 1} / ${records.length}`, "More " + c.title.toLowerCase() + " support")}${choiceDialog(
+    }</details></div><div class="foundation-image">${photo(supportCover, schoolProfile?.title || event?.title || c.title)}</div></div>${sceneControls(previous, next, `${index + 1} / ${records.length}`, "More " + c.title.toLowerCase() + " support")}${choiceDialog(
       c.title + " support",
       records.map((r) => ({ title: r.recipient, href: "#/record/" + r.id })),
     )}<nav class="service-causes" aria-label="Choose a type of support">${[...new Set(allRecords.map((r) => r.category))].map((kind) => `<a href="#/foundation/support/${kind}" ${kind === record.category ? 'aria-current="page"' : ""}>${esc({ education: "Education", annadanam: "Annadanam", medical: "Medical care", temple: "Temple support" }[kind] || kind)}</a>`).join("")}</nav></section>`;
@@ -1080,7 +1133,7 @@
   matchMedia("(max-width: 750px)").addEventListener("change", () => {
     if (site && ["explore", "library"].includes(routeParts()[0])) render();
   });
-  fetch("content/site.json", {cache: "no-cache"})
+  fetch("content/site.json", { cache: "no-cache" })
     .then((r) => {
       if (!r.ok) throw Error("The collection could not be loaded.");
       return r.json();

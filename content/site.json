@@ -10,7 +10,8 @@
     "books": "content/collections/books.json",
     "messages": "content/collections/messages.json",
     "contributions": "content/collections/contributions.json",
-    "supportLinks": "content/collections/service-links.json"
+    "supportLinks": "content/collections/service-links.json",
+    "educationProfiles": "content/collections/education-profiles.json"
   },
   "foundation": {
     "description": "Sri Vidya Narayan Foundation brings Swamiji and his devotees together in a shared commitment to charitable service, inspired by his personal example.",
@@ -34,14 +35,27 @@
   },
   "categoryOrder": [
     "his-holiness",
-    "education",
-    "vedic-learning",
-    "healthcare",
-    "spiritual-life",
-    "compassion",
-    "annadanam",
     "teachings",
+    "spiritual-life",
+    "vedic-learning",
+    "education",
+    "annadanam",
+    "healthcare",
     "foundation",
+    "compassion",
     "music"
+  ],
+  "homeCards": [
+    "his-holiness",
+    "teachings",
+    "spiritual-life",
+    "vedic-learning",
+    "education",
+    "annadanam",
+    "healthcare"
+  ],
+  "secondaryCategories": [
+    "foundation",
+    "compassion"
   ]
 }

@@ -3,7 +3,7 @@
   "title": "Annadanam",
   "eyebrow": "THE SPIRIT OF SHARING",
   "headline": "An offering of food. An expression of love.",
-  "caption": "At Tirumala, Shirdi, and Govindapuram, nourishment becomes an opportunity to give and to inspire others to share.",
+  "caption": "Annadanam at Tirumala, Shirdi and through the Sri Bodhendra Saraswathi Swamigal Trust: nourishment offered as service.",
   "shortCaption": "An offering of food. An expression of love.",
   "cover": "assets/media/annadanam/tirumala/tirumala-temple.webp",
   "coverAlt": "Annadanam — photograph shared by the foundation",
@@ -19,8 +19,8 @@
   },
   "published": true,
   "eventIds": [
-    "bodhendra",
+    "tirumala",
     "shirdi",
-    "tirumala"
+    "bodhendra"
   ]
 }

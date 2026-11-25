@@ -1,0 +1,20 @@
+{
+  "retrieved": "2026-11-26",
+  "purpose": "Campus context only; not evidence of a visit or donation. Photographs retained without alteration.",
+  "schools": {
+    "hebbal": {
+      "file": "hebbal-primary.png",
+      "cover": "assets/media/education/hebbal/campus.png",
+      "photoSource": "https://yellowslate.com/bengaluru/air-force-school-hebbal-kempapura-reviews",
+      "photoCredit": "Campus photograph · Yellow Slate",
+      "imageUrl": "https://yellowslate.sgp1.cdn.digitaloceanspaces.com/schools/156468448717841581715d4330c7dc0661564684488.PNG"
+    },
+    "viman-nagar": {
+      "file": "viman-nagar.jpg",
+      "cover": "assets/media/education/viman-nagar/campus.jpg",
+      "photoSource": "https://www.airforceschoolpune.ac.in/",
+      "photoCredit": "Campus photograph · Official school website",
+      "imageUrl": "https://www.airforceschoolpune.ac.in/admin/schoolbuilding/481554854picture1.jpg"
+    }
+  }
+}
