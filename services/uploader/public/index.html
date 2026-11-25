@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex,nofollow" />
+    <meta name="referrer" content="no-referrer" />
+    <title>Website Updates · Sri Vidya Narayan Foundation</title>
+    <link rel="stylesheet" href="/uploader.css" />
+    <script type="module" src="/uploader.js"></script>
+  </head>
+  <body>
+    <header>
+      <a
+        class="brand"
+        href="https://unknown-g.github.io/sri-vidya-narayan-foundation/"
+        >Sri Vidya Narayan<span>F O U N D A T I O N</span></a
+      ><span class="header-label">Website updates</span
+      ><button id="signout" class="quiet" hidden>Lock page</button>
+    </header>
+    <main>
+      <section id="unlock" class="unlock">
+        <p class="eyebrow">A MOMENT WORTH SHARING</p>
+        <h1>A few photographs.<br />A story to share.</h1>
+        <p class="intro">
+          Add an occasion to Swamiji’s website, in a few simple steps.
+        </p>
+        <form id="login-form">
+          <label for="access-code">Your private access code</label>
+          <div class="access-row">
+            <input
+              id="access-code"
+              name="password"
+              type="password"
+              autocomplete="current-password"
+              required
+              maxlength="160"
+            /><button type="submit">
+              Unlock <span aria-hidden="true">↗</span>
+            </button>
+          </div>
+        </form>
+        <p class="fine">
+          Keep this page and your access code with the people who manage the
+          website.
+        </p>
+      </section>
+      <section id="workspace" hidden>
+        <div class="page-intro">
+          <div>
+            <p class="eyebrow">PHOTOGRAPHS · OCCASIONS · MEMORIES</p>
+            <h1>Share a moment.</h1>
+          </div>
+          <p>Choose the photographs.<br />Tell us the story they belong to.</p>
+        </div>
+        <p id="connection-note" class="notice" hidden>
+          Publishing is being connected. You can prepare and review your update
+          here.
+        </p>
+        <form id="update-form" class="editor">
+          <div class="details">
+            <p class="step">01 <span>The occasion</span></p>
+            <label for="section">Where should it appear?</label
+            ><select id="section" required>
+              <option value="">Choose a section</option>
+            </select>
+            <label for="existing">Is this a new occasion?</label
+            ><select id="existing">
+              <option value="">Yes, create a new occasion</option>
+            </select>
+            <label id="title-label" for="title">Occasion title</label
+            ><input
+              id="title"
+              required
+              maxlength="150"
+              placeholder="For example, Guru Purnima at Guruashraya"
+            />
+            <label for="caption">What would you like visitors to know?</label
+            ><textarea
+              id="caption"
+              rows="3"
+              required
+              maxlength="1500"
+              placeholder="Describe what happened, in your own words."
+            ></textarea>
+            <div class="optional">
+              <div>
+                <label for="place">Place <span>optional</span></label
+                ><input id="place" maxlength="150" autocomplete="off" />
+              </div>
+              <div>
+                <label for="date">Occasion date <span>if known</span></label
+                ><input id="date" type="date" />
+              </div>
+            </div>
+          </div>
+          <div class="photographs">
+            <p class="step">02 <span>The photographs</span></p>
+            <label for="photos" class="photo-picker"
+              ><span class="picker-mark" aria-hidden="true">＋</span
+              ><strong>Choose photographs</strong
+              ><span>From your phone or computer</span
+              ><small>JPG, PNG or WebP · up to 20 photographs</small
+              ><input
+                id="photos"
+                type="file"
+                accept="image/jpeg,image/png,image/webp"
+                multiple
+            /></label>
+            <p id="photo-count" class="fine">
+              The selected cover will introduce this occasion on the website.
+            </p>
+            <div
+              id="previews"
+              class="previews"
+              aria-label="Selected photographs"
+            ></div>
+            <p class="fine note">
+              Use photographs you have permission to publish. Receipts, medical
+              records, books and message cards need a separate review.
+            </p>
+          </div>
+          <div class="editor-bottom">
+            <p id="preparing" role="status">
+              Your photographs are resized for the website automatically.
+            </p>
+            <button id="review-button" type="submit">
+              Review update <span aria-hidden="true">↗</span>
+            </button>
+          </div>
+        </form>
+        <section class="recent" id="recent" hidden>
+          <h2>Your recent updates</h2>
+          <div id="recent-list"></div>
+        </section>
+      </section>
+      <section id="review" hidden class="review">
+        <p id="review-connection-note" class="notice" hidden>
+          Publishing is being connected. This is a private preview of your
+          update.
+        </p>
+        <p class="eyebrow">ONE LAST LOOK</p>
+        <h1>Ready to share?</h1>
+        <div class="review-layout">
+          <img id="cover-preview" alt="Selected cover" />
+          <div>
+            <p id="review-section" class="eyebrow"></p>
+            <h2 id="review-title"></h2>
+            <p id="review-caption"></p>
+            <p id="review-meta" class="fine"></p>
+          </div>
+        </div>
+        <label class="consent"
+          ><input id="consent" type="checkbox" /> I have checked the caption and
+          photographs, and approve them for the public website.</label
+        >
+        <div class="review-actions">
+          <button class="quiet" id="back-to-edit">← Keep editing</button
+          ><button id="publish-button">Publish to website ↗</button>
+        </div>
+      </section>
+      <section id="publishing" class="publishing" hidden aria-live="polite">
+        <p class="eyebrow" id="publish-eyebrow">YOUR UPDATE</p>
+        <h1 id="publish-title">Preparing your occasion.</h1>
+        <p id="publish-description">
+          Please keep this page open while the photographs are saved.
+        </p>
+        <progress id="progress"></progress>
+        <div class="publish-actions">
+          <a id="view-update" class="button" hidden>View on the website ↗</a
+          ><button id="retry" hidden>Retry publishing</button
+          ><button id="return-review" class="quiet" hidden>
+            Return to my update</button
+          ><button id="new-update" class="quiet" hidden>
+            Share another moment
+          </button>
+        </div>
+      </section>
+      <p id="message" class="message" role="alert" hidden></p>
+    </main>
+    <footer>A tribute to Swamiji, through the moments you share.</footer>
+  </body>
+</html>

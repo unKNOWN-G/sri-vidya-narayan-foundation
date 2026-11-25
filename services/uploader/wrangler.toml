@@ -1,0 +1,23 @@
+name = "swamiji-website-updates"
+main = "entry.mjs"
+compatibility_date = "2026-11-01"
+workers_dev = true
+
+[assets]
+directory = "./public"
+binding = "ASSETS"
+run_worker_first = true
+
+[vars]
+SITE_URL = "https://unknown-g.github.io/sri-vidya-narayan-foundation/"
+GITHUB_REPOSITORY = "unKNOWN-G/sri-vidya-narayan-foundation"
+PUBLISH_ENABLED = "false"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "swamiji-upload-inbox"
+# Replace this local-development placeholder with the created free D1 database ID.
+database_id = "00000000-0000-0000-0000-000000000000"
+
+[triggers]
+crons = ["17 3 * * *"]

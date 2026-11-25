@@ -55,7 +55,7 @@ Create one event folder, keep the original files unchanged in the local archive,
 
 The guided file-import command is `python3 scripts/add_event.py`. See the upload guide for a complete example, supported media, draft handling, and the explicit options for reviewed documents or a draft category.
 
-See [the upload guide](docs/UPLOAD_GUIDE.md) for the complete process. Uploading through a website administration panel is not implemented; adding files to this repository is the current editorial workflow.
+See [the upload guide](docs/UPLOAD_GUIDE.md) for the file-based process. A separate private photo uploader, with no Meta or customer GitHub login, is implemented under `services/uploader/`. Its remote hosting and publishing access must be connected before it can publish; see [the uploader setup and current status](docs/UPLOADER_SETUP.md).
 
 ## Build and check
 

@@ -1,0 +1,15 @@
+CREATE TABLE IF NOT EXISTS sessions (id TEXT PRIMARY KEY, expires INTEGER NOT NULL);
+CREATE TABLE IF NOT EXISTS attempts (id TEXT PRIMARY KEY, count INTEGER NOT NULL, expires INTEGER NOT NULL);
+CREATE TABLE IF NOT EXISTS batches (
+ id TEXT PRIMARY KEY, category TEXT NOT NULL, title TEXT NOT NULL, caption TEXT NOT NULL,
+ location TEXT NOT NULL DEFAULT '', event_date TEXT, target TEXT, cover TEXT,
+ state TEXT NOT NULL DEFAULT 'draft', created INTEGER NOT NULL, updated INTEGER NOT NULL,
+ run_id TEXT, commit_sha TEXT, error TEXT
+);
+CREATE TABLE IF NOT EXISTS photos (
+ batch_id TEXT NOT NULL REFERENCES batches(id) ON DELETE CASCADE, id TEXT NOT NULL,
+ position INTEGER NOT NULL, data BLOB NOT NULL, PRIMARY KEY(batch_id,id)
+);
+CREATE TABLE IF NOT EXISTS publish_lock (id INTEGER PRIMARY KEY CHECK(id=1), batch_id TEXT NOT NULL, expires INTEGER NOT NULL);
+CREATE INDEX IF NOT EXISTS batches_updated ON batches(updated);
+CREATE INDEX IF NOT EXISTS photos_batch ON photos(batch_id);

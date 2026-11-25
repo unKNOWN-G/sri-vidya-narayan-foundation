@@ -1,0 +1,108 @@
+name: Publish approved photo update
+run-name: Publish approved photo update
+
+on:
+  workflow_dispatch:
+    inputs:
+      batch_id:
+        description: Private update ID; no photos, credentials or captions in this input
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+# Share the existing site's deployment lock. The inbox admits only one pending upload.
+concurrency:
+  group: github-pages
+  cancel-in-progress: false
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+      pages: read
+    outputs:
+      commit: ${{ steps.commit.outputs.commit }}
+    env:
+      UPLOADER_URL: ${{ vars.UPLOADER_URL }}
+      UPLOADER_INTERNAL_TOKEN: ${{ secrets.UPLOADER_INTERNAL_TOKEN }}
+      BATCH_ID: ${{ inputs.batch_id }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: main
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Install photo preparation dependency
+        run: python3 -m pip install -r requirements-authoring.txt
+      - name: Claim and import the approved private update
+        run: python3 scripts/import_upload.py --batch-id "$BATCH_ID"
+      - name: Validate content, routes and build
+        run: |
+          python3 scripts/validate.py
+          python3 scripts/check_content_routes.py --require-experiences
+          python3 scripts/build.py
+          python3 - <<'PY'
+          from pathlib import Path
+          size = sum(p.stat().st_size for p in Path('dist').rglob('*') if p.is_file())
+          if size > 900 * 1024 * 1024:
+              raise SystemExit('The website storage guard stopped this update. Review media before publishing.')
+          PY
+      - name: Commit the approved content only
+        id: commit
+        run: |
+          git config user.name 'Foundation photo publisher'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -- content/events/ content/categories/ content/collections/education-profiles.json assets/media/
+          if ! git diff --cached --quiet; then
+            git commit --quiet -m 'Publish approved photo occasion'
+            git push origin HEAD:main
+          fi
+          echo "commit=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: dist
+          retention-days: 1
+
+  deploy:
+    needs: prepare
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy approved photo update
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+  record-result:
+    if: always()
+    needs: [prepare, deploy]
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    env:
+      UPLOADER_URL: ${{ vars.UPLOADER_URL }}
+      UPLOADER_INTERNAL_TOKEN: ${{ secrets.UPLOADER_INTERNAL_TOKEN }}
+      BATCH_ID: ${{ inputs.batch_id }}
+      PUBLISHED_COMMIT: ${{ needs.prepare.outputs.commit }}
+      DEPLOY_RESULT: ${{ needs.deploy.result }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: main
+      - name: Update the private publishing status
+        run: |
+          if [ "$DEPLOY_RESULT" = 'success' ]; then
+            python3 scripts/import_upload.py --batch-id "$BATCH_ID" --complete success --commit "$PUBLISHED_COMMIT"
+          else
+            python3 scripts/import_upload.py --batch-id "$BATCH_ID" --complete failure
+          fi
