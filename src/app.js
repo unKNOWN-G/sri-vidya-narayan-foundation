@@ -161,7 +161,7 @@
     return cache.get(name);
   }
   function heading(title, crumb = "", summary = "") {
-    return `<div class="view-heading"><div><div class="breadcrumb"><a href="#/">Meet Swamiji</a>${crumb ? `<span>/</span>${crumb}` : ""}</div><h1>${esc(title)}</h1></div>${summary ? `<p class="summary">${esc(summary)}</p>` : ""}</div>`;
+    return `<div class="view-heading"><div><h1>${esc(title)}</h1></div>${summary ? `<p class="summary">${esc(summary)}</p>` : ""}</div>`;
   }
   function showError(error) {
     app.innerHTML = `<section class="view"><div class="empty"><div><h1>A moment, please.</h1><p>${esc(error.message || error)}</p><a class="text-link" href="#/">Return to Swamiji’s portraits →</a></div></div></section>`;
@@ -179,11 +179,14 @@
       idleUntil = 0,
       pointer = null,
       suppress = false;
-    app.innerHTML = `<section class="home"><div class="home-intro"><p class="eyebrow">HIS HOLINESS SRI VIDYANARAYANA THIRTHA SWAMIJI</p><h1>A life of wisdom. <em>A world of care.</em></h1></div><div class="portrait-carousel" aria-label="The many sides of Swamiji" aria-roledescription="carousel">${cats.map((c, i) => `<button class="portrait" data-category="${esc(c.id)}" data-index="${i}" aria-label="${esc(c.title + (c.homeContributionTotal ? ` · ${c.homeContributionTotal.approximate ? "approximately " : ""}${formatMoney(c.homeContributionTotal.amount)} recorded support` : ""))}" aria-pressed="${i === 0}" style="--card-accent:${c.theme.accent};--card-paper:${c.theme.surface || "#fffaf1"};--position:${esc(c.position || "50% 35%")}">${photo(c.cover, c.coverAlt || c.title, i === current ? "priority" : "")}${c.homeContributionTotal ? `<b class="portrait-contribution">${c.homeContributionTotal.approximate ? "≈ " : ""}${formatMoney(c.homeContributionTotal.amount)}<small>recorded support</small></b>` : ""}<span><small>${esc(c.eyebrow)}</small><strong>${esc(c.title)}</strong>${c.homeMilestone ? `<b class="portrait-milestone">${esc(c.homeMilestone)}</b>` : ""}</span></button>`).join("")}</div><div class="home-note"><p id="home-caption"></p><div class="home-actions"><a class="button" id="chapter-link" href="#/">Explore this side <span aria-hidden="true">↗</span></a><span class="home-instruction">Swipe a portrait or choose a side below</span></div></div><div class="carousel-controls"><button data-home="previous" aria-label="Previous portrait">←</button><nav class="dots" aria-label="Choose a side of Swamiji’s life">${cats.map((c, i) => `<button data-home-index="${i}" aria-label="Show ${esc(c.title)}" aria-pressed="${i === 0}"><span>${esc(c.shortTitle || c.title)}</span></button>`).join("")}</nav><button data-home="next" aria-label="Next portrait">→</button><button class="play" aria-label="Pause automatic rotation" data-home="play">Ⅱ</button></div></section>`;
+    app.innerHTML = `<section class="home"><div class="home-intro"><h1>A tribute to Sri Vidyanarayana Thirtha Swamiji</h1></div><div class="portrait-carousel" aria-label="The many sides of Swamiji" aria-roledescription="carousel">${cats.map((c, i) => `<button class="portrait" data-category="${esc(c.id)}" data-index="${i}" aria-label="${esc(c.title + (c.homeMilestone ? " · " + c.homeMilestone : "") + (c.homeContributionTotal ? ` · ${c.homeContributionTotal.approximate ? "approximately " : ""}${formatMoney(c.homeContributionTotal.amount)} recorded support` : ""))}" aria-pressed="${i === 0}" style="--card-accent:${c.theme.accent};--card-paper:${c.theme.surface || "#fffaf1"};--position:${esc(c.position || "50% 35%")}"><div class="portrait-image">${photo(c.cover, c.coverAlt || c.title, i === current ? "priority" : "")}${c.homeContributionTotal ? `<b class="portrait-contribution">${c.homeContributionTotal.approximate ? "≈ " : ""}${formatMoney(c.homeContributionTotal.amount)}<small>recorded support</small></b>` : ""}<span class="portrait-open" aria-hidden="true">Explore →</span></div><div class="portrait-copy"><strong>${esc(c.title)}</strong>${c.homeMilestone ? `<b class="portrait-milestone">${esc(c.homeMilestone)}</b>` : ""}</div></button>`).join("")}</div><div class="carousel-controls"><button data-home="previous" aria-label="Previous portrait">←</button><nav class="dots" aria-label="Choose a side of Swamiji’s life">${cats.map((c, i) => `<button data-home-index="${i}" aria-label="Show ${esc(c.title)}" aria-pressed="${i === 0}"><span>${esc(c.shortTitle || c.title)}</span></button>`).join("")}</nav><button data-home="next" aria-label="Next portrait">→</button><button class="play" aria-label="Pause automatic rotation" data-home="play">Ⅱ</button></div></section>`;
     const stage = app.querySelector(".portrait-carousel"),
       cards = [...app.querySelectorAll(".portrait")],
       dots = [...app.querySelectorAll(".dots button")],
       play = app.querySelector(".play");
+    for (const direction of ["previous","next"]) {
+      const arrow=app.querySelector(`[data-home="${direction}"]`); arrow.classList.add("home-arrow", "home-arrow-"+direction); stage.append(arrow);
+    }
     let step = 240,
       raf;
     function label() {
@@ -237,8 +240,8 @@
       const width = Math.max(
         105,
         Math.min(
-          315,
-          stage.clientWidth * (mobile ? 0.64 : 0.27),
+          330,
+          stage.clientWidth * (mobile ? 0.74 : 0.27),
           (stage.clientHeight - 38) / 1.3,
         ),
       );
@@ -255,12 +258,6 @@
       try { sessionStorage.setItem("svnf-home-category", c.id); } catch (_) {}
       if (manual) idleUntil = performance.now() + 15000;
       theme(c);
-      app.querySelector("#home-caption").textContent = c.caption;
-      const invitation = c.id === "his-holiness" ? "Meet" : "Explore", label = c.id === "his-holiness" ? "Swamiji" : c.shortTitle || c.title, chapter = app.querySelector("#chapter-link");
-      chapter.setAttribute("aria-label", invitation + " " + c.title);
-      chapter.innerHTML = `<span class="explore-intro" aria-hidden="true"><span>${esc(invitation)}</span></span><span class="explore-label">${esc(label)}</span><span class="explore-arrow" aria-hidden="true">→</span>`;
-      app.querySelector("#chapter-link").href =
-        c.id === "teachings" ? "#/learn" : "#/category/" + c.id;
       position();
       revealChoice(manual);
       if (manual) announce.textContent = c.title + ". " + c.caption;
@@ -497,6 +494,28 @@
     return `<details class="deck-evidence"><summary>Receipts (${files.length})</summary><div class="deck-evidence-content">${files.map(receipt => `<a href="${href(receipt.src)}" target="_blank" rel="noopener"><strong>${formatMoney(receipt.amount)}</strong><span>${esc(receipt.displayDonor || receipt.donor || receipt.publicEvidenceLabel || receipt.evidenceLabel)}${receipt.date ? `<br>${esc(dateLabel(receipt.date))}` : ""} ↗</span></a>`).join("")}</div></details>`;
   }
 
+  // Purposeful line illustrations for practical teachings, rather than repeated portraits.
+  function teachingArtwork(visual = "compass", label = "Self-inquiry") {
+    const paths = {
+      compass:'<circle cx="60" cy="60" r="39"/><path d="m75 42-9 25-24 11 10-26Z"/><circle cx="60" cy="60" r="3"/>',
+      people:'<circle cx="44" cy="40" r="11"/><circle cx="79" cy="44" r="9"/><path d="M21 88v-9c0-26 46-26 46 0v9m7-23c16-5 25 5 25 18v5M54 99h38"/>',
+      heart:'<path d="M60 91 25 58C3 35 38 10 60 37c22-27 57-2 35 21Z"/>',
+      hand:'<path d="M17 88h19l18 9 45-24c8-5 2-14-5-11L68 73H51m-15 15V61h14l12 9c7 6 14-3 7-9L52 47H34m-17 9h17v38H17Z"/><path d="M77 43c-19-13-9-30 0-20 10-10 20 7 0 20Z"/>',
+      flame:'<path d="M62 17c7 20 35 31 35 53a37 37 0 0 1-74 0c0-17 10-28 20-39 0 17 8 22 13 25 9-11 9-24 6-39Z"/><path d="M61 63c-27 24-13 39 0 39 16 0 24-16 0-39Z"/>',
+      sunrise:'<path d="M17 83h86M32 76a28 28 0 0 1 56 0M60 17v15m-37 3 11 11m63-11L86 46M12 62l15 4m81-4-15 4M32 98h56"/>',
+      leaf:'<path d="M30 88C-1 35 68 11 99 21c-1 54-23 88-69 67ZM24 101l51-54M46 78l-4-20m18 5 20 2"/>',
+      clock:'<circle cx="60" cy="60" r="39"/><path d="M60 35v28l20 12m-20-54v6m39 33h-6M60 99v-6M21 60h6"/>',
+      balance:'<path d="M60 20v78m-22 0h44M25 41l70-9M29 41 14 73h30ZM91 33 76 66h30Z"/><circle cx="60" cy="24" r="5"/>',
+      book:'<path d="M60 35c-14-11-29-14-44-10v65c17-4 31-1 44 10 13-11 27-14 44-10V25c-15-4-30-1-44 10Zm0 0v65M28 42c8 0 14 2 21 5m-21 9c8 0 14 2 21 5m22-14c7-3 13-5 21-5m-21 19c7-3 13-5 21-5"/>',
+      speech:'<path d="M23 26h74v54H57L33 98V80H23Zm16 18h42M39 60h28"/>',
+      steps:'<path d="M16 100h22V77h22V54h22V31h22M31 49l8-16 16 8m-16-8L23 64"/>',
+      lotus:'<path d="M60 20C36 43 36 66 60 86c24-20 24-43 0-66Zm-3 66C26 87 17 64 19 43c18 2 29 10 35 23m9 20c31 1 40-22 38-43-18 2-29 10-35 23M29 99h62"/>',
+      knot:'<path d="m51 74-9 9a20 20 0 0 1-28-28l21-21a20 20 0 0 1 28 0m6 12 9-9a20 20 0 0 1 28 28L85 86a20 20 0 0 1-28 0M42 76l36-36"/>',
+      waves:'<path d="M17 36c14-16 29 16 43 0s29 16 43 0M17 60c14-16 29 16 43 0s29 16 43 0M17 84c14-16 29 16 43 0s29 16 43 0"/>',
+    };
+    return `<div class="teaching-art art-${esc(visual)}"><span>EVERYDAY WISDOM</span><svg viewBox="0 0 120 120" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths[visual] || paths.compass}</svg><em>${esc(label)}</em></div>`;
+  }
+
   function sectionSpotlight({ key, title, items, index = 0, back = "#/", header = "", className = "", wrap = true, onSelect = () => {} }) {
     if (!items.length) return;
     let current = Math.max(0, Math.min(index, items.length - 1));
@@ -506,12 +525,16 @@
       const at = current + delta;
       return wrap ? items[(at + items.length) % items.length].route : items[Math.max(0, Math.min(items.length - 1, at))].route;
     };
-    const picture = (item, at) => item.cover ? photo(item.cover, item.alt || item.title, at === current ? "priority" : "") : `<div class="deck-thought"><span>${esc(item.kicker || "A MOMENT TO REFLECT")}</span><strong>${esc(item.title)}</strong></div>`;
-    app.innerHTML = `<section class="view section-spotlight ${className}" data-back="${esc(back)}" data-deck-session="${performance.now()}"><div class="deck-header">${header || `<h1>${esc(title)}</h1>`}<button class="deck-rotation" type="button"></button></div><div class="deck-scene"><div class="deck-stage" aria-label="${esc(title)}" aria-roledescription="carousel">${items.map((item, at) => `<button type="button" class="deck-card" data-deck-index="${at}" style="--image-ratio:${item.kind === "book" || !item.cover ? .72 : site.imageVariants?.[item.cover] ? Math.max(.52, Math.min(2.5, site.imageVariants[item.cover].width / site.imageVariants[item.cover].height)) : .78}"><div class="deck-picture">${Math.abs(at-current) <= 1 || (current === 0 && at === items.length-1) ? picture(item, at) : ""}</div>${item.badge ? `<span class="deck-date">${esc(item.badge)}</span>` : ""}<span class="deck-preview-label">${esc(item.title)}</span></button>`).join("")}</div><div class="deck-caption spotlight-caption"></div></div>${sceneNavigation(title, items.map(item => ({title:item.title, href:item.route})), current, routeAt(-1), routeAt(1))}</section>`;
+    const picture = (item, at) => item.visual ? teachingArtwork(item.visual, item.visualLabel) : item.cover ? photo(item.cover, item.alt || item.title, at === current ? "priority" : "") : `<div class="deck-thought"><span>${esc(item.kicker || "A MOMENT TO REFLECT")}</span><strong>${esc(item.title)}</strong></div>`;
+    app.innerHTML = `<section class="view section-spotlight ${className}" data-back="${esc(back)}" data-deck-session="${performance.now()}"><div class="deck-header">${header || `<h1>${esc(title)}</h1>`}<button class="deck-rotation" type="button"></button></div><div class="deck-scene"><div class="deck-stage" aria-label="${esc(title)}" aria-roledescription="carousel">${items.map((item, at) => `<button type="button" class="deck-card" data-deck-index="${at}" style="--image-ratio:${item.visual ? .84 : item.kind === "book" || !item.cover ? .72 : site.imageVariants?.[item.cover] ? Math.max(.52, Math.min(2.5, site.imageVariants[item.cover].width / site.imageVariants[item.cover].height)) : .78}"><div class="deck-picture">${Math.abs(at-current) <= 1 || (current === 0 && at === items.length-1) ? picture(item, at) : ""}</div>${item.badge ? `<span class="deck-date">${esc(item.badge)}</span>` : ""}<span class="deck-preview-label">${esc(item.title)}</span><span class="deck-card-open" aria-hidden="true"></span></button>`).join("")}</div><div class="deck-caption spotlight-caption"></div></div>${sceneNavigation(title, items.map(item => ({title:item.title, href:item.route})), current, routeAt(-1), routeAt(1))}</section>`;
     const root = app.querySelector(".section-spotlight"), stage = root.querySelector(".deck-stage"), cards = [...root.querySelectorAll(".deck-card")], caption = root.querySelector(".deck-caption"), rotation = root.querySelector(".deck-rotation");
+    root.classList.toggle("deck-single", items.length === 1);
+    root.querySelector(".scene-navigation").append(rotation);
+    stage.append(root.querySelector(".strip-arrows"));
+    root.querySelector(".strip-count").classList.add("sr-only");
     function controls() {
       rotation.hidden = items.length < 2;
-      rotation.textContent = rotating ? "Pause rotation Ⅱ" : "Rotate collection ↻";
+      rotation.textContent = rotating ? "Ⅱ" : "▷";
       rotation.setAttribute("aria-label", rotating ? "Pause section rotation" : "Resume section rotation");
       rotation.setAttribute("aria-pressed", String(rotating));
     }
@@ -538,6 +561,7 @@
         if (offset > items.length / 2) offset -= items.length;
         const position = offset === 0 ? "front" : offset === -1 ? "left" : offset === 1 ? "right" : "hidden";
         card.dataset.position = position;
+        card.querySelector(".deck-card-open").textContent = i===current ? (item.action?.startsWith("Read") ? "Read →" : item.target ? "Open →" : "Receipts →") : "";
         card.inert = position === "hidden";
         card.tabIndex = position === "front" ? 0 : -1;
         card.setAttribute("aria-pressed", String(i === current));
@@ -545,7 +569,7 @@
         if (position !== "hidden" && !card.querySelector(".deck-picture").children.length) card.querySelector(".deck-picture").innerHTML = picture(items[i], i);
       });
       if (focusCard) cards[current].focus({preventScroll:true});
-      caption.innerHTML = `${item.kicker ? `<p class="deck-kicker">${esc(item.kicker)}</p>` : ""}<h2>${esc(item.title)}</h2>${item.fact ? `<strong class="deck-fact ${item.cash ? "cash-fact" : ""}">${esc(item.fact)}</strong>` : ""}${item.meta ? `<p class="deck-meta">${esc(item.meta)}</p>` : ""}<div class="deck-actions">${item.target ? `<a class="deck-open" href="${href(item.target)}">${esc(item.action || "Open")} →</a>` : ""}${item.evidence || ""}</div>${item.note ? `<p class="deck-source-note">${esc(item.note)}</p>` : ""}`;
+      caption.innerHTML = `${item.kicker ? `<p class="deck-kicker">${esc(item.kicker)}</p>` : ""}<h2>${esc(item.title)}</h2>${item.description ? `<p class="deck-description">${esc(item.description)}</p>` : ""}${item.fact ? `<strong class="deck-fact ${item.cash ? "cash-fact" : ""}">${esc(item.fact)}</strong>` : ""}${item.meta ? `<p class="deck-meta">${esc(item.meta)}</p>` : ""}<div class="deck-actions">${item.evidence || ""}</div>${item.note ? `<p class="deck-source-note">${esc(item.note)}</p>` : ""}`;
       const choices = [...root.querySelectorAll(".occasion-stop")];
       choices.forEach((choice, i) => { if (i === current) choice.setAttribute("aria-current", "page"); else choice.removeAttribute("aria-current"); });
       const active = choices[current], track = root.querySelector(".occasion-track");
@@ -601,7 +625,7 @@
         "#/explore/" + cats[(index - 1 + cats.length) % cats.length].id,
       next = "#/explore/" + after.id,
       target = c.id === "teachings" ? "#/learn" : "#/category/" + c.id;
-    sectionSpotlight({key:"explore",title:"His Life in Action",back:"#/",index,items:cats.map(c=>({id:c.id,title:c.title,cover:c.cover,alt:c.coverAlt,route:"#/explore/"+c.id,target:c.id==="teachings"?"#/learn":"#/category/"+c.id,action:c.id==="teachings"?"Learn from Swamiji":"Explore this side",fact:c.homeMilestone||"",theme:c})),onSelect:item=>deckMemory.set("explore",item.id)});
+    sectionSpotlight({key:"explore",title:"His Life in Action",back:"#/",index,items:cats.map(c=>({id:c.id,title:c.title,description:c.caption,cover:c.cover,alt:c.coverAlt,route:"#/explore/"+c.id,target:c.id==="teachings"?"#/learn":"#/category/"+c.id,action:c.id==="teachings"?"Learn from Swamiji":"Explore this side",fact:c.homeMilestone||"",theme:c})),onSelect:item=>deckMemory.set("explore",item.id)});
   }
 
   async function category(id, selectedTab, selectedId) {
@@ -644,7 +668,7 @@
     if(token!==routeToken)return;
     sectionSpotlight({key:"category/"+id,title:c.title,back:"#/",index,items:events.map(e=>{
       const first=ledger?.records.find(r=>e.supportRecordIds?.includes(r.id)),support=first?contributionScenes(ledger,first.category).find(r=>r.receipts.some(receipt=>receipt.id===first.id)):null;
-      return {id:e.id,title:e.frontTitle||e.title,cover:e.cover,alt:e.coverAlt||e.title,route:base+e.id,
+      return {id:e.id,title:e.frontTitle||e.title,description:e.cardDescription||e.description.split(/(?<=[.!?])\s/)[0],cover:e.cover,alt:e.coverAlt||e.title,route:base+e.id,
         target:support?"":"#/event/"+e.id,action:e.id==="swamiji-stuti"?"Read the Stuti":support?"View receipts":"View photographs",
         meta:e.cardMeta||[e.location,e.date?dateLabel(e.date):e.year].filter(Boolean).join(" · "),
         fact:support?(support.approximate?"≈ ":"")+formatMoney(support.amount):e.id==="portrait-and-journey"?"52 Chaturmasyas completed":"",cash:!!support,evidence:support?deckEvidence(support.receipts):"",
@@ -669,7 +693,7 @@
     const base = "#/category/education/schools/";
     sectionSpotlight({key:"education",title:c.title,back:"#/",index,items:profiles.map(p=>{
       const e=getEvent(p.eventId),rs=p.recordIds.map(id=>ledger.records.find(r=>r.id===id)).filter(Boolean),cash=rs.reduce((n,r)=>n+r.amount,0);
-      return {id:p.id,title:p.title,cover:p.cover||e?.cover,alt:p.coverAlt||p.title,route:base+p.id,
+      return {id:p.id,title:p.title,description:p.intro||p.description,cover:p.cover||e?.cover,alt:p.coverAlt||p.title,route:base+p.id,
         target:e?.presentation!=="service-story"?"#/event/"+e.id:"",action:e?.presentation!=="service-story"?"View photographs":"View receipts",
         fact:rs.length?(rs.some(r=>r.approximate||r.reported)?"≈ ":"")+formatMoney(cash):p.contributionText,cash:rs.length>0,
         meta:p.id==="gollapalli"?"Land donated in 2004":p.id==="sgdc-college"?"Madanapalle":"",
@@ -682,7 +706,7 @@
   function foundationView(connect = false) {
     const c = getCategory("foundation");
     theme(c);
-    sectionSpotlight({key:"foundation",title:"The Foundation",back:"#/",items:[{id:"foundation",title:"Sri Vidya Narayan Foundation",cover:c.cover,route:"#/foundation",target:"#/foundation/connect",action:"Contact the foundation",meta:"Inspired by Swamiji’s example",evidence:'<a class="deck-open" href="#/explore">Service and contributions →</a>'}]});
+    sectionSpotlight({key:"foundation",title:"The Foundation",back:"#/",items:[{id:"foundation",title:"Sri Vidya Narayan Foundation",description:"Spiritual learning and service, inspired by Swamiji’s life and guidance.",cover:c.cover,route:"#/foundation",target:"#/foundation/connect",action:"Contact the foundation",meta:"Inspired by Swamiji’s example",evidence:'<a class="deck-open" href="#/explore">Service and contributions →</a>'}]});
     if(connect) app.insertAdjacentHTML("beforeend",`<dialog class="scene-index contact-dialog" id="contact-dialog" open><div class="index-head"><p class="eyebrow">A CONVERSATION IS A BEGINNING</p><a href="#/foundation" aria-label="Close contact details">×</a></div><h2>Let’s serve together.</h2><p>For current needs, volunteering and contribution guidance, speak with the foundation team.</p><a class="contact-link" href="mailto:${esc(site.foundation.email)}">${esc(site.foundation.email)}</a><a class="contact-link" href="tel:${esc(site.foundation.phone.replace(/[^+\d]/g,""))}">${esc(site.foundation.phone)}</a><p>${esc(site.foundation.office)}</p><a class="text-link" href="#/category/compassion">Care for all life →</a></dialog>`);
   }
 
@@ -838,7 +862,7 @@
       });
     } else {
       ++mediaRequest;
-      app.innerHTML = `<section class="view cinema-view" data-event="${esc(id)}" data-gallery-session="${performance.now()}"><div class="cinema-heading"><a class="back-story" href="${href(parent)}">← ${esc(event.backLabel || getCategory(event.category)?.title || "Back to the story")}</a><p>${esc([event.location, event.date ? dateLabel(event.date) : event.year].filter(Boolean).join(" · "))}</p><h1>${esc(event.title)}</h1></div>${mediaTabs(event, type)}<div class="cinema-body"><div class="cinema-stage"><div class="cinema-backdrop" style="background-image:url('${href(item?.poster || event.cover)}')"></div>${frame}<div class="cinema-arrows"><a href="#${prev}" aria-label="Previous moment" ${index === 0 ? 'aria-disabled="true" tabindex="-1"' : ""}>←</a><a href="#${next}" aria-label="Next moment" ${index === media.length - 1 ? 'aria-disabled="true" tabindex="-1"' : ""}>→</a></div></div><aside class="cinema-caption">${caption}</aside></div><div class="moment-ribbon" aria-label="Choose a moment">${ribbon}</div><dialog class="full-moment" id="full-moment" aria-label="Full photograph"><div><button type="button" data-action="close-full-moment">← Back to photographs</button><button type="button" data-action="close-full-moment" aria-label="Close full photograph">×</button></div><img alt=""></dialog></section>`;
+      app.innerHTML = `<section class="view cinema-view" data-event="${esc(id)}" data-gallery-session="${performance.now()}"><div class="cinema-heading"><p>${esc([event.location, event.date ? dateLabel(event.date) : event.year].filter(Boolean).join(" · "))}</p><h1>${esc(event.title)}</h1></div>${mediaTabs(event, type)}<div class="cinema-body"><div class="cinema-stage"><div class="cinema-backdrop" style="background-image:url('${href(item?.poster || event.cover)}')"></div>${frame}<div class="cinema-arrows"><a href="#${prev}" aria-label="Previous moment" ${index === 0 ? 'aria-disabled="true" tabindex="-1"' : ""}>←</a><a href="#${next}" aria-label="Next moment" ${index === media.length - 1 ? 'aria-disabled="true" tabindex="-1"' : ""}>→</a></div></div><aside class="cinema-caption">${caption}</aside></div><div class="moment-ribbon" aria-label="Choose a moment">${ribbon}</div><dialog class="full-moment" id="full-moment" aria-label="Full photograph"><div><button type="button" data-action="close-full-moment">← Back to photographs</button><button type="button" data-action="close-full-moment" aria-label="Close full photograph">×</button></div><img alt=""></dialog></section>`;
       bindSequence(
         () => activeMedia.previous,
         () => activeMedia.next,
@@ -910,7 +934,7 @@
     ];
     const selected=choices.findIndex(c=>c.id===(selectedId||deckMemory.get("learn")));
     sectionSpotlight({key:"learn",title:"Learn Swamiji’s Teachings",back:"#/",index:Math.max(0,selected),items:choices.map(c=>({
-      id:c.id,title:c.title,cover:c.cover,route:"#/learn/"+c.id,target:c.href,
+      id:c.id,title:c.title,description:c.description,cover:c.cover,visual:c.id==="teachings"?"compass":"",visualLabel:"Wisdom in daily life",route:"#/learn/"+c.id,target:c.href,
       action:c.id==="books"?"Choose a book":c.id==="messages"?"Open the cards":c.id==="readings"?"Read a Satsang":"Read a teaching",
       fact:c.id==="books"?"8 spiritual books published":"",meta:c.id==="readings"?"A reflection for your day":c.id==="messages"?"Messages and blessings":"",
     })),onSelect:item=>deckMemory.set("learn",item.id)});
@@ -937,7 +961,7 @@
     }
     if (name === "teachings") {
       const selectedIndex=entries.findIndex(e=>String(e.id) === (selected||deckMemory.get("teachings")));
-      sectionSpotlight({key:"practical-teachings",title:"Everyday Teachings",index:Math.max(0,selectedIndex),back:"#/learn",items:entries.map(e=>({id:e.id,title:e.title,cover:getCategory("teachings").cover,route:"#/library/teachings/"+e.id,target:"#/read/teachings/"+e.id,action:"Read this teaching",kicker:"BRING IT INTO YOUR DAY",meta:"An edited practical reflection"})),onSelect:item=>deckMemory.set("teachings",item.id)});
+      sectionSpotlight({key:"practical-teachings",title:"Everyday Teachings",index:Math.max(0,selectedIndex),back:"#/learn",items:entries.map(e=>({id:e.id,title:e.title||e.caption,description:e.meaning.split(/(?<=[.!?])\s/)[0],visual:e.visual,visualLabel:e.visualLabel,route:"#/library/teachings/"+e.id,target:"#/read/teachings/"+e.id,action:"Read this teaching",meta:"An edited practical reflection"})),onSelect:item=>deckMemory.set("teachings",item.id)});
       return;
     }
     const all = entries.slice();
@@ -972,7 +996,7 @@
       const toolbar=app.querySelector(".satsang-tools"), search=toolbar.querySelector(".satsang-search").outerHTML, topic=toolbar.querySelector(".satsang-topic").outerHTML, dates=toolbar.querySelector(".satsang-calendar").outerHTML;
       toolbar.innerHTML=dates+`<details class="deck-find"><summary aria-label="Find a Satsang"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="10" cy="10" r="6"/><path d="m15 15 5 5"/></svg><span>Find</span></summary><div class="deck-find-panel">${search}${topic}</div></details>`;
       const tools=app.querySelector(".satsang-top").outerHTML+app.querySelector(".satsang-filter-note").outerHTML;
-      sectionSpotlight({key:"satsangs",title:"Satsangs",className:"satsang-view",header:tools,index,wrap:false,back:"#/learn",items:matches.map(e=>({id:e.id,title:e.title,cover:getCategory("teachings").cover,route:route(e),target:"#/read/readings/"+e.id,action:"Read this Satsang",badge:dateLabel(e.date),meta:"Edited Satsang reflection"})),onSelect:(entry,i)=>{state.page=i;}});
+      sectionSpotlight({key:"satsangs",title:"Satsangs",className:"satsang-view",header:tools,index,wrap:false,back:"#/learn",items:matches.map(e=>({id:e.id,title:e.title,description:e.lead,cover:getCategory("teachings").cover,route:route(e),target:"#/read/readings/"+e.id,action:"Read this Satsang",badge:dateLabel(e.date),meta:"Edited Satsang reflection"})),onSelect:(entry,i)=>{state.page=i;}});
     }
     const calendar = app.querySelector(".satsang-calendar"),
       calendarPanel = app.querySelector(".satsang-calendar-panel"),
@@ -1050,7 +1074,7 @@
       0,
       books.findIndex((e) => e.id === (selected || deckMemory.get("books"))),
     );
-    sectionSpotlight({key:"books",title:"Spiritual Books",back:"#/learn",index,items:books.map(b=>({id:b.id,title:b.title,cover:b.cover,kind:"book",route:"#/library/books/"+b.id,target:b.reader?"reading-room.html?open=1":"#/read/books/"+b.id,action:b.reader?"Open the book":"About this book",meta:b.reader?"180 pearls · Read and reflect":b.subtitle||""})),onSelect:item=>deckMemory.set("books",item.id)});
+    sectionSpotlight({key:"books",title:"Spiritual Books",back:"#/learn",index,items:books.map(b=>({id:b.id,title:b.title,description:b.reader?"180 teachings to read, reflect upon and bring into everyday life.":b.subtitle||b.attribution,cover:b.cover,kind:"book",route:"#/library/books/"+b.id,target:b.reader?"reading-room.html?open=1":"#/read/books/"+b.id,action:b.reader?"Open the book":"About this book",meta:""})),onSelect:item=>deckMemory.set("books",item.id)});
   }
 
   async function reader(name, id) {
@@ -1082,7 +1106,7 @@
       body = `<h1>${esc(title)}</h1><h2>What it means</h2>${paragraphs(item.meaning)}<h2>Put it into practice</h2><ul>${(item.actions || []).map((x) => `<li>${esc(x)}</li>`).join("")}</ul><p class="source-note">${esc(data.editorialNote || "A practical paraphrase from the available satsang summaries, including devotees’ reflections. Not a direct quotation.")}</p>`;
     else if (name === "books")
       body = `<h1>${esc(title)}</h1><p class="lead">${esc(item.subtitle || "Teachings to read, reflect upon, and bring into everyday life.")}</p><p>${esc(item.attribution || "A compilation of Swamiji’s teachings.")}</p>${item.coverNote ? `<p class="source-note">${esc(item.coverNote)}</p>` : ""}${item.reader ? `<a class="button" href="#/library/${esc(item.reader)}">Open the reading edition →</a>` : ""}${item.purchaseUrl ? `<a class="button" href="${href(item.purchaseUrl)}" target="_blank" rel="noopener">View the book ↗</a><p class="source-note">Edition and availability depend on the seller and location.</p>` : ""}`;
-    app.innerHTML = `<section class="view">${heading(name === "readings" ? dateLabel(item.date) : name === "books" ? "The book collection" : libNames[name], `<a href="#/library/${esc(name)}">${esc(libNames[name])}</a>`)}<div class="reader-layout"><aside class="reader-aside">${photo(item.cover || getCategory("teachings").cover, title)}<div class="reader-controls"><span>Reading size</span><button data-action="reader-size" data-delta="-1" aria-label="Decrease reading text size">A−</button><button data-action="reader-size" data-delta="1" aria-label="Increase reading text size">A+</button></div><p>A little time to read.<br>A little space to reflect.</p><span class="tag">${name === "readings" ? dateLabel(item.date) : libNames[name]}</span></aside><article class="reader-scroll" tabindex="0" aria-label="Reading"><p class="reader-position">${list.indexOf(item)+1} of ${list.length} · ${name === "readings" ? "Edited Satsang reflection" : esc(libNames[name])}</p>${body}<nav class="reader-next" aria-label="Continue reading">${list.indexOf(item) > 0 ? `<a href="#/read/${name}/${esc(list[list.indexOf(item) - 1].id || list[list.indexOf(item) - 1].number)}">← Previous</a>` : ""}<a href="#/library/${name}${name === "readings" ? "/" + esc(item.id) : ""}">Back to ${esc(libNames[name])}</a>${list.indexOf(item) < list.length - 1 ? `<a href="#/read/${name}/${esc(list[list.indexOf(item) + 1].id || list[list.indexOf(item) + 1].number)}">Next →</a>` : ""}</nav></article></div></section>`;
+    app.innerHTML = `<section class="view">${heading(name === "readings" ? dateLabel(item.date) : name === "books" ? "The book collection" : libNames[name], `<a href="#/library/${esc(name)}">${esc(libNames[name])}</a>`)}<div class="reader-layout"><aside class="reader-aside">${name === "teachings" ? teachingArtwork(item.visual,item.visualLabel) : photo(item.cover || getCategory("teachings").cover, title)}<div class="reader-controls"><span>Reading size</span><button data-action="reader-size" data-delta="-1" aria-label="Decrease reading text size">A−</button><button data-action="reader-size" data-delta="1" aria-label="Increase reading text size">A+</button></div><p>A little time to read.<br>A little space to reflect.</p><span class="tag">${name === "readings" ? dateLabel(item.date) : libNames[name]}</span></aside><article class="reader-scroll" tabindex="0" aria-label="Reading"><p class="reader-position">${list.indexOf(item)+1} of ${list.length} · ${name === "readings" ? "Edited Satsang reflection" : esc(libNames[name])}</p>${body}<nav class="reader-next" aria-label="Continue reading">${list.indexOf(item) > 0 ? `<a href="#/read/${name}/${esc(list[list.indexOf(item) - 1].id || list[list.indexOf(item) - 1].number)}">← Previous</a>` : ""}<a href="#/library/${name}${name === "readings" ? "/" + esc(item.id) : ""}">Back to ${esc(libNames[name])}</a>${list.indexOf(item) < list.length - 1 ? `<a href="#/read/${name}/${esc(list[list.indexOf(item) + 1].id || list[list.indexOf(item) + 1].number)}">Next →</a>` : ""}</nav></article></div></section>`;
   }
   async function messageView(id) {
     location.replace("message-cards.html?open=" + encodeURIComponent(id));
@@ -1131,7 +1155,7 @@
     theme(c);
     sectionSpotlight({key:"support/"+source.category,title:c.title,back:source.category==="education"?"#/category/education":"#/",index,items:records.map(r=>{
       const p=profiles.find(p=>p.recordIds.includes(r.receipts[0].id)),e=getEvent(p?.eventId||links.records?.[r.receipts[0].id]?.eventIds?.[0]);
-      return {id:r.id,eventId:e?.id,title:p?.title||r.navigationTitle||e?.frontTitle||r.recipient,cover:p?.cover||e?.cover,route:"#/record/"+r.id,
+      return {id:r.id,eventId:e?.id,title:p?.title||r.navigationTitle||e?.frontTitle||r.recipient,description:p?.intro||p?.description||e?.cardDescription||e?.description.split(/(?<=[.!?])\s/)[0],cover:p?.cover||e?.cover,route:"#/record/"+r.id,
         target:e&&e.presentation!=="service-story"?"#/event/"+e.id:"",action:e&&e.presentation!=="service-story"?"View photographs":"View receipts",
         fact:(r.approximate?"≈ ":"")+formatMoney(r.amount),cash:true,meta:"",
         evidence:deckEvidence(r.receipts),
@@ -1152,12 +1176,12 @@
     document.querySelector('meta[property="og:description"]').content = summary;
     document.querySelector('meta[property="og:url"]').content = location.href;
     document.querySelectorAll(".masthead nav a").forEach(link => {
-      const route = link.getAttribute("href"), selected = route === "#/" ? !parts.length : route === "#/learn" ? ["learn","library","read"].includes(parts[0]) : route === "#/explore" ? ["explore","category","event","record"].includes(parts[0]) : parts[0] === "foundation";
+      const route = link.getAttribute("href"), selected = route === "#/" ? !parts.length : route === "#/learn" ? ["learn","library","read"].includes(parts[0]) : route === "#/explore" ? ["explore","category","event","record"].includes(parts[0]) : route === "#/foundation/connect" ? parts[0] === "foundation" && parts[1] === "connect" : route === "#/foundation" ? parts[0] === "foundation" && parts[1] !== "connect" : route === "#/about" && parts[0] === "about";
       if (selected) link.setAttribute("aria-current", "page"); else link.removeAttribute("aria-current");
     });
     const back = document.querySelector("#back-view"), parent = parentRoute();
     const parentName = parent === "#/" ? "Home" : parent.startsWith("#/category/") ? getCategory(parent.split('/')[2])?.shortTitle || "section" : parent.startsWith("#/library/") ? libNames[parent.split('/')[2]] : parent === "#/learn" ? "Teachings" : "Foundation";
-    back.textContent = parentName === "Home" ? "← Back" : "← " + parentName; back.setAttribute("aria-label", "Back to " + parentName);
+    back.textContent = "← Back"; back.setAttribute("aria-label", "Back to " + parentName);
     app.querySelectorAll('a[href^="#/"]').forEach(link => {
       const walker = document.createTreeWalker(link, NodeFilter.SHOW_TEXT);
       while (walker.nextNode()) walker.currentNode.textContent = walker.currentNode.textContent.replace(/↗/g, "→");
@@ -1177,6 +1201,7 @@
     document.querySelector("#back-view").hidden = !nextParts.length;
     document.querySelector(".start-link").hidden = !nextParts.length;
     document.body.classList.toggle("inside-experience", nextParts.length > 0);
+    document.querySelector("#share-view").hidden = !nextParts.length;
     if (activeSpotlight && !document.querySelector("dialog[open]") && app.contains(activeSpotlight.root) && activeSpotlight.signature === deckSignature() && activeSpotlight.routes.has(location.hash)) {
       activeSpotlight.show(activeSpotlight.routes.get(location.hash));
       finishNavigation(nextParts, false);
@@ -1201,11 +1226,7 @@
     app.querySelectorAll("video,audio").forEach((e) => e.pause());
     const parts = routeParts();
     restoreScope(parts);
-    document.querySelector(".masthead nav").classList.remove("open");
-    document
-      .querySelector(".mobile-menu")
-      .setAttribute("aria-expanded", "false");
-    document.querySelector(".mobile-menu").setAttribute("aria-label", "Open navigation");
+    window.foundationShell.closeMenu();
     try {
       if (!parts.length) home();
       else if (parts[0] === "explore") explore(parts[1]);
@@ -1343,7 +1364,7 @@
     if (parts[0] === "library" && parts[1] === "readings" && parts[2]) route = "#/read/readings/" + parts[2];
     if (parts[0] === "foundation") route = "#/foundation";
     const url = site.sharePages?.[route] ? new URL(site.sharePages[route], location.href).href : location.href;
-    try { await navigator.clipboard.writeText(url); announce.textContent = "Link copied"; document.querySelector("#share-view").textContent = "Copied"; setTimeout(() => { document.querySelector("#share-view").textContent = "Share"; }, 2000); }
+    try { await navigator.clipboard.writeText(url); announce.textContent = "Link copied"; document.querySelector("#share-view").textContent = "Copied"; setTimeout(() => { document.querySelector("#share-view").textContent = "Copy a link to this page"; }, 2000); }
     catch (_) { announce.textContent = "Copy this page’s address from your browser to share it."; }
   });
   document.querySelector("#back-view").addEventListener("click", () => {
@@ -1352,22 +1373,6 @@
   document.querySelector(".skip").addEventListener("click", (e) => {
     e.preventDefault();
     app.focus({ preventScroll: true });
-  });
-  document.querySelector(".mobile-menu").addEventListener("click", () => {
-    const nav = document.querySelector(".masthead nav"),
-      button = document.querySelector(".mobile-menu");
-    const open = nav.classList.toggle("open");
-    button.setAttribute("aria-expanded", String(open));
-    button.setAttribute("aria-label", open ? "Close navigation" : "Open navigation");
-  });
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") {
-      document.querySelector(".masthead nav").classList.remove("open");
-      document
-        .querySelector(".mobile-menu")
-        .setAttribute("aria-expanded", "false");
-    document.querySelector(".mobile-menu").setAttribute("aria-label", "Open navigation");
-    }
   });
   window.addEventListener("hashchange", render);
   matchMedia("(max-width: 750px)").addEventListener("change", () => {

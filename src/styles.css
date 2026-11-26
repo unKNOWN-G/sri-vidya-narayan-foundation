@@ -209,21 +209,6 @@ img {
   outline: none;
   overflow: hidden;
 }
-.site-footer {
-  position: relative;
-  z-index: 2;
-  flex: 0 0 31px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 clamp(22px, 4vw, 70px);
-  font-size: 8px;
-  color: var(--muted);
-  border-top: 1px solid var(--line);
-}
-.site-footer a:hover {
-  text-decoration: underline;
-}
 .loading,
 .empty {
   display: grid;
@@ -1052,15 +1037,6 @@ img {
     padding: 7px 10px;
     border-radius: 3px;
   }
-  .site-footer {
-    font-size: 6px;
-    padding-inline: 20px;
-    flex-basis: 28px;
-  }
-  .site-footer > span {
-    max-width: 240px;
-    line-height: 1.5;
-  }
   .home-intro {
     padding-top: 20px;
   }
@@ -1403,10 +1379,6 @@ img {
   .media-side p {
     font-size: 9px;
   }
-  .site-footer {
-    padding-inline: 17px;
-    font-size: 5px;
-  }
 }
 @media (max-height: 700px) {
   .masthead {
@@ -1429,9 +1401,6 @@ img {
   }
   .carousel-controls {
     flex-basis: 35px;
-  }
-  .site-footer {
-    flex-basis: 25px;
   }
   .view {
     padding-top: 13px;

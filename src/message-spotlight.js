@@ -55,6 +55,7 @@
     const button = el('button', '', `spotlight-entry theme-${card.theme}`); button.type = 'button';
     const back = el('span', '', 'spotlight-card-back'); back.setAttribute('aria-hidden','true');
     button.append(back, page(card, 1, 'spotlight-card-front'));
+    const hint=el('span','Open →','card-open-hint');hint.setAttribute('aria-hidden','true');button.append(hint);
     const choice=el('button','','message-occasion-stop');choice.type='button';choice.setAttribute('aria-label',`${i+1}. ${card.title}`);choice.append(el('span',String(i+1).padStart(2,'0'),'message-occasion-number'),el('span',card.title,'message-occasion-title'));choice.addEventListener('click',()=>{setRotation(false);select(i);});chooser.append(choice);
     button.addEventListener('click', () => {
       setRotation(false);
@@ -76,12 +77,14 @@
     stage.setAttribute('aria-labelledby','spotlight-title');
     document.querySelector('#spotlight-count').textContent = `${String(selected+1).padStart(2,'0')} / ${String(samples.length).padStart(2,'0')}`;
     document.querySelector('#spotlight-title').textContent = samples[selected].title;
-    document.querySelector('#spotlight-description').textContent = samples[selected].description;
+    document.querySelector('#spotlight-description').textContent = samples[selected].description || '';
     fitSpotlight();
   }
   function fitSpotlight() {
     const caption = stage.querySelector('.spotlight-caption');
-    stage.style.setProperty('--card-height',`${Math.max(110,Math.min(385,stage.clientHeight-caption.offsetHeight-40))}px`);
+    const height=Math.max(110,Math.min(385,stage.clientHeight-caption.offsetHeight-40));
+    stage.style.setProperty('--card-height',`${height}px`);
+    stage.style.setProperty('--card-top',`${Math.max(12,(stage.clientHeight-height-caption.offsetHeight-24)/2)}px`);
   }
   const spotlightLayout = new ResizeObserver(fitSpotlight);
   spotlightLayout.observe(stage);spotlightLayout.observe(stage.querySelector('.spotlight-caption'));
@@ -89,7 +92,8 @@
     rotating = enabled && !reduced.matches; if (rotating) hovered = false; clearInterval(timer); timer = null;
     try { sessionStorage.setItem('svnf-message-rotation', rotating ? 'playing' : 'paused'); } catch (_) {}
     rotation.setAttribute('aria-pressed', String(rotating));
-    rotation.textContent = rotating ? 'Pause rotation  Ⅱ' : 'Rotate collection  ↻';
+    rotation.textContent = rotating ? 'Ⅱ' : '▷';
+    rotation.setAttribute('aria-label',rotating?'Pause message rotation':'Resume message rotation');
     if (rotating) timer = setInterval(() => {if (!hovered && !dialog.open && !document.hidden) select(selected+1);}, 10000);
   }
   chooser.addEventListener('wheel',event=>{if(!event.ctrlKey&&Math.abs(event.deltaY)>Math.abs(event.deltaX)&&chooser.scrollWidth>chooser.clientWidth){event.preventDefault();chooser.scrollLeft+=event.deltaY*(event.deltaMode===1?18:1);}},{passive:false});

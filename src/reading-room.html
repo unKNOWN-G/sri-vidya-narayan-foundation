@@ -11,6 +11,7 @@
     <title>Pearls of Wisdom — Read with Swamiji</title>
     <link rel="stylesheet" href="standalone-experiences.css" />
     <link rel="stylesheet" href="pearls-reader.css" />
+    <script src="site-shell.js" defer></script>
     <script src="pearls-data.js" defer></script>
     <script src="pearls-reader.js" defer></script>
     <link rel="stylesheet" href="reader-refinements.css" />
@@ -20,6 +21,7 @@
     <meta property="og:url" content="https://unknown-g.github.io/sri-vidya-narayan-foundation/reading-room.html" />
     <meta property="og:image" content="https://unknown-g.github.io/sri-vidya-narayan-foundation/assets/media/his-holiness/portrait-and-journey/foundation-5.webp" />
     <meta name="twitter:card" content="summary_large_image" />
+    <link rel="stylesheet" href="minimal-shell.css" />
   </head>
   <body data-theme="paper">
     <a class="skip" href="#reader-main">Skip to book</a>
@@ -37,15 +39,8 @@
         aria-labelledby="welcome-title"
       >
         <div class="welcome-copy">
-          <p class="overline">THE WISDOM OF SRI SWAMIJI</p>
-          <h1 id="welcome-title">
-            Simple words.<br /><em>A deeper way<br />to live.</em>
-          </h1>
-          <p class="welcome-description">
-            A moment to pause. A thought to carry.<br />Discover 180 life
-            lessons from Swamiji’s<br class="desktop-break" />
-            <i>Pearls of Wisdom.</i>
-          </p>
+          <h1 id="welcome-title">Pearls of Wisdom</h1>
+          <p class="welcome-description">180 teachings to read and reflect upon.</p>
           <div class="welcome-actions">
             <button class="primary" id="begin-reading">
               Open the book <span>→</span></button
@@ -71,8 +66,6 @@
             width="600"
             height="840"
           /><span class="cover-hint">OPEN · READ · REFLECT</span></button
-        ><span class="welcome-bottom"
-          >ONE LESSON AT A TIME. A LITTLE CLOSER TO YOURSELF.</span
         >
       </section>
       <section
@@ -178,11 +171,6 @@
               aria-label="Go to lesson" /></label
           ><button id="share-pearl">Copy lesson link</button>
         </div>
-        <p class="reading-help">
-          Use the arrows or swipe to turn a page.<span>
-            Your place is saved on this device.</span
-          >
-        </p>
         <p class="end-note" id="end-note" hidden>
           You have reached the last pearl. Return to a favourite, or
           <button id="read-again">begin again →</button>.
@@ -1247,11 +1235,6 @@
         </section></noscript
       >
     </main>
-    <footer class="edition-note">
-      Retypeset from Swamiji’s <i>Pearls of Wisdom</i> (2021). Original order
-      retained; spacing, punctuation and capitalisation lightly standardised.
-      <button id="about-edition">About this edition</button>
-    </footer>
     <dialog id="contents-dialog" aria-labelledby="contents-title">
       <header>
         <div>

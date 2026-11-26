@@ -1,4 +1,13 @@
-# Current design and navigation decisions
+# Latest interface update · 26 November 2026
+
+- Footer-free layout across home, inner sections, book and folded-card experiences. Share, contact, About and book edition information live in the More menu.
+- Homepage shows a slim brand header, one short tribute line, portrait carousel and one named-tab/pause row. The active card opens its section; there is no separate description or Explore button. Milestones and contribution totals remain on their cards.
+- Inner cards retain concise factual descriptions, authentic titles, prominent amounts and receipt attachments. Descriptions use education-profile introductions, event `cardDescription` (or the event account), and reading leads. Keep context; minimal does not mean empty.
+- Everyday Teachings uses subject-specific line illustrations (`visual` and `visualLabel` in the canonical teachings collection) rather than repeating one Swamiji photograph. Preserve the teaching caption as the discovery title. These are visual symbols, not photographs or attributed artwork by Swamiji.
+- Phones use swipe and named bottom tabs with pause. Desktop arrows appear on hover/focus. Active cards show an Open/Read/Explore cue on focus/hover, always visible on touch. Back/Home remain accessible inside sections.
+- Shared shell: `src/site-shell.js` and `src/minimal-shell.css`. Escape closes More without also leaving a section. Original book opening/page turns, folded cards, calendar filters, in-place galleries and complete receipt pages remain intact.
+
+## Earlier content and navigation decisions
 
 - Keep the earlier light, context-sensitive palettes. The full forest-green redesign was rejected and is not part of the published design.
 - Latest direction: every inner discovery section uses the Anugraha Bhashanams format: one centred card, softly visible neighbouring cards from that same section, a short caption and a numbered bottom strip. Keep Back/Home; do not introduce cross-cause previews.

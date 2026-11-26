@@ -10,7 +10,9 @@
       "actions": [
         "Make a little quiet time to ask what truly guides your life.",
         "Notice when status or possessions begin to define your sense of worth."
-      ]
+      ],
+      "visual": "compass",
+      "visualLabel": "Self-inquiry"
     },
     {
       "id": "teaching-02",
@@ -20,7 +22,9 @@
       "actions": [
         "Offer the same courtesy to people in every occupation.",
         "Include someone you might otherwise overlook."
-      ]
+      ],
+      "visual": "people",
+      "visualLabel": "Oneness"
     },
     {
       "id": "teaching-03",
@@ -30,7 +34,9 @@
       "actions": [
         "Do something caring without expecting a favour in return.",
         "Ask whether your help supports another person or seeks to control them."
-      ]
+      ],
+      "visual": "heart",
+      "visualLabel": "Unconditional love"
     },
     {
       "id": "teaching-04",
@@ -40,7 +46,9 @@
       "actions": [
         "Listen to what a person needs before deciding how to help.",
         "Offer one useful form of support within your capacity."
-      ]
+      ],
+      "visual": "hand",
+      "visualLabel": "Compassion in action"
     },
     {
       "id": "teaching-05",
@@ -50,7 +58,9 @@
       "actions": [
         "Bring a worry into prayer and identify the responsibility you can fulfil.",
         "Practise trust alongside alertness and thoughtful judgment."
-      ]
+      ],
+      "visual": "compass",
+      "visualLabel": "Faith and discernment"
     },
     {
       "id": "teaching-06",
@@ -60,7 +70,9 @@
       "actions": [
         "Notice a demand for recognition or control that you can release.",
         "Offer your next task with care and without bargaining for a reward."
-      ]
+      ],
+      "visual": "lotus",
+      "visualLabel": "Surrender"
     },
     {
       "id": "teaching-07",
@@ -70,7 +82,9 @@
       "actions": [
         "Complete a helpful task that receives little attention.",
         "Bring the same care to service that you bring to prayer."
-      ]
+      ],
+      "visual": "flame",
+      "visualLabel": "Devotion through service"
     },
     {
       "id": "teaching-08",
@@ -80,7 +94,9 @@
       "actions": [
         "Set aside something you can responsibly share with others.",
         "Give respectfully and without making the recipient feel small."
-      ]
+      ],
+      "visual": "hand",
+      "visualLabel": "Generosity"
     },
     {
       "id": "teaching-09",
@@ -90,7 +106,9 @@
       "actions": [
         "Give your full attention to the responsibility before you.",
         "Review the quality of your effort as well as the outcome."
-      ]
+      ],
+      "visual": "sunrise",
+      "visualLabel": "Sincere duty"
     },
     {
       "id": "teaching-10",
@@ -100,7 +118,9 @@
       "actions": [
         "Honour the time and task you have agreed to.",
         "If circumstances change, communicate clearly and arrange the next responsible step."
-      ]
+      ],
+      "visual": "knot",
+      "visualLabel": "Dependability"
     },
     {
       "id": "teaching-11",
@@ -110,7 +130,9 @@
       "actions": [
         "Pause before making a promise you may not fulfil.",
         "Check whether your actions reflect the values you speak about."
-      ]
+      ],
+      "visual": "balance",
+      "visualLabel": "Integrity"
     },
     {
       "id": "teaching-12",
@@ -120,7 +142,9 @@
       "actions": [
         "Give an important responsibility a clear place in your day.",
         "Reduce one distraction that repeatedly takes time from your priorities."
-      ]
+      ],
+      "visual": "clock",
+      "visualLabel": "The gift of time"
     },
     {
       "id": "teaching-13",
@@ -130,7 +154,9 @@
       "actions": [
         "Take a quiet moment before replying in a difficult conversation.",
         "Ask what response would help the situation move forward."
-      ]
+      ],
+      "visual": "waves",
+      "visualLabel": "A thoughtful response"
     },
     {
       "id": "teaching-14",
@@ -140,7 +166,9 @@
       "actions": [
         "Notice a recurring thought without immediately following it.",
         "Bring your attention back to the task, prayer, or person before you."
-      ]
+      ],
+      "visual": "compass",
+      "visualLabel": "Awareness"
     },
     {
       "id": "teaching-15",
@@ -150,7 +178,9 @@
       "actions": [
         "Set aside a manageable period for quiet reflection each day.",
         "During that time, observe thoughts gently and return to stillness."
-      ]
+      ],
+      "visual": "lotus",
+      "visualLabel": "Inner silence"
     },
     {
       "id": "teaching-16",
@@ -160,7 +190,9 @@
       "actions": [
         "Consider whether your words are truthful, kind, and useful.",
         "Listen fully before adding your opinion."
-      ]
+      ],
+      "visual": "speech",
+      "visualLabel": "Thoughtful words"
     },
     {
       "id": "teaching-17",
@@ -170,7 +202,9 @@
       "actions": [
         "Notice a resentment you are ready to stop rehearsing.",
         "Respond without retaliation while keeping appropriate boundaries."
-      ]
+      ],
+      "visual": "heart",
+      "visualLabel": "Forgiveness"
     },
     {
       "id": "teaching-18",
@@ -180,7 +214,9 @@
       "actions": [
         "Acknowledge a mistake without immediately defending yourself.",
         "Receive praise with gratitude and recognise others’ contributions."
-      ]
+      ],
+      "visual": "leaf",
+      "visualLabel": "Humility"
     },
     {
       "id": "teaching-19",
@@ -190,7 +226,9 @@
       "actions": [
         "Review one way you responded better than before.",
         "Choose one personal habit to improve instead of judging someone else."
-      ]
+      ],
+      "visual": "steps",
+      "visualLabel": "Inner growth"
     },
     {
       "id": "teaching-20",
@@ -200,7 +238,9 @@
       "actions": [
         "Before acquiring something, ask whether you need it or simply want more.",
         "Name something already present in your life that deserves appreciation."
-      ]
+      ],
+      "visual": "balance",
+      "visualLabel": "Contentment"
     },
     {
       "id": "teaching-21",
@@ -210,7 +250,9 @@
       "actions": [
         "Examine whether a spending decision reflects your responsibilities and values.",
         "Use your resources to support both genuine needs and useful contributions."
-      ]
+      ],
+      "visual": "compass",
+      "visualLabel": "Responsible giving"
     },
     {
       "id": "teaching-22",
@@ -220,7 +262,9 @@
       "actions": [
         "Give a relationship or task your sincere attention.",
         "Notice where caring has become a need to control the result."
-      ]
+      ],
+      "visual": "hand",
+      "visualLabel": "Care without attachment"
     },
     {
       "id": "teaching-23",
@@ -230,7 +274,9 @@
       "actions": [
         "Listen for a perspective different from your own.",
         "Change an unhelpful approach while staying faithful to your principles."
-      ]
+      ],
+      "visual": "waves",
+      "visualLabel": "Wise adjustment"
     },
     {
       "id": "teaching-24",
@@ -240,7 +286,9 @@
       "actions": [
         "Separate what has already happened from what you can do next.",
         "Take one constructive step rather than remaining caught in complaint."
-      ]
+      ],
+      "visual": "sunrise",
+      "visualLabel": "The present moment"
     },
     {
       "id": "teaching-25",
@@ -250,7 +298,9 @@
       "actions": [
         "Receive a success with gratitude and share the credit.",
         "After a setback, identify a lesson and a useful correction."
-      ]
+      ],
+      "visual": "balance",
+      "visualLabel": "Steadiness"
     },
     {
       "id": "teaching-26",
@@ -260,7 +310,9 @@
       "actions": [
         "Thank someone whose effort makes your life easier.",
         "Honour help you have received through your own thoughtful actions."
-      ]
+      ],
+      "visual": "sunrise",
+      "visualLabel": "Gratitude"
     },
     {
       "id": "teaching-27",
@@ -270,7 +322,9 @@
       "actions": [
         "Make time to listen to an elder with patience.",
         "Notice a practical need you can help address."
-      ]
+      ],
+      "visual": "people",
+      "visualLabel": "Parents and elders"
     },
     {
       "id": "teaching-28",
@@ -280,7 +334,9 @@
       "actions": [
         "Include the other person’s needs and perspective in a shared decision.",
         "Offer support that respects their dignity and independence."
-      ]
+      ],
+      "visual": "knot",
+      "visualLabel": "Mutual respect"
     },
     {
       "id": "teaching-29",
@@ -290,7 +346,9 @@
       "actions": [
         "Connect something you learn with a useful action.",
         "Encourage a student’s character and effort alongside academic achievement."
-      ]
+      ],
+      "visual": "book",
+      "visualLabel": "Character through learning"
     },
     {
       "id": "teaching-30",
@@ -300,7 +358,9 @@
       "actions": [
         "Model the habit you want a young person to develop.",
         "Explain the purpose of a value through a real situation."
-      ]
+      ],
+      "visual": "steps",
+      "visualLabel": "Living by example"
     },
     {
       "id": "teaching-31",
@@ -310,7 +370,9 @@
       "actions": [
         "Ask what a familiar practice is intended to cultivate.",
         "Let that value influence your behaviour after the ritual ends."
-      ]
+      ],
+      "visual": "flame",
+      "visualLabel": "Tradition with understanding"
     },
     {
       "id": "teaching-32",
@@ -320,7 +382,9 @@
       "actions": [
         "Practise your chosen path sincerely.",
         "Speak respectfully about traditions different from your own."
-      ]
+      ],
+      "visual": "lotus",
+      "visualLabel": "Many spiritual paths"
     },
     {
       "id": "teaching-33",
@@ -330,7 +394,9 @@
       "actions": [
         "Make time for a thoughtful spiritual gathering or study circle.",
         "Carry one lesson from the discussion into your day."
-      ]
+      ],
+      "visual": "people",
+      "visualLabel": "Good company"
     },
     {
       "id": "teaching-34",
@@ -340,7 +406,9 @@
       "actions": [
         "After listening, restate one lesson in your own words.",
         "Choose a specific situation in which to practise it."
-      ]
+      ],
+      "visual": "book",
+      "visualLabel": "Learning through practice"
     },
     {
       "id": "teaching-35",
@@ -350,7 +418,9 @@
       "actions": [
         "Return to a familiar divine name or prayer during a quiet moment.",
         "Let remembrance influence the care you bring to your next action."
-      ]
+      ],
+      "visual": "flame",
+      "visualLabel": "Divine remembrance"
     },
     {
       "id": "teaching-36",
@@ -360,7 +430,9 @@
       "actions": [
         "Choose a daily practice you can sustain.",
         "Return to it patiently when distractions interrupt your routine."
-      ]
+      ],
+      "visual": "steps",
+      "visualLabel": "Daily practice"
     },
     {
       "id": "teaching-37",
@@ -370,7 +442,9 @@
       "actions": [
         "Reduce avoidable waste in one part of daily life.",
         "Help care for the shared surroundings that support your community."
-      ]
+      ],
+      "visual": "leaf",
+      "visualLabel": "Reverence for nature"
     },
     {
       "id": "teaching-38",
@@ -380,7 +454,9 @@
       "actions": [
         "Reflect on a contribution you can make with the abilities you have.",
         "Mark a personal milestone with a useful act of service."
-      ]
+      ],
+      "visual": "hand",
+      "visualLabel": "A life of service"
     }
   ]
 }

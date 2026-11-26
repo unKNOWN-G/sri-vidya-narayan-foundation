@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="styles.css" />
     <link rel="stylesheet" href="experience.css" />
     <link rel="stylesheet" href="satsang.css" />
+    <script src="site-shell.js" defer></script>
     <script src="app.js" defer></script>
     <link rel="stylesheet" href="refinements.css" />
     <link rel="stylesheet" href="section-spotlight.css" />
@@ -21,6 +22,7 @@
     <meta property="og:url" content="https://unknown-g.github.io/sri-vidya-narayan-foundation/" />
     <meta property="og:image" content="https://unknown-g.github.io/sri-vidya-narayan-foundation/assets/media/his-holiness/portrait-and-journey/foundation-5.webp" />
     <meta name="twitter:card" content="summary_large_image" />
+    <link rel="stylesheet" href="minimal-shell.css" />
   </head>
   <body>
     <a class="skip" href="#app">Skip to the collection</a>
@@ -28,40 +30,17 @@
       <div class="wash wash-a"></div>
       <div class="wash wash-b"></div>
     </div>
-    <header class="masthead">
-      <a class="brand" href="#/" aria-label="Sri Vidya Narayan Foundation home"
-        ><span>Sri Vidya Narayan<small>F O U N D A T I O N</small></span></a
-      >
-      <nav aria-label="Main navigation">
-        <a href="#/">Meet Swamiji</a>
-        <a href="#/explore">His Life in Action</a>
-        <a href="#/learn">Learn Swamiji’s Teachings</a>
-        <a href="#/foundation"
-          >The Foundation <span aria-hidden="true">→</span></a
-        >
+    <header class="masthead site-shell">
+      <button id="back-view" type="button" hidden>← Back</button>
+      <a class="brand shell-brand" href="#/" aria-label="Sri Vidya Narayan Foundation home"><span>Sri Vidya Narayan<small>Foundation</small></span></a>
+      <div class="wayfinding shell-actions"><a class="start-link" href="#/" hidden>Home</a><button class="mobile-menu" type="button" aria-label="More options" aria-expanded="false">⋯</button></div>
+      <nav class="shell-menu" aria-label="Main navigation">
+        <a href="#/">Meet Swamiji</a><a href="#/explore">His Life in Action</a><a href="#/learn">Teachings</a><a href="#/foundation">The Foundation</a><a href="#/foundation/connect">Contact</a><a href="#/about">About this tribute</a><button id="share-view" type="button" hidden>Copy a link to this page</button>
       </nav>
-      <div class="wayfinding">
-        <button id="back-view" type="button" hidden>← Back</button
-        ><a class="start-link" href="#/" hidden>Home</a>
-        <button
-          class="mobile-menu"
-          type="button"
-          aria-label="Open navigation"
-          aria-expanded="false"
-        >
-          Menu <span aria-hidden="true">☰</span>
-        </button>
-      </div>
     </header>
     <main id="app" tabindex="-1">
       <div class="loading">Opening the tribute…</div>
     </main>
-    <footer class="site-footer">
-      <span
-        >A living tribute to His Holiness Sri Vidyanarayana Thirtha
-        Swamiji</span
-      ><button id="share-view" type="button" aria-label="Copy a link to this page">Share</button><a href="#/about">About</a>
-    </footer>
     <div
       id="announcement"
       class="sr-only"
