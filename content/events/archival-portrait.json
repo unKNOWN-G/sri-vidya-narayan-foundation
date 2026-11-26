@@ -10,7 +10,7 @@
   "credit": "Original media shared by the foundation.",
   "note": "",
   "counts": {
-    "photos": 1
+    "photos": 2
   },
   "media": [
     {
@@ -21,7 +21,20 @@
       "alt": "Older photograph of Sri Vidyanarayana Thirtha Swamiji",
       "src": "assets/media/his-holiness/archival-portrait/swamiji-older-photograph.webp",
       "thumb": "assets/media/his-holiness/archival-portrait/swamiji-older-photograph.thumb.webp"
+    },
+    {
+      "id": "archival-portrait-a868149b-68cb-45c5-b260-58a2b77ba983-photo-01",
+      "type": "photo",
+      "title": "An earlier portrait of Sri Swamiji — photograph 1",
+      "alt": "An earlier portrait of Sri Swamiji — photograph 1",
+      "caption": "Swamiji with Dandam",
+      "src": "assets/media/his-holiness/archival-portrait/updates/a868149b-68cb-45c5-b260-58a2b77ba983/photo-01.webp",
+      "thumb": "assets/media/his-holiness/archival-portrait/updates/a868149b-68cb-45c5-b260-58a2b77ba983/photo-01.thumb.webp",
+      "uploadHash": "4fa36367ec22dad356e310a3d39d1ccebd5774341ab7cf327144f63a40968091"
     }
   ],
-  "coverPosition": "50% 14%"
+  "coverPosition": "50% 14%",
+  "uploadBatchIds": [
+    "a868149b-68cb-45c5-b260-58a2b77ba983"
+  ]
 }
