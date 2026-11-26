@@ -1,5 +1,7 @@
 # Latest interface update · 26 November 2026
 
+- Gallery strips use `src/media-scrubber.js`: dedicated touch events keep a 300ms hold alive through compatibility pointer cancellation, enlarging a complete-frame preview while hold-and-slide selects the main media in place. Edge holds scroll long strips; a normal drag only scrolls. Desktop hover shows a larger preview without selecting. Touch/mouse compatibility events are deduplicated; pinch zoom, taps, keyboard selection, cleanup and user-initiated players remain intact. Preview images use full photo sources instead of tiny thumbnails.
+
 - Mobile inner-card swipes use dedicated touchstart/move/end handling; touch pointercancel does not cancel the independent touch gesture. Axis locking tolerates initial diagonal finger movement, with a 28px touch threshold. Fixed card scenes disable native one-finger panning while retaining pinch zoom. Mouse/pen/trackpad handling remains separate, and compatibility mouse events cannot duplicate a touch selection.
 
 - Satsangs and Pearls now share `src/book-motion.js`/`src/book-motion.css`: the original 500 ms hinged cover opening and 500 ms 3D page arrival are used by both readers. Satsangs open automatically into the saved reading place; Cover reopens the book jacket. Phone body text defaults to 17px Manrope with 1.65 line spacing, smaller headings, ivory pages, warm rust accents and clearer ink. Appearance settings version 2 adjusts older saved sizes down once; 15–26px controls, optional serif, night paper, progress and saved readings remain available.

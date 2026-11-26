@@ -773,100 +773,10 @@
     return `<div class="tabs media-tabs" aria-label="Ways to experience this occasion">${types.map((t) => `<button data-action="media-type" data-event="${esc(event.id)}" data-type="${t}" aria-pressed="${t === selected}">${mediaNames[t] || t}<small>${event.media.filter((m) => m.type === t).length}</small></button>`).join("")}</div>`;
   }
   function bindMediaScrubber(shell) {
-    const ribbon = shell.querySelector('.moment-ribbon'), links = [...ribbon.querySelectorAll('a')];
-    if (!links.length) return () => {};
-    ribbon.setAttribute('role','navigation');
-    ribbon.setAttribute('aria-label','Browse photos and recordings');
-    ribbon.setAttribute('aria-description','Hold a thumbnail and slide to preview. Use arrow keys, Home or End to select with a keyboard.');
-    const controller = new AbortController();
-    const listen = (node, name, action, options = {}) => node.addEventListener(name, action, {...options, signal:controller.signal});
-    const peek = document.createElement('div');
-    peek.className = 'ribbon-peek'; peek.setAttribute('aria-hidden','true');
-    const image = document.createElement('img'), label = document.createElement('span'); image.alt = '';
-    peek.append(image, label); shell.append(peek);
-    let press = null, holdTimer = 0, frame = 0, lastTime = 0, highlighted = null;
-    links.forEach(link => { link.draggable = false; link.querySelectorAll('img').forEach(img => img.draggable = false); });
-    function capture() { try { ribbon.setPointerCapture(press.id); } catch (_) {} }
-    function pick() {
-      if (!press?.active) return;
-      const bounds = ribbon.getBoundingClientRect();
-      const x = Math.max(bounds.left+4,Math.min(bounds.right-4,press.x));
-      let nearest = links[0], distance = Infinity;
-      for (const link of links) {
-        const rect = link.getBoundingClientRect(), delta = Math.abs(rect.left+rect.width/2-x);
-        if (delta < distance) { distance = delta; nearest = link; }
-      }
-      if (highlighted !== nearest) {
-        highlighted?.classList.remove('scrub-target'); highlighted = nearest; highlighted.classList.add('scrub-target');
-        const thumb = nearest.querySelector('img'), kind = nearest.dataset.mediaKind;
-        image.hidden = !thumb;
-        if (thumb) image.src = thumb.currentSrc || thumb.src;
-        label.textContent = `${kind === 'photo' ? 'Photo' : kind === 'audio' ? 'Audio' : kind === 'document' ? 'Document' : 'Video'} ${nearest.dataset.mediaNumber} / ${nearest.dataset.mediaTotal}`;
-        if (nearest.getAttribute('aria-current') !== 'true') {
-          const current = links.findIndex(link => link.hasAttribute('aria-current'));
-          transitionDirection = links.indexOf(nearest) < current ? -1 : 1;
-          goTo(nearest.getAttribute('href'));
-        }
-      }
-      const rect = nearest.getBoundingClientRect(), width = 132;
-      peek.style.left = Math.max(10,Math.min(innerWidth-width-10,rect.left+rect.width/2-width/2))+'px';
-      peek.style.top = Math.max(10,bounds.top-peek.offsetHeight-10)+'px';
-    }
-    function tick(now) {
-      if (!press?.active) return;
-      const rect = ribbon.getBoundingClientRect(), edge = 42;
-      const velocity = press.x < rect.left+edge ? -Math.min(1,(rect.left+edge-press.x)/edge) : press.x > rect.right-edge ? Math.min(1,(press.x-rect.right+edge)/edge) : 0;
-      ribbon.scrollLeft += velocity * 360 * Math.min(32, now-(lastTime||now))/1000;
-      lastTime = now; pick(); frame = requestAnimationFrame(tick);
-    }
-    function activate() {
-      if (!press || press.dragged) return;
-      press.active = true; ribbon.classList.add('is-scrubbing'); peek.classList.add('is-visible');
-      capture(); pick(); lastTime = 0; frame = requestAnimationFrame(tick);
-    }
-    function finish(event, cancelled = false) {
-      if (!press || (event?.pointerId !== undefined && event.pointerId !== press.id)) return;
-      clearTimeout(holdTimer); cancelAnimationFrame(frame);
-      if (press.active && !cancelled && event?.clientX !== undefined) { press.x = event.clientX; pick(); }
-      if (press.active || press.dragged) swipeDeadline = performance.now()+450;
-      const pointerId = press.id; press = null;
-      ribbon.classList.remove('is-scrubbing'); peek.classList.remove('is-visible');
-      highlighted?.classList.remove('scrub-target'); highlighted = null;
-      try { if (ribbon.hasPointerCapture(pointerId)) ribbon.releasePointerCapture(pointerId); } catch (_) {}
-    }
-    listen(ribbon,'pointerdown',event => {
-      if (event.button !== 0 || !event.isPrimary || press || !event.target.closest('a')) return;
-      press = {id:event.pointerId,startX:event.clientX,startY:event.clientY,x:event.clientX,lastX:event.clientX,active:false,dragged:false};
-      holdTimer = setTimeout(activate,320);
+    return foundationMedia.bindScrubber(shell, {
+      onSelect(link, direction) { transitionDirection = direction; goTo(link.getAttribute('href')); },
+      onFinish() { swipeDeadline = performance.now() + 550; },
     });
-    listen(ribbon,'pointermove',event => {
-      if (!press || press.id !== event.pointerId) return;
-      const dx = event.clientX-press.startX, dy = event.clientY-press.startY;
-      press.x = event.clientX;
-      if (press.active) { event.preventDefault(); pick(); return; }
-      if (!press.dragged && Math.max(Math.abs(dx),Math.abs(dy)) > 8) {
-        clearTimeout(holdTimer);
-        if (Math.abs(dy) > Math.abs(dx)) { finish(event,true); return; }
-        press.dragged = true; capture();
-      }
-      if (press.dragged) { event.preventDefault(); ribbon.scrollLeft += press.lastX-event.clientX; }
-      press.lastX = event.clientX;
-    },{passive:false});
-    listen(document,'pointerup',event => finish(event));
-    listen(document,'pointercancel',event => finish(event,true));
-    listen(ribbon,'lostpointercapture',event => finish(event,true));
-    listen(ribbon,'contextmenu',event => { if (press) event.preventDefault(); });
-    listen(ribbon,'dragstart',event => event.preventDefault());
-    listen(window,'blur',() => finish(null,true));
-    listen(document,'visibilitychange',() => { if(document.hidden) finish(null,true); });
-    listen(ribbon,'keydown',event => {
-      if (event.altKey || event.ctrlKey || event.metaKey || !['ArrowLeft','ArrowRight','Home','End'].includes(event.key)) return;
-      const at = links.indexOf(event.target.closest('a')); if (at < 0) return;
-      event.preventDefault(); event.stopPropagation(); finish(null,true);
-      const next = event.key === 'Home' ? 0 : event.key === 'End' ? links.length-1 : Math.max(0,Math.min(links.length-1,at+(event.key === 'ArrowRight' ? 1 : -1)));
-      links[next].focus({preventScroll:true}); transitionDirection = next < at ? -1 : 1; goTo(links[next].getAttribute('href'));
-    });
-    return () => { finish(null,true); controller.abort(); peek.remove(); };
   }
 
   function eventView(id, type, index = 0) {
@@ -906,7 +816,7 @@
     const duration = item?.durationSeconds ? `${Math.floor(item.durationSeconds / 60)}:${String(Math.floor(item.durationSeconds % 60)).padStart(2, "0")}` : "";
     const caption = `${after && after.type !== type ? `<a class="media-continue" href="#${next}">${esc(nextLabel)} <span aria-hidden="true">→</span></a>` : ""}<span class="eyebrow">${esc(mediaNames[type] || "FROM THE OCCASION")} · ${index + 1} / ${media.length}${duration ? " · " + duration : ""}</span><h2>${esc(item?.title || event.title)}</h2><p>${esc(short(item?.caption || event.description, 320))}</p><details><summary>About this occasion</summary><p>${esc(event.description)}</p><p>${esc(event.credit)} ${esc(event.note)}</p></details><a class="text-link" href="${href(item?.src || item?.url || parent)}" target="_blank" rel="noopener">${type === "photo" ? "View full photograph" : type === "document" ? "Read original document" : "Open recording"} ↗</a>`;
     const ribbon = sequence.map(({item:m,type:kind,index:at,route},i) =>
-      `<a href="#${route}" data-media-kind="${kind}" data-media-number="${at+1}" data-media-total="${event.media.filter(item => item.type === kind).length}" ${kind === type && at === index ? 'aria-current="true"' : ""} ${i === 0 || sequence[i-1].type !== kind ? 'class="media-group-start"' : ""} aria-label="${esc((mediaNames[kind] || kind) + ' ' + (at+1) + ': ' + (m.title || event.title) + (m.durationSeconds ? ' · ' + Math.floor(m.durationSeconds/60) + ':' + String(Math.floor(m.durationSeconds%60)).padStart(2,'0') : ''))}">${kind === "photo" ? photo(m.thumb || m.src, "") : m.poster ? photo(m.poster, "") : ""}${kind !== "photo" ? `<span class="media-kind">${kind === "audio" ? "Listen" : kind === "video" || kind === "youtube" ? "Watch" : "Read"} ${at+1}</span>` : ""}</a>`
+      `<a href="#${route}" data-preview="${esc(href(kind === "photo" ? m.src : m.poster || ""))}" data-media-kind="${kind}" data-media-number="${at+1}" data-media-total="${event.media.filter(item => item.type === kind).length}" ${kind === type && at === index ? 'aria-current="true"' : ""} ${i === 0 || sequence[i-1].type !== kind ? 'class="media-group-start"' : ""} aria-label="${esc((mediaNames[kind] || kind) + ' ' + (at+1) + ': ' + (m.title || event.title) + (m.durationSeconds ? ' · ' + Math.floor(m.durationSeconds/60) + ':' + String(Math.floor(m.durationSeconds%60)).padStart(2,'0') : ''))}">${kind === "photo" ? photo(m.thumb || m.src, "") : m.poster ? photo(m.poster, "") : ""}${kind !== "photo" ? `<span class="media-kind">${kind === "audio" ? "Listen" : kind === "video" || kind === "youtube" ? "Watch" : "Read"} ${at+1}</span>` : ""}</a>`
     ).join("");
     const shell = app.querySelector(".cinema-view");
     const updating = activeMedia?.id === id && shell?.dataset.event === id;
