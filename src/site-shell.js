@@ -23,7 +23,7 @@
   if (!toggle) { toggle = document.createElement('button'); toggle.type='button'; actions.append(toggle); }
   toggle.classList.add('shell-toggle'); toggle.setAttribute('aria-label','More options');
   toggle.setAttribute('aria-expanded','false'); toggle.setAttribute('aria-controls','shell-navigation');
-  toggle.innerHTML='<span aria-hidden="true">⋯</span>';
+  toggle.innerHTML=(main?'<span class="shell-menu-label">Menu</span>':'')+'<span aria-hidden="true">⋯</span>';
   let nav = header.querySelector('nav');
   if (!nav) {
     nav=document.createElement('nav'); nav.setAttribute('aria-label','Site navigation'); header.append(nav);

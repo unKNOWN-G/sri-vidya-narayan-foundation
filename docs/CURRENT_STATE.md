@@ -1,7 +1,7 @@
 # Latest interface update · 26 November 2026
 
 - Footer-free layout across home, inner sections, book and folded-card experiences. Share, contact, About and book edition information live in the More menu.
-- Homepage shows a slim brand header, one short tribute line, portrait carousel and one named-tab/pause row. The active card opens its section; there is no separate description or Explore button. Milestones and contribution totals remain on their cards.
+- Latest clarification: preserve the welcoming homepage headline, Swamiji’s name, selected-category description and a compact Explore link. Remove unnecessary repetition and the footer rather than stripping away useful content. The active card also opens its section. Milestones and contribution totals remain on their cards. The home menu is visibly labelled Menu.
 - Inner cards retain concise factual descriptions, authentic titles, prominent amounts and receipt attachments. Descriptions use education-profile introductions, event `cardDescription` (or the event account), and reading leads. Keep context; minimal does not mean empty.
 - Everyday Teachings uses subject-specific line illustrations (`visual` and `visualLabel` in the canonical teachings collection) rather than repeating one Swamiji photograph. Preserve the teaching caption as the discovery title. These are visual symbols, not photographs or attributed artwork by Swamiji.
 - Phones use swipe and named bottom tabs with pause. Desktop arrows appear on hover/focus. Active cards show an Open/Read/Explore cue on focus/hover, always visible on touch. Back/Home remain accessible inside sections.

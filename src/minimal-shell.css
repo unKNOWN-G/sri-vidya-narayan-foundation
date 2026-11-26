@@ -135,3 +135,31 @@ body[data-theme="night"] .site-shell { --shell-paper:#193329; --shell-ink:#f7f2e
 .art-lotus,.art-waves { --art-ink:#76618a; --art-paper:#eee7f4; }
 .reader-aside > .teaching-art { height:260px; border-radius:18px; }
 @media(max-height:720px) { .teaching-art { min-height:100px; padding:12px; gap:6px; } .teaching-art em { font-size:16px; } }
+
+/* Retain the welcoming homepage and useful guidance; remove only redundant chrome. */
+.home .home-intro { padding:12px 20px 4px; }
+.home .home-intro .eyebrow { margin:0 auto 7px; font:400 10px/1.5 var(--sans); letter-spacing:.045em; color:var(--muted); }
+.home .home-intro h1 { font:400 clamp(30px,3.2vw,44px)/1.1 var(--serif); letter-spacing:-.025em; max-width:710px; margin:0 auto; color:var(--ink); }
+.home .home-note { flex:0 0 auto; padding:8px 22px 4px; text-align:center; }
+.home .home-note > p { max-width:610px; margin:0 auto 5px; font:400 14px/1.55 var(--sans); color:var(--muted); }
+.home-explore { display:inline-flex; align-items:center; gap:7px; min-height:44px; padding:0 7px; color:var(--accent); font:500 13px var(--sans); text-decoration:none; }
+.home-explore > span { opacity:0; transform:translateX(-7px); transition:opacity .25s,transform .3s; }
+.home-explore:is(:hover,:focus-visible) > span { opacity:1; transform:none; }
+.shell-menu-label { display:none; }
+body:not(.inside-experience) .masthead .shell-toggle { width:76px; gap:6px; font-size:22px; }
+body:not(.inside-experience) .masthead .shell-menu-label { display:inline; font:12px var(--sans); }
+@media(max-width:750px) {
+ .home .home-intro { padding:8px 20px 3px; }
+ .home .home-intro h1 { font-size:30px; max-width:390px; }
+ .home .home-intro .eyebrow { font-size:9px; max-width:360px; }
+ .home .home-note > p { font-size:13px; }
+}
+@media(max-width:360px), (max-height:720px) {
+ .home .home-intro h1 { font-size:26px; }
+ .home .home-intro .eyebrow { font-size:8px; margin-bottom:4px; }
+ .home .home-note { padding-top:4px; }
+ .home .home-note > p { font-size:12px; margin-bottom:0; line-height:1.45; }
+ .home-explore { font-size:12px; }
+}
+@media(hover:none), (pointer:coarse) { .home-explore > span { opacity:1; transform:none; } }
+@media(prefers-reduced-motion:reduce) { .home-explore > span { transition:none; } }
