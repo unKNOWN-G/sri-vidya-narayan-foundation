@@ -2,7 +2,9 @@
 
 ## Current state
 
-The upload page, private Cloudflare Worker/D1 inbox, photo importer and GitHub Pages workflow are implemented and locally tested. The local page is `http://localhost:8790/`. It is a development preview, not an always-on published service. Remote Cloudflare hosting and repository-limited GitHub dispatch access still require the owner's account authorisation. `PUBLISH_ENABLED` remains false until those connections are verified. No sample occasion has been published.
+The upload page, private Cloudflare Worker/D1 inbox, photo importer and GitHub Pages workflow are implemented and locally tested. Cloudflare deployment and remote database setup are complete. The deployed uploader is https://swamiji-website-updates.foundation-private-photo-uploader.workers.dev/ . The local development preview remains `http://localhost:8790/`.
+
+**Publishing remains disabled.** Cisco Umbrella blocks the deployed uploader hostname on the setup computer's network, preventing a live login/upload/deployment test. The network administrator must allow this hostname, or approve another hosting destination, before testing can continue here. Do not bypass the network control. The Cloudflare password hash and internal secret are configured, and GitHub has the matching `UPLOADER_INTERNAL_TOKEN` secret and `UPLOADER_URL` variable. A repository-limited GitHub dispatch token is prepared but awaits the owner's separate approval before creation and storage. No sample occasion has been published.
 
 Existing uncommitted changes in the shared website checkout are independent; this implementation does not require committing or reverting them. The website is served by its existing static Pages pipeline. The separate uploader is served by a Worker, rather than putting credentials into a GitHub Pages upload form.
 
@@ -36,8 +38,8 @@ python3 scripts/check_content_routes.py --require-experiences
 ## One-time free hosting setup
 
 1. Owner signs into Cloudflare and accepts any required terms. Keep the account on Workers Free; do not select a paid plan, R2, paid AI or a custom domain.
-2. Run `python3 scripts/uploader_tool.py cloudflare-login`. The owner approves Wrangler access through the browser. This authorisation is distinct from merely signing into the dashboard.
-3. In `services/uploader`, create a D1 database with `npx wrangler d1 create swamiji-upload-inbox`. Replace the all-zero development database ID in `wrangler.toml` with the returned ID. Apply `schema.sql` using `npx wrangler d1 execute swamiji-upload-inbox --remote --file schema.sql`.
+2. Run `python3 scripts/uploader_tool.py cloudflare-login`. The owner approves Wrangler access through the browser. This authorisation is distinct from merely signing into the dashboard. The helper requests account/user read, Worker script/route write and D1 write access; billing permissions are excluded.
+3. The production database is already configured in `wrangler.toml`; do not recreate it for routine updates. For a separate installation, in `services/uploader` create a D1 database with `npx wrangler d1 create swamiji-upload-inbox`, replace `database_id` with its returned ID, and apply `schema.sql` using `npx wrangler d1 execute swamiji-upload-inbox --remote --file schema.sql`.
 4. Generate a strong production access code and store only its SHA-256 hex digest using `npx wrangler secret put PUBLISHER_PASSWORD_HASH`. Generate a separate random secret of at least 32 characters and store it with `npx wrangler secret put INTERNAL_TOKEN`. Share the access code privately with the publisher. Do not put either secret in Git, the public asset directory, chat logs or workflow inputs.
 5. Deploy with `python3 scripts/uploader_tool.py deploy`. Use the free `workers.dev` address. Leave publishing disabled while checking login, photo preparation and review.
 
@@ -49,7 +51,7 @@ Create a repository-limited fine-grained GitHub token with Actions read/write fo
 
 Set the repository Actions variable `UPLOADER_URL` to the deployed HTTPS origin. Set the Actions secret `UPLOADER_INTERNAL_TOKEN` to the **same** value as the Worker's `INTERNAL_TOKEN`. This is the authenticated channel used by the workflow to read only its approved batch and return publishing status. The workflow's own short-lived `GITHUB_TOKEN` commits the prepared content; the customer never receives that token.
 
-Once all secrets are present, change `PUBLISH_ENABLED` to `"true"`, deploy, and publish one owner-approved real update. Verify its actual live occasion URL, the private success state and an append to an existing occasion. Do not mark this integration live until that test succeeds. No production publish has been tested while account access is pending.
+Once all secrets are present and the uploader is accessible through an approved network, change `PUBLISH_ENABLED` to `"true"`, deploy, and publish one owner-approved real update. Verify its actual live occasion URL, the private success state and an append to an existing occasion. Do not mark this integration live until that test succeeds. No production publish has been tested.
 
 ## Import and publication guarantees
 

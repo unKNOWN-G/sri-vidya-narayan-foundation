@@ -16,8 +16,7 @@ PUBLISH_ENABLED = "false"
 [[d1_databases]]
 binding = "DB"
 database_name = "swamiji-upload-inbox"
-# Replace this local-development placeholder with the created free D1 database ID.
-database_id = "00000000-0000-0000-0000-000000000000"
+database_id = "2338838d-7d63-4197-be7c-f2cec5f7b0ca"
 
 [triggers]
 crons = ["17 3 * * *"]

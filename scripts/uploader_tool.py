@@ -43,7 +43,7 @@ def main():
         print('Local-only configuration is ready. Access details remain in private/uploader-preview-access.json.');return
     if args.command=='preview':command=[node,str(wrangler),'dev','--local','--port','8790','--ip','127.0.0.1']
     elif args.command=='test':command=[node,'--test',*[str(p.relative_to(SERVICE)) for p in sorted((SERVICE/'tests').glob('*.test.mjs'))]]
-    elif args.command=='cloudflare-login':command=[node,str(wrangler),'login','--browser=false']
+    elif args.command=='cloudflare-login':command=[node,str(wrangler),'login','--device','--browser=false','--scopes','account:read','user:read','workers_scripts:write','workers_routes:write','d1:write']
     else:
         if '00000000-0000-0000-0000-000000000000' in (SERVICE/'wrangler.toml').read_text():raise SystemExit('Create the free D1 database and configure its actual ID before deployment. See docs/UPLOADER_SETUP.md.')
         command=[node,str(wrangler),'deploy']
