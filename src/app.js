@@ -717,10 +717,55 @@
 
 
   function contactView(c) {
-    app.innerHTML = `<section class="view contact-view"><div class="deck-header"><h1>Connect with the Foundation</h1></div><div class="contact-scene"><figure class="contact-portrait">${photo(c.cover,"Swamiji seated with visitors","priority")}</figure><article class="contact-copy" aria-labelledby="contact-title"><h2 id="contact-title">Let’s serve together.</h2><p class="contact-intro">For volunteering, current needs or contribution guidance, speak with the foundation team.</p><div class="contact-methods"><a class="contact-method" href="mailto:${esc(site.foundation.email)}"><span>Email</span><strong>${esc(site.foundation.email)}</strong><span class="contact-method-arrow" aria-hidden="true">↗</span></a><a class="contact-method" href="tel:${esc(site.foundation.phone.replace(/[^+\d]/g,""))}"><span>Call the office</span><strong>${esc(site.foundation.phone)}</strong><span class="contact-method-arrow" aria-hidden="true">↗</span></a></div><address class="contact-office"><span>Guruashraya office</span><p>${esc(site.foundation.office.replace(/^Guruashraya office\s*·\s*/,""))}</p></address></article></div></section>`;
+    const photos = (site.foundation.contactPhotoCategories || ["education","annadanam","healthcare","vedic-learning"]).map(getCategory).filter(category => category?.published !== false && category?.cover);
+    if (!photos.length) photos.push(c);
+    const photoScene = `<figure class="contact-portrait contact-slideshow" role="group" aria-roledescription="carousel" aria-label="Swamiji’s life and service in photographs"><div class="contact-photo-stage">${photos.map((category,index) => `<div class="contact-service-slide ${index === 0 ? "is-current" : ""}" aria-hidden="${index !== 0}">${photo(category.cover,category.coverAlt || category.title,index === 0 ? "priority" : "")}</div>`).join("")}</div><figcaption class="contact-photo-caption"><span><strong class="contact-photo-name">${esc(photos[0].shortTitle || photos[0].title)}</strong><small class="contact-photo-count">1 / ${photos.length}</small></span><div class="contact-photo-controls"><button type="button" data-contact-photo="pause" aria-label="Pause service photographs" title="Pause service photographs">Ⅱ</button><button type="button" data-contact-photo="next" aria-label="Next service photograph" title="Next service photograph">→</button></div></figcaption></figure>`;
+    app.innerHTML = `<section class="view contact-view"><div class="deck-header"><h1>Connect with the Foundation</h1></div><div class="contact-scene">${photoScene}<article class="contact-copy" aria-labelledby="contact-title"><h2 id="contact-title">Let’s serve together.</h2><p class="contact-intro">For volunteering, current needs or contribution guidance, speak with the foundation team.</p><div class="contact-methods"><a class="contact-method" href="mailto:${esc(site.foundation.email)}"><span>Email</span><strong>${esc(site.foundation.email)}</strong><span class="contact-method-arrow" aria-hidden="true">↗</span></a><a class="contact-method" href="tel:${esc(site.foundation.phone.replace(/[^+\d]/g,""))}"><span>Call the office</span><strong>${esc(site.foundation.phone)}</strong><span class="contact-method-arrow" aria-hidden="true">↗</span></a></div><address class="contact-office"><span>Guruashraya office</span><p>${esc(site.foundation.office.replace(/^Guruashraya office\s*·\s*/,""))}</p></address></article></div></section>`;
     const escape = event => { if(event.key === "Escape" && !event.defaultPrevented) { event.preventDefault(); goTo("#/foundation"); } };
     document.addEventListener("keydown",escape);
-    cleanup = () => document.removeEventListener("keydown",escape);
+    const figure = app.querySelector('.contact-slideshow'), panels = [...figure.querySelectorAll('.contact-service-slide')], pause = figure.querySelector('[data-contact-photo="pause"]');
+    const controller = new AbortController();
+    let current = 0, requested = 0, request = 0, hovered = false, timer;
+    let playing = photos.length > 1 && !reduced.matches && sessionValue('svnf-contact-photos') !== 'paused';
+    function controls() {
+      pause.hidden = photos.length < 2 || reduced.matches;
+      pause.textContent = playing ? 'Ⅱ' : '▷';
+      pause.setAttribute('aria-label',playing ? 'Pause service photographs' : 'Resume service photographs');
+      pause.title = pause.getAttribute('aria-label');
+    }
+    function schedule() {
+      clearInterval(timer); controls();
+      if (playing) timer = setInterval(() => {
+        if (document.hidden || hovered || (figure.contains(document.activeElement) && document.activeElement !== pause && document.activeElement.matches(':focus-visible'))) return;
+        show((requested+1)%photos.length);
+      },5500);
+    }
+    async function show(index, manual = false) {
+      requested = index; const token = ++request, image = panels[index].querySelector('img');
+      try { if (!image.complete || !image.naturalWidth) await image.decode(); }
+      catch (_) { return; }
+      if (token !== request || !figure.isConnected) return;
+      current = index;
+      panels.forEach((panel,at) => { panel.classList.toggle('is-current',at === current); panel.setAttribute('aria-hidden',String(at !== current)); });
+      const category = photos[current];
+      figure.querySelector('.contact-photo-name').textContent = category.shortTitle || category.title;
+      figure.querySelector('.contact-photo-count').textContent = `${current+1} / ${photos.length}`;
+      if (manual) announce.textContent = `${category.title} · photograph ${current+1} of ${photos.length}`;
+    }
+    figure.addEventListener('click',event => {
+      const button = event.target.closest('[data-contact-photo]'); if (!button) return;
+      if (button.dataset.contactPhoto === 'next') { show((requested+1)%photos.length,true); schedule(); }
+      else {
+        playing = !playing && !reduced.matches; hovered = false;
+        try { sessionStorage.setItem('svnf-contact-photos',playing ? 'playing' : 'paused'); } catch (_) {}
+        schedule();
+      }
+    },{signal:controller.signal});
+    figure.addEventListener('pointerenter',event => { if (event.pointerType === 'mouse') hovered = true; },{signal:controller.signal});
+    figure.addEventListener('pointerleave',() => { hovered = false; },{signal:controller.signal});
+    const motion = () => { playing = photos.length > 1 && !reduced.matches && sessionValue('svnf-contact-photos') !== 'paused'; schedule(); };
+    reduced.addEventListener('change',motion); schedule();
+    cleanup = () => { ++request; clearInterval(timer); controller.abort(); reduced.removeEventListener('change',motion); document.removeEventListener("keydown",escape); };
   }
 
   async function supportView(category) {

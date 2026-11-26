@@ -17,7 +17,16 @@
     "description": "Sri Vidya Narayan Foundation brings Swamiji and his devotees together in a shared commitment to charitable service, inspired by his personal example.",
     "email": "guruashraya2022@gmail.com",
     "phone": "+91 80 2346 0365",
-    "office": "Guruashraya office · Sri Jagadguru Shankaracharya Samsthanam Dwaraka Badarikashram, Bangalore"
+    "office": "Guruashraya office · Sri Jagadguru Shankaracharya Samsthanam Dwaraka Badarikashram, Bangalore",
+    "contactPhotoCategories": [
+      "education",
+      "annadanam",
+      "healthcare",
+      "vedic-learning",
+      "spiritual-life",
+      "teachings",
+      "his-holiness"
+    ]
   },
   "snapshot": {
     "description": "Refreshed from the current website, event manifests, and foundation-supplied material. Later uploads can be added through the project workflow.",

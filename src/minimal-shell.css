@@ -274,3 +274,32 @@ body:has(#reading-room:not([hidden])) .reader-header.site-shell { height:var(--s
 .ribbon-peek img[hidden] { display:none; }
 .ribbon-peek > span { display:block; padding:6px 4px 3px; text-align:center; font:500 11px/1.4 var(--sans); }
 @media(prefers-reduced-motion:reduce) { .ribbon-peek,.moment-ribbon a.scrub-target { transition:none; } }
+
+/* A quiet rotation through the service areas beside the contact invitation. */
+.contact-portrait.contact-slideshow { width:100%; max-width:450px; }
+.contact-photo-stage { position:relative; width:100%; aspect-ratio:3/2; overflow:hidden; border-radius:18px; background:var(--paper); }
+.contact-service-slide { position:absolute; inset:0; opacity:0; visibility:hidden; transition:opacity .9s ease,visibility .9s; }
+.contact-service-slide.is-current { opacity:1; visibility:visible; }
+.contact-slideshow .contact-service-slide img { display:block; width:100%; height:100%; max-height:none; border-radius:0; object-fit:contain; }
+.contact-photo-caption { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:4px 6px 0 10px; min-height:44px; color:var(--ink); }
+.contact-photo-caption > span { min-width:0; display:flex; align-items:baseline; gap:10px; }
+.contact-photo-name { font:500 12px/1.4 var(--sans); }
+.contact-photo-count { flex-shrink:0; font:10px/1.4 var(--sans); color:var(--muted); }
+.contact-photo-controls { display:flex; flex-shrink:0; }
+.contact-photo-controls button { display:flex; align-items:center; justify-content:center; width:44px; height:44px; padding:0; border:0; border-radius:50%; background:transparent; color:var(--accent); font:18px/1 var(--sans); cursor:pointer; }
+.contact-photo-controls button:hover { background:color-mix(in srgb,var(--accent) 8%,transparent); }
+.contact-photo-controls button[hidden] { display:none; }
+@media(max-width:750px) {
+ .contact-portrait.contact-slideshow { max-width:350px; }
+ .contact-photo-stage { height:145px; aspect-ratio:auto; border-radius:13px; }
+ .contact-photo-caption { padding-left:7px; gap:6px; }
+ .contact-photo-name { font-size:11px; }
+}
+@media(max-height:720px) and (max-width:750px) {
+ .contact-slideshow .contact-photo-stage { height:70px; }
+ .contact-view .contact-scene { gap:6px; }
+ .contact-view .contact-copy h2 { margin-bottom:8px; }
+ .contact-view .contact-intro { font-size:12px; line-height:1.5; margin-bottom:10px; }
+ .contact-view .contact-method { padding-block:8px; }
+}
+@media(prefers-reduced-motion:reduce) { .contact-service-slide { transition:none; } }
