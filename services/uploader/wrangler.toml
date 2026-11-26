@@ -11,7 +11,7 @@ run_worker_first = true
 [vars]
 SITE_URL = "https://unknown-g.github.io/sri-vidya-narayan-foundation/"
 GITHUB_REPOSITORY = "unKNOWN-G/sri-vidya-narayan-foundation"
-PUBLISH_ENABLED = "false"
+PUBLISH_ENABLED = "true"
 
 [[d1_databases]]
 binding = "DB"
