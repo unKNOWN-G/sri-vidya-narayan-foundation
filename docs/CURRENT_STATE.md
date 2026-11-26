@@ -70,3 +70,5 @@ Final verification: 25 automated tests passed; source and built-site validation 
 - Explicit picture dimensions and a stable card stage keep photographs visible on small screens. Preserve image proportions; receipt PDFs and original media remain unchanged.
 
 Shared-deck verification: 25 automated tests and all route/build checks passed. Browser checks confirmed in-place card selection and automatic rotation with an unchanged scene, a single browser Back step to the homepage after multiple selections, 320px/390px phone and 1280px desktop layouts, grouped Shirdi receipts, the direct physical book reader, the original blessing cards, and contact open/close.
+
+- Homepage invitation refinement: `#chapter-link` is compact at rest; the action word and arrow reveal with a short transition on hover of the link/active portrait and on keyboard focus. Touch devices show the full action without a hover step. The mobile action stays centred, and the category strip uses local positioning and resize-aware reveal so its selected pill remains visible. Verified resting/focused widths, keyboard reveal and a 390px phone layout.

@@ -228,6 +228,10 @@
         dots[i].setAttribute("aria-pressed", String(i === current));
       });
     }
+    function revealChoice(animate = false) {
+      const choice = dots[current], nav = choice.parentElement;
+      if (choice.offsetLeft < nav.scrollLeft || choice.offsetLeft + choice.offsetWidth > nav.scrollLeft + nav.clientWidth) nav.scrollTo({left:choice.offsetLeft-(nav.clientWidth-choice.offsetWidth)/2,behavior:animate&&!reduced.matches?"smooth":"instant"});
+    }
     function resize() {
       const mobile = innerWidth <= 750;
       const width = Math.max(
@@ -241,6 +245,7 @@
       stage.style.setProperty("--portrait-width", width + "px");
       step = width * (mobile ? 0.82 : 0.96);
       position();
+      revealChoice();
     }
     function select(index, manual = false) {
       current = (index + cats.length) % cats.length;
@@ -251,12 +256,13 @@
       if (manual) idleUntil = performance.now() + 15000;
       theme(c);
       app.querySelector("#home-caption").textContent = c.caption;
-      app.querySelector("#chapter-link").innerHTML = `${esc(c.id === "his-holiness" ? "Meet Swamiji" : c.id === "teachings" ? "Learn from Swamiji" : "Explore " + (c.shortTitle || c.title))} <span aria-hidden="true">→</span>`;
+      const invitation = c.id === "his-holiness" ? "Meet" : "Explore", label = c.id === "his-holiness" ? "Swamiji" : c.shortTitle || c.title, chapter = app.querySelector("#chapter-link");
+      chapter.setAttribute("aria-label", invitation + " " + c.title);
+      chapter.innerHTML = `<span class="explore-intro" aria-hidden="true"><span>${esc(invitation)}</span></span><span class="explore-label">${esc(label)}</span><span class="explore-arrow" aria-hidden="true">→</span>`;
       app.querySelector("#chapter-link").href =
         c.id === "teachings" ? "#/learn" : "#/category/" + c.id;
       position();
-      const activeChoice = dots[current], nav = activeChoice.parentElement;
-      if (activeChoice.offsetLeft < nav.scrollLeft || activeChoice.offsetLeft + activeChoice.offsetWidth > nav.scrollLeft + nav.clientWidth) nav.scrollTo({left:activeChoice.offsetLeft - (nav.clientWidth - activeChoice.offsetWidth)/2, behavior: reduced.matches ? "instant" : "smooth"});
+      revealChoice(manual);
       if (manual) announce.textContent = c.title + ". " + c.caption;
     }
     cards.forEach((card, i) =>
