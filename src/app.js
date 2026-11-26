@@ -19,6 +19,7 @@
     search: "",
     month: "",
     topic: "",
+    savedOnly: false,
   };
   const state = { ...defaultState },
     viewStates = new Map();
@@ -475,7 +476,7 @@
   }
   // All inner discovery pages share this portrait-and-caption experience.
   let activeSpotlight = null;
-  const deckSignature = () => JSON.stringify([state.search, state.month, state.topic]);
+  const deckSignature = () => JSON.stringify([state.search, state.month, state.topic, state.savedOnly]);
   function deckEvidence(receipts) {
     const files = receipts.filter(receipt => receipt.src);
     if (!files.length) return "";
@@ -504,6 +505,12 @@
     return `<div class="teaching-art art-${esc(visual)}"><span>EVERYDAY WISDOM</span><svg viewBox="0 0 120 120" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths[visual] || paths.compass}</svg><em>${esc(label)}</em></div>`;
   }
 
+  function satsangEdition(item) {
+    const resume=window.foundationSatsangReader.position(item.id),cover=getCategory('teachings').cover;
+    const portrait=site.imageVariants?.[cover]?.sources?.[0]?.src || cover;
+    return `<div class="satsang-edition ${item.title.length>65?'long-title':''}"><div class="satsang-edition-top"><time datetime="${esc(item.date)}">${dateLabel(item.date)}</time><span>${item.readMinutes} min</span></div><h3>${esc(item.title)}</h3><div class="satsang-edition-author"><img src="${href(portrait)}" alt="" loading="lazy"><span>Reflections from<br>Swamiji’s Satsangs</span></div><span class="satsang-edition-action">${resume>0?'Continue reading · '+Math.round(resume*100)+'%':'Begin reading'} →</span></div>`;
+  }
+
   function sectionSpotlight({ key, title, items, index = 0, back = "#/", header = "", className = "", wrap = true, onSelect = () => {} }) {
     if (!items.length) return;
     let current = Math.max(0, Math.min(index, items.length - 1));
@@ -513,8 +520,8 @@
       const at = current + delta;
       return wrap ? items[(at + items.length) % items.length].route : items[Math.max(0, Math.min(items.length - 1, at))].route;
     };
-    const picture = (item, at) => item.visual ? teachingArtwork(item.visual, item.visualLabel) : item.cover ? photo(item.cover, item.alt || item.title, at === current ? "priority" : "") : `<div class="deck-thought"><span>${esc(item.kicker || "A MOMENT TO REFLECT")}</span><strong>${esc(item.title)}</strong></div>`;
-    app.innerHTML = `<section class="view section-spotlight ${className}" data-back="${esc(back)}" data-deck-session="${performance.now()}"><div class="deck-header">${header || `<h1>${esc(title)}</h1>`}<button class="deck-rotation" type="button"></button></div><div class="deck-scene"><div class="deck-stage" aria-label="${esc(title)}" aria-roledescription="carousel">${items.map((item, at) => `<button type="button" class="deck-card" data-deck-index="${at}" style="--image-ratio:${item.visual ? .84 : item.kind === "book" || !item.cover ? .72 : site.imageVariants?.[item.cover] ? Math.max(.52, Math.min(2.5, site.imageVariants[item.cover].width / site.imageVariants[item.cover].height)) : .78}"><div class="deck-picture">${Math.abs(at-current) <= 1 || (current === 0 && at === items.length-1) ? picture(item, at) : ""}</div>${item.badge ? `<span class="deck-date">${esc(item.badge)}</span>` : ""}<span class="deck-preview-label">${esc(item.title)}</span><span class="deck-card-open" aria-hidden="true"></span></button>`).join("")}</div><div class="deck-caption spotlight-caption"></div></div>${sceneNavigation(title, items.map(item => ({title:item.title, href:item.route})), current)}</section>`;
+    const picture = (item, at) => item.kind === "satsang" ? satsangEdition(item) : item.visual ? teachingArtwork(item.visual, item.visualLabel) : item.cover ? photo(item.cover, item.alt || item.title, at === current ? "priority" : "") : `<div class="deck-thought"><span>${esc(item.kicker || "A MOMENT TO REFLECT")}</span><strong>${esc(item.title)}</strong></div>`;
+    app.innerHTML = `<section class="view section-spotlight ${className}" data-back="${esc(back)}" data-deck-session="${performance.now()}"><div class="deck-header">${header || `<h1>${esc(title)}</h1>`}<button class="deck-rotation" type="button"></button></div><div class="deck-scene"><div class="deck-stage" aria-label="${esc(title)}" aria-roledescription="carousel">${items.map((item, at) => `<button type="button" class="deck-card" data-deck-index="${at}" style="--image-ratio:${item.kind === "satsang" ? .8 : item.visual ? .84 : item.kind === "book" || !item.cover ? .72 : site.imageVariants?.[item.cover] ? Math.max(.52, Math.min(2.5, site.imageVariants[item.cover].width / site.imageVariants[item.cover].height)) : .78}"><div class="deck-picture">${Math.abs(at-current) <= 1 || (current === 0 && at === items.length-1) ? picture(item, at) : ""}</div>${item.badge ? `<span class="deck-date">${esc(item.badge)}</span>` : ""}<span class="deck-preview-label">${esc(item.title)}</span><span class="deck-card-open" aria-hidden="true"></span></button>`).join("")}</div><div class="deck-caption spotlight-caption"></div></div>${sceneNavigation(title, items.map(item => ({title:item.title, href:item.route})), current)}</section>`;
     const root = app.querySelector(".section-spotlight"), stage = root.querySelector(".deck-stage"), cards = [...root.querySelectorAll(".deck-card")], caption = root.querySelector(".deck-caption"), rotation = root.querySelector(".deck-rotation");
     root.classList.toggle("deck-single", items.length === 1);
     root.querySelector(".scene-navigation").append(rotation);
@@ -1109,6 +1116,7 @@
 
   function satsangView(all, selected) {
     const matches = all.filter((entry) =>
+      (!state.savedOnly || window.foundationSatsangReader.isSaved(entry.id)) &&
       (!state.search || JSON.stringify(entry).toLowerCase().includes(state.search.toLowerCase())) &&
       (!state.month || entry.date.startsWith(state.month)) &&
       (!state.topic || (entry.topics || entry.tags || []).includes(state.topic)),
@@ -1123,14 +1131,14 @@
       months = [...new Set(all.map((entry) => entry.date.slice(0, 7)))].sort(),
       monthLabel = (month) => new Date(month + "-15T12:00:00").toLocaleDateString("en-IN", { month: "long", year: "numeric" }),
       calendarIcon = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M7 2v6m10-6v6M3 11h18"/></svg>',
-      filters = [state.month ? monthLabel(state.month) : "", state.search ? "Matching: " + state.search : "", state.topic].filter(Boolean);
+      filters = [state.month ? monthLabel(state.month) : "", state.search ? "Matching: " + state.search : "", state.topic, state.savedOnly ? "Saved Satsangs" : ""].filter(Boolean);
     let calendarMonth = state.month || item?.date.slice(0, 7) || months[months.length - 1];
-    app.innerHTML = `<section class="view satsang-view"><div class="satsang-top">${heading("Satsangs", '<a href="#/learn">Learn Swamiji’s Teachings</a>')}<div class="satsang-tools"><form class="satsang-search" role="search"><input type="search" name="thought" aria-label="Search Satsangs" placeholder="Find a thought…" value="${esc(state.search)}"><button type="submit" aria-label="Search messages">↗</button></form><details class="satsang-calendar"><summary aria-label="Calendar">${calendarIcon}<span>Calendar</span>${state.month ? '<i aria-hidden="true"></i>' : ""}</summary><div class="satsang-calendar-panel"><div class="satsang-calendar-head"><button type="button" data-calendar-step="-1" aria-label="Previous month">←</button><h2 id="satsang-calendar-month"></h2><button type="button" data-calendar-step="1" aria-label="Next month">→</button></div><div class="calendar-weekdays" aria-hidden="true">${["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map((d) => `<span>${d}</span>`).join("")}</div><div class="satsang-calendar-days" aria-labelledby="satsang-calendar-month"></div><p class="calendar-hint">Choose a highlighted date to open its Satsang.</p><div class="calendar-actions"><button type="button" data-calendar-month>Read this month</button><button type="button" data-satsang-clear>All dates</button></div></div></details><label class="satsang-topic">A theme to reflect on<select aria-label="Filter Satsangs by theme"><option value="">Every theme</option>${[...new Set(all.flatMap((e) => e.topics || e.tags || []))].sort().map((topic) => `<option value="${esc(topic)}" ${state.topic === topic ? "selected" : ""}>${esc(topic)}</option>`).join("")}</select></label></div></div><div class="satsang-filter-note">${filters.length ? `<span>${esc(filters.join(" · "))}</span><button type="button" data-satsang-clear>Show all Satsangs ×</button>` : '<span>A quiet moment. A little clarity.</span>'}</div><div class="satsang-stage"><article class="satsang-message-card ${item ? "" : "satsang-empty"}"><figure class="satsang-photo">${photo(getCategory("teachings").cover, "His Holiness Sri Vidyanarayana Thirtha Swamiji by the water")}</figure><div class="satsang-copy"><div class="satsang-meta"><p class="satsang-kicker">WORDS FOR EVERYDAY LIFE</p>${item ? `<time datetime="${esc(item.date)}">${dateLabel(item.date)}</time>` : '<span class="satsang-no-date">A moment to begin again</span>'}</div>${item ? `<h2><a href="#/read/readings/${esc(item.id)}">${esc(item.title)}</a></h2><p class="satsang-lead">${esc(item.lead || item.essence || "")}</p><div class="satsang-read"><a class="button" href="#/read/readings/${esc(item.id)}">Read this Satsang <span aria-hidden="true">↗</span></a><span>Edited Satsang reflection</span></div>` : '<h2>No Satsangs match this selection.</h2><p class="satsang-lead">Try another word, choose a highlighted calendar date, or return to all messages.</p><button class="button" type="button" data-satsang-clear>Show all Satsangs ↗</button>'}</div></article></div><nav class="satsang-navigation" aria-label="Browse Satsangs">${previous ? `<a href="${previous}" aria-label="Previous Satsang">← <span>Previous</span></a>` : '<button type="button" disabled aria-label="Previous Satsang">← <span>Previous</span></button>'}<div><strong>${item ? dateLabel(item.date) : "No matching message"}</strong><span>${item ? `${index + 1} of ${matches.length} Satsangs` : "Choose another date or clear your filters"}</span></div>${next ? `<a href="${next}" aria-label="Next Satsang"><span>Next</span> →</a>` : '<button type="button" disabled aria-label="Next Satsang"><span>Next</span> →</button>'}</nav></section>`;
+    app.innerHTML = `<section class="view satsang-view"><div class="satsang-top">${heading("Satsangs", '<a href="#/learn">Learn Swamiji’s Teachings</a>')}<div class="satsang-tools"><form class="satsang-search" role="search"><input type="search" name="thought" aria-label="Search Satsangs" placeholder="Find a thought…" value="${esc(state.search)}"><button type="submit" aria-label="Search messages">↗</button></form><details class="satsang-calendar"><summary aria-label="Calendar">${calendarIcon}<span>Calendar</span>${state.month ? '<i aria-hidden="true"></i>' : ""}</summary><div class="satsang-calendar-panel"><div class="satsang-calendar-head"><button type="button" data-calendar-step="-1" aria-label="Previous month">←</button><h2 id="satsang-calendar-month"></h2><button type="button" data-calendar-step="1" aria-label="Next month">→</button></div><div class="calendar-weekdays" aria-hidden="true">${["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map((d) => `<span>${d}</span>`).join("")}</div><div class="satsang-calendar-days" aria-labelledby="satsang-calendar-month"></div><p class="calendar-hint">Choose a highlighted date to open its Satsang.</p><div class="calendar-actions"><button type="button" data-calendar-month>Read this month</button><button type="button" data-satsang-clear>All dates</button></div></div></details><label class="satsang-topic">A theme to reflect on<select aria-label="Filter Satsangs by theme"><option value="">Every theme</option>${[...new Set(all.flatMap((e) => e.topics || e.tags || []))].sort().map((topic) => `<option value="${esc(topic)}" ${state.topic === topic ? "selected" : ""}>${esc(topic)}</option>`).join("")}</select></label></div></div><div class="satsang-filter-note">${filters.length ? `<span>${esc(filters.join(" · "))}</span><button type="button" data-satsang-clear>Show all Satsangs ×</button>` : '<span>A quiet moment. A little clarity.</span>'}</div><div class="satsang-stage"><article class="satsang-message-card ${item ? "" : "satsang-empty"}"><figure class="satsang-photo">${photo(getCategory("teachings").cover, "His Holiness Sri Vidyanarayana Thirtha Swamiji by the water")}</figure><div class="satsang-copy"><div class="satsang-meta"><p class="satsang-kicker">WORDS FOR EVERYDAY LIFE</p>${item ? `<time datetime="${esc(item.date)}">${dateLabel(item.date)}</time>` : '<span class="satsang-no-date">A moment to begin again</span>'}</div>${item ? `<h2><a href="#/read/readings/${esc(item.id)}">${esc(item.title)}</a></h2><p class="satsang-lead">${esc(item.lead || item.essence || "")}</p><div class="satsang-read"><a class="button" href="#/read/readings/${esc(item.id)}">Read this Satsang <span aria-hidden="true">↗</span></a><span>Edited Satsang reflection</span></div>` : '<h2>No Satsangs match this selection.</h2><p class="satsang-lead">Try another word, choose a highlighted calendar date, or return to all messages.</p><button class="button" type="button" data-satsang-clear>Show all Satsangs ↗</button>'}</div></article></div></section>`;
     if (matches.length) {
       const toolbar=app.querySelector(".satsang-tools"), search=toolbar.querySelector(".satsang-search").outerHTML, topic=toolbar.querySelector(".satsang-topic").outerHTML, dates=toolbar.querySelector(".satsang-calendar").outerHTML;
-      toolbar.innerHTML=dates+`<details class="deck-find"><summary aria-label="Find a Satsang"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="10" cy="10" r="6"/><path d="m15 15 5 5"/></svg><span>Find</span></summary><div class="deck-find-panel">${search}${topic}</div></details>`;
+      toolbar.innerHTML=dates+`<details class="deck-find"><summary aria-label="Find a Satsang"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="10" cy="10" r="6"/><path d="m15 15 5 5"/></svg><span>Find</span></summary><div class="deck-find-panel">${search}${topic}<button type="button" class="satsang-saved-filter" data-satsang-saved aria-pressed="${state.savedOnly}">Saved Satsangs</button></div></details>`;
       const tools=app.querySelector(".satsang-top").outerHTML+app.querySelector(".satsang-filter-note").outerHTML;
-      sectionSpotlight({key:"satsangs",title:"Satsangs",className:"satsang-view",header:tools,index,wrap:false,back:"#/learn",items:matches.map(e=>({id:e.id,title:e.title,description:e.lead,cover:getCategory("teachings").cover,route:route(e),target:"#/read/readings/"+e.id,action:"Read this Satsang",badge:dateLabel(e.date),meta:"Edited Satsang reflection"})),onSelect:(entry,i)=>{state.page=i;}});
+      sectionSpotlight({key:"satsangs",title:"Satsangs",className:"satsang-view",header:tools,index,wrap:false,back:"#/learn",items:matches.map(e=>({id:e.id,title:e.title,date:e.date,kind:"satsang",readMinutes:window.foundationSatsangReader.minutes(e),description:e.lead,route:route(e),target:"#/read/readings/"+e.id,action:"Read this Satsang",meta:"Edited Satsang reflection"})),onSelect:(entry,i)=>{state.page=i;}});
     }
     const calendar = app.querySelector(".satsang-calendar"),
       calendarPanel = app.querySelector(".satsang-calendar-panel"),
@@ -1163,12 +1171,14 @@
       } else if (button.dataset.satsangDate) {
         const entry = byDate.get(button.dataset.satsangDate);
         if (!entry) return;
-        state.month = entry.date.slice(0, 7); state.search = ""; state.topic = ""; state.page = 0;
+        state.month = entry.date.slice(0, 7); state.search = ""; state.topic = ""; state.savedOnly = false; state.page = 0;
         if (location.hash === route(entry)) render(); else location.hash = route(entry);
       } else if (button.hasAttribute("data-calendar-month")) {
         state.month = calendarMonth; state.search = ""; refresh();
+      } else if (button.hasAttribute("data-satsang-saved")) {
+        state.savedOnly = !state.savedOnly; refresh();
       } else if (button.hasAttribute("data-satsang-clear")) {
-        state.month = ""; state.search = ""; state.topic = ""; refresh();
+        state.month = ""; state.search = ""; state.topic = ""; state.savedOnly = false; refresh();
       }
     });
     app.querySelector(".satsang-search").addEventListener("submit", (event) => {
@@ -1218,11 +1228,15 @@
     theme(getCategory("teachings"));
     let list = collectionEntries(data);
     if (name === "readings") {
-      const filtered = list.filter(e => (!state.month || e.date.startsWith(state.month)) && (!state.topic || (e.topics || e.tags || []).includes(state.topic)) && (!state.search || JSON.stringify(e).toLowerCase().includes(state.search.toLowerCase())));
+      const filtered = list.filter(e => (!state.savedOnly || window.foundationSatsangReader.isSaved(e.id)) && (!state.month || e.date.startsWith(state.month)) && (!state.topic || (e.topics || e.tags || []).includes(state.topic)) && (!state.search || JSON.stringify(e).toLowerCase().includes(state.search.toLowerCase())));
       list = (filtered.some(e => e.id === id) ? filtered : list).slice().sort((a,b) => (b.date || "").localeCompare(a.date || ""));
     }
     const item = list.find((e) => String(e.id || e.number) === id);
     if (!item) throw Error("This reading is not available.");
+    if (name === "readings") {
+      cleanup=window.foundationSatsangReader.mount({root:app,item,entries:list,escape:esc,dateLabel,editorialNote:data.editorialNote});
+      return;
+    }
     if (name === "pearls") {
       location.replace("reading-room.html#pearl-" + id);
       return;
@@ -1302,9 +1316,9 @@
     app.innerHTML = `<section class="view">${heading("A tribute, through real moments.", "About the collection")}<article class="about-scroll"><p>This collection brings together the many expressions of His Holiness Sri Vidyanarayana Thirtha Swamiji’s life: spiritual practice, learning, care, service, and everyday wisdom.</p><h2>Begin with a photograph.</h2><p>Choose a portrait, open a collection, and step into an occasion. Photographs, films, audio recordings, messages, and readings stay together with their context.</p><h2>Care for the source.</h2><p>Visit identities and original media were shared by the foundation. An exact date appears only where it was supplied. Historical acknowledgements retain their named donors. Devotee reflections, edited summaries, and practical paraphrases are distinguished from original texts.</p><h2>A growing collection.</h2><p>This is a living collection of moments shared through the foundation: a place to return to for quiet reading, listening, and discovery.</p><p><a href="#/foundation/connect">Connect with the foundation →</a></p></article></section>`;
   }
   function finishNavigation(parts, focusHeading = true) {
-    const title = (app.querySelector(".deck-caption h2,.satsang-copy h2,.reader-scroll h1,.story-copy h2,.book-copy h2") || app.querySelector(".cinema-heading h1,h1"))?.textContent.trim() || site.title;
+    const title = (app.querySelector(".deck-caption h2,.satsang-copy h2,.reader-scroll h1,.satsang-flow h1,.story-copy h2,.book-copy h2") || app.querySelector(".cinema-heading h1,h1"))?.textContent.trim() || site.title;
     document.title = parts.length ? title + " — " + site.title : "Sri Vidyanarayana Thirtha Swamiji — " + site.title;
-    const summary = app.querySelector(".satsang-lead,.story-description,.reader-scroll .lead")?.textContent || "A living tribute to His Holiness Sri Vidyanarayana Thirtha Swamiji, through spiritual practice, teaching and service.";
+    const summary = app.querySelector(".satsang-lead,.story-description,.reader-scroll .lead,.reading-deck")?.textContent || "A living tribute to His Holiness Sri Vidyanarayana Thirtha Swamiji, through spiritual practice, teaching and service.";
     document.querySelector('meta[name="description"]').content = summary;
     document.querySelector('meta[property="og:title"]').content = document.title;
     document.querySelector('meta[property="og:description"]').content = summary;
