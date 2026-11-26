@@ -371,8 +371,8 @@
       href: c.id === "teachings" ? "#/learn" : "#/category/" + c.id,
     }));
   const stripPositions = new Map();
-  function sceneNavigation(title, links, index, previous, next) {
-    return `<div class="scene-navigation"><nav class="occasion-track" aria-label="${esc(title)}" tabindex="0">${links.map((item, i) => `<a class="occasion-stop" href="${href(item.href)}" ${i === index ? 'aria-current="page"' : ""} aria-label="${esc(`${i + 1}. ${item.title}`)}" title="${esc(item.title)}"><span class="occasion-number">${String(i + 1).padStart(2, "0")}</span><span class="occasion-title">${esc(item.title)}</span></a>`).join("")}</nav><div class="strip-arrows" aria-label="Move between occasions"><a href="${href(previous)}" aria-label="Previous story">←</a><span class="strip-count">${index + 1} / ${links.length}</span><a href="${href(next)}" aria-label="Next story">→</a></div></div>`;
+  function sceneNavigation(title, links, index) {
+    return `<div class="scene-navigation"><nav class="occasion-track" aria-label="${esc(title)}" tabindex="0">${links.map((item, i) => `<a class="occasion-stop" href="${href(item.href)}" ${i === index ? 'aria-current="page"' : ""} aria-label="${esc(`${i + 1}. ${item.title}`)}" title="${esc(item.title)}"><span class="occasion-number">${String(i + 1).padStart(2, "0")}</span><span class="occasion-title">${esc(item.title)}</span></a>`).join("")}</nav><span class="strip-count sr-only">${index + 1} / ${links.length}</span></div>`;
   }
   function bindSceneNavigation() {
     const track = app.querySelector(".occasion-track");
@@ -441,9 +441,6 @@
   }
   function bindSequence(previous, next, back) {
     const releaseStrip = bindSceneNavigation();
-    let startX = 0,
-      startY = 0,
-      started = false;
     const resolve = (value) => (typeof value === "function" ? value() : value);
     const ignored = (e) =>
       e.target.closest?.(
@@ -462,30 +459,17 @@
       if (e.key === "Escape" && back && !document.querySelector("dialog[open]"))
         location.hash = back;
     };
-    const down = (e) => {
-      if (ignored(e)) return;
-      started = true;
-      startX = e.clientX;
-      startY = e.clientY;
-    };
-    const up = (e) => {
-      if (!started) return;
-      started = false;
-      const dx = e.clientX - startX,
-        dy = e.clientY - startY;
-      if (Math.abs(dx) > 55 && Math.abs(dx) > Math.abs(dy) * 1.3) {
-        swipeDeadline = performance.now() + 350;
-        transitionDirection = dx < 0 ? 1 : -1; goTo(resolve(dx < 0 ? next : previous));
-      }
-    };
+    const scene = app.querySelector('.deck-scene,.cinema-body') || app;
+    const releaseSwipe = window.foundationGestures.bindSwipe(scene, {
+      surface:scene.querySelector('.deck-stage,.cinema-stage') || scene,
+      ignore:'.scene-navigation,.moment-ribbon,.satsang-tools,.deck-actions',
+      onSwipe:direction=>{ transitionDirection=direction; goTo(resolve(direction>0?next:previous)); },
+    });
     document.addEventListener("keydown", key);
-    app.addEventListener("pointerdown", down);
-    app.addEventListener("pointerup", up);
     cleanup = () => {
       releaseStrip();
       document.removeEventListener("keydown", key);
-      app.removeEventListener("pointerdown", down);
-      app.removeEventListener("pointerup", up);
+      releaseSwipe();
       app.querySelectorAll("video,audio").forEach((x) => x.pause());
     };
   }
@@ -530,11 +514,10 @@
       return wrap ? items[(at + items.length) % items.length].route : items[Math.max(0, Math.min(items.length - 1, at))].route;
     };
     const picture = (item, at) => item.visual ? teachingArtwork(item.visual, item.visualLabel) : item.cover ? photo(item.cover, item.alt || item.title, at === current ? "priority" : "") : `<div class="deck-thought"><span>${esc(item.kicker || "A MOMENT TO REFLECT")}</span><strong>${esc(item.title)}</strong></div>`;
-    app.innerHTML = `<section class="view section-spotlight ${className}" data-back="${esc(back)}" data-deck-session="${performance.now()}"><div class="deck-header">${header || `<h1>${esc(title)}</h1>`}<button class="deck-rotation" type="button"></button></div><div class="deck-scene"><div class="deck-stage" aria-label="${esc(title)}" aria-roledescription="carousel">${items.map((item, at) => `<button type="button" class="deck-card" data-deck-index="${at}" style="--image-ratio:${item.visual ? .84 : item.kind === "book" || !item.cover ? .72 : site.imageVariants?.[item.cover] ? Math.max(.52, Math.min(2.5, site.imageVariants[item.cover].width / site.imageVariants[item.cover].height)) : .78}"><div class="deck-picture">${Math.abs(at-current) <= 1 || (current === 0 && at === items.length-1) ? picture(item, at) : ""}</div>${item.badge ? `<span class="deck-date">${esc(item.badge)}</span>` : ""}<span class="deck-preview-label">${esc(item.title)}</span><span class="deck-card-open" aria-hidden="true"></span></button>`).join("")}</div><div class="deck-caption spotlight-caption"></div></div>${sceneNavigation(title, items.map(item => ({title:item.title, href:item.route})), current, routeAt(-1), routeAt(1))}</section>`;
+    app.innerHTML = `<section class="view section-spotlight ${className}" data-back="${esc(back)}" data-deck-session="${performance.now()}"><div class="deck-header">${header || `<h1>${esc(title)}</h1>`}<button class="deck-rotation" type="button"></button></div><div class="deck-scene"><div class="deck-stage" aria-label="${esc(title)}" aria-roledescription="carousel">${items.map((item, at) => `<button type="button" class="deck-card" data-deck-index="${at}" style="--image-ratio:${item.visual ? .84 : item.kind === "book" || !item.cover ? .72 : site.imageVariants?.[item.cover] ? Math.max(.52, Math.min(2.5, site.imageVariants[item.cover].width / site.imageVariants[item.cover].height)) : .78}"><div class="deck-picture">${Math.abs(at-current) <= 1 || (current === 0 && at === items.length-1) ? picture(item, at) : ""}</div>${item.badge ? `<span class="deck-date">${esc(item.badge)}</span>` : ""}<span class="deck-preview-label">${esc(item.title)}</span><span class="deck-card-open" aria-hidden="true"></span></button>`).join("")}</div><div class="deck-caption spotlight-caption"></div></div>${sceneNavigation(title, items.map(item => ({title:item.title, href:item.route})), current)}</section>`;
     const root = app.querySelector(".section-spotlight"), stage = root.querySelector(".deck-stage"), cards = [...root.querySelectorAll(".deck-card")], caption = root.querySelector(".deck-caption"), rotation = root.querySelector(".deck-rotation");
     root.classList.toggle("deck-single", items.length === 1);
     root.querySelector(".scene-navigation").append(rotation);
-    stage.append(root.querySelector(".strip-arrows"));
     root.querySelector(".strip-count").classList.add("sr-only");
     function controls() {
       rotation.hidden = items.length < 2;
@@ -579,16 +562,11 @@
       const active = choices[current], track = root.querySelector(".occasion-track");
       if (active && (active.offsetLeft < track.scrollLeft || active.offsetLeft + active.offsetWidth > track.scrollLeft + track.clientWidth)) track.scrollTo({left:active.offsetLeft-(track.clientWidth-active.offsetWidth)/2,behavior:initial||reduced.matches?"instant":"smooth"});
       root.querySelector(".strip-count").textContent = `${current+1} / ${items.length}`;
-      root.querySelector('[aria-label="Previous story"]').href = routeAt(-1);
-      root.querySelector('[aria-label="Next story"]').href = routeAt(1);
-      for (const [name, disabled] of [["Previous story", items.length===1 || !wrap && current===0],["Next story",items.length===1 || !wrap && current===items.length-1]]) {
-        const link=root.querySelector(`[aria-label="${name}"]`);link.setAttribute("aria-disabled",String(disabled));link.tabIndex=disabled?-1:0;
-      }
       if (!initial && !reduced.matches) caption.animate([{opacity:.35,transform:"translateY(5px)"},{opacity:1,transform:"translateY(0)"}],{duration:280,easing:"ease-out"});
       resize();
     }
     root.addEventListener("click", event => {
-      const choice = event.target.closest(".occasion-stop,.strip-arrows a");
+      const choice = event.target.closest(".occasion-stop");
       if (choice) { event.preventDefault(); setRotation(false); goTo(choice.getAttribute("href")); return; }
       const card = event.target.closest(".deck-card");
       if (card) {
@@ -597,7 +575,7 @@
         if (at !== current) goTo(item.route);
         else if (item.target) { if (item.target.startsWith("#")) goTo(item.target); else location.href = item.target; }
         else { const details=caption.querySelector("details"); if(details) {details.open=!details.open;details.querySelector("summary").focus();} }
-      } else if (event.target.closest(".occasion-stop,.strip-arrows a,.deck-open,details")) setRotation(false);
+      } else if (event.target.closest(".occasion-stop,.deck-open,details")) setRotation(false);
     });
     root.addEventListener("pointerdown", event => { if (!event.target.closest(".deck-rotation")) setRotation(false); });
     rotation.addEventListener("click", () => setRotation(!rotating));
@@ -1013,24 +991,9 @@
         if (a.getAttribute("href") === "#" + currentRoute) a.setAttribute("aria-current", "true");
         else a.removeAttribute("aria-current");
       });
-      const arrows = shell.querySelectorAll(".cinema-arrows a");
-      [prev, next].forEach((url, i) => {
-        const a = arrows[i];
-        a.href = "#" + url;
-        a.setAttribute("aria-label", i === 0 ? previousLabel : nextLabel);
-        a.title = i === 0 ? previousLabel : nextLabel;
-        const disabled = i === 0 ? !before : !after;
-        if (disabled) {
-          a.setAttribute("aria-disabled", "true");
-          a.tabIndex = -1;
-        } else {
-          a.removeAttribute("aria-disabled");
-          a.removeAttribute("tabindex");
-        }
-      });
     } else {
       ++mediaRequest;
-      app.innerHTML = `<section class="view cinema-view" data-event="${esc(id)}" data-gallery-session="${performance.now()}"><div class="cinema-heading"><p>${esc([event.location, event.date ? dateLabel(event.date) : event.year].filter(Boolean).join(" · "))}</p><h1>${esc(event.title)}</h1></div>${mediaTabs(event, type)}<div class="cinema-body"><div class="cinema-stage"><div class="cinema-backdrop" style="background-image:url('${href(item?.poster || event.cover)}')"></div>${frame}<div class="cinema-arrows"><a href="#${prev}" data-media-direction="previous" aria-label="${esc(previousLabel)}" title="${esc(previousLabel)}" ${!before ? 'aria-disabled="true" tabindex="-1"' : ""}>←</a><a href="#${next}" data-media-direction="next" aria-label="${esc(nextLabel)}" title="${esc(nextLabel)}" ${!after ? 'aria-disabled="true" tabindex="-1"' : ""}>→</a></div></div><aside class="cinema-caption">${caption}</aside></div><div class="moment-ribbon" aria-label="Choose a moment">${ribbon}</div><dialog class="full-moment" id="full-moment" aria-label="Full photograph"><div><button type="button" data-action="close-full-moment">← Back to photographs</button><button type="button" data-action="close-full-moment" aria-label="Close full photograph">×</button></div><img alt=""></dialog></section>`;
+      app.innerHTML = `<section class="view cinema-view" data-event="${esc(id)}" data-gallery-session="${performance.now()}"><div class="cinema-heading"><p>${esc([event.location, event.date ? dateLabel(event.date) : event.year].filter(Boolean).join(" · "))}</p><h1>${esc(event.title)}</h1></div>${mediaTabs(event, type)}<div class="cinema-body"><div class="cinema-stage"><div class="cinema-backdrop" style="background-image:url('${href(item?.poster || event.cover)}')"></div>${frame}</div><aside class="cinema-caption">${caption}</aside></div><div class="moment-ribbon" aria-label="Choose a moment">${ribbon}</div><dialog class="full-moment" id="full-moment" aria-label="Full photograph"><div><button type="button" data-action="close-full-moment">← Back to photographs</button><button type="button" data-action="close-full-moment" aria-label="Close full photograph">×</button></div><img alt=""></dialog></section>`;
       bindSequence(
         () => activeMedia.previous,
         () => activeMedia.next,

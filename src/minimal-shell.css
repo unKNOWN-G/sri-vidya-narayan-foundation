@@ -303,3 +303,12 @@ body:has(#reading-room:not([hidden])) .reader-header.site-shell { height:var(--s
  .contact-view .contact-method { padding-block:8px; }
 }
 @media(prefers-reduced-motion:reduce) { .contact-service-slide { transition:none; } }
+
+/* Inner scenes use swipe/drag plus the named bottom strip, with no arrow controls. */
+.swipe-surface { touch-action:pan-y pinch-zoom; cursor:grab; user-select:none; -webkit-user-select:none; }
+.swipe-surface img { -webkit-user-drag:none; -webkit-touch-callout:none; }
+.swipe-surface .deck-card,.swipe-surface .spotlight-entry,.swipe-surface .cinema-photo { cursor:grab; }
+.swipe-surface.is-swiping,.swipe-surface.is-swiping * { cursor:grabbing !important; }
+.swipe-visual { translate:var(--swipe-x,0px) 0; transition:translate .24s ease-out; }
+.is-swiping .swipe-visual,.swipe-visual.is-swiping { transition:none; }
+@media(prefers-reduced-motion:reduce) { .swipe-visual { transition:none; } }

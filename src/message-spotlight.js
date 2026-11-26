@@ -99,14 +99,17 @@
   chooser.addEventListener('wheel',event=>{if(!event.ctrlKey&&Math.abs(event.deltaY)>Math.abs(event.deltaX)&&chooser.scrollWidth>chooser.clientWidth){event.preventDefault();chooser.scrollLeft+=event.deltaY*(event.deltaMode===1?18:1);}},{passive:false});
   chooser.addEventListener('keydown',event=>{if(!['ArrowLeft','ArrowRight','Home','End'].includes(event.key))return;const index=[...chooser.children].indexOf(document.activeElement),target=event.key==='Home'?0:event.key==='End'?samples.length-1:Math.max(0,Math.min(samples.length-1,index+(event.key==='ArrowRight'?1:-1)));event.preventDefault();const choice=chooser.children[target];choice.focus({preventScroll:true});chooser.scrollTo({left:choice.offsetLeft-(chooser.clientWidth-choice.offsetWidth)/2,behavior:reduced.matches?'instant':'smooth'});});
   chooser.addEventListener('pointerenter',()=>{hovered=true;});chooser.addEventListener('pointerleave',()=>{hovered=false;});chooser.addEventListener('focusin',()=>{hovered=true;});chooser.addEventListener('focusout',()=>{hovered=false;});
-  document.querySelector('#spotlight-next').addEventListener('click',()=>{setRotation(false);select(selected+1);});
-  document.querySelector('#spotlight-previous').addEventListener('click',()=>{setRotation(false);select(selected-1);});
   rotation.addEventListener('click',()=>setRotation(!rotating));
   collection.addEventListener('pointerenter',()=>{hovered=true;});
   collection.addEventListener('pointerleave',()=>{hovered=false;});
   collection.addEventListener('focusin',()=>{hovered=true;});
   collection.addEventListener('focusout',()=>{hovered=false;});
   const scene = document.querySelector('#message-spotlight');
+  window.foundationGestures.bindSwipe(stage, {surface:collection,onSwipe:direction=>{setRotation(false);select(selected+direction);}});
+  scene.addEventListener('keydown',event=>{
+    if(dialog.open||event.altKey||event.ctrlKey||event.metaKey||event.target.closest('#message-occasions')||!['ArrowLeft','ArrowRight'].includes(event.key))return;
+    event.preventDefault();setRotation(false);select(selected+(event.key==='ArrowRight'?1:-1));collection.children[selected].focus({preventScroll:true});
+  });
   scene.addEventListener('focusin',()=>{hovered=true;});
   scene.addEventListener('focusout',event=>{hovered=scene.contains(event.relatedTarget);});
   document.querySelector('#message-spotlight').addEventListener('pointerdown',event=>{if(!event.target.closest('#spotlight-rotation'))setRotation(false);});

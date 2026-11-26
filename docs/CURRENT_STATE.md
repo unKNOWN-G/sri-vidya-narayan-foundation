@@ -1,5 +1,7 @@
 # Latest interface update · 26 November 2026
 
+- Inner cards, message discovery and occasion media use `src/swipe-navigation.js` for touch/pen swipes, mouse drags and horizontal trackpad gestures. Pointer capture, touch-action and native-drag prevention keep a swipe from cancelling or opening a card. The cards follow the drag slightly before settling. Inner previous/next arrow controls are removed from the DOM; named bottom strips and keyboard selection remain. Book/message page-turn controls and the homepage keep their own interactions.
+
 - The contact page rotates authentic category photographs every 5.5 seconds, starting with Education, then Annadanam, Medical, Vedic Learning, Devotion, Teachings and His Holiness. `foundation.contactPhotoCategories` in `content/site.json` controls the order; photographs come from the existing category covers. Crossfades keep the frame stable and contact details fixed. Pause/Next controls, reduced motion and hidden-tab/hover suspension remain supported; leaving the page stops the timer.
 
 - Gallery thumbnail strips support hold-and-slide scrubbing: a 320 ms hold shows a larger floating preview, then sliding selects the main media in place. Holding near either edge scrolls through longer strips. An ordinary horizontal drag scrolls the strip without advancing the main scene; taps and keyboard arrows/Home/End remain available. Cleanup handles release, cancellation, focus loss and route changes. Browser history and paused native players retain the existing behaviour.
@@ -13,7 +15,7 @@
 - Latest clarification: preserve the welcoming homepage headline, Swamiji’s name, selected-category description and a compact Explore link. Remove unnecessary repetition and the footer rather than stripping away useful content. The active card also opens its section. Milestones and contribution totals remain on their cards. The home menu is visibly labelled Menu.
 - Inner cards retain concise factual descriptions, authentic titles, prominent amounts and receipt attachments. Descriptions use education-profile introductions, event `cardDescription` (or the event account), and reading leads. Keep context; minimal does not mean empty.
 - Everyday Teachings uses subject-specific line illustrations (`visual` and `visualLabel` in the canonical teachings collection) rather than repeating one Swamiji photograph. Preserve the teaching caption as the discovery title. These are visual symbols, not photographs or attributed artwork by Swamiji.
-- Phones use swipe and named bottom tabs with pause. Desktop arrows appear on hover/focus. Active cards show an Open/Read/Explore cue on focus/hover, always visible on touch. Back/Home remain accessible inside sections.
+- Phones use swipe and named bottom tabs with pause. Inner desktop scenes use mouse drag or horizontal trackpad swipes; homepage arrows appear on hover/focus. Active cards show an Open/Read/Explore cue on focus/hover, always visible on touch. Back/Home remain accessible inside sections.
 - Shared shell: `src/site-shell.js` and `src/minimal-shell.css`. Escape closes More without also leaving a section. Original book opening/page turns, folded cards, calendar filters, in-place galleries and complete receipt pages remain intact.
 
 ## Earlier content and navigation decisions

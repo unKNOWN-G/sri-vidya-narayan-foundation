@@ -3,8 +3,6 @@
   const header = document.querySelector('.masthead,.reader-header,.experience-header');
   if (!header) return;
   const main = header.classList.contains('masthead');
-  const spotlight=document.querySelector('#spotlight-stage');
-  if(spotlight) for(const [id,side] of [['spotlight-previous','previous'],['spotlight-next','next']]) {const button=document.getElementById(id);if(button){button.classList.add('shell-carousel-arrow','shell-carousel-'+side);spotlight.append(button);}}
   header.classList.add('site-shell');
   const brand = header.querySelector('.brand,.reader-brand,.experience-brand');
   brand?.classList.add('shell-brand');

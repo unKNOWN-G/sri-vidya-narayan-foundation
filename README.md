@@ -14,7 +14,7 @@ The visitor sees one shared, centred card carousel throughout the inner sections
 
 Within each occasion, Next/Previous continues from photographs to videos and audio, then supporting documents. The visible Continue link identifies the next media type; tabs and the combined thumbnail strip offer direct access. Media changes preserve the viewer and do not add a browser-history entry for every item. Hold a thumbnail and slide to scrub through the main view; holding near an edge reveals more thumbnails. Ordinary dragging scrolls the strip, and taps or keyboard arrows still select individual items.
 
-The shared shell is footer-free: utilities live in More, while each inner card keeps a short factual introduction. Everyday Teachings uses subject illustrations instead of repeated portrait placeholders. On phones, swipe and named tabs keep navigation compact; desktop arrows appear on hover or keyboard focus.
+The shared shell is footer-free: utilities live in More, while each inner card keeps a short factual introduction. Everyday Teachings uses subject illustrations instead of repeated portrait placeholders. Inner scenes use touch swipes, mouse dragging or horizontal trackpad gestures, with named bottom tabs for direct selection. Inner navigation arrows are removed; keyboard selection remains available.
 
 ## Start locally
 
