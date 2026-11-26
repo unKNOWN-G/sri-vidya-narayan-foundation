@@ -88,7 +88,7 @@
         })[c],
     );
   const href = (value) =>
-    /^(https?:\/\/|mailto:|tel:|assets\/|#\/)/.test(String(value))
+    /^(https?:\/\/|mailto:|tel:|assets\/|#\/|(?:reading-room|message-cards)\.html(?:[?#]|$))/.test(String(value))
       ? esc(value)
       : "#";
   const photo = (src, alt = "", cls = "", position = "") => {
@@ -404,12 +404,12 @@
       track.removeEventListener("keydown", keyboard);
     };
   }
-  function sceneControls(previous, next, label, button = "") {
-    return `<div class="scene-controls">${button === "Find a thought" ? `<button class="scene-choice" data-action="open-index">Find a thought <span aria-hidden="true">↗</span></button>` : `<span class="scene-collection-note">${esc(button)}</span>`}<div class="sequence"><a href="${href(previous)}" aria-label="Previous story">←</a><span>${esc(label)}</span><a href="${href(next)}" aria-label="Next story">→</a></div><span class="gesture-note">Swipe or use ← →</span></div>`;
-  }
   function goTo(value) {
     const hash = value.startsWith("#") ? value : "#" + value;
-    if (activeMedia && hash.startsWith("#/event/" + activeMedia.id + "/")) {
+    if (activeSpotlight && app.contains(activeSpotlight.root) && activeSpotlight.routes.has(hash)) {
+      history.replaceState(history.state, "", hash);
+      render();
+    } else if (activeMedia && hash.startsWith("#/event/" + activeMedia.id + "/")) {
       history.replaceState(history.state, "", hash);
       render();
     } else location.hash = hash;
@@ -482,18 +482,105 @@
       app.querySelectorAll("video,audio").forEach((x) => x.pause());
     };
   }
-  function sceneArt(
-    cover,
-    title,
-    nextCover,
-    nextHref,
-    position = "50% 38%",
-    book = false,
-    openHref,
-    caption = "",
-  ) {
-    return `<div class="story-art ${book ? "book-art" : ""}"><div class="art-orbit" aria-hidden="true"></div>${nextCover ? `<a class="next-glimpse" href="${href(nextHref)}" aria-label="Next story">${photo(nextCover, "")}<span>Up next ↗</span></a>` : ""}<a class="story-image" href="${href(openHref || nextHref)}" aria-label="${esc(title)}">${photo(cover, title, "priority", position)}</a>${caption ? `<p class="photo-context">${esc(caption)}</p>` : ""}</div>`;
+  // All inner discovery pages share this portrait-and-caption experience.
+  let activeSpotlight = null;
+  const deckSignature = () => JSON.stringify([state.search, state.month, state.topic]);
+  function deckEvidence(receipts) {
+    const files = receipts.filter(receipt => receipt.src);
+    if (!files.length) return "";
+    return `<details class="deck-evidence"><summary>Receipts (${files.length})</summary><div class="deck-evidence-content">${files.map(receipt => `<a href="${href(receipt.src)}" target="_blank" rel="noopener"><strong>${formatMoney(receipt.amount)}</strong><span>${esc(receipt.displayDonor || receipt.donor || receipt.publicEvidenceLabel || receipt.evidenceLabel)}${receipt.date ? `<br>${esc(dateLabel(receipt.date))}` : ""} ↗</span></a>`).join("")}</div></details>`;
   }
+
+  function sectionSpotlight({ key, title, items, index = 0, back = "#/", header = "", className = "", wrap = true, onSelect = () => {} }) {
+    if (!items.length) return;
+    let current = Math.max(0, Math.min(index, items.length - 1));
+    let rotating = items.length > 1 && sessionValue("svnf-deck-motion-" + key) !== "paused" && !reduced.matches;
+    let interacting = false, timer;
+    const routeAt = (delta) => {
+      const at = current + delta;
+      return wrap ? items[(at + items.length) % items.length].route : items[Math.max(0, Math.min(items.length - 1, at))].route;
+    };
+    const picture = (item, at) => item.cover ? photo(item.cover, item.alt || item.title, at === current ? "priority" : "") : `<div class="deck-thought"><span>${esc(item.kicker || "A MOMENT TO REFLECT")}</span><strong>${esc(item.title)}</strong></div>`;
+    app.innerHTML = `<section class="view section-spotlight ${className}" data-back="${esc(back)}" data-deck-session="${performance.now()}"><div class="deck-header">${header || `<h1>${esc(title)}</h1>`}<button class="deck-rotation" type="button"></button></div><div class="deck-scene"><div class="deck-stage" aria-label="${esc(title)}" aria-roledescription="carousel">${items.map((item, at) => `<button type="button" class="deck-card" data-deck-index="${at}" style="--image-ratio:${item.kind === "book" || !item.cover ? .72 : site.imageVariants?.[item.cover] ? Math.max(.52, Math.min(2.5, site.imageVariants[item.cover].width / site.imageVariants[item.cover].height)) : .78}"><div class="deck-picture">${Math.abs(at-current) <= 1 || (current === 0 && at === items.length-1) ? picture(item, at) : ""}</div>${item.badge ? `<span class="deck-date">${esc(item.badge)}</span>` : ""}<span class="deck-preview-label">${esc(item.title)}</span></button>`).join("")}</div><div class="deck-caption spotlight-caption"></div></div>${sceneNavigation(title, items.map(item => ({title:item.title, href:item.route})), current, routeAt(-1), routeAt(1))}</section>`;
+    const root = app.querySelector(".section-spotlight"), stage = root.querySelector(".deck-stage"), cards = [...root.querySelectorAll(".deck-card")], caption = root.querySelector(".deck-caption"), rotation = root.querySelector(".deck-rotation");
+    function controls() {
+      rotation.hidden = items.length < 2;
+      rotation.textContent = rotating ? "Pause rotation Ⅱ" : "Rotate collection ↻";
+      rotation.setAttribute("aria-label", rotating ? "Pause section rotation" : "Resume section rotation");
+      rotation.setAttribute("aria-pressed", String(rotating));
+    }
+    function setRotation(value) {
+      rotating = value && !reduced.matches;
+      try { sessionStorage.setItem("svnf-deck-motion-" + key, rotating ? "playing" : "paused"); } catch (_) {}
+      if (rotating) interacting = false;
+      controls(); schedule();
+    }
+    function schedule() {
+      clearInterval(timer);
+      if(rotating) timer=setInterval(()=>{if(interacting||document.hidden||root.querySelector("details[open]")||document.querySelector("dialog[open]"))return;if(!wrap&&current===items.length-1){setRotation(false);return;}goTo(routeAt(1));},11000);
+    }
+    function resize() { stage.style.setProperty("--card-height", Math.max(110, Math.min(350, stage.clientHeight - 24)) + "px"); }
+    function show(at, initial = false) {
+      const focusCard = document.activeElement?.matches(".deck-card:focus-visible");
+      current = at;
+      const item = items[current];
+      if (item.theme) theme(item.theme);
+      onSelect(item, current);
+      root.style.setProperty("--active-ratio", cards[current].style.getPropertyValue("--image-ratio"));
+      cards.forEach((card, i) => {
+        let offset = (i - current + items.length) % items.length;
+        if (offset > items.length / 2) offset -= items.length;
+        const position = offset === 0 ? "front" : offset === -1 ? "left" : offset === 1 ? "right" : "hidden";
+        card.dataset.position = position;
+        card.inert = position === "hidden";
+        card.tabIndex = position === "front" ? 0 : -1;
+        card.setAttribute("aria-pressed", String(i === current));
+        card.setAttribute("aria-label", (i === current ? (item.action || "Open") + ": " : "Show ") + items[i].title);
+        if (position !== "hidden" && !card.querySelector(".deck-picture").children.length) card.querySelector(".deck-picture").innerHTML = picture(items[i], i);
+      });
+      if (focusCard) cards[current].focus({preventScroll:true});
+      caption.innerHTML = `${item.kicker ? `<p class="deck-kicker">${esc(item.kicker)}</p>` : ""}<h2>${esc(item.title)}</h2>${item.fact ? `<strong class="deck-fact ${item.cash ? "cash-fact" : ""}">${esc(item.fact)}</strong>` : ""}${item.meta ? `<p class="deck-meta">${esc(item.meta)}</p>` : ""}<div class="deck-actions">${item.target ? `<a class="deck-open" href="${href(item.target)}">${esc(item.action || "Open")} →</a>` : ""}${item.evidence || ""}</div>${item.note ? `<p class="deck-source-note">${esc(item.note)}</p>` : ""}`;
+      const choices = [...root.querySelectorAll(".occasion-stop")];
+      choices.forEach((choice, i) => { if (i === current) choice.setAttribute("aria-current", "page"); else choice.removeAttribute("aria-current"); });
+      const active = choices[current], track = root.querySelector(".occasion-track");
+      if (active && (active.offsetLeft < track.scrollLeft || active.offsetLeft + active.offsetWidth > track.scrollLeft + track.clientWidth)) track.scrollTo({left:active.offsetLeft-(track.clientWidth-active.offsetWidth)/2,behavior:initial||reduced.matches?"instant":"smooth"});
+      root.querySelector(".strip-count").textContent = `${current+1} / ${items.length}`;
+      root.querySelector('[aria-label="Previous story"]').href = routeAt(-1);
+      root.querySelector('[aria-label="Next story"]').href = routeAt(1);
+      for (const [name, disabled] of [["Previous story", items.length===1 || !wrap && current===0],["Next story",items.length===1 || !wrap && current===items.length-1]]) {
+        const link=root.querySelector(`[aria-label="${name}"]`);link.setAttribute("aria-disabled",String(disabled));link.tabIndex=disabled?-1:0;
+      }
+      if (!initial && !reduced.matches) caption.animate([{opacity:.35,transform:"translateY(5px)"},{opacity:1,transform:"translateY(0)"}],{duration:280,easing:"ease-out"});
+      resize();
+    }
+    root.addEventListener("click", event => {
+      const choice = event.target.closest(".occasion-stop,.strip-arrows a");
+      if (choice) { event.preventDefault(); setRotation(false); goTo(choice.getAttribute("href")); return; }
+      const card = event.target.closest(".deck-card");
+      if (card) {
+        setRotation(false);
+        const at = Number(card.dataset.deckIndex), item = items[at];
+        if (at !== current) goTo(item.route);
+        else if (item.target) { if (item.target.startsWith("#")) goTo(item.target); else location.href = item.target; }
+        else { const details=caption.querySelector("details"); if(details) {details.open=!details.open;details.querySelector("summary").focus();} }
+      } else if (event.target.closest(".occasion-stop,.strip-arrows a,.deck-open,details")) setRotation(false);
+    });
+    root.addEventListener("pointerdown", event => { if (!event.target.closest(".deck-rotation")) setRotation(false); });
+    rotation.addEventListener("click", () => setRotation(!rotating));
+    root.addEventListener("pointerenter", () => { interacting = true; });
+    root.addEventListener("pointerleave", () => { interacting = false; });
+    root.addEventListener("focusin", event => { if(event.target!==rotation && event.target.closest("button,a,input,select,summary")) interacting=true; });
+    root.addEventListener("focusout", event => { interacting=root.contains(event.relatedTarget); });
+    const observer = new ResizeObserver(resize); observer.observe(stage);
+    const motion = () => { if(reduced.matches) setRotation(false); }; reduced.addEventListener("change", motion);
+    show(current, true); controls(); requestAnimationFrame(() => root.classList.add("deck-ready"));
+    schedule();
+    bindSequence(()=>routeAt(-1),()=>routeAt(1),back);
+    const release=cleanup, deck={root,signature:deckSignature(),routes:new Map(items.map((item,i)=>[item.route,i])),show};
+    activeSpotlight=deck;
+    cleanup=()=>{release();clearInterval(timer);observer.disconnect();reduced.removeEventListener("change",motion);if(activeSpotlight===deck)activeSpotlight=null;};
+  }
+
   function explore(selected) {
     const cats = featuredCategories();
     let index = Math.max(
@@ -508,9 +595,9 @@
         "#/explore/" + cats[(index - 1 + cats.length) % cats.length].id,
       next = "#/explore/" + after.id,
       target = c.id === "teachings" ? "#/learn" : "#/category/" + c.id;
-    app.innerHTML = `<section class="view story-view">${heading("His life, in action.", '<a href="#/">Meet Swamiji</a>')}<div class="story-scene"><div class="scene-backdrop" style="background-image:url('${href(c.cover)}')"></div><div class="story-copy"><p class="eyebrow">${esc(c.eyebrow)}</p><h2>${esc(c.headline || c.title)}</h2><p class="story-description">${esc(c.caption)}</p><a class="button" href="${target}">${c.id === "teachings" ? "Learn from Swamiji" : "Meet this side"} <span aria-hidden="true">↗</span></a><span class="scene-kicker">${esc(c.title)}</span></div>${sceneArt(c.cover, c.title, "", next, c.position || "50% 35%", false, target)}</div>${sceneNavigation("A life. Many expressions.", experienceLinks(), index, prev, next)}</section>`;
-    bindSequence(prev, next, "#/");
+    sectionSpotlight({key:"explore",title:"His Life in Action",back:"#/",index,items:cats.map(c=>({id:c.id,title:c.title,cover:c.cover,alt:c.coverAlt,route:"#/explore/"+c.id,target:c.id==="teachings"?"#/learn":"#/category/"+c.id,action:c.id==="teachings"?"Learn from Swamiji":"Explore this side",fact:c.homeMilestone||"",theme:c})),onSelect:item=>deckMemory.set("explore",item.id)});
   }
+
   async function category(id, selectedTab, selectedId) {
     const c = getCategory(id);
     if (!c) throw Error("This part of his life is not available.");
@@ -546,33 +633,19 @@
       0,
       events.findIndex((e) => e.id === (selectedId || deckMemory.get(id))),
     );
-    const event = events[index],
-      after = events[(index + 1) % events.length];
-    if (event.presentation === "service-story" && event.supportRecordIds?.length) {
-      deckMemory.set(id, event.id);
-      await recordView(event.supportGroupId || event.supportRecordIds[0]);
-      return;
-    }
-    deckMemory.set(id, event.id);
-    const base = "#/category/" + id + "/moments/",
-      prev = base + events[(index - 1 + events.length) % events.length].id,
-      next = base + after.id,
-      target =
-        event.presentation === "service-story" && event.supportRecordIds?.length
-          ? "#/record/" + (event.supportGroupId || event.supportRecordIds[0])
-          : "#/event/" + event.id;
-    app.innerHTML = `<section class="view story-view">${heading(c.title)}<div class="story-scene"><div class="scene-backdrop" style="background-image:url('${href(event.cover)}')"></div><div class="story-copy"><p class="eyebrow">${esc([event.location, event.date ? dateLabel(event.date) : event.year].filter(Boolean).join(" · ") || c.eyebrow)}</p><h2>${esc(event.title)}</h2><p class="story-description">${esc(event.intro || short(event.description || c.caption))}</p><a class="button" href="${target}">${id === "his-holiness" && event.id === "swamiji-stuti" ? "Read the Stuti" : event.presentation === "service-story" ? "View contribution" : event.counts?.photos ? "View photographs" : event.counts?.recordings ? "Listen to the recordings" : "Explore this occasion"} <span aria-hidden="true">↗</span></a>${event.photoSource ? `<a class="school-photo-credit" href="${esc(event.photoSource)}" target="_blank" rel="noopener">${esc(event.photoCredit)} ↗</a>` : ""}<span class="scene-kicker">${
-      event.presentation === "service-story"
-        ? "A story of support"
-        : Object.entries(event.counts || {})
-            .map(
-              ([k, v]) =>
-                `${v} ${v === 1 ? { photos: "photograph", films: "film", recordings: "recording", documents: "document", youtube: "video" }[k] || k : { youtube: "videos" }[k] || k}`,
-            )
-            .join(" · ")
-    }</span></div>${sceneArt(event.cover, event.coverAlt || event.title, "", next, event.coverPosition || "50% 35%", false, target)}</div>${sceneNavigation(c.title, events.map((e) => ({ title: e.title, href: base + e.id })), index, prev, next)}</section>`;
-    bindSequence(prev, next, "#/explore/" + id);
+    const base = "#/category/" + id + "/moments/";
+    const token=routeToken, ledger=events.some(e=>e.presentation==="service-story")?await collection("contributions"):null;
+    if(token!==routeToken)return;
+    sectionSpotlight({key:"category/"+id,title:c.title,back:"#/",index,items:events.map(e=>{
+      const first=ledger?.records.find(r=>e.supportRecordIds?.includes(r.id)),support=first?contributionScenes(ledger,first.category).find(r=>r.receipts.some(receipt=>receipt.id===first.id)):null;
+      return {id:e.id,title:e.frontTitle||e.title,cover:e.cover,alt:e.coverAlt||e.title,route:base+e.id,
+        target:support?"":"#/event/"+e.id,action:e.id==="swamiji-stuti"?"Read the Stuti":support?"View receipts":"View photographs",
+        meta:e.cardMeta||[e.location,e.date?dateLabel(e.date):e.year].filter(Boolean).join(" · "),
+        fact:support?(support.approximate?"≈ ":"")+formatMoney(support.amount):e.id==="portrait-and-journey"?"52 Chaturmasyas completed":"",cash:!!support,evidence:support?deckEvidence(support.receipts):"",
+      };
+    }),onSelect:item=>deckMemory.set(id,item.id)});
   }
+
   async function educationView(selected) {
     const token = routeToken;
     const [profiles, ledger] = await Promise.all([
@@ -587,36 +660,26 @@
       0,
       profiles.findIndex((p) => p.id === requested || p.eventId === requested),
     );
-    const profile = profiles[index],
-      event = getEvent(profile.eventId),
-      schoolCover = profile.cover || event?.cover;
-    if (!event) throw Error("This school collection is unavailable.");
-    deckMemory.set("education", profile.id);
-    const records = profile.recordIds
-      .map((id) => ledger.records.find((r) => r.id === id))
-      .filter(Boolean);
-    const amount = records.reduce((n, r) => n + r.amount, 0),
-      approximate = records.some((r) => r.approximate || r.reported);
-    const amountText = records.length
-      ? (approximate ? "≈ " : "") + formatMoney(amount)
-      : profile.contributionText;
-    const base = "#/category/education/schools/",
-      previous =
-        base + profiles[(index - 1 + profiles.length) % profiles.length].id,
-      next = base + profiles[(index + 1) % profiles.length].id;
-    const photographs = event.presentation !== "service-story",
-      target = photographs
-        ? "#/event/" + event.id
-        : "#/record/" + profile.recordIds[0];
-    app.innerHTML = `<section class="view story-view education-view">${heading(c.title)}<div class="story-scene"><div class="scene-backdrop" style="background-image:url('${href(schoolCover)}')"></div><div class="story-copy"><p class="eyebrow">${esc(event.location || "DEFENCE SCHOOLS · EDUCATIONAL SUPPORT")}</p><h2>${esc(profile.title)}</h2><div class="school-contribution"><small>${esc(profile.amountLabel)}</small><strong class="${records.length ? "cash-amount" : "contribution-kind"}">${esc(amountText)}</strong></div><p class="story-description">${esc(profile.intro || profile.description)}</p><div class="story-actions"><a class="button" href="${target}">${photographs ? "View school photographs" : "View contribution details"} ↗</a>${records.some((r) => r.src) ? `<details class="school-attachments"><summary>Receipts and acknowledgements</summary><div class="school-attachment-list">${records.filter((r) => r.src).map((r) => `<a class="text-link" href="${href(r.src)}" target="_blank" rel="noopener"><strong class="receipt-contribution">${formatMoney(r.amount)}</strong><span>${esc(r.displayDonor || r.donor || r.evidenceLabel)} ↗</span></a>`).join("")}</div></details>` : ""}</div>${profile.photoSource ? `<a class="school-photo-credit" href="${esc(profile.photoSource)}" target="_blank" rel="noopener">${esc(profile.photoCredit)} ↗</a>` : ""}</div>${sceneArt(schoolCover, profile.title, "", next, event.coverPosition || "50% 30%", false, target, profile.photoCaption)}</div>${sceneNavigation("Schools and colleges", profiles.map((p) => ({ title: p.title, href: base + p.id })), index, previous, next)}</section>`;
-    bindSequence(previous, next, "#/explore/education");
+    const base = "#/category/education/schools/";
+    sectionSpotlight({key:"education",title:c.title,back:"#/",index,items:profiles.map(p=>{
+      const e=getEvent(p.eventId),rs=p.recordIds.map(id=>ledger.records.find(r=>r.id===id)).filter(Boolean),cash=rs.reduce((n,r)=>n+r.amount,0);
+      return {id:p.id,title:p.title,cover:p.cover||e?.cover,alt:p.coverAlt||p.title,route:base+p.id,
+        target:e?.presentation!=="service-story"?"#/event/"+e.id:"",action:e?.presentation!=="service-story"?"View photographs":"View receipts",
+        fact:rs.length?(rs.some(r=>r.approximate||r.reported)?"≈ ":"")+formatMoney(cash):p.contributionText,cash:rs.length>0,
+        meta:p.id==="gollapalli"?"Land donated in 2004":p.id==="sgdc-college"?"Madanapalle":"",
+        evidence:deckEvidence(rs),
+        note:p.photoCaption||"",
+      };
+    }),onSelect:item=>deckMemory.set("education",item.id)});
   }
 
   function foundationView(connect = false) {
     const c = getCategory("foundation");
     theme(c);
-    app.innerHTML = `<section class="view story-view">${heading("Inspired by his example.", "The foundation")}<div class="story-scene"><div class="scene-backdrop" style="background-image:url('${href(c.cover)}')"></div><div class="story-copy"><p class="eyebrow">VIDYA · VAIDYA · VASATHI</p><h2>Kindness.<br><em>Carried forward.</em></h2><p class="story-description">${esc(site.foundation.description)}</p><div class="story-actions"><a class="button" href="#/foundation/connect">Contact the foundation →</a><a class="text-link" href="#/category/foundation/moments">Moments of service ↗</a></div><a class="quiet-link" href="#/foundation/support">A clear account of historical support ↗</a></div><div class="foundation-image">${photo(c.cover, "Service inspired by Swamiji’s example")}</div></div>${connect ? `<dialog class="scene-index contact-dialog" id="contact-dialog" open><div class="index-head"><p class="eyebrow">A CONVERSATION IS A BEGINNING</p><a href="#/foundation" aria-label="Close contact details">×</a></div><h2>Let’s serve together.</h2><p>For current needs, volunteering and contribution guidance, speak with the foundation team.</p><a class="contact-link" href="mailto:${esc(site.foundation.email)}">${esc(site.foundation.email)}</a><a class="contact-link" href="tel:${esc(site.foundation.phone.replace(/[^+\d]/g, ""))}">${esc(site.foundation.phone)}</a><p>${esc(site.foundation.office)}</p></dialog>` : ""}<div class="foundation-bottom"><a href="#/category/education">Encourage learning ↗</a><a href="#/category/healthcare">Care for wellbeing ↗</a><a href="#/category/annadanam">Share nourishment ↗</a><a href="#/category/compassion">Care for all life ↗</a></div></section>`;
+    sectionSpotlight({key:"foundation",title:"The Foundation",back:"#/",items:[{id:"foundation",title:"Sri Vidya Narayan Foundation",cover:c.cover,route:"#/foundation",target:"#/foundation/connect",action:"Contact the foundation",meta:"Inspired by Swamiji’s example",evidence:'<a class="deck-open" href="#/explore">Service and contributions →</a>'}]});
+    if(connect) app.insertAdjacentHTML("beforeend",`<dialog class="scene-index contact-dialog" id="contact-dialog" open><div class="index-head"><p class="eyebrow">A CONVERSATION IS A BEGINNING</p><a href="#/foundation" aria-label="Close contact details">×</a></div><h2>Let’s serve together.</h2><p>For current needs, volunteering and contribution guidance, speak with the foundation team.</p><a class="contact-link" href="mailto:${esc(site.foundation.email)}">${esc(site.foundation.email)}</a><a class="contact-link" href="tel:${esc(site.foundation.phone.replace(/[^+\d]/g,""))}">${esc(site.foundation.phone)}</a><p>${esc(site.foundation.office)}</p><a class="text-link" href="#/category/compassion">Care for all life →</a></dialog>`);
   }
+
   async function supportView(category) {
     const token = routeToken;
     const data = await collection("contributions");
@@ -798,7 +861,7 @@
     books: "Books",
     messages: "Anugraha Bhashanams",
   };
-  function teachingGateway() {
+  function teachingGateway(selectedId) {
     theme(getCategory("teachings"));
     const choices = [
       {
@@ -839,8 +902,14 @@
         href: "#/library/teachings",
       },
     ];
-    app.innerHTML = `<section class="view learning-gateway">${heading("Learn Swamiji’s Teachings.", "", "A thought to reflect on. A way to live.")}<nav class="learning-shortcuts" aria-label="Choose a teaching experience">${choices.map(c => `<a href="${c.href}">${esc({readings:"Satsangs",books:"Books",messages:"Blessings",teachings:"Practice"}[c.id])}</a>`).join("")}</nav><div class="learning-doors">${choices.map((c, i) => `<a class="learning-door ${c.id}" href="${c.href}"><span class="door-number">0${i + 1}</span><div class="door-art">${photo(c.cover, c.title)}</div><div class="door-copy"><p class="eyebrow">${c.eyebrow}</p><h2>${c.title}</h2><p>${c.description}</p><span class="door-action">${c.id === "messages" ? "Read the blessings" : c.id === "books" ? "Find a book" : c.id === "readings" ? "Read a reflection" : "Begin with a teaching"} →</span></div></a>`).join("")}</div><a class="gateway-pearl" href="reading-room.html?open=1">A quiet moment? Open Pearls of Wisdom →</a></section>`;
+    const selected=choices.findIndex(c=>c.id===(selectedId||deckMemory.get("learn")));
+    sectionSpotlight({key:"learn",title:"Learn Swamiji’s Teachings",back:"#/",index:Math.max(0,selected),items:choices.map(c=>({
+      id:c.id,title:c.title,cover:c.cover,route:"#/learn/"+c.id,target:c.href,
+      action:c.id==="books"?"Choose a book":c.id==="messages"?"Open the cards":c.id==="readings"?"Read a Satsang":"Read a teaching",
+      fact:c.id==="books"?"8 spiritual books published":"",meta:c.id==="readings"?"A reflection for your day":c.id==="messages"?"Messages and blessings":"",
+    })),onSelect:item=>deckMemory.set("learn",item.id)});
   }
+
   async function library(name = "readings", selected) {
     if (!libNames[name]) name = "readings";
     if (name === "messages") {
@@ -860,6 +929,11 @@
       bookShelf(entries, selected);
       return;
     }
+    if (name === "teachings") {
+      const selectedIndex=entries.findIndex(e=>String(e.id) === (selected||deckMemory.get("teachings")));
+      sectionSpotlight({key:"practical-teachings",title:"Everyday Teachings",index:Math.max(0,selectedIndex),back:"#/learn",items:entries.map(e=>({id:e.id,title:e.title,cover:getCategory("teachings").cover,route:"#/library/teachings/"+e.id,target:"#/read/teachings/"+e.id,action:"Read this teaching",kicker:"BRING IT INTO YOUR DAY",meta:"An edited practical reflection"})),onSelect:item=>deckMemory.set("teachings",item.id)});
+      return;
+    }
     const all = entries.slice();
     if (name === "readings")
       all.sort((a, b) => String(b.date).localeCompare(String(a.date)));
@@ -867,67 +941,6 @@
       satsangView(all, selected);
       return;
     }
-    const list = all.filter(
-      (e) =>
-        (!state.search ||
-          JSON.stringify(e)
-            .toLowerCase()
-            .includes(state.search.toLowerCase())) &&
-        (!state.month ||
-          name !== "readings" ||
-          e.date?.startsWith(state.month)) &&
-        (!state.topic ||
-          name !== "readings" ||
-          (e.topics || e.tags || []).includes(state.topic)),
-    );
-    let index = selected
-      ? list.findIndex((e) => String(e.id || e.number) === selected)
-      : state.page;
-    index = Math.max(0, Math.min(index, list.length - 1));
-    state.page = index;
-    const item = list[index];
-    const route = (e) => "#/library/" + name + "/" + (e.id || e.number),
-      target = (e) => "#/read/" + name + "/" + (e.id || e.number);
-    const previous = item
-        ? route(list[(index - 1 + list.length) % list.length])
-        : "#/learn",
-      next = item ? route(list[(index + 1) % list.length]) : "#/learn";
-    const headingText =
-      name === "readings" ? "A thought to carry." : "A way to live.";
-    app.innerHTML = `<section class="view reflection-view">${heading(name === "readings" ? "Satsangs" : "Everyday Teachings", '<a href="#/learn">Learn Swamiji’s Teachings</a>')}<div class="reflection-scene"><div class="reflection-portrait">${photo(getCategory("teachings").cover, "Sri Swamiji")}</div><div class="reflection-intro"><p class="eyebrow">${name === "readings" ? "PAUSE · REFLECT · BRING IT INTO YOUR DAY" : "UNDERSTAND · PRACTISE · GROW"}</p><h2>${headingText.split(" ").slice(0, 2).join(" ")}<br><em>${headingText.split(" ").slice(2).join(" ")}</em></h2><p>${name === "readings" ? "A few quiet words can change how we meet the day. Begin with a reflection from Swamiji’s satsangh." : "Wisdom takes shape in the way we live. Begin with one teaching, and a small action you can make your own."}</p><a class="text-link" href="#/learn">Other ways to learn ↗</a></div><div class="thought-deck">${item ? `<a class="thought-behind back-left" href="${previous}" aria-label="Previous reflection"><span>${esc(list[(index - 1 + list.length) % list.length].title || "A moment of reflection")}</span></a><a class="thought-behind back-right" href="${next}" aria-label="Next reflection"><span>${esc(list[(index + 1) % list.length].title || "A little everyday wisdom")}</span></a><a class="thought-paper" href="${target(item)}"><span class="paper-date">${name === "readings" ? dateLabel(item.date) : "A TEACHING FOR EVERYDAY LIFE"}</span><span class="paper-rule"></span><h3>${esc(item.title || item.caption || "A reflection")}</h3><p>${esc(short(item.lead || item.meaning || item.text, 245))}</p><span class="paper-action">${name === "readings" ? "Read. Reflect. Carry it with you." : "Understand. Put it into practice."} ↗</span><small>${name === "readings" ? "An edited satsangh reflection" : "A practical paraphrase"} · Sri Swamiji</small></a>` : '<div class="thought-paper empty"><h3>No matching reflection.</h3><p>Try another thought, month or topic.</p><button data-action="open-index" class="button">Find a thought ↗</button></div>'}</div></div><div class="reflection-bottom">${sceneControls(previous, next, item ? `${index + 1} / ${list.length}` : "", "Find a thought")}<span class="reflection-note">${state.search || state.month || state.topic ? `Showing your selection · <button data-action="clear-reflection-search">Show all reflections</button>` : "One reflection at a time. At your own pace."}</span></div><dialog class="scene-index reflection-search" id="scene-index"><div class="index-head"><p class="eyebrow">WHAT IS ON YOUR MIND?</p><button data-action="close-index" aria-label="Close search">×</button></div><h2>Find a thought.</h2><form id="reflection-filter"><label for="library-search">A word or question</label><input type="search" id="library-search" placeholder="Gratitude, duty, love…" value="${esc(state.search)}">${
-      name === "readings"
-        ? `<label for="month-filter">A month to return to</label><select id="month-filter"><option value="">Every month</option>${[
-            ...new Set(all.map((e) => e.date?.slice(0, 7)).filter(Boolean)),
-          ]
-            .sort()
-            .reverse()
-            .map(
-              (m) =>
-                `<option value="${m}" ${state.month === m ? "selected" : ""}>${new Date(m + "-15").toLocaleDateString("en-IN", { month: "long", year: "numeric" })}</option>`,
-            )
-            .join(
-              "",
-            )}</select><label for="topic-filter">A theme to reflect on</label><select id="topic-filter"><option value="">Every topic</option>${[
-            ...new Set(all.flatMap((e) => e.topics || e.tags || [])),
-          ]
-            .sort()
-            .map(
-              (t) =>
-                `<option ${state.topic === t ? "selected" : ""}>${esc(t)}</option>`,
-            )
-            .join("")}</select>`
-        : ""
-    }<button class="button" type="submit">Begin with a reflection ↗</button></form></dialog></section>`;
-    app.querySelector("#reflection-filter").addEventListener("submit", (e) => {
-      e.preventDefault();
-      state.search = app.querySelector("#library-search").value;
-      state.month = app.querySelector("#month-filter")?.value || "";
-      state.topic = app.querySelector("#topic-filter")?.value || "";
-      state.page = 0;
-      if (location.hash === "#/library/" + name) render();
-      else location.hash = "/library/" + name;
-    });
-    bindSequence(previous, next, "#/learn");
   }
 
   function satsangView(all, selected) {
@@ -948,7 +961,13 @@
       calendarIcon = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M7 2v6m10-6v6M3 11h18"/></svg>',
       filters = [state.month ? monthLabel(state.month) : "", state.search ? "Matching: " + state.search : "", state.topic].filter(Boolean);
     let calendarMonth = state.month || item?.date.slice(0, 7) || months[months.length - 1];
-    app.innerHTML = `<section class="view satsang-view"><div class="satsang-top">${heading("Satsangs", '<a href="#/learn">Learn Swamiji’s Teachings</a>')}<div class="satsang-tools"><form class="satsang-search" role="search"><input type="search" name="thought" aria-label="Search Satsangs" placeholder="Find a thought…" value="${esc(state.search)}"><button type="submit" aria-label="Search messages">↗</button></form><details class="satsang-calendar"><summary>${calendarIcon}<span>Calendar</span>${state.month ? '<i aria-hidden="true"></i>' : ""}</summary><div class="satsang-calendar-panel"><div class="satsang-calendar-head"><button type="button" data-calendar-step="-1" aria-label="Previous month">←</button><h2 id="satsang-calendar-month"></h2><button type="button" data-calendar-step="1" aria-label="Next month">→</button></div><div class="calendar-weekdays" aria-hidden="true">${["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map((d) => `<span>${d}</span>`).join("")}</div><div class="satsang-calendar-days" aria-labelledby="satsang-calendar-month"></div><p class="calendar-hint">Choose a highlighted date to open its Satsang.</p><div class="calendar-actions"><button type="button" data-calendar-month>Read this month</button><button type="button" data-satsang-clear>All dates</button></div></div></details><label class="satsang-topic">A theme to reflect on<select aria-label="Filter Satsangs by theme"><option value="">Every theme</option>${[...new Set(all.flatMap((e) => e.topics || e.tags || []))].sort().map((topic) => `<option value="${esc(topic)}" ${state.topic === topic ? "selected" : ""}>${esc(topic)}</option>`).join("")}</select></label></div></div><div class="satsang-filter-note">${filters.length ? `<span>${esc(filters.join(" · "))}</span><button type="button" data-satsang-clear>Show all Satsangs ×</button>` : '<span>A quiet moment. A little clarity.</span>'}</div><div class="satsang-stage"><article class="satsang-message-card ${item ? "" : "satsang-empty"}"><figure class="satsang-photo">${photo(getCategory("teachings").cover, "His Holiness Sri Vidyanarayana Thirtha Swamiji by the water")}</figure><div class="satsang-copy"><div class="satsang-meta"><p class="satsang-kicker">WORDS FOR EVERYDAY LIFE</p>${item ? `<time datetime="${esc(item.date)}">${dateLabel(item.date)}</time>` : '<span class="satsang-no-date">A moment to begin again</span>'}</div>${item ? `<h2><a href="#/read/readings/${esc(item.id)}">${esc(item.title)}</a></h2><p class="satsang-lead">${esc(item.lead || item.essence || "")}</p><div class="satsang-read"><a class="button" href="#/read/readings/${esc(item.id)}">Read this Satsang <span aria-hidden="true">↗</span></a><span>Edited Satsang reflection</span></div>` : '<h2>No Satsangs match this selection.</h2><p class="satsang-lead">Try another word, choose a highlighted calendar date, or return to all messages.</p><button class="button" type="button" data-satsang-clear>Show all Satsangs ↗</button>'}</div></article></div><nav class="satsang-navigation" aria-label="Browse Satsangs">${previous ? `<a href="${previous}" aria-label="Previous Satsang">← <span>Previous</span></a>` : '<button type="button" disabled aria-label="Previous Satsang">← <span>Previous</span></button>'}<div><strong>${item ? dateLabel(item.date) : "No matching message"}</strong><span>${item ? `${index + 1} of ${matches.length} Satsangs` : "Choose another date or clear your filters"}</span></div>${next ? `<a href="${next}" aria-label="Next Satsang"><span>Next</span> →</a>` : '<button type="button" disabled aria-label="Next Satsang"><span>Next</span> →</button>'}</nav></section>`;
+    app.innerHTML = `<section class="view satsang-view"><div class="satsang-top">${heading("Satsangs", '<a href="#/learn">Learn Swamiji’s Teachings</a>')}<div class="satsang-tools"><form class="satsang-search" role="search"><input type="search" name="thought" aria-label="Search Satsangs" placeholder="Find a thought…" value="${esc(state.search)}"><button type="submit" aria-label="Search messages">↗</button></form><details class="satsang-calendar"><summary aria-label="Calendar">${calendarIcon}<span>Calendar</span>${state.month ? '<i aria-hidden="true"></i>' : ""}</summary><div class="satsang-calendar-panel"><div class="satsang-calendar-head"><button type="button" data-calendar-step="-1" aria-label="Previous month">←</button><h2 id="satsang-calendar-month"></h2><button type="button" data-calendar-step="1" aria-label="Next month">→</button></div><div class="calendar-weekdays" aria-hidden="true">${["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map((d) => `<span>${d}</span>`).join("")}</div><div class="satsang-calendar-days" aria-labelledby="satsang-calendar-month"></div><p class="calendar-hint">Choose a highlighted date to open its Satsang.</p><div class="calendar-actions"><button type="button" data-calendar-month>Read this month</button><button type="button" data-satsang-clear>All dates</button></div></div></details><label class="satsang-topic">A theme to reflect on<select aria-label="Filter Satsangs by theme"><option value="">Every theme</option>${[...new Set(all.flatMap((e) => e.topics || e.tags || []))].sort().map((topic) => `<option value="${esc(topic)}" ${state.topic === topic ? "selected" : ""}>${esc(topic)}</option>`).join("")}</select></label></div></div><div class="satsang-filter-note">${filters.length ? `<span>${esc(filters.join(" · "))}</span><button type="button" data-satsang-clear>Show all Satsangs ×</button>` : '<span>A quiet moment. A little clarity.</span>'}</div><div class="satsang-stage"><article class="satsang-message-card ${item ? "" : "satsang-empty"}"><figure class="satsang-photo">${photo(getCategory("teachings").cover, "His Holiness Sri Vidyanarayana Thirtha Swamiji by the water")}</figure><div class="satsang-copy"><div class="satsang-meta"><p class="satsang-kicker">WORDS FOR EVERYDAY LIFE</p>${item ? `<time datetime="${esc(item.date)}">${dateLabel(item.date)}</time>` : '<span class="satsang-no-date">A moment to begin again</span>'}</div>${item ? `<h2><a href="#/read/readings/${esc(item.id)}">${esc(item.title)}</a></h2><p class="satsang-lead">${esc(item.lead || item.essence || "")}</p><div class="satsang-read"><a class="button" href="#/read/readings/${esc(item.id)}">Read this Satsang <span aria-hidden="true">↗</span></a><span>Edited Satsang reflection</span></div>` : '<h2>No Satsangs match this selection.</h2><p class="satsang-lead">Try another word, choose a highlighted calendar date, or return to all messages.</p><button class="button" type="button" data-satsang-clear>Show all Satsangs ↗</button>'}</div></article></div><nav class="satsang-navigation" aria-label="Browse Satsangs">${previous ? `<a href="${previous}" aria-label="Previous Satsang">← <span>Previous</span></a>` : '<button type="button" disabled aria-label="Previous Satsang">← <span>Previous</span></button>'}<div><strong>${item ? dateLabel(item.date) : "No matching message"}</strong><span>${item ? `${index + 1} of ${matches.length} Satsangs` : "Choose another date or clear your filters"}</span></div>${next ? `<a href="${next}" aria-label="Next Satsang"><span>Next</span> →</a>` : '<button type="button" disabled aria-label="Next Satsang"><span>Next</span> →</button>'}</nav></section>`;
+    if (matches.length) {
+      const toolbar=app.querySelector(".satsang-tools"), search=toolbar.querySelector(".satsang-search").outerHTML, topic=toolbar.querySelector(".satsang-topic").outerHTML, dates=toolbar.querySelector(".satsang-calendar").outerHTML;
+      toolbar.innerHTML=dates+`<details class="deck-find"><summary aria-label="Find a Satsang"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="10" cy="10" r="6"/><path d="m15 15 5 5"/></svg><span>Find</span></summary><div class="deck-find-panel">${search}${topic}</div></details>`;
+      const tools=app.querySelector(".satsang-top").outerHTML+app.querySelector(".satsang-filter-note").outerHTML;
+      sectionSpotlight({key:"satsangs",title:"Satsangs",className:"satsang-view",header:tools,index,wrap:false,back:"#/learn",items:matches.map(e=>({id:e.id,title:e.title,cover:getCategory("teachings").cover,route:route(e),target:"#/read/readings/"+e.id,action:"Read this Satsang",badge:dateLabel(e.date),meta:"Edited Satsang reflection"})),onSelect:(entry,i)=>{state.page=i;}});
+    }
     const calendar = app.querySelector(".satsang-calendar"),
       calendarPanel = app.querySelector(".satsang-calendar-panel"),
       grid = app.querySelector(".satsang-calendar-days");
@@ -962,7 +981,7 @@
       calendarPanel.querySelector('[data-calendar-step="1"]').disabled = monthIndex === months.length - 1;
       grid.innerHTML = '<span aria-hidden="true"></span>'.repeat(offset) + Array.from({ length: days }, (_, i) => {
         const date = `${calendarMonth}-${String(i + 1).padStart(2, "0")}`, entry = byDate.get(date);
-        return `<button type="button" data-satsang-date="${date}" aria-label="${esc(dateLabel(date) + (entry ? "" : " — no Satsang available"))}" ${entry ? `class="available" title="${esc(entry.title)}"` : "disabled"} aria-pressed="${item?.date === date}">${i + 1}</button>`;
+        return `<button type="button" data-satsang-date="${date}" aria-label="${esc(dateLabel(date) + (entry ? "" : " — no Satsang available"))}" ${entry ? `class="available" title="${esc(entry.title)}"` : "disabled"} aria-pressed="${(matches[state.page]||item)?.date === date}">${i + 1}</button>`;
       }).join("");
     }
     function refresh() {
@@ -994,7 +1013,7 @@
     app.querySelector(".satsang-topic select").addEventListener("change", (event) => {
       state.topic = event.target.value; refresh();
     });
-    calendar.addEventListener("toggle", () => { if (calendar.open) paintCalendar(); });
+    calendar.addEventListener("toggle", () => { if (calendar.open) {calendarMonth=state.month||(matches[state.page]||item)?.date.slice(0,7)||calendarMonth;paintCalendar();} });
     grid.addEventListener("keydown", (event) => {
       const directions = { ArrowRight: 1, ArrowLeft: -1, ArrowDown: 7, ArrowUp: -7 };
       if (!(event.key in directions)) return;
@@ -1005,17 +1024,17 @@
       if (buttons[target]) buttons[target].focus();
       event.preventDefault(); event.stopPropagation();
     });
-    const outside = (event) => { if (calendar.open && !calendar.contains(event.target)) calendar.open = false; },
+    const find = app.querySelector(".deck-find"), outside = (event) => { if (calendar.open && !calendar.contains(event.target)) calendar.open = false; if(find?.open && !find.contains(event.target)) find.open=false; },
       escape = (event) => {
-        if (calendar.open && event.key === "Escape") {
-          calendar.open = false; calendar.querySelector("summary").focus();
+        if ((calendar.open || find?.open) && event.key === "Escape") {
+          const control=calendar.open?calendar:find; calendar.open = false; if(find)find.open=false; control.querySelector("summary").focus();
           event.preventDefault(); event.stopImmediatePropagation();
         }
       };
     document.addEventListener("pointerdown", outside);
     document.addEventListener("keydown", escape, true);
     paintCalendar();
-    bindSequence(previous || location.hash, next || location.hash, "#/learn");
+    if (!matches.length) bindSequence(previous || location.hash, next || location.hash, "#/learn");
     const release = cleanup;
     cleanup = () => { release(); document.removeEventListener("pointerdown", outside); document.removeEventListener("keydown", escape, true); };
   }
@@ -1025,15 +1044,7 @@
       0,
       books.findIndex((e) => e.id === (selected || deckMemory.get("books"))),
     );
-    const book = books[index],
-      after = books[(index + 1) % books.length];
-    deckMemory.set("books", book.id);
-    const previous =
-        "#/library/books/" +
-        books[(index - 1 + books.length) % books.length].id,
-      next = "#/library/books/" + after.id;
-    app.innerHTML = `<section class="view books-experience">${heading("A quiet companion for the journey.", '<a href="#/learn">Learn Swamiji’s Teachings</a>')}<div class="book-scene"><div class="book-copy"><p class="eyebrow">${book.reader ? "A SPECIAL DIGITAL EDITION · READ HERE" : "THE BOOK COLLECTION"}</p><h2>${esc(book.title)}</h2><p>${esc(book.subtitle || "Teachings to read, reflect upon, and bring into everyday life.")}</p><p class="book-attribution">${esc(book.attribution)}</p><div class="story-actions">${book.reader ? '<a class="button" href="reading-room.html?open=1">Open the book →</a>' : `<a class="button" href="${href(book.purchaseUrl)}" target="_blank" rel="noopener">View the book ↗</a>`}${book.reader ? "" : `<a class="text-link" href="#/read/books/${esc(book.id)}">About this edition →</a>`}</div>${book.reader ? '<span class="scene-kicker">180 pearls · Save your place · Read at your own pace</span>' : '<span class="scene-kicker">Published editions and availability depend on the seller.</span>'}</div><div class="book-display"><a class="physical-book" href="${book.reader ? "reading-room.html?open=1" : "#/read/books/" + esc(book.id)}" aria-label="${book.reader ? "Open" : "Explore"} ${esc(book.title)}">${photo(book.cover, book.title)}<span aria-hidden="true"></span></a><p>OPEN · READ · REFLECT</p></div></div><div class="book-shelf" aria-label="Choose a book">${books.map((b, i) => `<a href="#/library/books/${esc(b.id)}" ${i === index ? 'aria-current="true"' : ""} aria-label="Show ${esc(b.title)}">${photo(b.cover, b.title)}<span>${String(i + 1).padStart(2, "0")}</span></a>`).join("")}</div>${sceneControls(previous, next, `${String(index + 1).padStart(2, "0")} / ${String(books.length).padStart(2, "0")}`, "All eight books")}</section>`;
-    bindSequence(previous, next, "#/learn");
+    sectionSpotlight({key:"books",title:"Spiritual Books",back:"#/learn",index,items:books.map(b=>({id:b.id,title:b.title,cover:b.cover,kind:"book",route:"#/library/books/"+b.id,target:b.reader?"reading-room.html?open=1":"#/read/books/"+b.id,action:b.reader?"Open the book":"About this book",meta:b.reader?"180 pearls · Read and reflect":b.subtitle||""})),onSelect:item=>deckMemory.set("books",item.id)});
   }
 
   async function reader(name, id) {
@@ -1110,37 +1121,24 @@
       record = records.find((r) => r.id === id || r.receipts.some((receipt) => receipt.id === id)),
       index = records.indexOf(record);
     if (!record) throw Error("This supporting note is not available.");
-    const primaryId = record.receipts[0].id,
-      schoolProfile = profiles.find((p) => p.recordIds.includes(primaryId)),
-      event = getEvent(schoolProfile?.eventId || links.records?.[primaryId]?.eventIds?.[0]),
-      c =
-        getCategory(
-          links.categoryAliases?.[record.category] || record.category,
-        ) || getCategory("foundation");
-    const supportCover = schoolProfile?.cover || event?.cover;
+    const c=getCategory(links.categoryAliases?.[record.category]||record.category)||getCategory("foundation");
     theme(c);
-    const previous =
-        "#/record/" + records[(index - 1 + records.length) % records.length].id,
-      next = "#/record/" + records[(index + 1) % records.length].id;
-    app.innerHTML = `<section class="view story-view support-record-view" data-back="#/category/${esc(c.id)}">${heading(c.title + " · support", '<a href="#/category/' + c.id + '">' + esc(c.title) + "</a>")}<div class="story-scene"><div class="scene-backdrop" style="${supportCover ? `background-image:url('${href(supportCover)}')` : ""}"></div><div class="story-copy"><p class="eyebrow">${esc(record.date ? dateLabel(record.date) : "SERVICE THROUGH GENEROSITY")}</p><h2>${esc(record.recipient)}</h2><p class="story-description">${esc(record.summary || "A contribution to " + record.recipient + ".")}</p><div class="record-context"><small>${esc(record.amountLabel || "Recorded support")}</small><strong class="record-amount">${record.approximate ? "≈ " : ""}${formatMoney(record.amount)}</strong>${record.displayDonor || record.donor ? `<span class="record-donor">${esc(record.displayDonor || record.donor)}</span>` : ""}</div>${event && event.presentation !== "service-story" ? `<a class="button" href="#/event/${esc(event.id)}">View photographs →</a>` : `<a class="button" href="#/foundation/connect">Contact the foundation →</a>`}<details class="evidence-note ${record.receipts.length > 1 ? "grouped-receipts" : ""}"><summary>${record.receipts.length > 1 ? `Receipts (${record.receipts.length}) ↗` : "Read the supporting acknowledgement"}</summary><div class="evidence-content">${record.receipts.length > 1 ? `<div class="contribution-receipts">${record.receipts.map((receipt) => `<a href="${href(receipt.src)}" target="_blank" rel="noopener"><strong>${formatMoney(receipt.amount)}</strong><span>${esc(receipt.date ? dateLabel(receipt.date) : receipt.evidenceLabel)}</span><small>Full-page receipt ↗</small></a>`).join("")}</div>` : `<p>${esc(record.publicEvidenceLabel || record.evidenceLabel)}</p>${record.document ? `<p>Full acknowledgement · ${record.document.pageCount} ${record.document.pageCount === 1 ? "page" : "pages"}.</p>` : ""}${record.src ? `<a class="text-link" href="${href(record.src)}" target="_blank" rel="noopener">View full-page document ↗</a>` : ""}${
-      record.src && event?.media?.length
-        ? `<div class="evidence-links">${event.media
-            .filter((m) => m.src !== record.src && m.id.includes(record.id))
-            .map(
-              (m) =>
-                `<a href="${href(m.src)}" target="_blank" rel="noopener">${esc(m.title || "Related supporting document")} ↗</a>`,
-            )
-            .join("")}</div>`
-        : ""
-    }`}</div></details>${event?.photoSource ? `<a class="school-photo-credit" href="${esc(event.photoSource)}" target="_blank" rel="noopener">${esc(event.photoCredit)} ↗</a>` : ""}</div><div class="foundation-image recipient-image">${supportCover ? photo(supportCover, schoolProfile?.title || event?.coverAlt || event?.title || c.title) : ""}</div></div>${sceneNavigation(c.title + " support", records.map((r) => ({ title: r.navigationTitle || r.recipient, href: "#/record/" + r.id })), index, previous, next)}</section>`;
-    bindSequence(previous, next, "#/category/" + c.id);
+    sectionSpotlight({key:"support/"+source.category,title:c.title,back:source.category==="education"?"#/category/education":"#/",index,items:records.map(r=>{
+      const p=profiles.find(p=>p.recordIds.includes(r.receipts[0].id)),e=getEvent(p?.eventId||links.records?.[r.receipts[0].id]?.eventIds?.[0]);
+      return {id:r.id,eventId:e?.id,title:p?.title||r.navigationTitle||e?.frontTitle||r.recipient,cover:p?.cover||e?.cover,route:"#/record/"+r.id,
+        target:e&&e.presentation!=="service-story"?"#/event/"+e.id:"",action:e&&e.presentation!=="service-story"?"View photographs":"View receipts",
+        fact:(r.approximate?"≈ ":"")+formatMoney(r.amount),cash:true,meta:"",
+        evidence:deckEvidence(r.receipts),
+      };
+    })});
   }
+
   function about() {
     theme(getCategory("his-holiness"));
     app.innerHTML = `<section class="view">${heading("A tribute, through real moments.", "About the collection")}<article class="about-scroll"><p>This collection brings together the many expressions of His Holiness Sri Vidyanarayana Thirtha Swamiji’s life: spiritual practice, learning, care, service, and everyday wisdom.</p><h2>Begin with a photograph.</h2><p>Choose a portrait, open a collection, and step into an occasion. Photographs, films, audio recordings, messages, and readings stay together with their context.</p><h2>Care for the source.</h2><p>Visit identities and original media were shared by the foundation. An exact date appears only where it was supplied. Historical acknowledgements retain their named donors. Devotee reflections, edited summaries, and practical paraphrases are distinguished from original texts.</p><h2>A growing collection.</h2><p>This is a living collection of moments shared through the foundation: a place to return to for quiet reading, listening, and discovery.</p><p><a href="#/foundation/connect">Connect with the foundation →</a></p></article></section>`;
   }
-  function finishNavigation(parts) {
-    const title = app.querySelector(".satsang-copy h2,.reader-scroll h1,.story-copy h2,.book-copy h2,.cinema-heading h1,h1")?.textContent.trim() || site.title;
+  function finishNavigation(parts, focusHeading = true) {
+    const title = (app.querySelector(".deck-caption h2,.satsang-copy h2,.reader-scroll h1,.story-copy h2,.book-copy h2") || app.querySelector(".cinema-heading h1,h1"))?.textContent.trim() || site.title;
     document.title = parts.length ? title + " — " + site.title : "Sri Vidyanarayana Thirtha Swamiji — " + site.title;
     const summary = app.querySelector(".satsang-lead,.story-description,.reader-scroll .lead")?.textContent || "A living tribute to His Holiness Sri Vidyanarayana Thirtha Swamiji, through spiritual practice, teaching and service.";
     document.querySelector('meta[name="description"]').content = summary;
@@ -1159,7 +1157,7 @@
       while (walker.nextNode()) walker.currentNode.textContent = walker.currentNode.textContent.replace(/↗/g, "→");
     });
     const focus = app.querySelector("h1");
-    if (focus && parts.length) { focus.tabIndex = -1; focus.focus({preventScroll:true}); }
+    if (focus && parts.length && focusHeading) { focus.tabIndex = -1; focus.focus({preventScroll:true}); }
     announce.textContent = title;
     if (parts[0] === "foundation" && parts[1] === "connect") {
       const dialog = app.querySelector("#contact-dialog");
@@ -1172,6 +1170,12 @@
     const nextParts = routeParts();
     document.querySelector("#back-view").hidden = !nextParts.length;
     document.querySelector(".start-link").hidden = !nextParts.length;
+    document.body.classList.toggle("inside-experience", nextParts.length > 0);
+    if (activeSpotlight && !document.querySelector("dialog[open]") && app.contains(activeSpotlight.root) && activeSpotlight.signature === deckSignature() && activeSpotlight.routes.has(location.hash)) {
+      activeSpotlight.show(activeSpotlight.routes.get(location.hash));
+      finishNavigation(nextParts, false);
+      return;
+    }
     if (
       nextParts[0] === "event" &&
       activeMedia?.id === nextParts[1] &&
@@ -1210,7 +1214,7 @@
         )
           await recordView(getEvent(parts[1]).supportGroupId || getEvent(parts[1]).supportRecordIds[0]);
         else eventView(parts[1], parts[2], parts[3]);
-      } else if (parts[0] === "learn") teachingGateway();
+      } else if (parts[0] === "learn") teachingGateway(parts[1]);
       else if (parts[0] === "foundation") {
         if (parts[1] === "support") await supportView(parts[2]);
         else foundationView(parts[1] === "connect");

@@ -8,14 +8,14 @@
   "cover": "assets/media/spiritual-life/kanchi-mutt-2024/photo-01.webp",
   "coverAlt": "Temples & spiritual life — photograph shared by the foundation",
   "theme": {
-    "key": "temple",
-    "paper": "#f7efde",
-    "wash": "#ddbc7c",
-    "ink": "#483620",
-    "muted": "#5c482c",
-    "accent": "#876023",
-    "surface": "#fffaf0",
-    "line": "#ddc9a3"
+    "key": "celebration",
+    "paper": "#fcf0e9",
+    "wash": "#e9baa5",
+    "ink": "#5b3930",
+    "muted": "#7c594f",
+    "accent": "#a95d49",
+    "line": "#dfbeaf",
+    "surface": "#fff8f4"
   },
   "published": true,
   "eventIds": [

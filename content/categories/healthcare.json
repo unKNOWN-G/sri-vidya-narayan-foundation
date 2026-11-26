@@ -9,13 +9,13 @@
   "coverAlt": "Photographs of eye examinations and care at the C.K. Palya vision camp",
   "theme": {
     "key": "lotus",
-    "paper": "#faedf0",
-    "wash": "#e4b8c5",
-    "ink": "#4c2a36",
-    "muted": "#684250",
-    "accent": "#93435b",
-    "surface": "#fff8fa",
-    "line": "#e1c3cc"
+    "paper": "#f9edf1",
+    "wash": "#e4bacb",
+    "ink": "#573745",
+    "muted": "#795867",
+    "accent": "#9a526f",
+    "line": "#dfbfd0",
+    "surface": "#fff8fb"
   },
   "published": true,
   "eventIds": [

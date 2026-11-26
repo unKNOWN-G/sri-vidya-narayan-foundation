@@ -8,14 +8,14 @@
   "cover": "assets/media/vedic-learning/veda-sabha-2025/photo-02.webp",
   "coverAlt": "Vedic learning & parayanam — photograph shared by the foundation",
   "theme": {
-    "key": "earth",
-    "paper": "#f7efde",
-    "wash": "#ddbc7c",
-    "ink": "#483620",
-    "muted": "#5c482c",
-    "accent": "#876023",
-    "surface": "#fffaf0",
-    "line": "#ddc9a3"
+    "key": "vedic",
+    "paper": "#eeeff8",
+    "wash": "#bbbce0",
+    "ink": "#353752",
+    "muted": "#5c5e7a",
+    "accent": "#66628f",
+    "line": "#c8c8de",
+    "surface": "#fafaff"
   },
   "published": true,
   "eventIds": [

@@ -9,13 +9,13 @@
   "coverAlt": "His Holiness Shankaracharya — photograph shared by the foundation",
   "theme": {
     "key": "saffron",
-    "paper": "#fbf2e2",
-    "wash": "#edc283",
-    "ink": "#47301f",
-    "muted": "#654c35",
-    "accent": "#98521f",
-    "surface": "#fffaf0",
-    "line": "#dfc8a5"
+    "paper": "#fbf1e2",
+    "wash": "#e7bd85",
+    "ink": "#493424",
+    "muted": "#6f5945",
+    "accent": "#965a2d",
+    "line": "#ddc5a5",
+    "surface": "#fffaf2"
   },
   "published": true,
   "eventIds": [

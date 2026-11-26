@@ -1,7 +1,7 @@
 # Current design and navigation decisions
 
 - Keep the earlier light, context-sensitive palettes. The full forest-green redesign was rejected and is not part of the published design.
-- Inside a selected section, show only its current story: no overlapping next-story photograph, cross-section strip, or onward teaser. Keep Back/Home and navigation through the current section’s own items.
+- Latest direction: every inner discovery section uses the Anugraha Bhashanams format: one centred card, softly visible neighbouring cards from that same section, a short caption and a numbered bottom strip. Keep Back/Home; do not introduce cross-cause previews.
 - Introductory scenes show one perspective or occasion at a time. Do not replace them with an archive or folder grid.
 - Use the same next/previous, touch and parent-return conventions across scenes. Books retain their opening reader; messages retain their folded-card reader.
 - A gallery keeps its shell and native player when changing photos or recordings. Media changes replace the current URL/history entry so browser Back leaves the occasion.
@@ -34,7 +34,7 @@ Run source validation, the independent route check, the tests and the build. Git
 - Receipts and acknowledgements use full supplied page frames and proportions. No cropped/rearranged excerpts. Relevant privacy fields are masked in place, and Yelahanka includes both the school letter and the actual receipt. Public PDFs and page previews live in `assets/documents/contributions/`; unchanged source documents remain local in `media/receipt-originals/`.
 - The user requested the website critique and then authorised implementation and publication of its fixes. Preserve the reviewed card-based direction; do not revert to archive grids.
 
-- Occasion, school and contribution selectors are persistent numbered strips at the bottom, with horizontal scrolling and an active label. No chooser popup. Scrolling this strip must not advance the main story. Preserve its position when changing stories, and keep the active choice visible. Books retain the visible cover strip. Message cards also use a numbered bottom strip instead of an occasion dropdown; the original folded-card reader is preserved. Reflection search remains a separate search function.
+- Occasion, school and contribution selectors are persistent numbered strips at the bottom, with horizontal scrolling and an active label. No chooser popup. Scrolling this strip must not advance the main story. Preserve its position when changing stories, and keep the active choice visible. Books use the same numbered strip and centred cover carousel, while retaining the original opening reader. Message cards also use a numbered bottom strip instead of an occasion dropdown; the original folded-card reader is preserved. Reflection search remains a separate search function.
 
 - Yelahanka shows ₹4,00,000 at school level. Its receipt links explicitly distinguish ₹2,00,000 personal support from Swamiji and ₹2,00,000 from Sri Krishna Sudama Religious & Charitable Trust; preserve the original printed donor names and the two independent documents. Hebbal uses the owner-supplied entrance-gate photograph in `assets/media/education/hebbal/campus-user-reference.jpg`.
 
@@ -57,3 +57,16 @@ Run source validation, the independent route check, the tests and the build. Git
 - Regression checks cover escaped sharing metadata, route preservation, image manifest inclusion and traversal rejection, alongside existing donor/grouping/build checks. Review changes preserve the 12 original giving records, 40 real events, 8 books and 8 message collections.
 
 Final verification: 25 automated tests passed; source and built-site validation passed; all 40 event routes, 8 books, 8 message collections and 12 giving records remain reachable. Browser checks covered 1280px desktop, 390px phone and 320px compact phone layouts, school media changes/history, direct book opening/page turning, folded-card opening/closing, source-date Satsang filtering/order, foundation contact/menu state, grouped Shirdi receipts and a generated school-sharing redirect. Individual recordings were not all played end-to-end.
+
+
+## Shared inner-card format · latest owner direction
+
+- `sectionSpotlight()` in `src/app.js` and `src/section-spotlight.css` now provide one common, minimal discovery layout for life perspectives, events, Vedic learning, schools, Annadanam, medical support, the teaching gateway, books, Satsangs, practical teachings and the foundation. This replaces the previous separate left/right scene and four-column gateway templates.
+- Keep only the section heading, real photograph/book cover, short authentic title and essential date or contribution fact. Source detail remains in the opened gallery/reader or full-page receipt attachments. `frontTitle` and `cardMeta` allow concise display text without rewriting canonical event descriptions.
+- Neighbours are other items within the selected scope. A lone foundation card has no invented neighbours. Full readers, folded-card mechanics and media viewers remain functional destinations.
+- Reuse the mounted deck when selecting another item, so the same cards physically move to the front. Automatic rotation respects pause, interaction and reduced motion. Selection replaces its URL/history entry; browser Back leaves the section rather than stepping through its rotation history.
+- Each main section has a distinct restrained palette in its category JSON: saffron, indigo, peach, muted violet, sage, honey and rose. Preserve authentic media and all original donation figures.
+- Satsangs retain Calendar at the top; optional keyword and theme filters sit under Find. Schools and contribution cards keep full original receipt links in the compact Receipts control. Shirdi remains one story with three receipts.
+- Explicit picture dimensions and a stable card stage keep photographs visible on small screens. Preserve image proportions; receipt PDFs and original media remain unchanged.
+
+Shared-deck verification: 25 automated tests and all route/build checks passed. Browser checks confirmed in-place card selection and automatic rotation with an unchanged scene, a single browser Back step to the homepage after multiple selections, 320px/390px phone and 1280px desktop layouts, grouped Shirdi receipts, the direct physical book reader, the original blessing cards, and contact open/close.

@@ -9,13 +9,13 @@
   "coverAlt": "Swamiji with students and staff at Air Force School, Yelahanka",
   "theme": {
     "key": "grove",
-    "paper": "#eff5e8",
-    "wash": "#c1d6ae",
-    "ink": "#283d2c",
-    "muted": "#465a45",
-    "accent": "#3f693a",
-    "surface": "#fafcf5",
-    "line": "#c7d7bd"
+    "paper": "#eef4e8",
+    "wash": "#c0d4ae",
+    "ink": "#334631",
+    "muted": "#596b51",
+    "accent": "#507347",
+    "line": "#c3d1b7",
+    "surface": "#f9fcf5"
   },
   "published": true,
   "eventIds": [

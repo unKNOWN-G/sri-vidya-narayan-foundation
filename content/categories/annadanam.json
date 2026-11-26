@@ -9,13 +9,13 @@
   "coverAlt": "Tirumala temple, a recipient of Annadanam support",
   "theme": {
     "key": "marigold",
-    "paper": "#fcf0df",
-    "wash": "#efc08c",
-    "ink": "#513820",
-    "muted": "#664b30",
-    "accent": "#975a24",
-    "surface": "#fffaf1",
-    "line": "#e4c7a3"
+    "paper": "#fbf2df",
+    "wash": "#e9cc8e",
+    "ink": "#554224",
+    "muted": "#7b6540",
+    "accent": "#9c752e",
+    "line": "#dfcc9f",
+    "surface": "#fffaf0"
   },
   "published": true,
   "eventIds": [
