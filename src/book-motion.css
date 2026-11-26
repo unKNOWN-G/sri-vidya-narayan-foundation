@@ -1,0 +1,5 @@
+/* Shared with Pearls of Wisdom: a hinged cover and a light 3D page arrival. */
+.book-cover { perspective:1500px; }
+.book-cover .book-cover-leaf { transform-origin:left center; backface-visibility:hidden; }
+.book-cover.opening .book-cover-leaf { transform:rotateY(-100deg); opacity:0; transition:transform .6s,opacity .6s; }
+@media(prefers-reduced-motion:reduce) { .book-cover.opening .book-cover-leaf { transition:none; transform:none; } }

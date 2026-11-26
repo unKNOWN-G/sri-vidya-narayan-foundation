@@ -1234,7 +1234,7 @@
     const item = list.find((e) => String(e.id || e.number) === id);
     if (!item) throw Error("This reading is not available.");
     if (name === "readings") {
-      cleanup=window.foundationSatsangReader.mount({root:app,item,entries:list,escape:esc,dateLabel,editorialNote:data.editorialNote});
+      cleanup=window.foundationSatsangReader.mount({root:app,item,entries:list,escape:esc,dateLabel,editorialNote:data.editorialNote,portrait:href(site.imageVariants?.[getCategory("teachings").cover]?.sources?.[0]?.src || getCategory("teachings").cover)});
       return;
     }
     if (name === "pearls") {

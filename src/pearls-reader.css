@@ -241,13 +241,7 @@ img {
 .hero-book:hover img {
   transform: rotateY(-12deg);
 }
-.hero-book.opening img {
-  transform: rotateY(-100deg);
-  opacity: 0;
-  transition:
-    transform 0.6s,
-    opacity 0.6s;
-}
+
 .cover-hint {
   position: absolute;
   bottom: -43px;
@@ -599,32 +593,6 @@ input[type="range"] {
 .end-note button {
   font: inherit;
   text-decoration: underline;
-}
-.page-enter-next {
-  animation: nextPage 0.5s ease;
-}
-.page-enter-prev {
-  animation: prevPage 0.5s ease;
-}
-@keyframes nextPage {
-  from {
-    transform: rotateY(-13deg) translateX(14px);
-    opacity: 0.25;
-  }
-  to {
-    transform: none;
-    opacity: 1;
-  }
-}
-@keyframes prevPage {
-  from {
-    transform: rotateY(13deg) translateX(-14px);
-    opacity: 0.25;
-  }
-  to {
-    transform: none;
-    opacity: 1;
-  }
 }
 body[data-theme="sepia"] {
   --page: #eee0c1;

@@ -6,7 +6,7 @@
   const storageKey = 'svnf-pearls-reader-v1';
   let stored = {};
   try { stored = JSON.parse(localStorage.getItem(storageKey) || '{}') || {}; } catch (_) {}
-  let index = 0, opened = false, onlySaved = false, turnTimer, toastTimer;
+  let index = 0, opened = false, onlySaved = false, toastTimer, cancelOpening = () => {};
   let size = Math.min(1.35, Math.max(.85, Number(stored.size) || 1));
   let theme = ['paper', 'sepia', 'night'].includes(stored.theme) ? stored.theme : 'paper';
   const saved = new Set((Array.isArray(stored.saved) ? stored.saved : []).filter(n => Number.isInteger(n) && n >= 1 && n <= lessons.length));
@@ -45,16 +45,15 @@
     $('save-pearl').setAttribute('aria-label', isSaved ? 'Remove lesson bookmark' : 'Bookmark this lesson');
     $('save-pearl').querySelector('span').textContent = isSaved ? 'Saved' : 'Save';
     $('end-note').hidden = index !== lessons.length - 1;
-    const page = $('pearl-page'); page.classList.remove('page-enter-next', 'page-enter-prev');
-    clearTimeout(turnTimer);
-    if (direction && !reduced) { requestAnimationFrame(() => page.classList.add(direction > 0 ? 'page-enter-next' : 'page-enter-prev')); turnTimer = setTimeout(() => page.classList.remove('page-enter-next', 'page-enter-prev'), 550); }
+    if (direction) window.foundationBookMotion.turn($('pearl-page'),direction);
     try { history.replaceState(null, '', '#pearl-' + number); } catch (_) {}
     persist();
   }
   function openBook(at = 0, animate = false) {
     index = Math.max(0, Math.min(lessons.length - 1, at));
     const reveal = () => { $('book-welcome').hidden = true; $('reading-room').hidden = false; opened = true; render(); $('pearl-page').focus({preventScroll: true}); window.scrollTo({top: 0, behavior: 'instant'}); };
-    if (animate && !reduced) { $('cover-open').classList.add('opening'); setTimeout(reveal, 500); } else reveal();
+    cancelOpening();
+    cancelOpening = window.foundationBookMotion.open($('cover-open'),reveal,{animate:animate&&!reduced});
   }
   function go(at) { if (at < 0 || at >= lessons.length || at === index) return; const direction = at - index; index = at; render(direction); }
   function contents() {
@@ -79,6 +78,7 @@
   if (last !== null) { $('resume-reading').hidden = false; $('resume-reading').textContent = 'Continue from pearl ' + (last + 1) + ' →'; }
   $('resume-reading').addEventListener('click', () => openBook(resumeAt ?? 0, true));
   $('close-book').addEventListener('click', () => {
+    cancelOpening();
     opened = false; $('reading-room').hidden = true; $('book-welcome').hidden = false; $('cover-open').classList.remove('opening');
     $('resume-reading').hidden = false; $('resume-reading').textContent = 'Continue from pearl ' + (index + 1) + ' →';
     resumeAt = index;
