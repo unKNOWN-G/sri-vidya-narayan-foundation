@@ -312,3 +312,6 @@ body:has(#reading-room:not([hidden])) .reader-header.site-shell { height:var(--s
 .swipe-visual { translate:var(--swipe-x,0px) 0; transition:translate .24s ease-out; }
 .is-swiping .swipe-visual,.swipe-visual.is-swiping { transition:none; }
 @media(prefers-reduced-motion:reduce) { .swipe-visual { transition:none; } }
+/* Fixed card scenes handle one-finger movement; preserve native two-finger zoom. */
+.deck-scene.swipe-surface,.spotlight-stage.swipe-surface { touch-action:pinch-zoom; }
+.deck-scene.swipe-surface .deck-card,.spotlight-stage.swipe-surface .spotlight-entry { touch-action:pinch-zoom; }
