@@ -710,8 +710,17 @@
   function foundationView(connect = false) {
     const c = getCategory("foundation");
     theme(c);
+    if (connect) { contactView(c); return; }
     sectionSpotlight({key:"foundation",title:"The Foundation",back:"#/",items:[{id:"foundation",title:"Sri Vidya Narayan Foundation",description:"Spiritual learning and service, inspired by Swamiji’s life and guidance.",cover:c.cover,route:"#/foundation",target:"#/foundation/connect",action:"Contact the foundation",meta:"Inspired by Swamiji’s example",evidence:'<a class="deck-open" href="#/explore">Service and contributions →</a>'}]});
-    if(connect) app.insertAdjacentHTML("beforeend",`<dialog class="scene-index contact-dialog" id="contact-dialog" open><div class="index-head"><p class="eyebrow">A CONVERSATION IS A BEGINNING</p><a href="#/foundation" aria-label="Close contact details">×</a></div><h2>Let’s serve together.</h2><p>For current needs, volunteering and contribution guidance, speak with the foundation team.</p><a class="contact-link" href="mailto:${esc(site.foundation.email)}">${esc(site.foundation.email)}</a><a class="contact-link" href="tel:${esc(site.foundation.phone.replace(/[^+\d]/g,""))}">${esc(site.foundation.phone)}</a><p>${esc(site.foundation.office)}</p><a class="text-link" href="#/category/compassion">Care for all life →</a></dialog>`);
+
+  }
+
+
+  function contactView(c) {
+    app.innerHTML = `<section class="view contact-view"><div class="deck-header"><h1>Connect with the Foundation</h1></div><div class="contact-scene"><figure class="contact-portrait">${photo(c.cover,"Swamiji seated with visitors","priority")}</figure><article class="contact-copy" aria-labelledby="contact-title"><h2 id="contact-title">Let’s serve together.</h2><p class="contact-intro">For volunteering, current needs or contribution guidance, speak with the foundation team.</p><div class="contact-methods"><a class="contact-method" href="mailto:${esc(site.foundation.email)}"><span>Email</span><strong>${esc(site.foundation.email)}</strong><span class="contact-method-arrow" aria-hidden="true">↗</span></a><a class="contact-method" href="tel:${esc(site.foundation.phone.replace(/[^+\d]/g,""))}"><span>Call the office</span><strong>${esc(site.foundation.phone)}</strong><span class="contact-method-arrow" aria-hidden="true">↗</span></a></div><address class="contact-office"><span>Guruashraya office</span><p>${esc(site.foundation.office.replace(/^Guruashraya office\s*·\s*/,""))}</p></address></article></div></section>`;
+    const escape = event => { if(event.key === "Escape" && !event.defaultPrevented) { event.preventDefault(); goTo("#/foundation"); } };
+    document.addEventListener("keydown",escape);
+    cleanup = () => document.removeEventListener("keydown",escape);
   }
 
   async function supportView(category) {
@@ -1207,10 +1216,7 @@
     const focus = app.querySelector("h1");
     if (focus && parts.length && focusHeading) { focus.tabIndex = -1; focus.focus({preventScroll:true}); }
     announce.textContent = title;
-    if (parts[0] === "foundation" && parts[1] === "connect") {
-      const dialog = app.querySelector("#contact-dialog");
-      if (dialog) { dialog.removeAttribute("open"); dialog.showModal(); dialog.addEventListener("close", () => { if (location.hash === "#/foundation/connect") location.hash = "#/foundation"; }); }
-    }
+
   }
   async function render() {
     if (!site) return;

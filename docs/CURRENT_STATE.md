@@ -1,5 +1,7 @@
 # Latest interface update · 26 November 2026
 
+- `#/foundation/connect` is a full contact scene with the shared header, warm Foundation palette, existing community photograph and direct email/phone links. It never opens an overlay or blocks Back/Home. Office details remain visible; Escape returns to the Foundation, while Escape in More only closes that menu.
+
 - Media navigation follows the entire occasion in this order: photographs, local videos, YouTube videos, audio, supporting documents. Next/Previous and keyboard/swipe cross media types in place; tabs remain direct shortcuts. A prominent Continue link appears at a media-type boundary. Original media-type URLs stay valid; native players remain user-initiated.
 - Restore the earlier header character (serif brand, spaced FOUNDATION lettering, fine divider) and consistent homepage spacing. Reserve caption space across selections so different description lengths do not shift the carousel. Keep useful content and the footer-free layout.
 

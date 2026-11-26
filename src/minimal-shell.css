@@ -221,3 +221,44 @@ body:not(.inside-experience) .masthead .shell-menu-label { display:inline; font:
 @media(max-width:280px) { .masthead.site-shell, .reader-header.site-shell, .experience-header.site-shell { height:auto; min-height:82px; flex-basis:auto; } }
 
 body:has(#reading-room:not([hidden])) .reader-header.site-shell { height:var(--shell-height); min-height:var(--shell-height); flex-basis:var(--shell-height); }
+
+/* Contact belongs to the same experience: a complete scene, with no overlay. */
+.contact-view { padding:22px clamp(18px,4vw,54px) 18px; gap:20px; }
+.contact-scene { display:grid; grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr); align-items:center; gap:clamp(28px,5vw,72px); width:100%; max-width:1040px; flex:1; min-height:0; align-self:center; overflow-y:auto; padding:14px 6px; }
+.contact-portrait { margin:0; width:100%; max-height:450px; padding:6px; border-radius:24px; background:var(--paper); box-shadow:0 15px 35px #47301f1c; overflow:hidden; }
+.contact-portrait img { display:block; width:100%; height:auto; max-height:430px; object-fit:contain; border-radius:18px; }
+.contact-copy { min-width:0; padding-block:8px; }
+.contact-copy h2 { margin:0 0 14px; font:400 clamp(30px,3.2vw,42px)/1.12 var(--serif); letter-spacing:-.025em; }
+.contact-copy .contact-intro { margin:0 0 22px; max-width:430px; color:var(--muted); font:14px/1.65 var(--sans); }
+.contact-methods { display:flex; flex-direction:column; }
+.contact-method { display:grid; grid-template-columns:minmax(0,1fr) 28px; gap:6px 14px; padding:15px 0; border-top:1px solid var(--line); color:var(--ink); text-decoration:none; transition:color .25s; }
+.contact-method > span:first-child,.contact-office > span { font:500 11px/1.4 var(--sans); color:var(--muted); }
+.contact-method strong { grid-column:1; font:400 clamp(19px,1.9vw,25px)/1.3 var(--serif); overflow-wrap:anywhere; }
+.contact-method-arrow { grid-column:2; grid-row:1/3; align-self:center; justify-self:center; color:var(--accent); font:20px/1 var(--sans); transition:transform .25s; }
+.contact-method:is(:hover,:focus-visible) { color:var(--accent); }
+.contact-method:is(:hover,:focus-visible) .contact-method-arrow { transform:translate(2px,-2px); }
+.contact-office { border-top:1px solid var(--line); padding-top:16px; margin-top:2px; font-style:normal; }
+.contact-office p { max-width:400px; margin:7px 0 0; color:var(--muted); font:13px/1.65 var(--sans); }
+@media(max-width:750px) {
+ .contact-view { gap:12px; padding-top:16px; padding-bottom:max(14px,env(safe-area-inset-bottom)); }
+ .contact-scene { display:flex; flex-direction:column; align-items:stretch; justify-content:safe center; gap:18px; max-width:460px; padding:8px 3px; }
+ .contact-portrait { width:auto; flex:0 0 auto; align-self:center; max-width:100%; border-radius:18px; padding:5px; }
+ .contact-portrait img { width:auto; height:145px; max-width:100%; border-radius:13px; }
+ .contact-copy { padding:0; }
+ .contact-copy h2 { font-size:30px; margin-bottom:10px; }
+ .contact-copy .contact-intro { font-size:13px; line-height:1.55; margin-bottom:14px; }
+ .contact-method { padding-block:12px; }
+ .contact-method strong { font-size:22px; }
+ .contact-office { padding-top:12px; }
+ .contact-office p { font-size:12px; line-height:1.55; }
+}
+@media(max-height:720px) and (max-width:750px) {
+ .contact-view { gap:8px; padding-top:12px; }
+ .contact-view .deck-header h1 { font-size:25px; }
+ .contact-scene { gap:10px; }
+ .contact-portrait img { height:88px; }
+ .contact-method { padding-block:10px; }
+ .contact-copy h2 { font-size:27px; }
+ .contact-method strong { font-size:20px; }
+}
+@media(prefers-reduced-motion:reduce) { .contact-method,.contact-method-arrow { transition:none; } }
