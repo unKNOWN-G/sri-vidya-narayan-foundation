@@ -1387,7 +1387,7 @@
     if (parts[0] === "event") route = "#/event/" + parts[1];
     if (parts[0] === "category" && !site.sharePages?.[route]) route = parts[2] === "moments" && parts[3] ? "#/event/" + parts[3] : "#/category/" + parts[1];
     if (parts[0] === "library" && parts[1] === "readings" && parts[2]) route = "#/read/readings/" + parts[2];
-    if (parts[0] === "foundation") route = "#/foundation";
+    if (parts[0] === "foundation" && parts[1] !== "connect") route = "#/foundation";
     const url = site.sharePages?.[route] ? new URL(site.sharePages[route], location.href).href : location.href;
     try { await navigator.clipboard.writeText(url); announce.textContent = "Link copied"; document.querySelector("#share-view").textContent = "Copied"; setTimeout(() => { document.querySelector("#share-view").textContent = "Copy a link to this page"; }, 2000); }
     catch (_) { announce.textContent = "Copy this page’s address from your browser to share it."; }
