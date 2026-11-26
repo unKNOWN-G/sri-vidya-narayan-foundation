@@ -140,7 +140,9 @@ def backend(path, method='GET', payload=None):
     parsed=urllib.parse.urlsplit(base)
     if parsed.scheme!='https' or parsed.username or parsed.password or parsed.query or parsed.fragment or not parsed.hostname or not token or len(token)<32:
         raise ValueError('The private uploader connection is not configured.')
-    headers={'Authorization':'Bearer '+token,'Accept':'application/json'}
+    # Cloudflare-managed workers.dev requires an application identifier rather
+    # than urllib's default User-Agent. Keep this honest; it is an API client.
+    headers={'Authorization':'Bearer '+token,'Accept':'application/json','User-Agent':'foundation-photo-publisher/1.0 (+https://github.com/unKNOWN-G/sri-vidya-narayan-foundation)'}
     data=None
     if payload is not None:headers['Content-Type']='application/json';data=json.dumps(payload).encode()
     request=urllib.request.Request(base+path,data=data,headers=headers,method=method)
@@ -150,7 +152,11 @@ def backend(path, method='GET', payload=None):
             if len(content)>MAX_PHOTO+10000:raise ValueError('The upload service returned an oversized response.')
             return content
     except urllib.error.HTTPError as exc:
-        raise ValueError('The private uploader request failed (HTTP '+str(exc.code)+').') from None
+        # Recognise the edge error without writing response bodies or credentials
+        # into public Actions logs.
+        edge=exc.read(2048).decode('utf-8',errors='replace')
+        detail=' Cloudflare rejected the client identifier (error 1010).' if re.search(r'error\s+code\s*:\s*1010\b',edge,re.I) else ''
+        raise ValueError('The private uploader request failed (HTTP '+str(exc.code)+').'+detail) from None
     except urllib.error.URLError:
         raise ValueError('The private uploader could not be reached.') from None
 

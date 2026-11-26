@@ -3,18 +3,43 @@ import copy
 import hashlib
 import importlib.util
 import json
+import io
 from pathlib import Path
 import sys
 import tempfile
 import unittest
+from unittest.mock import patch
+import urllib.error
 
 SCRIPTS=Path(__file__).resolve().parents[1]/'scripts'
 sys.path.insert(0,str(SCRIPTS))
-from import_upload import import_batch,validate_batch
+from import_upload import backend,import_batch,validate_batch
 try:
     from PIL import Image
 except ImportError:
     Image=None
+
+
+class UploadConnectionTest(unittest.TestCase):
+    def test_workflow_identifies_its_application_and_sends_the_claim(self):
+        with patch.dict('os.environ',{'UPLOADER_URL':'https://uploads.example','UPLOADER_INTERNAL_TOKEN':'a'*64},clear=True),patch('import_upload.urllib.request.build_opener') as opener:
+            opener.return_value.open.return_value.__enter__.return_value.read.return_value=b'{"ok":true}'
+            self.assertEqual(backend('/internal/batches/test/claim','POST',{'run_id':'123'}),b'{"ok":true}')
+            request=opener.return_value.open.call_args.args[0]
+            self.assertEqual(request.get_method(),'POST')
+            self.assertEqual(json.loads(request.data),{'run_id':'123'})
+            self.assertEqual(request.get_header('Authorization'),'Bearer '+'a'*64)
+            self.assertIn('foundation-photo-publisher/',request.get_header('User-agent'))
+            self.assertNotIn('Mozilla',request.get_header('User-agent'))
+
+    def test_edge_diagnostic_does_not_publish_response_body_or_secret(self):
+        failure=urllib.error.HTTPError('https://uploads.example',403,'Forbidden',{},io.BytesIO(b'error code: 1010 private-response-data'))
+        with patch.dict('os.environ',{'UPLOADER_URL':'https://uploads.example','UPLOADER_INTERNAL_TOKEN':'a'*64},clear=True),patch('import_upload.urllib.request.build_opener') as opener:
+            opener.return_value.open.side_effect=failure
+            with self.assertRaises(ValueError) as raised:backend('/internal/batches/test/claim','POST',{'run_id':'123'})
+        self.assertIn('error 1010',str(raised.exception))
+        self.assertNotIn('private-response-data',str(raised.exception))
+        self.assertNotIn('a'*64,str(raised.exception))
 
 
 @unittest.skipIf(Image is None,'Photo import checks require requirements-authoring.txt')
