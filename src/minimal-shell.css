@@ -262,3 +262,15 @@ body:has(#reading-room:not([hidden])) .reader-header.site-shell { height:var(--s
  .contact-method strong { font-size:20px; }
 }
 @media(prefers-reduced-motion:reduce) { .contact-method,.contact-method-arrow { transition:none; } }
+
+/* Hold a thumbnail, then slide to preview the occasion without leaving its viewer. */
+.moment-ribbon { touch-action:pan-y pinch-zoom; user-select:none; -webkit-user-select:none; }
+.moment-ribbon a,.moment-ribbon img { -webkit-touch-callout:none; -webkit-user-drag:none; }
+.moment-ribbon.is-scrubbing { cursor:grabbing; scroll-behavior:auto; }
+.moment-ribbon a.scrub-target { opacity:1; border-color:var(--accent); transform:translateY(-2px) scale(1.06); }
+.ribbon-peek { position:fixed; z-index:80; width:132px; padding:5px; border-radius:12px; background:var(--paper); color:var(--ink); box-shadow:0 10px 30px #25294038,0 0 0 1px var(--line); pointer-events:none; opacity:0; transform:translateY(6px) scale(.94); transition:opacity .15s,transform .15s; }
+.ribbon-peek.is-visible { opacity:1; transform:none; }
+.ribbon-peek img { display:block; width:122px; height:92px; object-fit:contain; border-radius:7px; background:color-mix(in srgb,var(--accent) 6%,var(--paper)); }
+.ribbon-peek img[hidden] { display:none; }
+.ribbon-peek > span { display:block; padding:6px 4px 3px; text-align:center; font:500 11px/1.4 var(--sans); }
+@media(prefers-reduced-motion:reduce) { .ribbon-peek,.moment-ribbon a.scrub-target { transition:none; } }

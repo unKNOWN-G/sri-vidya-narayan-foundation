@@ -1,5 +1,7 @@
 # Latest interface update · 26 November 2026
 
+- Gallery thumbnail strips support hold-and-slide scrubbing: a 320 ms hold shows a larger floating preview, then sliding selects the main media in place. Holding near either edge scrolls through longer strips. An ordinary horizontal drag scrolls the strip without advancing the main scene; taps and keyboard arrows/Home/End remain available. Cleanup handles release, cancellation, focus loss and route changes. Browser history and paused native players retain the existing behaviour.
+
 - `#/foundation/connect` is a full contact scene with the shared header, warm Foundation palette, existing community photograph and direct email/phone links. It never opens an overlay or blocks Back/Home. Office details remain visible; Escape returns to the Foundation, while Escape in More only closes that menu.
 
 - Media navigation follows the entire occasion in this order: photographs, local videos, YouTube videos, audio, supporting documents. Next/Previous and keyboard/swipe cross media types in place; tabs remain direct shortcuts. A prominent Continue link appears at a media-type boundary. Original media-type URLs stay valid; native players remain user-initiated.
