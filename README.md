@@ -12,6 +12,8 @@ Start with [the navigation skeleton](docs/EXPERIENCE_BLUEPRINT.md). Its interact
 
 The visitor sees one shared, centred card carousel throughout the inner sections: a real photograph or book cover, visible neighbouring cards, essential captions and a numbered bottom strip. The teaching gateway is `#/learn`. Satsangs use a photo-led reading card with calendar and theme filters; practical teachings show one reflection at a time; Books uses real covers; `reading-room.html` preserves the opening/page-turning Pearls experience; `message-cards.html` preserves the rotating/folded-card experience. Supporting acknowledgements sit behind service stories.
 
+Within each occasion, Next/Previous continues from photographs to videos and audio, then supporting documents. The visible Continue link identifies the next media type; tabs and the combined thumbnail strip offer direct access. Media changes preserve the viewer and do not add a browser-history entry for every item.
+
 The shared shell is footer-free: utilities live in More, while each inner card keeps a short factual introduction. Everyday Teachings uses subject illustrations instead of repeated portrait placeholders. On phones, swipe and named tabs keep navigation compact; desktop arrows appear on hover or keyboard focus.
 
 ## Start locally

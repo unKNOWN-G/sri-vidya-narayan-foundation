@@ -1,5 +1,8 @@
 # Latest interface update · 26 November 2026
 
+- Media navigation follows the entire occasion in this order: photographs, local videos, YouTube videos, audio, supporting documents. Next/Previous and keyboard/swipe cross media types in place; tabs remain direct shortcuts. A prominent Continue link appears at a media-type boundary. Original media-type URLs stay valid; native players remain user-initiated.
+- Restore the earlier header character (serif brand, spaced FOUNDATION lettering, fine divider) and consistent homepage spacing. Reserve caption space across selections so different description lengths do not shift the carousel. Keep useful content and the footer-free layout.
+
 - Footer-free layout across home, inner sections, book and folded-card experiences. Share, contact, About and book edition information live in the More menu.
 - Latest clarification: preserve the welcoming homepage headline, Swamiji’s name, selected-category description and a compact Explore link. Remove unnecessary repetition and the footer rather than stripping away useful content. The active card also opens its section. Milestones and contribution totals remain on their cards. The home menu is visibly labelled Menu.
 - Inner cards retain concise factual descriptions, authentic titles, prominent amounts and receipt attachments. Descriptions use education-profile introductions, event `cardDescription` (or the event account), and reading leads. Keep context; minimal does not mean empty.

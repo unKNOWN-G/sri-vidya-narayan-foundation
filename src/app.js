@@ -723,27 +723,39 @@
     );
     if (first) await recordView(first.id);
   }
+  const mediaNames = { photo: "Photographs", video: "Videos", youtube: "YouTube videos", audio: "Audio", document: "Supporting documents" };
+  const mediaPhrase = type => type === "youtube" ? mediaNames[type] : (mediaNames[type] || type).toLowerCase();
+  function mediaTypes(event) {
+    const present = [...new Set(event.media.map(m => m.type))];
+    return ["photo", "video", "youtube", "audio", "document", ...present.filter(t => !["photo", "video", "youtube", "audio", "document"].includes(t))].filter(t => present.includes(t));
+  }
   function mediaTabs(event, selected) {
-    const types = [...new Set(event.media.map((m) => m.type))];
-    return `<div class="tabs media-tabs" aria-label="Ways to experience this occasion">${types.map((t) => `<button data-action="media-type" data-event="${esc(event.id)}" data-type="${t}" aria-pressed="${t === selected}">${{ photo: "Photographs", video: "Film", audio: "Listen", document: "Original document", youtube: "YouTube recordings" }[t] || t}<small>${event.media.filter((m) => m.type === t).length}</small></button>`).join("")}</div>`;
+    const types = mediaTypes(event);
+    return `<div class="tabs media-tabs" aria-label="Ways to experience this occasion">${types.map((t) => `<button data-action="media-type" data-event="${esc(event.id)}" data-type="${t}" aria-pressed="${t === selected}">${mediaNames[t] || t}<small>${event.media.filter((m) => m.type === t).length}</small></button>`).join("")}</div>`;
   }
   function eventView(id, type, index = 0) {
     const event = getEvent(id);
     if (!event) throw Error("This moment is not available.");
     event.media = Array.isArray(event.media) ? event.media : [];
     theme(getCategory(event.category));
-    type = type || event.media[0]?.type || "photo";
+    type = type || mediaTypes(event)[0] || "photo";
     let media = event.media.filter((m) => m.type === type);
     if (!media.length) {
-      type = event.media[0]?.type;
+      type = mediaTypes(event)[0];
       media = event.media.filter((m) => m.type === type);
     }
     index = Math.max(0, Math.min(Number(index) || 0, media.length - 1));
     const item = media[index];
     const parent =
       event.backHref || "#/category/" + event.category + "/moments/" + id;
-    const prev = `/event/${id}/${type}/${Math.max(0, index - 1)}`,
-      next = `/event/${id}/${type}/${Math.min(media.length - 1, index + 1)}`;
+    // Keep per-type URLs stable while Next/Previous follows the whole occasion.
+    const sequence = mediaTypes(event).flatMap(kind => event.media.filter(m => m.type === kind).map((m, at) => ({item:m,type:kind,index:at,route:`/event/${id}/${kind}/${at}`})));
+    const position = sequence.findIndex(m => m.type === type && m.index === index),
+      before = sequence[position-1], after = sequence[position+1],
+      currentRoute = `/event/${id}/${type}/${index}`,
+      prev = before?.route || currentRoute, next = after?.route || currentRoute,
+      nextLabel = after && after.type !== type ? `Continue to ${mediaPhrase(after.type)}` : "Next moment",
+      previousLabel = before && before.type !== type ? `Back to ${mediaPhrase(before.type)}` : "Previous moment";
     const frame = !item
       ? "<p>No media is published for this moment.</p>"
       : type === "photo"
@@ -755,14 +767,11 @@
             : type === "document"
               ? `<a class="document-preview" href="${href(item.src)}" target="_blank" rel="noopener" aria-label="Open full document">${item.poster ? photo(item.poster, item.title || event.title) : '<span class="document-label">Read the original document</span>'}<span class="button">Open full document ↗</span></a>`
               : `<div class="listen-stage">${photo(item.poster || event.cover, event.title)}<a class="button" href="${href(item.url || item.src)}" target="_blank" rel="noopener">Watch this recording on YouTube ↗</a></div>`;
-    const duration = item?.durationSeconds ? `${Math.floor(item.durationSeconds / 60)}:${String(item.durationSeconds % 60).padStart(2, "0")}` : "";
-    const caption = `<span class="eyebrow">${type === "photo" ? "A MOMENT TO REMEMBER" : type === "audio" ? "VOICES OF THE OCCASION" : "FROM THE OCCASION"} · ${index + 1} / ${media.length}${duration ? " · " + duration : ""}</span><h2>${esc(item?.title || event.title)}</h2><p>${esc(short(item?.caption || event.description, 320))}</p><details><summary>About this occasion</summary><p>${esc(event.description)}</p><p>${esc(event.credit)} ${esc(event.note)}</p></details><a class="text-link" href="${href(item?.src || item?.url || parent)}" target="_blank" rel="noopener">${type === "photo" ? "View full photograph" : type === "document" ? "Read original document" : "Open recording"} ↗</a>`;
-    const ribbon = media
-      .map(
-        (m, i) =>
-          `<a href="#/event/${esc(id)}/${type}/${i}" ${i === index ? 'aria-current="true"' : ""} aria-label="${esc((m.title || "Moment " + (i + 1)) + (m.durationSeconds ? " · " + Math.floor(m.durationSeconds / 60) + ":" + String(m.durationSeconds % 60).padStart(2, "0") : ""))}">${m.type === "photo" ? photo(m.thumb || m.src, "") : m.poster ? photo(m.poster, "") : `<span>${type === "audio" ? "Listen" : type === "video" || type === "youtube" ? "Watch" : "Read"} ${i + 1}</span>`}</a>`,
-      )
-      .join("");
+    const duration = item?.durationSeconds ? `${Math.floor(item.durationSeconds / 60)}:${String(Math.floor(item.durationSeconds % 60)).padStart(2, "0")}` : "";
+    const caption = `${after && after.type !== type ? `<a class="media-continue" href="#${next}">${esc(nextLabel)} <span aria-hidden="true">→</span></a>` : ""}<span class="eyebrow">${esc(mediaNames[type] || "FROM THE OCCASION")} · ${index + 1} / ${media.length}${duration ? " · " + duration : ""}</span><h2>${esc(item?.title || event.title)}</h2><p>${esc(short(item?.caption || event.description, 320))}</p><details><summary>About this occasion</summary><p>${esc(event.description)}</p><p>${esc(event.credit)} ${esc(event.note)}</p></details><a class="text-link" href="${href(item?.src || item?.url || parent)}" target="_blank" rel="noopener">${type === "photo" ? "View full photograph" : type === "document" ? "Read original document" : "Open recording"} ↗</a>`;
+    const ribbon = sequence.map(({item:m,type:kind,index:at,route},i) =>
+      `<a href="#${route}" ${kind === type && at === index ? 'aria-current="true"' : ""} ${i === 0 || sequence[i-1].type !== kind ? 'class="media-group-start"' : ""} aria-label="${esc((mediaNames[kind] || kind) + ' ' + (at+1) + ': ' + (m.title || event.title) + (m.durationSeconds ? ' · ' + Math.floor(m.durationSeconds/60) + ':' + String(Math.floor(m.durationSeconds%60)).padStart(2,'0') : ''))}">${kind === "photo" ? photo(m.thumb || m.src, "") : m.poster ? photo(m.poster, "") : ""}${kind !== "photo" ? `<span class="media-kind">${kind === "audio" ? "Listen" : kind === "video" || kind === "youtube" ? "Watch" : "Read"} ${at+1}</span>` : ""}</a>`
+    ).join("");
     const shell = app.querySelector(".cinema-view");
     const updating = activeMedia?.id === id && shell?.dataset.event === id;
     const oldType = activeMedia?.type;
@@ -840,22 +849,26 @@
         if (current) current.outerHTML = frame;
       }
       shell.querySelector(".cinema-caption").innerHTML = caption;
-      if (oldType !== type)
-        shell.querySelector(".moment-ribbon").innerHTML = ribbon;
+      if (oldType !== type && !reduced.matches) {
+        const incoming = Array.from(stage.children).find(el => !el.matches(".cinema-backdrop,.cinema-arrows"));
+        incoming?.animate([{opacity:.4,transform:`translateX(${10*transitionDirection}px)`},{opacity:1,transform:"translateX(0)"}],{duration:280,easing:"ease-out"});
+      }
       shell
         .querySelectorAll('[data-action="media-type"]')
         .forEach((b) =>
           b.setAttribute("aria-pressed", String(b.dataset.type === type)),
         );
-      shell.querySelectorAll(".moment-ribbon a").forEach((a, i) => {
-        if (i === index) a.setAttribute("aria-current", "true");
+      shell.querySelectorAll(".moment-ribbon a").forEach(a => {
+        if (a.getAttribute("href") === "#" + currentRoute) a.setAttribute("aria-current", "true");
         else a.removeAttribute("aria-current");
       });
       const arrows = shell.querySelectorAll(".cinema-arrows a");
       [prev, next].forEach((url, i) => {
         const a = arrows[i];
         a.href = "#" + url;
-        const disabled = i === 0 ? index === 0 : index === media.length - 1;
+        a.setAttribute("aria-label", i === 0 ? previousLabel : nextLabel);
+        a.title = i === 0 ? previousLabel : nextLabel;
+        const disabled = i === 0 ? !before : !after;
         if (disabled) {
           a.setAttribute("aria-disabled", "true");
           a.tabIndex = -1;
@@ -866,13 +879,14 @@
       });
     } else {
       ++mediaRequest;
-      app.innerHTML = `<section class="view cinema-view" data-event="${esc(id)}" data-gallery-session="${performance.now()}"><div class="cinema-heading"><p>${esc([event.location, event.date ? dateLabel(event.date) : event.year].filter(Boolean).join(" · "))}</p><h1>${esc(event.title)}</h1></div>${mediaTabs(event, type)}<div class="cinema-body"><div class="cinema-stage"><div class="cinema-backdrop" style="background-image:url('${href(item?.poster || event.cover)}')"></div>${frame}<div class="cinema-arrows"><a href="#${prev}" aria-label="Previous moment" ${index === 0 ? 'aria-disabled="true" tabindex="-1"' : ""}>←</a><a href="#${next}" aria-label="Next moment" ${index === media.length - 1 ? 'aria-disabled="true" tabindex="-1"' : ""}>→</a></div></div><aside class="cinema-caption">${caption}</aside></div><div class="moment-ribbon" aria-label="Choose a moment">${ribbon}</div><dialog class="full-moment" id="full-moment" aria-label="Full photograph"><div><button type="button" data-action="close-full-moment">← Back to photographs</button><button type="button" data-action="close-full-moment" aria-label="Close full photograph">×</button></div><img alt=""></dialog></section>`;
+      app.innerHTML = `<section class="view cinema-view" data-event="${esc(id)}" data-gallery-session="${performance.now()}"><div class="cinema-heading"><p>${esc([event.location, event.date ? dateLabel(event.date) : event.year].filter(Boolean).join(" · "))}</p><h1>${esc(event.title)}</h1></div>${mediaTabs(event, type)}<div class="cinema-body"><div class="cinema-stage"><div class="cinema-backdrop" style="background-image:url('${href(item?.poster || event.cover)}')"></div>${frame}<div class="cinema-arrows"><a href="#${prev}" data-media-direction="previous" aria-label="${esc(previousLabel)}" title="${esc(previousLabel)}" ${!before ? 'aria-disabled="true" tabindex="-1"' : ""}>←</a><a href="#${next}" data-media-direction="next" aria-label="${esc(nextLabel)}" title="${esc(nextLabel)}" ${!after ? 'aria-disabled="true" tabindex="-1"' : ""}>→</a></div></div><aside class="cinema-caption">${caption}</aside></div><div class="moment-ribbon" aria-label="Choose a moment">${ribbon}</div><dialog class="full-moment" id="full-moment" aria-label="Full photograph"><div><button type="button" data-action="close-full-moment">← Back to photographs</button><button type="button" data-action="close-full-moment" aria-label="Close full photograph">×</button></div><img alt=""></dialog></section>`;
       bindSequence(
         () => activeMedia.previous,
         () => activeMedia.next,
         parent,
       );
     }
+    if (updating) announce.textContent = `${mediaNames[type]} · ${index+1} of ${media.length}`;
     app.querySelector(".moment-ribbon [aria-current]")?.scrollIntoView({
       block: "nearest",
       inline: "center",
@@ -1316,7 +1330,8 @@
         .startsWith("#/event/" + activeMedia.id + "/")
     ) {
       e.preventDefault();
-      transitionDirection = mediaLink.getAttribute("aria-label") === "Previous moment" ? -1 : 1;
+      if (mediaLink.getAttribute("aria-disabled") === "true") return;
+      transitionDirection = mediaLink.dataset.mediaDirection === "previous" ? -1 : 1;
       goTo(mediaLink.getAttribute("href"));
       return;
     }
