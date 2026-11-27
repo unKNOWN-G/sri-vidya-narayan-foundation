@@ -128,8 +128,8 @@ async function connect(){
     if(update.connection==='open'){connection='Connected';qr=null;console.log('WhatsApp companion connected. No chat content is logged.');void flush();}
     if(update.connection==='close'){
       const code=update.lastDisconnect?.error?.output?.statusCode;socket=null;qr=null;
-      connection=code===DisconnectReason.loggedOut?'Link expired — relink on this Mac':'Reconnecting';
-      if(code!==DisconnectReason.loggedOut&&!stopping&&allowConnect)setTimeout(()=>connect().catch(()=>{connection='Connection needs attention';}),15000);
+      connection=code===DisconnectReason.loggedOut?'Link expired — relink on this Mac':code===403?'WhatsApp access was refused — review the account/network settings':'Reconnecting';
+      if(![DisconnectReason.loggedOut,403].includes(code)&&!stopping&&allowConnect)setTimeout(()=>connect().catch(()=>{connection='Connection needs attention';}),15000);
     }
   });
   socket.ev.on('messages.upsert',({messages})=>{
