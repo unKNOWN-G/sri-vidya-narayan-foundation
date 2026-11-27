@@ -1,0 +1,50 @@
+{
+  "id": "whatsapp-e346b8ec-799a-434f-a327-17f2631bd64a",
+  "category": "spiritual-life",
+  "title": "Sudharshana puja",
+  "description": "Sudharshana puja",
+  "location": "",
+  "date": null,
+  "year": null,
+  "credit": "Media and messages shared and approved by the foundation.",
+  "note": "",
+  "media": [
+    {
+      "type": "photo",
+      "title": "Sudharshana puja — photograph 1",
+      "caption": "Sudharshana puja",
+      "src": "assets/media/spiritual-life/whatsapp-e346b8ec-799a-434f-a327-17f2631bd64a/whatsapp/e346b8ec-799a-434f-a327-17f2631bd64a/item-001.webp",
+      "thumb": "assets/media/spiritual-life/whatsapp-e346b8ec-799a-434f-a327-17f2631bd64a/whatsapp/e346b8ec-799a-434f-a327-17f2631bd64a/item-001.thumb.webp",
+      "alt": "Sudharshana puja — photograph 1",
+      "uploadHash": "ca8de7dcace5dd1da8b2051f03fa05edf5aacf09673251bc69ea69f7ced3c210",
+      "id": "whatsapp-e346b8ec-799a-434f-a327-17f2631bd64a-e346b8ec-799a-434f-a327-17f2631bd64a-0"
+    },
+    {
+      "type": "photo",
+      "title": "Sudharshana puja — photograph 2",
+      "caption": "Sudharshana puja",
+      "src": "assets/media/spiritual-life/whatsapp-e346b8ec-799a-434f-a327-17f2631bd64a/whatsapp/e346b8ec-799a-434f-a327-17f2631bd64a/item-002.webp",
+      "thumb": "assets/media/spiritual-life/whatsapp-e346b8ec-799a-434f-a327-17f2631bd64a/whatsapp/e346b8ec-799a-434f-a327-17f2631bd64a/item-002.thumb.webp",
+      "alt": "Sudharshana puja — photograph 2",
+      "uploadHash": "55f656e8d60f224e97385e9877711b28f0f751f368d5d75187285e19fe55968b",
+      "id": "whatsapp-e346b8ec-799a-434f-a327-17f2631bd64a-e346b8ec-799a-434f-a327-17f2631bd64a-1"
+    },
+    {
+      "type": "photo",
+      "title": "Sudharshana puja — photograph 3",
+      "caption": "Sudharshana puja",
+      "src": "assets/media/spiritual-life/whatsapp-e346b8ec-799a-434f-a327-17f2631bd64a/whatsapp/e346b8ec-799a-434f-a327-17f2631bd64a/item-003.webp",
+      "thumb": "assets/media/spiritual-life/whatsapp-e346b8ec-799a-434f-a327-17f2631bd64a/whatsapp/e346b8ec-799a-434f-a327-17f2631bd64a/item-003.thumb.webp",
+      "alt": "Sudharshana puja — photograph 3",
+      "uploadHash": "09be569410bb1b3c10b33e918c946804f4fccdd7a3b9afc74e25a74084c74b67",
+      "id": "whatsapp-e346b8ec-799a-434f-a327-17f2631bd64a-e346b8ec-799a-434f-a327-17f2631bd64a-2"
+    }
+  ],
+  "cover": "assets/media/spiritual-life/whatsapp-e346b8ec-799a-434f-a327-17f2631bd64a/whatsapp/e346b8ec-799a-434f-a327-17f2631bd64a/item-001.webp",
+  "counts": {
+    "photos": 3
+  },
+  "whatsappJobIds": [
+    "e346b8ec-799a-434f-a327-17f2631bd64a"
+  ]
+}
