@@ -59,7 +59,7 @@ Create one event folder, keep the original files unchanged in the local archive,
 
 The guided file-import command is `python3 scripts/add_event.py`. See the upload guide for a complete example, supported media, draft handling, and the explicit options for reviewed documents or a draft category.
 
-See [the upload guide](docs/UPLOAD_GUIDE.md) for the file-based process. The private phone photo uploader is live under `services/uploader/`; see [the uploader setup and verified status](docs/UPLOADER_SETUP.md). A guided WhatsApp gateway is implemented under `services/whatsapp/`: forward an event’s photos, videos, audio, text or YouTube links to a dedicated group, answer its questions and confirm publication. It uses an unofficial linked-device companion on an awake, online Mac, with no Meta developer login or subscription. Account linking and a real WhatsApp publication test remain pending; see [WhatsApp setup and limitations](docs/WHATSAPP_SETUP.md).
+See [the upload guide](docs/UPLOAD_GUIDE.md) for the file-based process. The private phone photo uploader is live under `services/uploader/`; see [the uploader setup and verified status](docs/UPLOADER_SETUP.md). A guided WhatsApp gateway is implemented under `services/whatsapp/`: forward an event’s photos, videos, audio, text or YouTube links to a dedicated group, answer its questions and confirm publication. It uses an unofficial linked-device companion on an awake, online Mac, with no Meta developer login or subscription. Account linking and the dedicated group reply are verified; a real WhatsApp publication test remains pending; see [WhatsApp setup and limitations](docs/WHATSAPP_SETUP.md).
 
 ## Build and check
 

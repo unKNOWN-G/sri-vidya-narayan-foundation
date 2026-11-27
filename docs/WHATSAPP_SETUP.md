@@ -2,7 +2,7 @@
 
 ## Status
 
-Implemented locally on 27 November 2026. WhatsApp account linking has **not** started. No WhatsApp history has been fetched, no group has been bound, and no WhatsApp test content has been published. The local setup page is http://127.0.0.1:8998/ on the Mac. Account linking and a real, owner-approved group upload are the remaining integration steps. Browser inspection is currently unavailable because local browser use is disabled in Codex Work settings; do not claim visual verification or use another automation stack to bypass that setting.
+Implemented locally on 27 November 2026. The owner explicitly approved WhatsApp linking and background operation, then scanned the QR themselves. The per-user LaunchAgent is installed and the companion reports **Connected**. The owner sent the group-link instruction and received the companion’s reply; `/health` confirms **groupLinked=true**. The first real, owner-approved WhatsApp publication remains pending; no test content has been published through this gateway. The local setup page is http://127.0.0.1:8998/ on the Mac. A real, owner-approved group upload is the remaining integration step. Browser inspection is currently unavailable because local browser use is disabled in Codex Work settings; do not claim visual verification or use another automation stack to bypass that setting.
 
 The existing Cloudflare phone form remains a working alternative; its first live upload was verified on 26 November. This companion is a separate Mac service that publishes through the repository and its existing Pages workflow. It does not request the uploader's blocked `workers.dev` address or copy its Cloudflare secrets.
 

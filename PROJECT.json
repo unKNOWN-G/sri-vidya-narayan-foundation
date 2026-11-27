@@ -53,9 +53,15 @@
     "operator_command": "python3 scripts/whatsapp_tool.py",
     "documentation": "docs/WHATSAPP_SETUP.md",
     "mode": "Owner-only guided conversation in one dedicated upload group",
-    "supported_media": ["photo", "video", "audio", "youtube", "message"],
+    "supported_media": [
+      "photo",
+      "video",
+      "audio",
+      "youtube",
+      "message"
+    ],
     "requires": "Linked WhatsApp device; awake and online Mac; existing GitHub CLI login",
-    "status": "Implemented and locally tested; account linking and live WhatsApp publication pending"
+    "status": "Owner-approved background companion connected; dedicated group binding and reply verified; first live WhatsApp publication pending"
   },
   "teaching_gateway": "#/learn",
   "dedicated_experiences": [
