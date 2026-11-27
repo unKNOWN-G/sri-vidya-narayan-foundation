@@ -1,0 +1,30 @@
+{
+  "id": "whatsapp-1d483060-c1b5-4853-92bc-40c1301edd69",
+  "category": "his-holiness",
+  "title": "First photo of Sanyasa at Garudeshwar",
+  "description": "First photo of Sanyasa at Garudeshwar",
+  "location": "",
+  "date": null,
+  "year": null,
+  "credit": "Media and messages shared and approved by the foundation.",
+  "note": "",
+  "media": [
+    {
+      "type": "photo",
+      "title": "First photo of Sanyasa at Garudeshwar — photograph 1",
+      "caption": "First photo of Sanyasa at Garudeshwar",
+      "src": "assets/media/his-holiness/whatsapp-1d483060-c1b5-4853-92bc-40c1301edd69/whatsapp/1d483060-c1b5-4853-92bc-40c1301edd69/item-001.webp",
+      "thumb": "assets/media/his-holiness/whatsapp-1d483060-c1b5-4853-92bc-40c1301edd69/whatsapp/1d483060-c1b5-4853-92bc-40c1301edd69/item-001.thumb.webp",
+      "alt": "First photo of Sanyasa at Garudeshwar — photograph 1",
+      "uploadHash": "9de22b58aaf2431fbd622331d5a30a65a3d16cf1c59ea97f0d71430ffa5251f2",
+      "id": "whatsapp-1d483060-c1b5-4853-92bc-40c1301edd69-1d483060-c1b5-4853-92bc-40c1301edd69-0"
+    }
+  ],
+  "cover": "assets/media/his-holiness/whatsapp-1d483060-c1b5-4853-92bc-40c1301edd69/whatsapp/1d483060-c1b5-4853-92bc-40c1301edd69/item-001.webp",
+  "counts": {
+    "photos": 1
+  },
+  "whatsappJobIds": [
+    "1d483060-c1b5-4853-92bc-40c1301edd69"
+  ]
+}
