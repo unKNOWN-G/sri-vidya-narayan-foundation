@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {freshDraft,advance,prompt} from '../wizard.mjs';
+import {freshDraft,advance,prompt,restoreUpload} from '../wizard.mjs';
 import {mediaKind,youtubeIds,isAllowedMessage,parseCommand} from '../commands.mjs';
 
 const events=[{id:'school',category:'education',title:'Air Force School, Yelahanka'},{id:'food',category:'annadanam',title:'Tirumala Annadanam'}];
@@ -42,4 +42,28 @@ test('compact commands remain optional and private paths are rejected',()=>{
   assert.equal(parseCommand('Hey Sai, UPLOAD education | Gollapalli High School | Students met Swamiji.').category,'education');
   assert.throws(()=>parseCommand('UPLOAD education | School | /Users/private/person'));
   assert.equal(parseCommand('normal forwarded text'),null);
+});
+
+test('Back is visible at every question and keeps the complete pending set',()=>{
+  const d=freshDraft();d.items=Array.from({length:25},(_,i)=>({kind:'photo',file:String(i)}));const original=structuredClone(d.items);
+  assert.match(prompt(d,events),/B\. Back/);advance(d,'5',events);assert.match(prompt(d,events),/B\. Back/);
+  advance(d,'0',events);assert.equal(d.stage,'title');advance(d,'B',events);assert.equal(d.stage,'event');
+  advance(d,'BACK',events);assert.equal(d.stage,'category');advance(d,'BACK',events);assert.equal(d.stage,'items');
+  assert.equal(advance(d,'PUBLISH',events).publish,undefined);advance(d,'DONE',events);assert.equal(d.stage,'category');assert.deepEqual(d.items,original);
+});
+test('review edits change only selected details without re-forwarding files',()=>{
+  const d={...freshDraft(),items:[{kind:'audio',file:'saved'}],stage:'review',category:'education',target:'school',title:'Air Force School, Yelahanka',caption:'Original caption.',date:null};
+  assert.match(advance(d,'EDIT',events).reply,/3\. Caption/);advance(d,'3',events);advance(d,'Corrected caption.',events);
+  assert.equal(d.stage,'review');assert.equal(d.category,'education');assert.equal(d.target,'school');assert.equal(d.items[0].file,'saved');
+  advance(d,'BACK',events);assert.equal(d.stage,'caption');advance(d,'Updated caption.',events);
+  assert.equal(advance(d,'PUBLISH',events).publish.caption,'Updated caption.');
+});
+test('redo preserves original media ownership and updates the same published page',()=>{
+  const job={id:'11111111-1111-4111-8111-111111111111',items:[{kind:'photo',file:'saved'}],category:'education',title:'School',caption:'Old caption.',date:null};
+  const d=restoreUpload(job,{state:'published',eventId:'existing-page'},{id:'existing-page',category:'education',title:'School',date:null});
+  advance(d,'1',events);advance(d,'7',events);assert.equal(d.stage,'review');assert.equal(d.category,'healthcare');
+  advance(d,'EDIT',events);advance(d,'3',events);advance(d,'Correct caption.',events);
+  const replacement=advance(d,'PUBLISH',events).publish;
+  assert.equal(replacement.target,'existing-page');assert.equal(replacement.revisionOf.jobId,job.id);assert.equal(replacement.items.length,1);assert.equal(job.caption,'Old caption.');
+  assert.equal(parseCommand('B').kind,'back');assert.equal(parseCommand('REDO upload').kind,'redo');
 });

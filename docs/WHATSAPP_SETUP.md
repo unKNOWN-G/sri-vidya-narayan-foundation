@@ -17,6 +17,10 @@ The existing Cloudflare phone form remains a working alternative; its first live
 
 ## Phone experience
 
+Every question now includes **B. Back** (BACK also works). The review includes **E. Edit details**: choose section, event/name, caption or date without re-forwarding the pending files. Changing one field keeps the other answers. Nothing publishes until PUBLISH from the final review.
+
+After publication, **REDO** (or EDIT with no pending set) reopens the most recent published upload with its saved files. Corrections keep the same event ID/link and do not append duplicate media. Changing the section of an event consisting entirely of that upload updates the category lists and education profile, and copies the same public assets into the corrected section; original files remain. On an event containing other uploads, only this set's captions may be changed automatically; moving/renaming that shared event requires a separate review so other people's content and contribution links cannot be silently changed. RETRY remains for failed publication; CLEAR discards only the current unsubmitted selection. A pending menu is resent after a process restart so Back/Edit are visible immediately.
+
 1. Use the dedicated upload group selected by the owner. Forward the items for **one event**: photographs, video clips, WhatsApp voice notes, audio files, forwarded text and/or YouTube video links. Compose a text message outside an active question to include it as content; `MESSAGE your text` also works.
 2. After the items arrive, the companion asks which section: His Holiness, Teachings, Devotion and Celebration, Vedic Learning, Education, Annadanam or Medical. Reply with its number.
 3. Select an existing event by number, use NEXT for more, or enter a new authentic event/school name. Events are listed only within the selected section. No donation amount or occasion date is inferred.

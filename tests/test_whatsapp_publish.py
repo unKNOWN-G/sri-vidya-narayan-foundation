@@ -11,7 +11,7 @@ import unittest
 
 SCRIPTS=Path(__file__).resolve().parents[1]/'scripts'
 sys.path.insert(0,str(SCRIPTS))
-from whatsapp_publish import validate_job,prepare,import_prepared,transcode
+from whatsapp_publish import validate_job,prepare,import_prepared,transcode,revise_event
 
 class MixedMediaTests(unittest.TestCase):
     def setUp(self):
@@ -45,6 +45,30 @@ class MixedMediaTests(unittest.TestCase):
         self.job['items']=[{'kind':'message','text':'A supplied message.'}]
         for change in ({'confirmed':False},{'category':'unknown'},{'items':[{'kind':'photo','file':'../../secret'}]},{'items':[{'kind':'youtube','youtubeId':'../../secret'}]}):
             with self.assertRaises(ValueError):validate_job({**self.job,**change})
+
+    def test_revision_moves_the_same_event_and_updates_caption_without_duplicates(self):
+        self.job['items']=[{'kind':'message','text':'A supplied message.'}]
+        items=prepare(self.job,self.prepared,self.originals);first=import_prepared(self.job,self.prepared,items,self.root)
+        self.write('content/categories/healthcare.json',{'id':'healthcare','cover':'assets/medical.webp','eventIds':[]})
+        revision={**self.job,'id':'22222222-2222-4222-8222-222222222222','category':'healthcare','title':'Corrected event name','caption':'Corrected caption.','target':first['eventId'],'revisionOf':{'jobId':self.job['id'],'eventId':first['eventId']}}
+        result=revise_event(revision,self.root);self.assertEqual(result['eventId'],first['eventId'])
+        event=json.loads((self.root/'content/events'/(first['eventId']+'.json')).read_text())
+        self.assertEqual(event['category'],'healthcare');self.assertEqual(event['description'],'Corrected caption.');self.assertEqual(event['media'][0]['caption'],'Corrected caption.')
+        self.assertEqual(len(list((self.root/'content/events').glob('*.json'))),1)
+        self.assertEqual(json.loads((self.root/'content/categories/education.json').read_text())['eventIds'],[])
+        self.assertEqual(json.loads((self.root/'content/categories/healthcare.json').read_text())['eventIds'],[first['eventId']])
+        self.assertEqual(json.loads((self.root/'content/collections/education-profiles.json').read_text()),[])
+        self.assertEqual(revise_event(revision,self.root)['added'],0)
+
+    def test_edit_never_moves_other_uploads_or_detaches_financial_records(self):
+        self.job['items']=[{'kind':'message','text':'Original supplied message.'}]
+        first=import_prepared(self.job,self.prepared,prepare(self.job,self.prepared,self.originals),self.root)
+        path=self.root/'content/events'/(first['eventId']+'.json');event=json.loads(path.read_text());extra={**event['media'][0],'id':'another-upload','caption':'Keep this caption.'};event['media'].append(extra);path.write_text(json.dumps(event))
+        edit={**self.job,'id':'22222222-2222-4222-8222-222222222222','caption':'Correct this set.','target':first['eventId'],'revisionOf':{'jobId':self.job['id'],'eventId':first['eventId']}}
+        revise_event(edit,self.root);updated=json.loads(path.read_text());self.assertEqual(updated['media'][1]['caption'],'Keep this caption.');self.assertEqual(updated['description'],event['description'])
+        before=path.read_bytes()
+        with self.assertRaisesRegex(ValueError,'shared event'):revise_event({**edit,'id':'33333333-3333-4333-8333-333333333333','category':'healthcare'},self.root)
+        self.assertEqual(path.read_bytes(),before)
 
     def test_audio_and_video_are_converted_to_browser_formats(self):
         try:import imageio_ffmpeg

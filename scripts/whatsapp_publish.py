@@ -47,6 +47,8 @@ def public_text(value,limit,required=True):
 def validate_job(job):
     if not UUID.fullmatch(str(job.get('id',''))) or job.get('confirmed') is not True:raise ValueError('An explicit PUBLISH confirmation is required.')
     if job.get('category') not in CATEGORIES:raise ValueError('Unknown section.')
+    revision=job.get('revisionOf')
+    if revision and (not isinstance(revision,dict) or not UUID.fullmatch(str(revision.get('jobId',''))) or not re.fullmatch(r'[a-z0-9]+(?:-[a-z0-9]+)*',str(revision.get('eventId','')))):raise ValueError('Invalid upload revision.')
     public_text(job.get('title'),150);public_text(job.get('caption'),1500)
     if job.get('date') and date.fromisoformat(job['date']).isoformat()!=job['date']:raise ValueError('Use a confirmed occasion date.')
     if job.get('target') and not re.fullmatch(r'[a-z0-9]+(?:-[a-z0-9]+)*',job['target']):raise ValueError('Invalid occasion.')
@@ -156,13 +158,62 @@ def import_prepared(job,prepared,items,root):
             profiles_path=root/'content/collections/education-profiles.json';profiles=json.loads(profiles_path.read_text());profiles.append({'id':event_id,'eventId':event_id,'title':job['title'],'recordIds':[],'amountLabel':'Shared occasion','contributionText':job['caption'][:100],'description':job['caption']});profiles_path.write_text(json.dumps(profiles,ensure_ascii=False,indent=2)+'\n')
     return {'eventId':event_id,'added':len(added)}
 
+def revise_event(job,root):
+    """Correct this upload in place; never overwrite another upload's media."""
+    validate_job(job);root=Path(root);revision=job['revisionOf'];event_id=revision['eventId']
+    if job.get('target') not in (None,event_id):raise ValueError('An edit keeps the existing page. Change its name rather than selecting another event.')
+    path=root/'content/events'/(event_id+'.json')
+    if not path.is_file():raise ValueError('The original event is no longer available.')
+    event=json.loads(path.read_text());old_category=event['category'];old_date=event.get('date')
+    if event.get('published') is False:raise ValueError('The original event is not public. Review it before editing through WhatsApp.')
+    if job['id'] in event.get('whatsappJobIds',[]):return {'eventId':event_id,'added':0,'oldCategory':old_category}
+    owned=[m for m in event['media'] if '-'+revision['jobId']+'-' in m.get('id','')]
+    if not owned or revision['jobId'] not in event.get('whatsappJobIds',[]):raise ValueError('This event does not contain that upload. No changes were made.')
+    whole=len(owned)==len(event['media'])
+    if not whole and (job['category']!=old_category or job['title']!=event['title'] or job.get('date')!=event.get('date')):raise ValueError('This set was added to a shared event. Its caption can be edited; moving or renaming the whole event needs a separate review.')
+    new_category_path=root/'content/categories'/(job['category']+'.json');new_category=json.loads(new_category_path.read_text())
+    if new_category.get('published') is False:raise ValueError('That section is not published.')
+    profile_path=root/'content/collections/education-profiles.json'
+    profiles=json.loads(profile_path.read_text()) if profile_path.exists() else []
+    matching=[p for p in profiles if p.get('eventId')==event_id]
+    if whole and old_category=='education' and job['category']!='education' and any(p.get('recordIds') for p in matching):raise ValueError('This school has contribution records. Review those links before moving it.')
+    if whole:
+        event.update(title=job['title'],description=job['caption'],date=job.get('date'))
+        if job.get('date'):event['year']=int(job['date'][:4])
+        elif old_date:event['year']=None
+        if old_category!=job['category']:
+            old_path=root/'content/categories'/(old_category+'.json');old=json.loads(old_path.read_text());old['eventIds']=[i for i in old.get('eventIds',[]) if i!=event_id]
+            new_category['eventIds']=list(dict.fromkeys([*new_category.get('eventIds',[]),event_id]))
+            old_path.write_text(json.dumps(old,ensure_ascii=False,indent=2)+'\n');new_category_path.write_text(json.dumps(new_category,ensure_ascii=False,indent=2)+'\n');event['category']=job['category']
+            for m in owned:
+                for key in ('src','thumb','poster'):
+                    value=m.get(key,'')
+                    if not value or value.startswith('https://'):continue
+                    source=(root/value).resolve()
+                    if not source.is_relative_to((root/'assets').resolve()) or not source.is_file():raise ValueError('An original website asset is unavailable.')
+                    relative='assets/media/'+job['category']+'/'+event_id+'/whatsapp/'+job['id']+'/'+source.name
+                    destination=root/relative;destination.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(source,destination);m[key]=relative
+                    if event.get('cover')==value:event['cover']=relative
+            if event.get('cover')==old.get('cover'):event['cover']=new_category['cover']
+        if old_category=='education' and job['category']!='education':profiles=[p for p in profiles if p.get('eventId')!=event_id]
+        if job['category']=='education':
+            if not matching:profiles.append({'id':event_id,'eventId':event_id,'title':job['title'],'recordIds':[],'amountLabel':'Shared occasion','contributionText':job['caption'][:100],'description':job['caption']})
+            else:
+                for p in matching:p.update(title=job['title'],description=job['caption'],contributionText=job['caption'][:100])
+        if old_category=='education' or job['category']=='education':profile_path.write_text(json.dumps(profiles,ensure_ascii=False,indent=2)+'\n')
+    for n,m in enumerate(owned,1):
+        m['caption']=job['caption'];m['title']=job['title']+' — '+{'photo':'photograph','audio':'recording','video':'video','youtube':'YouTube recording','message':'message'}.get(m['type'],'item')+' '+str(n)
+        if m['type']=='photo':m['alt']=m['title']
+    event.setdefault('whatsappJobIds',[]).append(job['id']);path.write_text(json.dumps(event,ensure_ascii=False,indent=2)+'\n')
+    return {'eventId':event_id,'added':0,'oldCategory':old_category}
+
 def catalog():
     run(['git','fetch','origin','main'])
     paths=run(['git','ls-tree','-r','--name-only','origin/main','content/events']).splitlines();events=[]
     for p in paths:
         if not p.endswith('.json'):continue
         e=json.loads(run(['git','show','origin/main:'+p]))
-        if e.get('published') is not False and e.get('category') in CATEGORIES and e.get('presentation')!='service-story':events.append({k:e.get(k) for k in ('id','category','title')})
+        if e.get('published') is not False and e.get('category') in CATEGORIES and e.get('presentation')!='service-story':events.append({k:e.get(k) for k in ('id','category','title','date')})
     return events
 
 def publish(job_path):
@@ -181,7 +232,9 @@ def publish(job_path):
         prepared=job_path.parent/'prepared';cache=prepared/'prepared.json'
         fingerprint=hashlib.sha256(json.dumps(job,sort_keys=True,ensure_ascii=False).encode()).hexdigest()
         cached=json.loads(cache.read_text()) if cache.exists() else None
-        if cached and cached.get('jobHash')==fingerprint and all((prepared/name).is_file() and hashlib.sha256((prepared/name).read_bytes()).hexdigest()==digest for name,digest in cached.get('files',{}).items()):
+        if job.get('revisionOf'):
+            items=[]
+        elif cached and cached.get('jobHash')==fingerprint and all((prepared/name).is_file() and hashlib.sha256((prepared/name).read_bytes()).hexdigest()==digest for name,digest in cached.get('files',{}).items()):
             items=cached['items']
         else:
             items=prepare(job,prepared)
@@ -194,7 +247,7 @@ def publish(job_path):
             if checkout.exists():raise ValueError('A previous private checkout needs review before retrying.')
             run(['git','worktree','add','--detach',checkout,'origin/main'])
             try:
-                result=import_prepared(job,prepared,items,checkout)
+                result=revise_event(job,checkout) if job.get('revisionOf') else import_prepared(job,prepared,items,checkout)
                 for script in ('validate.py','check_content_routes.py','build.py'):run([sys.executable,'scripts/'+script],checkout)
                 if sum(p.stat().st_size for p in (checkout/'dist').rglob('*') if p.is_file())>900*1024*1024:raise ValueError('Free website storage is nearly full. Use YouTube links for longer recordings.')
                 changed=run(['git','status','--porcelain'],checkout)
@@ -202,6 +255,7 @@ def publish(job_path):
                     paths=run(['git','ls-files','--modified','--others','--exclude-standard'],checkout).splitlines()
                     permitted=('assets/media/'+job['category']+'/'+result['eventId']+'/',)
                     fixed={'content/events/'+result['eventId']+'.json','content/categories/'+job['category']+'.json','content/collections/education-profiles.json'}
+                    if result.get('oldCategory'):fixed.add('content/categories/'+result['oldCategory']+'.json')
                     if any(p not in fixed and not p.startswith(permitted) for p in paths):raise ValueError('Unexpected source changes stopped this publication.')
                     run(['git','add','--',*paths],checkout)
                     run(['git','-c','user.name=Foundation WhatsApp Publisher','-c','user.email=foundation-publisher@users.noreply.github.com','commit','-m','Publish approved WhatsApp update '+job['id']],checkout)

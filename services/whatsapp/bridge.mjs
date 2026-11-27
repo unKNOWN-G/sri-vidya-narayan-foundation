@@ -9,7 +9,7 @@ import makeWASocket,{useMultiFileAuthState,downloadMediaMessage,DisconnectReason
 import pino from 'pino';
 import QRCode from 'qrcode';
 import {HELP,messageText,messageId,isAllowedMessage,mediaKind,youtubeIds,parseCommand} from './commands.mjs';
-import {freshDraft,advance,prompt,summary} from './wizard.mjs';
+import {freshDraft,advance,prompt,summary,restoreUpload} from './wizard.mjs';
 
 process.umask(0o077);
 const exec=promisify(execFile),SERVICE=path.dirname(fileURLToPath(import.meta.url)),ROOT=path.resolve(SERVICE,'../..');
@@ -20,7 +20,7 @@ async function readJSON(file,fallback){try{return JSON.parse(await fs.readFile(f
 async function writeJSON(file,value){await fs.mkdir(path.dirname(file),{recursive:true,mode:0o700});await fs.writeFile(file+'.tmp',JSON.stringify(value,null,2),{mode:0o600});await fs.rename(file+'.tmp',file);}
 const STATE_FILE=path.join(PRIVATE,'state.json');
 const state=await readJSON(STATE_FILE,{config:{chatId:null,captureSince:0},draft:freshDraft(),seen:[],jobs:[]});
-let socket=null,connection='Not linked',qr=null,allowConnect=process.argv.includes('--connect'),stopping=false,intake=Promise.resolve(),publishing=Promise.resolve(),idleTimer,queueDepth=0,events=[],catalogAt=0,saveChain=Promise.resolve(),outboxChain=Promise.resolve();
+let socket=null,connection='Not linked',qr=null,allowConnect=process.argv.includes('--connect'),stopping=false,intake=Promise.resolve(),publishing=Promise.resolve(),idleTimer,queueDepth=0,events=[],catalogAt=0,saveChain=Promise.resolve(),outboxChain=Promise.resolve(),resumedPrompt=false;
 const bindCode=randomBytes(4).toString('hex').toUpperCase(),seen=new Set(state.seen),logger=pino({level:'silent'});
 const save=()=>{state.seen=[...seen];const snapshot=structuredClone(state);saveChain=saveChain.then(()=>writeJSON(STATE_FILE,snapshot));return saveChain;};
 async function drainOutbox(){
@@ -42,7 +42,7 @@ async function runJob(id){
     const {stdout}=await exec(PYTHON,[path.join(ROOT,'scripts/whatsapp_publish.py'),'--job',path.join(PRIVATE,'jobs',id,'job.json')],{cwd:ROOT,maxBuffer:1024*1024});
     const result=JSON.parse(stdout);if(result.error)throw new Error(result.error);
     entry.state='published';entry.url=result.url;entry.runUrl=result.runUrl;entry.error=null;catalogAt=0;await save();
-    await reply(`Published successfully.\n${entry.title}\n${result.url}\nYou can forward the next event whenever you are ready.`);
+    await reply(`Published successfully.\n${entry.title}\n${result.url}\nSend REDO to correct this upload, or forward the next event.`);
   }catch(e){
     let detail='The update is saved. Check that the Mac is online and GitHub is signed in, then send RETRY.';
     try{const info=JSON.parse(e.stdout||'{}');if(info.error&&!/(?:\/Users\/|\/home\/|Bearer|token|secret)/i.test(info.error))detail=info.error;}catch{}
@@ -74,6 +74,7 @@ async function receive(message){
   const id=messageId(message);if(seen.has(id))return;
   const m=message.message||{},kind=mediaKind(message),forwarded=Boolean(m.extendedTextMessage?.contextInfo?.isForwarded||m.extendedTextMessage?.contextInfo?.forwardingScore);
   const links=youtubeIds(text);
+  if(state.draft.revisionOf&&(kind||links.length||forwarded||/^message\s+/i.test(text))){await reply('Finish this edit with PUBLISH, or send CLEAR before forwarding a new set. Your saved files are kept.');return;}
   if(kind){
     if(state.draft.items.length>=200){await reply('This event already has 200 items. Finish it before forwarding another set.');return;}
     const max=kind==='photo'?20*1024*1024:250*1024*1024;
@@ -91,13 +92,19 @@ async function receive(message){
   }
   if(m.documentMessage||m.viewOnceMessage||m.viewOnceMessageV2||m.ephemeralMessage){seen.add(id);await save();await reply('Please send ordinary photos, video/audio files, voice notes, text or YouTube links. Documents and disappearing/view-once items are not published through this gateway.');return;}
   if(!text)return;
-  const command=/\|/.test(text)||/^(?:hey\s+sai[,!]?\s*)?(?:help|status|retry|clear|cancel|edit|done)$/i.test(text)?parseCommand(text):null;
+  const command=/\|/.test(text)||/^(?:hey\s+sai[,!]?\s*)?(?:help|status|retry|clear|cancel|edit(?: last)?|redo(?: upload| last)?|done|back|go back|b|e)$/i.test(text)?parseCommand(text):null;
   if(forwarded||/^message\s+/i.test(text)||(!state.draft.stage&&!command&&!/^publish$/i.test(text))){
     const body=text.replace(/^message\s+/i,'');if(body.length>20000)throw new Error('Split this message into shorter messages.');
     if(state.draft.items.length>=200)throw new Error('Finish this event before sending more messages.');
     state.draft.items.push({kind:'message',text:body});seen.add(id);await save();laterPrompt();return;
   }
   seen.add(id);clearTimeout(idleTimer);
+  if(['edit','redo'].includes(command?.kind)&&!state.draft.items.length){
+    const previous=[...state.jobs].reverse().find(j=>j.state==='published');
+    if(!previous){await save();await reply('There is no published upload to reopen yet. Forward a new set, or send RETRY for a failed update.');return;}
+    const folder=path.join(PRIVATE,'jobs',previous.id),job=await readJSON(path.join(folder,'job.json'),null),receipt=await readJSON(path.join(folder,'result.json'),null),catalog=await loadCatalog();
+    state.draft=restoreUpload(job,receipt,catalog.find(e=>e.id===receipt?.eventId));await save();await reply(prompt(state.draft,catalog));return;
+  }
   if(command?.kind==='help'){await save();await reply(HELP);return;}
   if(command?.kind==='status'){
     await save();const recent=state.jobs.slice(-5);await reply((state.draft.items.length?`Pending: ${summary(state.draft)}.\n`:'')+(recent.map(j=>`${j.title}: ${j.state}${j.url?'\n'+j.url:''}${j.error?'\n'+j.error:''}`).join('\n\n')||'No events have been submitted yet.'));return;
@@ -114,7 +121,8 @@ async function receive(message){
     if(exact.length>1)throw new Error('More than one event has that name. Send EDIT and select the event from its section.');
     await queueJob({...command,target:exact[0]?.id||null,items:state.draft.items});return;
   }
-  const action=advance(state.draft,text,catalog);if(action.publish)await queueJob(action.publish);else{await save();await reply(action.reply);}
+  const answer=['back','edit','redo','done'].includes(command?.kind)?command.kind:text;
+  const action=advance(state.draft,answer,catalog);if(action.publish)await queueJob(action.publish);else{await save();await reply(action.reply);}
 }
 async function connect(){
   if(stopping||socket&&['Connecting','Connected','Scan the QR code'].includes(connection))return;
@@ -125,7 +133,10 @@ async function connect(){
   socket.ev.on('creds.update',saveCreds);
   socket.ev.on('connection.update',async update=>{
     if(update.qr){qr=await QRCode.toDataURL(update.qr);connection='Scan the QR code';}
-    if(update.connection==='open'){connection='Connected';qr=null;console.log('WhatsApp companion connected. No chat content is logged.');void flush();}
+    if(update.connection==='open'){
+      connection='Connected';qr=null;console.log('WhatsApp companion connected. No chat content is logged.');void flush();
+      if(!resumedPrompt){resumedPrompt=true;intake=intake.then(async()=>{if(state.draft.items.length){await reply(prompt(state.draft,await loadCatalog()));await save();}}).catch(()=>{});}
+    }
     if(update.connection==='close'){
       const code=update.lastDisconnect?.error?.output?.statusCode;socket=null;qr=null;
       connection=code===DisconnectReason.loggedOut?'Link expired — relink on this Mac':code===403?'WhatsApp access was refused — review the account/network settings':'Reconnecting';
@@ -146,7 +157,7 @@ const setupHTML=`<!doctype html><html lang="en"><meta charset="utf-8"><meta name
 const server=createServer((request,response)=>{
   if(request.headers.host!==`127.0.0.1:${PORT}`){response.writeHead(403);response.end();return;}
   response.setHeader('Cache-Control','no-store');response.setHeader('X-Content-Type-Options','nosniff');response.setHeader('Referrer-Policy','no-referrer');
-  if(request.url==='/health'&&request.method==='GET'){response.setHeader('Content-Type','application/json');response.end(JSON.stringify({connection,qrReady:Boolean(qr),groupLinked:Boolean(state.config.chatId),pendingItems:state.draft.items.length}));return;}
+  if(request.url==='/health'&&request.method==='GET'){response.setHeader('Content-Type','application/json');response.end(JSON.stringify({connection,qrReady:Boolean(qr),groupLinked:Boolean(state.config.chatId),pendingItems:state.draft.items.length,menuVersion:'back-edit-v1'}));return;}
   if(request.url==='/'&&request.method==='GET'){response.setHeader('Content-Type','text/html; charset=utf-8');response.end(setupHTML);return;}
   if(request.url==='/api/state'&&request.method==='GET'&&request.headers['x-setup-key']===WEB_KEY){response.setHeader('Content-Type','application/json');response.end(JSON.stringify({connection,qr,started:allowConnect,linked:Boolean(state.config.chatId)}));return;}
   response.writeHead(404);response.end();
