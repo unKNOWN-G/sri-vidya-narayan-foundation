@@ -9,7 +9,7 @@ import makeWASocket,{useMultiFileAuthState,downloadMediaMessage,DisconnectReason
 import pino from 'pino';
 import QRCode from 'qrcode';
 import {HELP,messageText,messageId,isAllowedMessage,mediaKind,youtubeIds,parseCommand} from './commands.mjs';
-import {freshDraft,advance,prompt,summary,restoreUpload} from './wizard.mjs';
+import {freshDraft,advance,prompt,summary,restoreUpload,resumeDraft,MENU_VERSION} from './wizard.mjs';
 import {formatReply} from './reply-style.mjs';
 
 process.umask(0o077);
@@ -21,6 +21,7 @@ async function readJSON(file,fallback){try{return JSON.parse(await fs.readFile(f
 async function writeJSON(file,value){await fs.mkdir(path.dirname(file),{recursive:true,mode:0o700});await fs.writeFile(file+'.tmp',JSON.stringify(value,null,2),{mode:0o600});await fs.rename(file+'.tmp',file);}
 const STATE_FILE=path.join(PRIVATE,'state.json');
 const state=await readJSON(STATE_FILE,{config:{chatId:null,captureSince:0},draft:freshDraft(),seen:[],jobs:[]});
+resumeDraft(state.draft);
 let socket=null,connection='Not linked',qr=null,allowConnect=process.argv.includes('--connect'),stopping=false,intake=Promise.resolve(),publishing=Promise.resolve(),idleTimer,queueDepth=0,events=[],catalogAt=0,saveChain=Promise.resolve(),outboxChain=Promise.resolve(),resumedPrompt=false;
 const bindCode=randomBytes(4).toString('hex').toUpperCase(),seen=new Set(state.seen),logger=pino({level:'silent'});
 const save=()=>{state.seen=[...seen];const snapshot=structuredClone(state);saveChain=saveChain.then(()=>writeJSON(STATE_FILE,snapshot));return saveChain;};
@@ -43,9 +44,9 @@ async function runJob(id){
     const {stdout}=await exec(PYTHON,[path.join(ROOT,'scripts/whatsapp_publish.py'),'--job',path.join(PRIVATE,'jobs',id,'job.json')],{cwd:ROOT,maxBuffer:1024*1024});
     const result=JSON.parse(stdout);if(result.error)throw new Error(result.error);
     entry.state='published';entry.url=result.url;entry.runUrl=result.runUrl;entry.error=null;catalogAt=0;await save();
-    await reply(`Published successfully.\n${entry.title}\n${result.url}\nSend REDO to correct this upload, or forward the next event.`);
+    await reply(`Published: ${entry.title}\n${result.url}\nREDO to edit.`);
   }catch(e){
-    let detail='The update is saved. Check that the Mac is online and GitHub is signed in, then send RETRY.';
+    let detail='Upload saved. Check Mac/GitHub connection, then RETRY.';
     try{const info=JSON.parse(e.stdout||'{}');if(info.error&&!/(?:\/Users\/|\/home\/|Bearer|token|secret)/i.test(info.error))detail=info.error;}catch{}
     entry.state='failed';entry.error=detail;await save();await reply('Publishing needs attention. '+detail);
   }
@@ -54,7 +55,7 @@ function enqueue(id){publishing=publishing.then(()=>runJob(id)).catch(()=>{conso
 async function queueJob(job){
   job.id=randomUUID();await writeJSON(path.join(PRIVATE,'jobs',job.id,'job.json'),job);
   state.jobs.push({id:job.id,state:'queued',title:job.title,created:Date.now()});state.draft=freshDraft();await save();
-  await reply(`Queued ${job.items.length} items for ${job.title}.\nI’ll reply with the website link after publication. You can forward the next event now.`);enqueue(job.id);
+  await reply(`Publishing: ${job.title}.`);enqueue(job.id);
 }
 function laterPrompt(){
   clearTimeout(idleTimer);idleTimer=setTimeout(async()=>{
@@ -67,7 +68,7 @@ async function receive(message){
   if(!state.config.chatId){
     if(message.key?.fromMe===true&&message.key.remoteJid?.endsWith('@g.us')&&text===`WEBSITE LINK ${bindCode}`){
       state.config={chatId:message.key.remoteJid,captureSince:Math.floor(Date.now()/1000),ownerOnly:true};seen.add(messageId(message));await save();
-      await reply('This is now the foundation upload group. Only items and commands sent by your own linked number are accepted.\n\n'+HELP);
+      await reply('Upload group connected.\n\n'+HELP);
     }
     return;
   }
@@ -75,11 +76,11 @@ async function receive(message){
   const id=messageId(message);if(seen.has(id))return;
   const m=message.message||{},kind=mediaKind(message),forwarded=Boolean(m.extendedTextMessage?.contextInfo?.isForwarded||m.extendedTextMessage?.contextInfo?.forwardingScore);
   const links=youtubeIds(text);
-  if(state.draft.revisionOf&&(kind||links.length||forwarded||/^message\s+/i.test(text))){await reply('Finish this edit with PUBLISH, or send CLEAR before forwarding a new set. Your saved files are kept.');return;}
+  if(state.draft.revisionOf&&(kind||links.length||forwarded||/^message\s+/i.test(text))){await reply('PUBLISH this edit, or CLEAR to start another event.');return;}
   if(kind){
     if(state.draft.items.length>=200){await reply('This event already has 200 items. Finish it before forwarding another set.');return;}
     const max=kind==='photo'?20*1024*1024:250*1024*1024;
-    if(!state.draft.items.length&&!state.draft.receiving){state.draft.receiving=true;await save();await reply('I’m receiving this event’s files. I’ll ask the details when the set has arrived. You can send DONE when ready.');}
+    if(!state.draft.items.length&&!state.draft.receiving){state.draft.receiving=true;await save();await reply('Receiving files… Send DONE when ready.');}
     const stream=await downloadMediaMessage(message,'stream',{}, {logger,reuploadRequest:socket.updateMediaMessage});
     const destination=path.join(ORIGINALS,id+'.bin'),temp=destination+'.tmp';const file=await fs.open(temp,'w',0o600);let size=0;
     let complete=false;
@@ -91,7 +92,7 @@ async function receive(message){
     if(state.draft.items.length+links.length>200)throw new Error('Finish this event before sending more links.');
     for(const youtubeId of links)state.draft.items.push({kind:'youtube',youtubeId});seen.add(id);await save();laterPrompt();return;
   }
-  if(m.documentMessage||m.viewOnceMessage||m.viewOnceMessageV2||m.ephemeralMessage){seen.add(id);await save();await reply('Please send ordinary photos, video/audio files, voice notes, text or YouTube links. Documents and disappearing/view-once items are not published through this gateway.');return;}
+  if(m.documentMessage||m.viewOnceMessage||m.viewOnceMessageV2||m.ephemeralMessage){seen.add(id);await save();await reply('Send photos, video, audio, text or YouTube links. No documents or view-once items.');return;}
   if(!text)return;
   const command=/\|/.test(text)||/^(?:hey\s+sai[,!]?\s*)?(?:help|status|retry|clear|cancel|edit(?: last)?|redo(?: upload| last)?|done|back|go back|b|e)$/i.test(text)?parseCommand(text):null;
   if(forwarded||/^message\s+/i.test(text)||(!state.draft.stage&&!command&&!/^publish$/i.test(text))){
@@ -102,22 +103,22 @@ async function receive(message){
   seen.add(id);clearTimeout(idleTimer);
   if(['edit','redo'].includes(command?.kind)&&!state.draft.items.length){
     const previous=[...state.jobs].reverse().find(j=>j.state==='published');
-    if(!previous){await save();await reply('There is no published upload to reopen yet. Forward a new set, or send RETRY for a failed update.');return;}
+    if(!previous){await save();await reply('No published upload yet. Forward files, or RETRY a failed upload.');return;}
     const folder=path.join(PRIVATE,'jobs',previous.id),job=await readJSON(path.join(folder,'job.json'),null),receipt=await readJSON(path.join(folder,'result.json'),null),catalog=await loadCatalog();
     state.draft=restoreUpload(job,receipt,catalog.find(e=>e.id===receipt?.eventId));await save();await reply(prompt(state.draft,catalog));return;
   }
   if(command?.kind==='help'){await save();await reply(HELP);return;}
   if(command?.kind==='status'){
-    await save();const recent=state.jobs.slice(-5);await reply((state.draft.items.length?`Pending: ${summary(state.draft)}.\n`:'')+(recent.map(j=>`${j.title}: ${j.state}${j.url?'\n'+j.url:''}${j.error?'\n'+j.error:''}`).join('\n\n')||'No events have been submitted yet.'));return;
+    await save();const recent=state.jobs.slice(-5);await reply((state.draft.items.length?`Pending: ${summary(state.draft)}.\n`:'')+(recent.map(j=>`${j.title}: ${j.state}${j.url?'\n'+j.url:''}${j.error?'\n'+j.error:''}`).join('\n\n')||'No uploads yet.'));return;
   }
   if(command?.kind==='retry'){
-    const job=[...state.jobs].reverse().find(j=>j.state==='failed');if(!job){await save();await reply('There is no failed update to retry. Send STATUS to check progress.');return;}
-    job.state='queued';await save();await reply('Retrying your saved update. No need to forward it again.');enqueue(job.id);return;
+    const job=[...state.jobs].reverse().find(j=>j.state==='failed');if(!job){await save();await reply('No failed uploads. Send STATUS.');return;}
+    job.state='queued';await save();await reply('Retrying saved upload.');enqueue(job.id);return;
   }
-  if(['clear','cancel'].includes(command?.kind)){state.draft=freshDraft();await save();await reply('Pending selection cleared. Private originals were retained. Forward the next event to start again.');return;}
+  if(['clear','cancel'].includes(command?.kind)){state.draft=freshDraft();await save();await reply('Cleared. Forward the next event.');return;}
   const catalog=await loadCatalog();
   if(command?.kind==='upload'){
-    if(!state.draft.items.length){await reply('Forward the event’s items before its UPLOAD instruction.');return;}
+    if(!state.draft.items.length){await reply('Forward files before UPLOAD.');return;}
     const exact=catalog.filter(e=>e.category===command.category&&(e.title.toLowerCase()===command.title.toLowerCase()||e.id===command.title));
     if(exact.length>1)throw new Error('More than one event has that name. Send EDIT and select the event from its section.');
     await queueJob({...command,target:exact[0]?.id||null,items:state.draft.items});return;
@@ -159,11 +160,11 @@ async function connect(){
   });
 }
 
-const setupHTML=`<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Foundation · WhatsApp gateway</title><style>body{margin:0;background:#faf5eb;color:#342a20;font:17px/1.6 system-ui}main{max-width:780px;margin:5vh auto;padding:28px}h1{font:clamp(35px,5vw,55px)/1.1 Georgia;margin:20px 0}small{letter-spacing:3px;color:#82613a}section{background:#fffdf8;border-radius:24px;padding:28px;margin:24px 0}button{background:#684a2e;color:white;border:0;border-radius:20px;padding:14px 24px;font:inherit}#qr{max-width:280px;width:100%;display:none}code{background:#f1e7d5;padding:8px;border-radius:8px;display:inline-block}p{max-width:64ch}.muted{color:#776956}</style><main><small>SRI VIDYA NARAYAN FOUNDATION</small><h1>From your WhatsApp.<br>To Swamiji’s website.</h1><p>Forward a set of photos, videos, audio, YouTube links or messages. Answer the section, event and caption questions. Reply <b>PUBLISH</b> to publish.</p><section><strong id="connection">Checking setup…</strong><p id="notice">Account linking has not started. No WhatsApp messages are being read.</p><img id="qr" alt="WhatsApp linked-device QR code"><p id="bind" hidden>After linking, send this from your own number in the dedicated upload group:<br><code>WEBSITE LINK ${bindCode}</code></p><p id="linked" hidden>Your dedicated upload group is connected. Other chats and other people’s messages are ignored.</p></section><p class="muted">Free local companion. The Mac must stay awake and online. This uses the unofficial Baileys library, not Meta’s business API; WhatsApp can restrict or break this integration. Authentication and original files stay private on this Mac. Only an explicit upload/publish command releases selected content to the public website.</p></main><script>async function refresh(){try{const r=await fetch('/api/state',{headers:{'X-Setup-Key':'${WEB_KEY}'}}),s=await r.json();document.querySelector('#connection').textContent=s.connection;document.querySelector('#notice').textContent=s.started?'On your phone: WhatsApp → Settings → Linked devices → Link a device. Scan this code on the Mac.':'Awaiting your one-time linking approval. No account is connected.';const q=document.querySelector('#qr');q.style.display=s.qr?'block':'none';if(s.qr)q.src=s.qr;document.querySelector('#bind').hidden=!s.started||s.linked;document.querySelector('#linked').hidden=!s.linked;if(s.linked)document.querySelector('#notice').textContent='Forward one event at a time in the upload group. The guided questions appear there.';}catch{}setTimeout(refresh,2000)}refresh()</script></html>`;
+const setupHTML=`<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Foundation · WhatsApp gateway</title><style>body{margin:0;background:#faf5eb;color:#342a20;font:17px/1.6 system-ui}main{max-width:780px;margin:5vh auto;padding:28px}h1{font:clamp(35px,5vw,55px)/1.1 Georgia;margin:20px 0}small{letter-spacing:3px;color:#82613a}section{background:#fffdf8;border-radius:24px;padding:28px;margin:24px 0}button{background:#684a2e;color:white;border:0;border-radius:20px;padding:14px 24px;font:inherit}#qr{max-width:280px;width:100%;display:none}code{background:#f1e7d5;padding:8px;border-radius:8px;display:inline-block}p{max-width:64ch}.muted{color:#776956}</style><main><small>SRI VIDYA NARAYAN FOUNDATION</small><h1>From your WhatsApp.<br>To Swamiji’s website.</h1><p>Forward a set of photos, videos, audio, YouTube links or messages. Choose the section and event. Reply <b>PUBLISH</b> to publish.</p><section><strong id="connection">Checking setup…</strong><p id="notice">Account linking has not started. No WhatsApp messages are being read.</p><img id="qr" alt="WhatsApp linked-device QR code"><p id="bind" hidden>After linking, send this from your own number in the dedicated upload group:<br><code>WEBSITE LINK ${bindCode}</code></p><p id="linked" hidden>Your dedicated upload group is connected. Other chats and other people’s messages are ignored.</p></section><p class="muted">Free local companion. The Mac must stay awake and online. This uses the unofficial Baileys library, not Meta’s business API; WhatsApp can restrict or break this integration. Authentication and original files stay private on this Mac. Only an explicit upload/publish command releases selected content to the public website.</p></main><script>async function refresh(){try{const r=await fetch('/api/state',{headers:{'X-Setup-Key':'${WEB_KEY}'}}),s=await r.json();document.querySelector('#connection').textContent=s.connection;document.querySelector('#notice').textContent=s.started?'On your phone: WhatsApp → Settings → Linked devices → Link a device. Scan this code on the Mac.':'Awaiting your one-time linking approval. No account is connected.';const q=document.querySelector('#qr');q.style.display=s.qr?'block':'none';if(s.qr)q.src=s.qr;document.querySelector('#bind').hidden=!s.started||s.linked;document.querySelector('#linked').hidden=!s.linked;if(s.linked)document.querySelector('#notice').textContent='Forward one event at a time in the upload group. The guided questions appear there.';}catch{}setTimeout(refresh,2000)}refresh()</script></html>`;
 const server=createServer((request,response)=>{
   if(request.headers.host!==`127.0.0.1:${PORT}`){response.writeHead(403);response.end();return;}
   response.setHeader('Cache-Control','no-store');response.setHeader('X-Content-Type-Options','nosniff');response.setHeader('Referrer-Policy','no-referrer');
-  if(request.url==='/health'&&request.method==='GET'){response.setHeader('Content-Type','application/json');response.end(JSON.stringify({connection,qrReady:Boolean(qr),groupLinked:Boolean(state.config.chatId),pendingItems:state.draft.items.length,menuVersion:'back-edit-v1',replyStyle:'assistant-monospace-v1'}));return;}
+  if(request.url==='/health'&&request.method==='GET'){response.setHeader('Content-Type','application/json');response.end(JSON.stringify({connection,qrReady:Boolean(qr),groupLinked:Boolean(state.config.chatId),pendingItems:state.draft.items.length,menuVersion:MENU_VERSION,replyStyle:'assistant-monospace-v1'}));return;}
   if(request.url==='/'&&request.method==='GET'){response.setHeader('Content-Type','text/html; charset=utf-8');response.end(setupHTML);return;}
   if(request.url==='/api/state'&&request.method==='GET'&&request.headers['x-setup-key']===WEB_KEY){response.setHeader('Content-Type','application/json');response.end(JSON.stringify({connection,qr,started:allowConnect,linked:Boolean(state.config.chatId)}));return;}
   response.writeHead(404);response.end();

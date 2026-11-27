@@ -19,18 +19,20 @@ The existing Cloudflare phone form remains a working alternative; its first live
 
 Assistant replies use a bold **Website Assistant** label and WhatsApp-native monospace text so they are distinct from the owner's ordinary messages. Links remain outside monospace blocks for easy opening. This is presentation at send time only; uploaded text/captions and typed responses are not rewritten. The first connection after this style update sends a single styled notice or the saved pending menu.
 
-Every question now includes **B. Back** (BACK also works). The review includes **E. Edit details**: choose section, event/name, caption or date without re-forwarding the pending files. Changing one field keeps the other answers. Nothing publishes until PUBLISH from the final review.
+Prompts and publication acknowledgements are concise; no separate caption question is asked during a normal upload. Saved drafts waiting at the old caption step resume at review.
+
+Every question now includes **B. Back** (BACK also works). The review includes **E. Edit**: choose section, event/name, caption or date without re-forwarding the pending files. Changing one field keeps the other answers. Nothing publishes until PUBLISH from the final review.
 
 After publication, **REDO** (or EDIT with no pending set) reopens the most recent published upload with its saved files. Corrections keep the same event ID/link and do not append duplicate media. Changing the section of an event consisting entirely of that upload updates the category lists and education profile, and copies the same public assets into the corrected section; original files remain. On an event containing other uploads, only this set's captions may be changed automatically; moving/renaming that shared event requires a separate review so other people's content and contribution links cannot be silently changed. RETRY remains for failed publication; CLEAR discards only the current unsubmitted selection. A pending menu is resent after a process restart so Back/Edit are visible immediately.
 
 1. Use the dedicated upload group selected by the owner. Forward the items for **one event**: photographs, video clips, WhatsApp voice notes, audio files, forwarded text and/or YouTube video links. Compose a text message outside an active question to include it as content; `MESSAGE your text` also works.
 2. After the items arrive, the companion asks which section: His Holiness, Teachings, Devotion and Celebration, Vedic Learning, Education, Annadanam or Medical. Reply with its number.
 3. Select an existing event by number, use NEXT for more, or enter a new authentic event/school name. Events are listed only within the selected section. No donation amount or occasion date is inferred.
-4. Reply with the caption. SAME keeps a forwarded caption; SKIP uses the event name. Original forwarded item captions remain attached to their items.
-5. Read the item count, section, destination and caption. Reply **PUBLISH** to release that set to the public website. `DATE YYYY-MM-DD` optionally supplies the actual occasion date; EDIT restarts the questions without losing the pending items.
+4. The flow goes straight to review. A forwarded caption is kept; otherwise the event name is used. Caption editing remains optional under **E → 3**. Original forwarded item captions remain attached to their items.
+5. Read the item count, section and event. Reply **PUBLISH** to release that set to the public website. `DATE YYYY-MM-DD` optionally supplies the actual occasion date; EDIT opens the details menu without losing the pending items.
 6. The companion replies with a live link only after GitHub Pages succeeds. You can prepare the next event while the previous one publishes. STATUS reports pending/recent jobs; RETRY reuses a failed job and saved derivatives. CLEAR/CANCEL removes only the unsubmitted selection; private originals remain.
 
-The optional compact instruction `UPLOAD education | Air Force School, Yelahanka | Swamiji blessed the students.` publishes an already-forwarded set directly. An exact existing title or event ID appends; otherwise it creates a new occasion. This keyword is explicit public-release confirmation; ordinary chat messages never trigger publication.
+The optional compact instruction `UPLOAD education | Air Force School, Yelahanka` (with `| caption` if wanted) publishes an already-forwarded set directly. An exact existing title or event ID appends; otherwise it creates a new occasion. This keyword is explicit public-release confirmation; ordinary chat messages never trigger publication.
 
 ## Free personal-number constraints
 

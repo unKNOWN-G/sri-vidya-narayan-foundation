@@ -7,10 +7,10 @@ const aliases = new Map(Object.entries({
   veda:'vedic-learning', vedic:'vedic-learning', 'vedic learning':'vedic-learning', 'vedic-learning':'vedic-learning',
   annadanam:'annadanam', food:'annadanam', medical:'healthcare', healthcare:'healthcare'
 }));
-export const HELP = `Forward one event's photos, videos, voice notes, audio files, messages or YouTube links here. I'll ask the section, event and caption. Reply PUBLISH after the review to put it on the public website.
-Every question offers B. Back (or type BACK). E / EDIT opens the details menu. REDO reopens your last published upload for section, event name, caption or date corrections without forwarding files again; the existing page is updated only after PUBLISH.
-Send DONE to start the questions immediately. HELP shows this guide; STATUS checks progress; RETRY retries the last failed update; CLEAR removes unsubmitted items from the pending set (private originals are retained).
-Long videos belong on YouTube: forward their links. Do not forward private receipts, health/student records or view-once content here. The Mac must be awake and online.`;
+export const HELP = `Forward one event’s files → choose section → event → PUBLISH.
+B Back · E Edit · REDO last upload
+DONE continue · STATUS progress · RETRY failed upload · CLEAR restart
+Caption is optional under Edit. Keep the Mac online; send public content only.`;
 export const SECTIONS=[['his-holiness','His Holiness Shankaracharya'],['teachings','Swamiji’s Teachings'],['spiritual-life','Devotion and Celebration'],['vedic-learning','Support for Vedic Learning'],['education','Education'],['annadanam','Annadanam'],['healthcare','Medical']];
 export const sectionFor = value => aliases.get(String(value).trim().toLowerCase());
 
@@ -23,8 +23,8 @@ export function parseCommand(text) {
   if (/^(?:help|status|retry|clear|cancel|edit|done)$/i.test(text)) return {kind:text.toLowerCase()};
   if (!/^upload\b/i.test(text)) return null;
   const fields = text.replace(/^upload\s*/i,'').split('|').map(s=>s.trim());
-  if (fields.length < 3 || fields.length > 4) throw new Error('Use UPLOAD section | occasion title | caption. Send HELP for an example.');
-  const [section,title,caption,date] = fields;
+  if (fields.length < 2 || fields.length > 4) throw new Error('Use UPLOAD section | event name | optional caption.');
+  const [section,title,suppliedCaption,date] = fields,caption=suppliedCaption||title;
   const category = aliases.get(section.toLowerCase());
   if (!category) throw new Error('Choose swamiji, teachings, devotion, veda, education, annadanam or medical.');
   if (!title || title.length > 150 || !caption || caption.length > 1500 || /[\u0000-\u0008\u000b-\u001f]|\/Users\/|\/home\/|file:\/\//.test(title+' '+caption)) throw new Error('Use a title up to 150 characters and a public caption up to 1500 characters, without private file paths.');

@@ -1,37 +1,43 @@
 import {SECTIONS,sectionFor} from './commands.mjs';
-export const freshDraft=()=>({items:[],stage:null,page:0});
+export const MENU_VERSION='compact-v2';
+export const freshDraft=()=>({items:[],stage:null,page:0,menuVersion:MENU_VERSION});
+export function resumeDraft(draft) {
+  if(draft.menuVersion!==MENU_VERSION&&draft.stage==='caption')nextDetails(draft);
+  draft.menuVersion=MENU_VERSION;
+  return draft;
+}
 export function restoreUpload(job,receipt,event) {
   if(receipt?.state!=='published'||!receipt.eventId)throw new Error('That upload has not finished publishing. Send STATUS or RETRY.');
   return {...freshDraft(),items:structuredClone(job.items),stage:'edit',category:event?.category||job.category,target:receipt.eventId,title:event?.title||job.title,caption:job.caption,date:event?(event.date||null):(job.date||null),revisionOf:job.revisionOf||{jobId:job.id,eventId:receipt.eventId}};
 }
 const backLine='\nB. Back';
-function nextDetails(draft){draft.stage=draft.caption?'review':'caption';}
+function nextDetails(draft){draft.caption ||= draft.items.find(i=>i.caption?.trim())?.caption||draft.title;draft.stage='review';}
 
 const clean=(s,n)=>typeof s==='string'&&s.trim()&&s.length<=n&&!/[\u0000-\u0008\u000b-\u001f]|\/Users\/|\/home\/|file:\/\//.test(s);
 export function summary(draft) {
   const counts={};for(const i of draft.items)counts[i.kind]=(counts[i.kind]||0)+1;
-  return Object.entries(counts).map(([kind,n])=>`${n} ${kind==='photo'?'photos':kind==='youtube'?'YouTube links':kind==='message'?'messages':kind==='audio'?'audio clips':'videos'}`).join(', ');
+  return Object.entries(counts).map(([kind,n])=>`${n} ${{photo:'photo',youtube:'YouTube link',message:'message',audio:'audio clip',video:'video'}[kind]}${n===1?'':'s'}`).join(', ');
 }
 export function prompt(draft,events=[]) {
-  if(!draft.items.length)return 'Forward the items for one event here first. Photos, videos, YouTube links, text and audio are welcome.';
-  if(draft.stage==='items')return `Kept ${summary(draft)}. Forward more items if needed, or send DONE to choose the section. CLEAR starts over.`;
-  if(draft.stage==='edit')return `Edit details — ${summary(draft)} kept:\n1. Section\n2. Event name${draft.revisionOf?'':' / destination'}\n3. Caption\n4. Occasion date\n5. Review and publish${backLine}`;
-  if(draft.stage==='date')return 'Send the actual occasion date as YYYY-MM-DD, or NONE to clear it.'+backLine;
-  if(!draft.stage||draft.stage==='category') {draft.stage='category';return `Received ${summary(draft)}.\nWhich section?\n`+SECTIONS.map(([id,title],i)=>`${i+1}. ${title}`).join('\n')+backLine;}
+  if(!draft.items.length)return 'Forward files or messages for one event.';
+  if(draft.stage==='items')return `${summary(draft)} saved.\nDONE to continue · CLEAR to restart`;
+  if(draft.stage==='edit')return `Edit:\n1. Section\n2. Event name${draft.revisionOf?'':' / destination'}\n3. Caption (optional)\n4. Occasion date\n5. Review and publish${backLine}`;
+  if(draft.stage==='date')return 'Date: YYYY-MM-DD, or NONE.'+backLine;
+  if(!draft.stage||draft.stage==='category') {draft.stage='category';return `${summary(draft)} · Choose section:\n`+SECTIONS.map(([id,title],i)=>`${i+1}. ${title}`).join('\n')+backLine;}
   if(draft.stage==='event') {
     const matches=events.filter(e=>e.category===draft.category),page=matches.slice(draft.page*8,draft.page*8+8);
     draft.options=page;
-    return 'Which event?\n0. Create a new event\n'+page.map((e,i)=>`${i+1}. ${e.title}`).join('\n')+(matches.length>(draft.page+1)*8?'\nNEXT. More events':'')+'\nOr type the event/school name.'+backLine;
+    return 'Choose event:\n0. New event\n'+page.map((e,i)=>`${i+1}. ${e.title}`).join('\n')+(matches.length>(draft.page+1)*8?'\nNEXT. More events':'')+'\nOr type a new event name.'+backLine;
   }
-  if(draft.stage==='title')return 'What is the event, school or institution name? Use its authentic name.'+backLine;
-  if(draft.stage==='caption')return 'What should visitors know about this event? Send a short caption. SAME keeps the forwarded caption; SKIP uses just the event name.'+backLine;
-  return `Ready for the public website:\n${summary(draft)}\n${SECTIONS.find(s=>s[0]===draft.category)?.[1]} · ${draft.title}\n${draft.revisionOf?'Update the existing page':draft.target?'Add to existing event':'Create new event'}\n\n${draft.caption}\n\n${draft.date?'Occasion date: '+draft.date:'No occasion date supplied.'}\nReply PUBLISH to publish.\nE. Edit details\nB. Back to caption\nDATE YYYY-MM-DD adds the actual date. Never include private records.`;
+  if(draft.stage==='title')return 'Event or school name?'+backLine;
+  if(draft.stage==='caption')return 'Send caption, SAME to keep, or SKIP.'+backLine;
+  return `${summary(draft)} · ${SECTIONS.find(s=>s[0]===draft.category)?.[1]}\n${draft.title}\n${draft.revisionOf?'Update event':draft.target?'Add to event':'New event'}${draft.caption&&draft.caption!==draft.title?'\n'+draft.caption:''}${draft.date?'\n'+draft.date:''}\n\nPUBLISH · E. Edit · B. Back`;
 }
 export function advance(draft,text,events=[]) {
   text=String(text).trim();
   if(!draft.items.length)return {reply:prompt(draft,events)};
   if(/^(?:back|b)$/i.test(text)) {
-    const previous={category:'items',event:'category',title:draft.revisionOf?'edit':'event',caption:draft.revisionOf?'edit':draft.target?'event':'title',review:'caption',edit:draft.caption?'review':'category',date:'edit'};
+    const previous={category:'items',event:'category',title:draft.revisionOf?'edit':'event',caption:'edit',review:'edit',edit:draft.caption?'review':'category',date:'edit'};
     draft.stage=previous[draft.stage]||'items';return {reply:prompt(draft,events)};
   }
   if(/^(?:edit|redo|e)$/i.test(text)){draft.stage=draft.caption?'edit':'category';return {reply:prompt(draft,events)};}
@@ -66,7 +72,7 @@ export function advance(draft,text,events=[]) {
     draft.title=existing?.title||text;if(!draft.revisionOf)draft.target=existing?.id||null;nextDetails(draft);return {reply:prompt(draft,events)};
   }
   if(draft.stage==='caption') {
-    const caption=/^skip$/i.test(text)?draft.title:/^same$/i.test(text)?draft.items.find(i=>i.caption)?.caption||draft.title:text;
+    const caption=/^skip$/i.test(text)?draft.title:/^same$/i.test(text)?draft.caption||draft.items.find(i=>i.caption)?.caption||draft.title:text;
     if(!clean(caption,1500))return {reply:'Send a public caption up to 1500 characters, without private file paths.'};
     draft.caption=caption;draft.stage='review';return {reply:prompt(draft,events)};
   }
