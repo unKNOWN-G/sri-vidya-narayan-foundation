@@ -94,8 +94,8 @@
       : "#";
   const photo = (src, alt = "", cls = "", position = "") => {
     if (!src) return "";
-    const image = site?.imageVariants?.[src], priority = cls.includes("priority");
-    return `<img src="${href(src)}" alt="${esc(alt)}" class="${cls}" ${position ? `style="object-position:${esc(position)}"` : ""} ${image ? `width="${image.width}" height="${image.height}" srcset="${image.sources.map(v => href(v.src) + ' ' + v.width + 'w').join(', ')}" sizes="(max-width: 750px) 90vw, 46vw"` : ""} loading="${priority ? "eager" : "lazy"}" ${priority ? 'fetchpriority="high"' : ""} decoding="async">`;
+    const image = site?.imageVariants?.[src], size = site?.imageDimensions?.[src] || image, priority = cls.includes("priority");
+    return `<img src="${href(src)}" alt="${esc(alt)}" class="${cls}" ${position ? `style="object-position:${esc(position)}"` : ""} ${size ? `width="${size.width}" height="${size.height}"` : ""} ${image ? `srcset="${image.sources.map(v => href(v.src) + ' ' + v.width + 'w').join(', ')}" sizes="(max-width: 750px) 90vw, 46vw"` : ""} loading="${priority ? "eager" : "lazy"}" ${priority ? 'fetchpriority="high"' : ""} decoding="async">`;
   };
   const getCategory = (id) => site.categories.find((c) => c.id === id);
   const featuredCategories = () =>
@@ -521,7 +521,15 @@
       return wrap ? items[(at + items.length) % items.length].route : items[Math.max(0, Math.min(items.length - 1, at))].route;
     };
     const picture = (item, at) => item.kind === "satsang" ? satsangEdition(item) : item.visual ? teachingArtwork(item.visual, item.visualLabel) : item.cover ? photo(item.cover, item.alt || item.title, at === current ? "priority" : "") : `<div class="deck-thought"><span>${esc(item.kicker || "A MOMENT TO REFLECT")}</span><strong>${esc(item.title)}</strong></div>`;
-    app.innerHTML = `<section class="view section-spotlight ${className}" data-back="${esc(back)}" data-deck-session="${performance.now()}"><div class="deck-header">${header || `<h1>${esc(title)}</h1>`}<button class="deck-rotation" type="button"></button></div><div class="deck-scene"><div class="deck-stage" aria-label="${esc(title)}" aria-roledescription="carousel">${items.map((item, at) => `<button type="button" class="deck-card" data-deck-index="${at}" style="--image-ratio:${item.kind === "satsang" ? .8 : item.visual ? .84 : item.kind === "book" || !item.cover ? .72 : site.imageVariants?.[item.cover] ? Math.max(.52, Math.min(2.5, site.imageVariants[item.cover].width / site.imageVariants[item.cover].height)) : .78}"><div class="deck-picture">${Math.abs(at-current) <= 1 || (current === 0 && at === items.length-1) ? picture(item, at) : ""}</div>${item.badge ? `<span class="deck-date">${esc(item.badge)}</span>` : ""}<span class="deck-preview-label">${esc(item.title)}</span><span class="deck-card-open" aria-hidden="true"></span></button>`).join("")}</div><div class="deck-caption spotlight-caption"></div></div>${sceneNavigation(title, items.map(item => ({title:item.title, href:item.route})), current)}</section>`;
+    const isPhotoCard = item => item.cover && !item.visual && !["book","satsang"].includes(item.kind);
+    const cardRatio = item => {
+      if(item.kind==="satsang")return .8;
+      if(item.visual)return .84;
+      if(item.kind==="book"||!item.cover)return .72;
+      const size=site.imageDimensions?.[item.cover]||site.imageVariants?.[item.cover];
+      return size?.width>0&&size?.height>0?size.width/size.height:.78;
+    };
+    app.innerHTML = `<section class="view section-spotlight ${className}" data-back="${esc(back)}" data-deck-session="${performance.now()}"><div class="deck-header">${header || `<h1>${esc(title)}</h1>`}<button class="deck-rotation" type="button"></button></div><div class="deck-scene"><div class="deck-stage" aria-label="${esc(title)}" aria-roledescription="carousel">${items.map((item, at) => `<button type="button" class="deck-card" data-deck-index="${at}" ${isPhotoCard(item) ? "data-photo-card" : ""} style="--image-ratio:${cardRatio(item)}"><div class="deck-picture">${Math.abs(at-current) <= 1 || (current === 0 && at === items.length-1) ? picture(item, at) : ""}</div>${item.badge ? `<span class="deck-date">${esc(item.badge)}</span>` : ""}<span class="deck-preview-label">${esc(item.title)}</span><span class="deck-card-open" aria-hidden="true"></span></button>`).join("")}</div><div class="deck-caption spotlight-caption"></div></div>${sceneNavigation(title, items.map(item => ({title:item.title, href:item.route})), current)}</section>`;
     const root = app.querySelector(".section-spotlight"), stage = root.querySelector(".deck-stage"), cards = [...root.querySelectorAll(".deck-card")], caption = root.querySelector(".deck-caption"), rotation = root.querySelector(".deck-rotation");
     root.classList.toggle("deck-single", items.length === 1);
     root.querySelector(".scene-navigation").append(rotation);
@@ -543,6 +551,19 @@
       if(rotating) timer=setInterval(()=>{if(interacting||document.hidden||root.querySelector("details[open]")||document.querySelector("dialog[open]"))return;if(!wrap&&current===items.length-1){setRotation(false);return;}goTo(routeAt(1));},11000);
     }
     function resize() { stage.style.setProperty("--card-height", Math.max(110, Math.min(350, stage.clientHeight - 24)) + "px"); }
+    function fitPhoto(card) {
+      if(!card.hasAttribute("data-photo-card"))return;
+      const image=card.querySelector(".deck-picture > img");
+      if(!image||image.dataset.ratioBound)return;
+      image.dataset.ratioBound="true";
+      const apply=()=>{
+        if(!root.isConnected||!image.naturalWidth||!image.naturalHeight)return;
+        const ratio=image.naturalWidth/image.naturalHeight;
+        card.style.setProperty("--image-ratio",String(ratio));
+        if(card===cards[current]){root.style.setProperty("--active-ratio",String(ratio));resize();}
+      };
+      if(image.complete)apply();else image.addEventListener("load",apply,{once:true});
+    }
     function show(at, initial = false) {
       const focusCard = document.activeElement?.matches(".deck-card:focus-visible");
       current = at;
@@ -561,6 +582,7 @@
         card.setAttribute("aria-pressed", String(i === current));
         card.setAttribute("aria-label", (i === current ? (item.action || "Open") + ": " : "Show ") + items[i].title);
         if (position !== "hidden" && !card.querySelector(".deck-picture").children.length) card.querySelector(".deck-picture").innerHTML = picture(items[i], i);
+        if(position!=="hidden")fitPhoto(card);
       });
       if (focusCard) cards[current].focus({preventScroll:true});
       caption.innerHTML = `${item.kicker ? `<p class="deck-kicker">${esc(item.kicker)}</p>` : ""}<h2>${esc(item.title)}</h2>${item.description ? `<p class="deck-description">${esc(item.description)}</p>` : ""}${item.fact ? `<strong class="deck-fact ${item.cash ? "cash-fact" : ""}">${esc(item.fact)}</strong>` : ""}${item.meta ? `<p class="deck-meta">${esc(item.meta)}</p>` : ""}<div class="deck-actions">${item.evidence || ""}</div>${item.note ? `<p class="deck-source-note">${esc(item.note)}</p>` : ""}`;

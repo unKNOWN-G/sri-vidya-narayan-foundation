@@ -123,8 +123,13 @@
 @media(prefers-reduced-motion:reduce) { .section-spotlight *, .section-spotlight *::before, .section-spotlight *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }
 /* Keep the photograph and caption together, regardless of the supplied photo's shape. */
 .deck-scene { justify-content: center; }
-.deck-stage { flex: 0 1 auto; height: calc(min(350px,40svh,calc(75vw / var(--active-ratio,.78))) + 24px); }
+.deck-stage { flex: 0 1 auto; height: calc(min(350px,40svh,calc(min(350px,75vw) / var(--active-ratio,.78))) + 24px); }
+.deck-ready .deck-stage { transition: height .7s cubic-bezier(.22,.7,.2,1); }
 .deck-card { width: min(350px,calc(var(--card-height) * var(--image-ratio)),75vw); }
+/* A photograph determines its own frame; the matte is only the thin border. */
+.deck-card[data-photo-card] { aspect-ratio: auto; }
+.deck-card[data-photo-card] .deck-picture { position: relative; height: auto; aspect-ratio: var(--image-ratio); }
+.deck-card[data-photo-card] .deck-picture > img { position: absolute; inset: 0; }
 .deck-evidence { position: static; }
 .section-spotlight:has(.deck-card:only-child) .scene-navigation { visibility: hidden; }
 @media(max-width:750px) { .section-spotlight.satsang-view .satsang-top { align-items: stretch; } }

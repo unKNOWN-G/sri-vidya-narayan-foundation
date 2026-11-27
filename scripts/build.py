@@ -13,6 +13,7 @@ import sys
 from urllib.parse import parse_qsl, unquote, urlencode, urlsplit, urlunsplit
 
 from validate import ROOT, validate
+from image_dimensions import cover_dimensions
 
 
 def build(destination=None, skip_validation=False):
@@ -76,6 +77,7 @@ def build(destination=None, skip_validation=False):
     variants = output / "content" / "image-variants.json"
     if variants.is_file():
         manifest["imageVariants"] = json.loads(variants.read_text(encoding="utf-8"))
+    manifest["imageDimensions"] = cover_dimensions(manifest,output)
     # Static social previews give individual stories a meaningful share card.
     # The browser redirects to the same SPA route; no content is duplicated manually.
     public_base = "https://unknown-g.github.io/sri-vidya-narayan-foundation/"
