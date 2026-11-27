@@ -10,6 +10,7 @@ import pino from 'pino';
 import QRCode from 'qrcode';
 import {HELP,messageText,messageId,isAllowedMessage,mediaKind,youtubeIds,parseCommand} from './commands.mjs';
 import {freshDraft,advance,prompt,summary,restoreUpload} from './wizard.mjs';
+import {formatReply} from './reply-style.mjs';
 
 process.umask(0o077);
 const exec=promisify(execFile),SERVICE=path.dirname(fileURLToPath(import.meta.url)),ROOT=path.resolve(SERVICE,'../..');
@@ -26,7 +27,7 @@ const save=()=>{state.seen=[...seen];const snapshot=structuredClone(state);saveC
 async function drainOutbox(){
   while(socket&&state.config.chatId&&connection==='Connected'&&state.outbox?.length){
     const item=state.outbox[0];
-    try{await socket.sendMessage(state.config.chatId,{text:item.text},{messageId:item.id});state.outbox.shift();await save();}catch{return;}
+    try{await socket.sendMessage(state.config.chatId,{text:formatReply(item.text)},{messageId:item.id});state.outbox.shift();await save();}catch{return;}
   }
 }
 function flush(){outboxChain=outboxChain.then(drainOutbox).catch(()=>{});return outboxChain;}
@@ -135,7 +136,12 @@ async function connect(){
     if(update.qr){qr=await QRCode.toDataURL(update.qr);connection='Scan the QR code';}
     if(update.connection==='open'){
       connection='Connected';qr=null;console.log('WhatsApp companion connected. No chat content is logged.');void flush();
-      if(!resumedPrompt){resumedPrompt=true;intake=intake.then(async()=>{if(state.draft.items.length){await reply(prompt(state.draft,await loadCatalog()));await save();}}).catch(()=>{});}
+      if(!resumedPrompt){resumedPrompt=true;intake=intake.then(async()=>{
+        const styleChanged=state.replyStyleVersion!=='assistant-monospace-v1';
+        if(styleChanged){state.replyStyleVersion='assistant-monospace-v1';await save();}
+        if(state.draft.items.length){await reply(prompt(state.draft,await loadCatalog()));await save();}
+        else if(styleChanged)await reply('Assistant replies now use this distinct text style, so they are easier to recognise. Your typed messages stay unchanged.');
+      }).catch(()=>{});}
     }
     if(update.connection==='close'){
       const code=update.lastDisconnect?.error?.output?.statusCode;socket=null;qr=null;
@@ -157,7 +163,7 @@ const setupHTML=`<!doctype html><html lang="en"><meta charset="utf-8"><meta name
 const server=createServer((request,response)=>{
   if(request.headers.host!==`127.0.0.1:${PORT}`){response.writeHead(403);response.end();return;}
   response.setHeader('Cache-Control','no-store');response.setHeader('X-Content-Type-Options','nosniff');response.setHeader('Referrer-Policy','no-referrer');
-  if(request.url==='/health'&&request.method==='GET'){response.setHeader('Content-Type','application/json');response.end(JSON.stringify({connection,qrReady:Boolean(qr),groupLinked:Boolean(state.config.chatId),pendingItems:state.draft.items.length,menuVersion:'back-edit-v1'}));return;}
+  if(request.url==='/health'&&request.method==='GET'){response.setHeader('Content-Type','application/json');response.end(JSON.stringify({connection,qrReady:Boolean(qr),groupLinked:Boolean(state.config.chatId),pendingItems:state.draft.items.length,menuVersion:'back-edit-v1',replyStyle:'assistant-monospace-v1'}));return;}
   if(request.url==='/'&&request.method==='GET'){response.setHeader('Content-Type','text/html; charset=utf-8');response.end(setupHTML);return;}
   if(request.url==='/api/state'&&request.method==='GET'&&request.headers['x-setup-key']===WEB_KEY){response.setHeader('Content-Type','application/json');response.end(JSON.stringify({connection,qr,started:allowConnect,linked:Boolean(state.config.chatId)}));return;}
   response.writeHead(404);response.end();

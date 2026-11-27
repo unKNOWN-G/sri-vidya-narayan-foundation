@@ -17,6 +17,8 @@ The existing Cloudflare phone form remains a working alternative; its first live
 
 ## Phone experience
 
+Assistant replies use a bold **Website Assistant** label and WhatsApp-native monospace text so they are distinct from the owner's ordinary messages. Links remain outside monospace blocks for easy opening. This is presentation at send time only; uploaded text/captions and typed responses are not rewritten. The first connection after this style update sends a single styled notice or the saved pending menu.
+
 Every question now includes **B. Back** (BACK also works). The review includes **E. Edit details**: choose section, event/name, caption or date without re-forwarding the pending files. Changing one field keeps the other answers. Nothing publishes until PUBLISH from the final review.
 
 After publication, **REDO** (or EDIT with no pending set) reopens the most recent published upload with its saved files. Corrections keep the same event ID/link and do not append duplicate media. Changing the section of an event consisting entirely of that upload updates the category lists and education profile, and copies the same public assets into the corrected section; original files remain. On an event containing other uploads, only this set's captions may be changed automatically; moving/renaming that shared event requires a separate review so other people's content and contribution links cannot be silently changed. RETRY remains for failed publication; CLEAR discards only the current unsubmitted selection. A pending menu is resent after a process restart so Back/Edit are visible immediately.
