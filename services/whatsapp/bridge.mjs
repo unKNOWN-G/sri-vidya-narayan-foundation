@@ -164,7 +164,7 @@ const setupHTML=`<!doctype html><html lang="en"><meta charset="utf-8"><meta name
 const server=createServer((request,response)=>{
   if(request.headers.host!==`127.0.0.1:${PORT}`){response.writeHead(403);response.end();return;}
   response.setHeader('Cache-Control','no-store');response.setHeader('X-Content-Type-Options','nosniff');response.setHeader('Referrer-Policy','no-referrer');
-  if(request.url==='/health'&&request.method==='GET'){response.setHeader('Content-Type','application/json');response.end(JSON.stringify({connection,qrReady:Boolean(qr),groupLinked:Boolean(state.config.chatId),pendingItems:state.draft.items.length,menuVersion:MENU_VERSION,replyStyle:'assistant-monospace-v1',youtubeLinks:'live-playlist-v1'}));return;}
+  if(request.url==='/health'&&request.method==='GET'){response.setHeader('Content-Type','application/json');response.end(JSON.stringify({connection,qrReady:Boolean(qr),groupLinked:Boolean(state.config.chatId),pendingItems:state.draft.items.length,menuVersion:MENU_VERSION,replyStyle:'assistant-monospace-v1',youtubeLinks:'generic-message-v2'}));return;}
   if(request.url==='/'&&request.method==='GET'){response.setHeader('Content-Type','text/html; charset=utf-8');response.end(setupHTML);return;}
   if(request.url==='/api/state'&&request.method==='GET'&&request.headers['x-setup-key']===WEB_KEY){response.setHeader('Content-Type','application/json');response.end(JSON.stringify({connection,qr,started:allowConnect,linked:Boolean(state.config.chatId)}));return;}
   response.writeHead(404);response.end();

@@ -72,8 +72,14 @@ export function youtubeLinks(text) {
   return links;
 }
 export const youtubeIds=text=>youtubeLinks(text).filter(item=>item.youtubeId).map(item=>item.youtubeId);
-// Shared text may precede the URL; explicit upload instructions stay commands.
-export const sharedYouTubeItems=text=>/^(?:hey\s+sai[,!]?\s*)?(?:upload|message)\b/i.test(String(text).trim())?[]:youtubeLinks(text).map(item=>({kind:'youtube',...item}));
+// Detect links anywhere in shared text; valid publishing commands stay commands.
+export function sharedYouTubeItems(text) {
+  try { if(parseCommand(text)?.kind==='upload')return []; } catch {}
+  const links=youtubeLinks(text);
+  if(!links.length)return [];
+  const caption=String(text).replace(/^message\s+/i,'').replace(/https?:\/\/[^\s<>]+/gi,url=>youtubeLinks(url).length?'':url).trim().slice(0,1500);
+  return links.map(item=>({kind:'youtube',...item,...(caption?{caption}:{})}));
+}
 
 export function mediaKind(message) {
   const m=message?.message;

@@ -91,7 +91,7 @@ test('compact upload accepts a title without a caption',()=>{
 
 test('live shares, mobile links and a title before the link are recognised as YouTube items',()=>{
   for(const url of ['https://www.youtube.com/live/HI56GgLP_cE?si=share','https://m.youtube.com/watch?v=HI56GgLP_cE','https://youtu.be/HI56GgLP_cE?feature=shared']) {
-    assert.deepEqual(sharedYouTubeItems('Watch Swamiji here: '+url),[{kind:'youtube',youtubeId:'HI56GgLP_cE'}]);
+    assert.deepEqual(sharedYouTubeItems('Watch Swamiji here: '+url),[{kind:'youtube',youtubeId:'HI56GgLP_cE',caption:'Watch Swamiji here:'}]);
   }
   assert.deepEqual(youtubeIds('https://youtu.be/AbCdEfG123_'),['AbCdEfG123_']);
   assert.deepEqual(sharedYouTubeItems('UPLOAD devotion | Puja | https://youtu.be/HI56GgLP_cE'),[]);
@@ -103,4 +103,23 @@ test('playlists and channel-live shares stay links rather than forwarded text',(
   assert.deepEqual(youtubeLinks('https://www.youtube.com/@Swamiji/live?si=share'),[{youtubeLivePath:'/@Swamiji/live'}]);
   assert.deepEqual(youtubeLinks('https://youtu.be/HI56GgLP_cE https://youtube.com/live/HI56GgLP_cE'),[{youtubeId:'HI56GgLP_cE'}]);
   for(const url of ['https://youtube.com.evil.test/live/HI56GgLP_cE','https://evil.test@youtube.com/live/HI56GgLP_cE','https://youtube.com:8443/live/HI56GgLP_cE','https://youtube.com/playlist?list=../../secret','https://example.com/@name/live'])assert.deepEqual(youtubeLinks(url),[]);
+});
+
+test('any text message with YouTube links becomes YouTube content with the surrounding caption',()=>{
+  const url='https://youtube.com/live/HI56GgLP_cE?si=shared';
+  for(const text of ['MESSAGE Blessings today '+url,'Blessings today '+url,'Upload this '+url]) {
+    const items=sharedYouTubeItems(text);
+    assert.equal(items.length,1);assert.equal(items[0].kind,'youtube');assert.equal(items[0].youtubeId,'HI56GgLP_cE');
+    assert.ok(items[0].caption);assert.ok(!items[0].caption.includes('https://'));
+  }
+  assert.deepEqual(sharedYouTubeItems(url),[{kind:'youtube',youtubeId:'HI56GgLP_cE'}]);
+  const multiple=sharedYouTubeItems('Recordings: '+url+' https://youtu.be/AbCdEfG1234 '+url);
+  assert.equal(multiple.length,2);assert.ok(multiple.every(item=>item.kind==='youtube'));
+  const draft={...freshDraft(),items:sharedYouTubeItems('MESSAGE Blessings today '+url)};
+  prompt(draft,events);advance(draft,'3',events);advance(draft,'Puja',events);
+  assert.equal(draft.stage,'review');assert.equal(draft.caption,'Blessings today');
+  assert.equal(advance(draft,'yes',events).publish,undefined);
+  assert.equal(advance(draft,'PUBLISH',events).publish.items[0].kind,'youtube');
+  assert.deepEqual(sharedYouTubeItems('MESSAGE Just a teaching.'),[]);
+  assert.deepEqual(sharedYouTubeItems('https://youtube.com.evil.test/watch?v=HI56GgLP_cE'),[]);
 });
