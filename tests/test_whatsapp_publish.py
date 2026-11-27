@@ -63,7 +63,7 @@ class MixedMediaTests(unittest.TestCase):
     def test_edit_never_moves_other_uploads_or_detaches_financial_records(self):
         self.job['items']=[{'kind':'message','text':'Original supplied message.'}]
         first=import_prepared(self.job,self.prepared,prepare(self.job,self.prepared,self.originals),self.root)
-        path=self.root/'content/events'/(first['eventId']+'.json');event=json.loads(path.read_text());extra={**event['media'][0],'id':'another-upload','caption':'Keep this caption.'};event['media'].append(extra);path.write_text(json.dumps(event))
+        path=self.root/'content/events'/(first['eventId']+'.json');event=json.loads(path.read_text());extra={**event['media'][0],'id':first['eventId']+'-44444444-4444-4444-8444-444444444444-0','caption':'Keep this caption.'};event['media'].append(extra);path.write_text(json.dumps(event))
         edit={**self.job,'id':'22222222-2222-4222-8222-222222222222','caption':'Correct this set.','target':first['eventId'],'revisionOf':{'jobId':self.job['id'],'eventId':first['eventId']}}
         revise_event(edit,self.root);updated=json.loads(path.read_text());self.assertEqual(updated['media'][1]['caption'],'Keep this caption.');self.assertEqual(updated['description'],event['description'])
         before=path.read_bytes()

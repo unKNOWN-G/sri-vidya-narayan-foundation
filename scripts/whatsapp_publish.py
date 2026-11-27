@@ -167,7 +167,7 @@ def revise_event(job,root):
     event=json.loads(path.read_text());old_category=event['category'];old_date=event.get('date')
     if event.get('published') is False:raise ValueError('The original event is not public. Review it before editing through WhatsApp.')
     if job['id'] in event.get('whatsappJobIds',[]):return {'eventId':event_id,'added':0,'oldCategory':old_category}
-    owned=[m for m in event['media'] if '-'+revision['jobId']+'-' in m.get('id','')]
+    owned=[m for m in event['media'] if m.get('id','').startswith(event_id+'-'+revision['jobId']+'-')]
     if not owned or revision['jobId'] not in event.get('whatsappJobIds',[]):raise ValueError('This event does not contain that upload. No changes were made.')
     whole=len(owned)==len(event['media'])
     if not whole and (job['category']!=old_category or job['title']!=event['title'] or job.get('date')!=event.get('date')):raise ValueError('This set was added to a shared event. Its caption can be edited; moving or renaming the whole event needs a separate review.')
