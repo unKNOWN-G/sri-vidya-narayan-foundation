@@ -2,7 +2,16 @@
 
 ## Status
 
-Implemented locally on 27 November 2026. The owner explicitly approved WhatsApp linking and background operation, then scanned the QR themselves. The per-user LaunchAgent is installed and the companion reports **Connected**. The owner sent the group-link instruction and received the companion’s reply; `/health` confirms **groupLinked=true**. The first real, owner-approved WhatsApp publication remains pending; no test content has been published through this gateway. The local setup page is http://127.0.0.1:8998/ on the Mac. A real, owner-approved group upload is the remaining integration step. Browser inspection is currently unavailable because local browser use is disabled in Codex Work settings; do not claim visual verification or use another automation stack to bypass that setting.
+**Live and verified on 27 November 2026.** The owner approved linking/background operation, scanned the QR and bound the dedicated upload group. The owner then forwarded 10 photographs, completed the guided section/event/caption review and replied PUBLISH. “Hayagreeva Swamy Temple Visit, Tirumala” was published successfully under Devotion and Celebration.
+
+- Live event: https://unknown-g.github.io/sri-vidya-narayan-foundation/#/event/whatsapp-59025070-c4f4-4274-98d4-7ac9bfbda191
+- Successful Pages run: https://github.com/unKNOWN-G/sri-vidya-narayan-foundation/actions/runs/45976760410
+- Published source commit: `8fbca1d0e2bd9bf846218c4ce3995c52c1a1c80d`.
+- All 10 live WebP assets were fetched from GitHub Pages and checked against their prepared SHA-256 hashes (2,854,186 bytes total). The companion reports `published`, no error and an empty outgoing reply queue.
+- The per-user LaunchAgent is running. Saved credentials and the dedicated-group binding are present with private file permissions; future forwarding and questions happen entirely in WhatsApp while the Mac is awake and online.
+- Photos are production-tested through WhatsApp. Video/voice/audio/YouTube/text have focused intake/import/conversion tests and an isolated five-media full-build acceptance test, but have not yet been sent through a live WhatsApp publication.
+
+The private operator setup/health page is http://127.0.0.1:8998/ on the Mac. Browser visual inspection remains unavailable because local browser use is disabled in Codex Work settings. Public JSON and actual asset bytes were verified; do not describe that as a visual browser audit or use another automation stack to bypass the setting.
 
 The existing Cloudflare phone form remains a working alternative; its first live upload was verified on 26 November. This companion is a separate Mac service that publishes through the repository and its existing Pages workflow. It does not request the uploader's blocked `workers.dev` address or copy its Cloudflare secrets.
 
