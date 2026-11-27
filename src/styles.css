@@ -1482,3 +1482,7 @@ img {
 .document-label {
   font: 24px var(--serif);
 }
+/* A forwarded teaching is read directly inside the occasion, without a file grid. */
+.forwarded-message { box-sizing: border-box; width: min(100%, 46rem); max-height: 100%; overflow-y: auto; padding: clamp(22px, 4vw, 56px); background: var(--paper, #faf5eb); color: var(--ink, #342a20); border-radius: 22px; text-align: left; }
+.forwarded-message h2 { font-size: clamp(1.5rem, 3vw, 2.5rem); line-height: 1.2; }
+.forwarded-message > div { white-space: pre-wrap; overflow-wrap: anywhere; font-size: clamp(1.05rem, 1.5vw, 1.3rem); line-height: 1.85; }

@@ -1,7 +1,13 @@
 name: Publish website
+run-name: ${{ inputs.update_id && format('WhatsApp update {0}', inputs.update_id) || 'Publish website' }}
 
 on:
   workflow_dispatch:
+    inputs:
+      update_id:
+        description: Optional WhatsApp update identifier for status tracking
+        required: false
+        type: string
 
 permissions:
   contents: read
@@ -23,6 +29,13 @@ jobs:
         uses: actions/configure-pages@v5
       - name: Validate and build
         run: python3 scripts/build.py
+      - name: Check free website size limit
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          if sum(p.stat().st_size for p in Path('dist').rglob('*') if p.is_file()) > 900 * 1024 * 1024:
+              raise SystemExit('Website exceeds the publishing size guard.')
+          PY
       - name: Upload website artifact
         uses: actions/upload-pages-artifact@v4
         with:

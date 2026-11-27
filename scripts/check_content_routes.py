@@ -16,8 +16,8 @@ import sys
 from urllib.parse import quote, unquote, urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
-MEDIA_TYPES = {"photo", "video", "audio", "document", "youtube"}
-COUNT_TYPES = {"photos": "photo", "films": "video", "videos": "video", "recordings": "audio", "audio": "audio", "documents": "document", "youtube": "youtube"}
+MEDIA_TYPES = {"photo", "video", "audio", "document", "youtube", "message"}
+COUNT_TYPES = {"photos": "photo", "films": "video", "videos": "video", "recordings": "audio", "audio": "audio", "documents": "document", "youtube": "youtube", "messages": "message"}
 REQUIRED_COLLECTIONS = {"readings", "pearls", "teachings", "books", "messages", "contributions"}
 
 

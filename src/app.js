@@ -620,7 +620,7 @@
   async function category(id, selectedTab, selectedId) {
     const c = getCategory(id);
     if (!c) throw Error("This part of his life is not available.");
-    if (id === "teachings") {
+    if (id === "teachings" && selectedTab !== "moments") {
       location.replace("#/learn");
       return;
     }
@@ -762,11 +762,11 @@
     );
     if (first) await recordView(first.id);
   }
-  const mediaNames = { photo: "Photographs", video: "Videos", youtube: "YouTube videos", audio: "Audio", document: "Supporting documents" };
+  const mediaNames = { photo: "Photographs", video: "Videos", youtube: "YouTube videos", audio: "Audio", message: "Messages", document: "Supporting documents" };
   const mediaPhrase = type => type === "youtube" ? mediaNames[type] : (mediaNames[type] || type).toLowerCase();
   function mediaTypes(event) {
     const present = [...new Set(event.media.map(m => m.type))];
-    return ["photo", "video", "youtube", "audio", "document", ...present.filter(t => !["photo", "video", "youtube", "audio", "document"].includes(t))].filter(t => present.includes(t));
+    return ["photo", "video", "youtube", "audio", "message", "document", ...present.filter(t => !["photo", "video", "youtube", "audio", "message", "document"].includes(t))].filter(t => present.includes(t));
   }
   function mediaTabs(event, selected) {
     const types = mediaTypes(event);
@@ -810,11 +810,13 @@
           ? `<video controls playsinline preload="metadata" ${item.poster ? `poster="${href(item.poster)}"` : ""} src="${href(item.src)}"></video>`
           : type === "audio"
             ? `<div class="listen-stage">${photo(item.poster || event.cover, event.title)}<audio controls preload="metadata" src="${href(item.src)}"></audio></div>`
+            : type === "message"
+              ? `<article class="forwarded-message" tabindex="0" aria-label="Message shared by the foundation"><span class="eyebrow">MESSAGE SHARED BY THE FOUNDATION</span><h2>${esc(item.title || event.title)}</h2><div>${esc(item.text || "")}</div></article>`
             : type === "document"
               ? `<a class="document-preview" href="${href(item.src)}" target="_blank" rel="noopener" aria-label="Open full document">${item.poster ? photo(item.poster, item.title || event.title) : '<span class="document-label">Read the original document</span>'}<span class="button">Open full document ↗</span></a>`
               : `<div class="listen-stage">${photo(item.poster || event.cover, event.title)}<a class="button" href="${href(item.url || item.src)}" target="_blank" rel="noopener">Watch this recording on YouTube ↗</a></div>`;
     const duration = item?.durationSeconds ? `${Math.floor(item.durationSeconds / 60)}:${String(Math.floor(item.durationSeconds % 60)).padStart(2, "0")}` : "";
-    const caption = `${after && after.type !== type ? `<a class="media-continue" href="#${next}">${esc(nextLabel)} <span aria-hidden="true">→</span></a>` : ""}<span class="eyebrow">${esc(mediaNames[type] || "FROM THE OCCASION")} · ${index + 1} / ${media.length}${duration ? " · " + duration : ""}</span><h2>${esc(item?.title || event.title)}</h2><p>${esc(short(item?.caption || event.description, 320))}</p><details><summary>About this occasion</summary><p>${esc(event.description)}</p><p>${esc(event.credit)} ${esc(event.note)}</p></details><a class="text-link" href="${href(item?.src || item?.url || parent)}" target="_blank" rel="noopener">${type === "photo" ? "View full photograph" : type === "document" ? "Read original document" : "Open recording"} ↗</a>`;
+    const caption = `${after && after.type !== type ? `<a class="media-continue" href="#${next}">${esc(nextLabel)} <span aria-hidden="true">→</span></a>` : ""}<span class="eyebrow">${esc(mediaNames[type] || "FROM THE OCCASION")} · ${index + 1} / ${media.length}${duration ? " · " + duration : ""}</span><h2>${esc(item?.title || event.title)}</h2><p>${esc(short(item?.caption || event.description, 320))}</p><details><summary>About this occasion</summary><p>${esc(event.description)}</p><p>${esc(event.credit)} ${esc(event.note)}</p></details><a class="text-link" href="${href(item?.src || item?.url || parent)}" target="_blank" rel="noopener">${type === "photo" ? "View full photograph" : type === "message" ? "Read full message" : type === "document" ? "Read original document" : "Open recording"} ↗</a>`;
     const ribbon = sequence.map(({item:m,type:kind,index:at,route},i) =>
       `<a href="#${route}" data-preview="${esc(href(kind === "photo" ? m.src : m.poster || ""))}" data-media-kind="${kind}" data-media-number="${at+1}" data-media-total="${event.media.filter(item => item.type === kind).length}" ${kind === type && at === index ? 'aria-current="true"' : ""} ${i === 0 || sequence[i-1].type !== kind ? 'class="media-group-start"' : ""} aria-label="${esc((mediaNames[kind] || kind) + ' ' + (at+1) + ': ' + (m.title || event.title) + (m.durationSeconds ? ' · ' + Math.floor(m.durationSeconds/60) + ':' + String(Math.floor(m.durationSeconds%60)).padStart(2,'0') : ''))}">${kind === "photo" ? photo(m.thumb || m.src, "") : m.poster ? photo(m.poster, "") : ""}${kind !== "photo" ? `<span class="media-kind">${kind === "audio" ? "Listen" : kind === "video" || kind === "youtube" ? "Watch" : "Read"} ${at+1}</span>` : ""}</a>`
     ).join("");
@@ -983,10 +985,12 @@
         href: "#/library/teachings",
       },
     ];
+    const shared=site.events.filter(e=>e.category==="teachings"&&e.published!==false);
+    if(shared.length)choices.push({id:"shared",title:"Messages and recordings",description:"Listen, watch and reflect on teachings shared by the foundation.",cover:shared[shared.length-1].cover,href:"#/category/teachings/moments/"+shared[shared.length-1].id});
     const selected=choices.findIndex(c=>c.id===(selectedId||deckMemory.get("learn")));
     sectionSpotlight({key:"learn",title:"Learn Swamiji’s Teachings",back:"#/",index:Math.max(0,selected),items:choices.map(c=>({
       id:c.id,title:c.title,description:c.description,cover:c.cover,visual:c.id==="teachings"?"compass":"",visualLabel:"Wisdom in daily life",route:"#/learn/"+c.id,target:c.href,
-      action:c.id==="books"?"Choose a book":c.id==="messages"?"Open the cards":c.id==="readings"?"Read a Satsang":"Read a teaching",
+      action:c.id==="shared"?"Listen, watch and read":c.id==="books"?"Choose a book":c.id==="messages"?"Open the cards":c.id==="readings"?"Read a Satsang":"Read a teaching",
       fact:c.id==="books"?"8 spiritual books published":"",meta:c.id==="readings"?"A reflection for your day":c.id==="messages"?"Messages and blessings":"",
     })),onSelect:item=>deckMemory.set("learn",item.id)});
   }

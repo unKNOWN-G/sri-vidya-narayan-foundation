@@ -48,6 +48,15 @@
     "givingRecords": 12
   },
   "experience_blueprint": "docs/EXPERIENCE_BLUEPRINT.md",
+  "whatsapp_intake": {
+    "service": "services/whatsapp/",
+    "operator_command": "python3 scripts/whatsapp_tool.py",
+    "documentation": "docs/WHATSAPP_SETUP.md",
+    "mode": "Owner-only guided conversation in one dedicated upload group",
+    "supported_media": ["photo", "video", "audio", "youtube", "message"],
+    "requires": "Linked WhatsApp device; awake and online Mac; existing GitHub CLI login",
+    "status": "Implemented and locally tested; account linking and live WhatsApp publication pending"
+  },
   "teaching_gateway": "#/learn",
   "dedicated_experiences": [
     "reading-room.html",
