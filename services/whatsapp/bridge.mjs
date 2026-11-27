@@ -8,7 +8,7 @@ import {promisify} from 'node:util';
 import makeWASocket,{useMultiFileAuthState,downloadMediaMessage,DisconnectReason,generateMessageIDV2} from '@whiskeysockets/baileys';
 import pino from 'pino';
 import QRCode from 'qrcode';
-import {HELP,messageText,messageId,isAllowedMessage,mediaKind,youtubeIds,parseCommand} from './commands.mjs';
+import {HELP,messageText,messageId,isAllowedMessage,mediaKind,sharedYouTubeItems,parseCommand} from './commands.mjs';
 import {freshDraft,advance,prompt,summary,restoreUpload,resumeDraft,MENU_VERSION} from './wizard.mjs';
 import {formatReply} from './reply-style.mjs';
 
@@ -75,7 +75,7 @@ async function receive(message){
   if(!isAllowedMessage(message,state.config))return;
   const id=messageId(message);if(seen.has(id))return;
   const m=message.message||{},kind=mediaKind(message),forwarded=Boolean(m.extendedTextMessage?.contextInfo?.isForwarded||m.extendedTextMessage?.contextInfo?.forwardingScore);
-  const links=youtubeIds(text);
+  const links=sharedYouTubeItems(text);
   if(state.draft.revisionOf&&(kind||links.length||forwarded||/^message\s+/i.test(text))){await reply('PUBLISH this edit, or CLEAR to start another event.');return;}
   if(kind){
     if(state.draft.items.length>=200){await reply('This event already has 200 items. Finish it before forwarding another set.');return;}
@@ -88,9 +88,9 @@ async function receive(message){
     await fs.rename(temp,destination);
     state.draft.items.push({kind,file:id+'.bin',caption:(m.imageMessage?.caption||m.videoMessage?.caption||'').slice(0,1500)});seen.add(id);await save();laterPrompt();return;
   }
-  if(links.length&&(forwarded||/^https?:\/\//i.test(text))){
+  if(links.length){
     if(state.draft.items.length+links.length>200)throw new Error('Finish this event before sending more links.');
-    for(const youtubeId of links)state.draft.items.push({kind:'youtube',youtubeId});seen.add(id);await save();laterPrompt();return;
+    state.draft.items.push(...links);seen.add(id);await save();laterPrompt();return;
   }
   if(m.documentMessage||m.viewOnceMessage||m.viewOnceMessageV2||m.ephemeralMessage){seen.add(id);await save();await reply('Send photos, video, audio, text or YouTube links. No documents or view-once items.');return;}
   if(!text)return;
@@ -164,7 +164,7 @@ const setupHTML=`<!doctype html><html lang="en"><meta charset="utf-8"><meta name
 const server=createServer((request,response)=>{
   if(request.headers.host!==`127.0.0.1:${PORT}`){response.writeHead(403);response.end();return;}
   response.setHeader('Cache-Control','no-store');response.setHeader('X-Content-Type-Options','nosniff');response.setHeader('Referrer-Policy','no-referrer');
-  if(request.url==='/health'&&request.method==='GET'){response.setHeader('Content-Type','application/json');response.end(JSON.stringify({connection,qrReady:Boolean(qr),groupLinked:Boolean(state.config.chatId),pendingItems:state.draft.items.length,menuVersion:MENU_VERSION,replyStyle:'assistant-monospace-v1'}));return;}
+  if(request.url==='/health'&&request.method==='GET'){response.setHeader('Content-Type','application/json');response.end(JSON.stringify({connection,qrReady:Boolean(qr),groupLinked:Boolean(state.config.chatId),pendingItems:state.draft.items.length,menuVersion:MENU_VERSION,replyStyle:'assistant-monospace-v1',youtubeLinks:'live-playlist-v1'}));return;}
   if(request.url==='/'&&request.method==='GET'){response.setHeader('Content-Type','text/html; charset=utf-8');response.end(setupHTML);return;}
   if(request.url==='/api/state'&&request.method==='GET'&&request.headers['x-setup-key']===WEB_KEY){response.setHeader('Content-Type','application/json');response.end(JSON.stringify({connection,qr,started:allowConnect,linked:Boolean(state.config.chatId)}));return;}
   response.writeHead(404);response.end();

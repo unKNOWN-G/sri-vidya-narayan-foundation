@@ -11,7 +11,7 @@ import unittest
 
 SCRIPTS=Path(__file__).resolve().parents[1]/'scripts'
 sys.path.insert(0,str(SCRIPTS))
-from whatsapp_publish import validate_job,prepare,import_prepared,transcode,revise_event
+from whatsapp_publish import validate_job,prepare,import_prepared,transcode,revise_event,youtube_source
 
 class MixedMediaTests(unittest.TestCase):
     def setUp(self):
@@ -40,6 +40,16 @@ class MixedMediaTests(unittest.TestCase):
         self.assertIn('&lt;script&gt;',page);self.assertNotIn('<script>',page)
         retry=copy.deepcopy(self.job);retry['id']='22222222-2222-4222-8222-222222222222';retry['target']=result['eventId']
         self.assertEqual(import_prepared(retry,self.prepared,items,self.root)['added'],0)
+
+    def test_live_and_playlist_links_prepare_without_a_fake_video_thumbnail(self):
+        self.job['items']=[{'kind':'youtube','youtubeId':'HI56GgLP_cE'},{'kind':'youtube','youtubePlaylistId':'PL2YD1vkcVp_v1Lj6ysv6UsKi4TCfYZ4OL'},{'kind':'youtube','youtubeLivePath':'/@Swamiji/live'}]
+        items=prepare(self.job,self.prepared,self.originals)
+        self.assertEqual(items[0]['url'],'https://www.youtube.com/watch?v=HI56GgLP_cE')
+        self.assertEqual(items[1]['url'],'https://www.youtube.com/playlist?list=PL2YD1vkcVp_v1Lj6ysv6UsKi4TCfYZ4OL')
+        self.assertEqual(items[2]['url'],'https://www.youtube.com/@Swamiji/live')
+        self.assertNotIn('poster',items[1]);self.assertNotIn('poster',items[2])
+        for bad in [{'youtubePlaylistId':'../../secret'},{'youtubeLivePath':'//evil.test/live'},{'youtubeLivePath':'/@name/live?redirect=evil'},{'youtubeId':'HI56GgLP_cE','youtubeLivePath':'/@name/live'}]:
+            with self.assertRaises(ValueError):youtube_source(bad)
 
     def test_misclassified_unconfirmed_and_path_traversal_inputs_are_refused(self):
         self.job['items']=[{'kind':'message','text':'A supplied message.'}]

@@ -52,19 +52,28 @@ export function publishableImage(message) {
   return m?.imageMessage && !m.imageMessage.viewOnce && /^(?:image\/jpeg|image\/png|image\/webp)$/.test(m.imageMessage.mimetype||'') ? m.imageMessage : null;
 }
 
-export function youtubeIds(text) {
-  const ids=[];
-  for(const raw of String(text).match(/https?:\/\/[^\s<>]+/g)||[]) {
+export function youtubeLinks(text) {
+  const links=[],seen=new Set();
+  for(const raw of String(text).match(/https?:\/\/[^\s<>]+/gi)||[]) {
     try {
-      const u=new URL(raw.replace(/[),.!;]+$/,''));
-      if(u.username||u.password||u.port)continue;
+      const u=new URL(raw.replace(/[),.!;\]}*~]+$/,''));
+      if(!['http:','https:'].includes(u.protocol)||u.username||u.password||u.port)continue;
       const host=u.hostname.toLowerCase(),parts=u.pathname.split('/').filter(Boolean);
-      let id=host==='youtu.be'?parts[0]:['youtube.com','www.youtube.com','m.youtube.com','youtube-nocookie.com','www.youtube-nocookie.com'].includes(host)?(u.searchParams.get('v')||(['shorts','embed','live'].includes(parts[0])?parts[1]:null)):null;
-      if(/^[A-Za-z0-9_-]{11}$/.test(id||'')&&!ids.includes(id))ids.push(id);
+      const youtube=['youtube.com','www.youtube.com','m.youtube.com','music.youtube.com','youtube-nocookie.com','www.youtube-nocookie.com'].includes(host);
+      if(host!=='youtu.be'&&!youtube)continue;
+      const id=host==='youtu.be'?parts[0]:u.searchParams.get('v')||(['shorts','embed','live'].includes(parts[0])?parts[1]:null);
+      let item;
+      if(youtube&&['playlist','embed/videoseries'].includes(parts.join('/'))&&/^[A-Za-z0-9_-]{10,150}$/.test(u.searchParams.get('list')||''))item={youtubePlaylistId:u.searchParams.get('list')};
+      else if(/^[A-Za-z0-9_-]{11}$/.test(id||'')&&id!=='videoseries')item={youtubeId:id};
+      else if(youtube&&/^\/(?:@[A-Za-z0-9_.%-]{1,200}|(?:channel|c|user)\/[A-Za-z0-9_.%-]{1,200})\/live\/?$/.test(u.pathname))item={youtubeLivePath:u.pathname.replace(/\/$/,'')};
+      if(item&&!seen.has(JSON.stringify(item))){seen.add(JSON.stringify(item));links.push(item);}
     } catch {}
   }
-  return ids;
+  return links;
 }
+export const youtubeIds=text=>youtubeLinks(text).filter(item=>item.youtubeId).map(item=>item.youtubeId);
+// Shared text may precede the URL; explicit upload instructions stay commands.
+export const sharedYouTubeItems=text=>/^(?:hey\s+sai[,!]?\s*)?(?:upload|message)\b/i.test(String(text).trim())?[]:youtubeLinks(text).map(item=>({kind:'youtube',...item}));
 
 export function mediaKind(message) {
   const m=message?.message;

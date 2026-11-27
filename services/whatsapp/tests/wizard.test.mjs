@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {freshDraft,advance,prompt,restoreUpload,resumeDraft,MENU_VERSION} from '../wizard.mjs';
-import {mediaKind,youtubeIds,isAllowedMessage,parseCommand} from '../commands.mjs';
+import {mediaKind,youtubeIds,youtubeLinks,sharedYouTubeItems,isAllowedMessage,parseCommand} from '../commands.mjs';
 
 const events=[{id:'school',category:'education',title:'Air Force School, Yelahanka'},{id:'food',category:'annadanam',title:'Tirumala Annadanam'}];
 test('one mixed event is only released after its explicit review confirmation',()=>{
@@ -87,4 +87,20 @@ test('saved old caption questions resume at review without losing files or suppl
 test('compact upload accepts a title without a caption',()=>{
   const command=parseCommand('UPLOAD education | Gollapalli High School');
   assert.equal(command.caption,'Gollapalli High School');assert.equal(command.confirmed,true);
+});
+
+test('live shares, mobile links and a title before the link are recognised as YouTube items',()=>{
+  for(const url of ['https://www.youtube.com/live/HI56GgLP_cE?si=share','https://m.youtube.com/watch?v=HI56GgLP_cE','https://youtu.be/HI56GgLP_cE?feature=shared']) {
+    assert.deepEqual(sharedYouTubeItems('Watch Swamiji here: '+url),[{kind:'youtube',youtubeId:'HI56GgLP_cE'}]);
+  }
+  assert.deepEqual(youtubeIds('https://youtu.be/AbCdEfG123_'),['AbCdEfG123_']);
+  assert.deepEqual(sharedYouTubeItems('UPLOAD devotion | Puja | https://youtu.be/HI56GgLP_cE'),[]);
+});
+test('playlists and channel-live shares stay links rather than forwarded text',()=>{
+  const playlist='PL2YD1vkcVp_v1Lj6ysv6UsKi4TCfYZ4OL';
+  assert.deepEqual(youtubeLinks('https://youtube.com/playlist?list='+playlist),[{youtubePlaylistId:playlist}]);
+  assert.deepEqual(youtubeLinks('https://www.youtube.com/embed/videoseries?list='+playlist),[{youtubePlaylistId:playlist}]);
+  assert.deepEqual(youtubeLinks('https://www.youtube.com/@Swamiji/live?si=share'),[{youtubeLivePath:'/@Swamiji/live'}]);
+  assert.deepEqual(youtubeLinks('https://youtu.be/HI56GgLP_cE https://youtube.com/live/HI56GgLP_cE'),[{youtubeId:'HI56GgLP_cE'}]);
+  for(const url of ['https://youtube.com.evil.test/live/HI56GgLP_cE','https://evil.test@youtube.com/live/HI56GgLP_cE','https://youtube.com:8443/live/HI56GgLP_cE','https://youtube.com/playlist?list=../../secret','https://example.com/@name/live'])assert.deepEqual(youtubeLinks(url),[]);
 });

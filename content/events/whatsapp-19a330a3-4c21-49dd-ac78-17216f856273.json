@@ -10,13 +10,13 @@
   "note": "",
   "media": [
     {
-      "type": "message",
-      "title": "Shivaratri puja 2033 — message 1",
+      "type": "youtube",
+      "title": "Shivaratri puja 2033 — YouTube playlist",
       "caption": "Shivaratri puja 2033",
-      "src": "assets/media/spiritual-life/whatsapp-19a330a3-4c21-49dd-ac78-17216f856273/whatsapp/19a330a3-4c21-49dd-ac78-17216f856273/item-001.html",
-      "text": "https://youtube.com/playlist?list=PL2YD1vkcVp_v1Lj6ysv6UsKi4TCfYZ4OL",
-      "uploadHash": "118917d403a55dd9bbbebdd9486d7d0ead4831f6ecad1841049932dfa58ac4ff",
-      "id": "whatsapp-19a330a3-4c21-49dd-ac78-17216f856273-19a330a3-4c21-49dd-ac78-17216f856273-0"
+      "uploadHash": "06e5e8b52f1fc32a09e7770191d144ccec8adcc8bf9f4b3326c5fd5522b5154e",
+      "id": "whatsapp-19a330a3-4c21-49dd-ac78-17216f856273-19a330a3-4c21-49dd-ac78-17216f856273-0",
+      "url": "https://www.youtube.com/playlist?list=PL2YD1vkcVp_v1Lj6ysv6UsKi4TCfYZ4OL",
+      "youtubeKind": "playlist"
     },
     {
       "type": "photo",
@@ -149,7 +149,7 @@
   ],
   "cover": "assets/media/spiritual-life/whatsapp-19a330a3-4c21-49dd-ac78-17216f856273/whatsapp/19a330a3-4c21-49dd-ac78-17216f856273/item-002.webp",
   "counts": {
-    "messages": 1,
+    "youtube": 1,
     "photos": 11,
     "videos": 2
   },

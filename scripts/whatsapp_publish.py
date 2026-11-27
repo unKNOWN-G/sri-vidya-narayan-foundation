@@ -44,6 +44,19 @@ def public_text(value,limit,required=True):
     if not isinstance(value,str) or len(value)>limit or (required and not value.strip()) or re.search(r'[\x00-\x08\x0b-\x1f]|/Users/|/home/|file://',value):raise ValueError('Check the public title and caption.')
     return value.strip()
 
+def youtube_source(item):
+    keys=[key for key in ('youtubeId','youtubePlaylistId','youtubeLivePath') if key in item]
+    if len(keys)!=1:raise ValueError('Invalid YouTube link.')
+    key=keys[0];value=item[key]
+    if not isinstance(value,str):raise ValueError('Invalid YouTube link.')
+    if key=='youtubeId' and re.fullmatch(r'[A-Za-z0-9_-]{11}',value):
+        return {'url':'https://www.youtube.com/watch?v='+value,'poster':'https://i.ytimg.com/vi/'+value+'/hqdefault.jpg'}
+    if key=='youtubePlaylistId' and re.fullmatch(r'[A-Za-z0-9_-]{10,150}',value):
+        return {'url':'https://www.youtube.com/playlist?list='+value,'youtubeKind':'playlist'}
+    if key=='youtubeLivePath' and re.fullmatch(r'/(?:@[A-Za-z0-9_.%-]{1,200}|(?:channel|c|user)/[A-Za-z0-9_.%-]{1,200})/live',value):
+        return {'url':'https://www.youtube.com'+value,'youtubeKind':'channel-live'}
+    raise ValueError('Invalid YouTube link.')
+
 def validate_job(job):
     if not UUID.fullmatch(str(job.get('id',''))) or job.get('confirmed') is not True:raise ValueError('An explicit PUBLISH confirmation is required.')
     if job.get('category') not in CATEGORIES:raise ValueError('Unknown section.')
@@ -57,7 +70,7 @@ def validate_job(job):
         kind=item.get('kind')
         if kind not in KINDS:raise ValueError('Unsupported media type.')
         if kind in ('photo','video','audio') and not re.fullmatch(r'[a-f0-9]{64}\.bin',item.get('file','')):raise ValueError('Invalid incoming file.')
-        if kind=='youtube' and not re.fullmatch(r'[A-Za-z0-9_-]{11}',item.get('youtubeId','')):raise ValueError('Invalid YouTube video.')
+        if kind=='youtube':youtube_source(item)
         if kind=='message':public_text(item.get('text'),20000)
     return job
 
@@ -107,7 +120,7 @@ def prepare(job,directory,originals=ORIGINALS):
                 if poster:entry['poster']=poster.name
             digest=hashlib.sha256(output.read_bytes()).hexdigest()
         elif kind=='youtube':
-            entry.update(url='https://www.youtube.com/watch?v='+item['youtubeId'],poster='https://i.ytimg.com/vi/'+item['youtubeId']+'/hqdefault.jpg')
+            entry.update(youtube_source(item))
             digest=hashlib.sha256(entry['url'].encode()).hexdigest()
         else:
             text=public_text(item['text'],20000);output=directory/(name+'.html')
